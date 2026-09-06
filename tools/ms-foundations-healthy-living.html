@@ -1,0 +1,1085 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Foundations of Healthy Living Study Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --navy:#0D1B2A; --navy-mid:#162438; --navy-hi:#1E3350;
+  --orange:#E8821A; --orange-dim:#A85C10;
+  --teal:#1A8A8A; --teal-dim:#125F5F;
+  --gold:#C9991A; --purple:#8C50C8; --purple-lt:#C07EF0;
+  --red:#D9544D;
+  --ink:#0D1B2A; --ink-2:#3E5068; --ink-3:#63758C;
+  --bg:#EEF1F5; --surface:#FFFFFF; --surface-2:#F5F7FA;
+  --line:#D3DBE5; --line-soft:#E4EAF1;
+  --focus:#E8821A;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --cond:'Barlow Condensed','Inter Tight',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','SFMono-Regular',Menlo,Consolas,monospace;
+  --r:10px; --maxw:680px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ink:#F4F6F8; --ink-2:#B6C4D6; --ink-3:#8A9BB0;
+    --bg:#0D1B2A; --surface:#162438; --surface-2:#1B2C44;
+    --line:#2A3F5C; --line-soft:#22344E;
+    --orange:#F5941F; --teal:#25A5A5; --gold:#DCAB27; --purple-lt:#C994F5;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#F4F6F8; --ink-2:#B6C4D6; --ink-3:#8A9BB0;
+  --bg:#0D1B2A; --surface:#162438; --surface-2:#1B2C44;
+  --line:#2A3F5C; --line-soft:#22344E;
+  --orange:#F5941F; --teal:#25A5A5; --gold:#DCAB27; --purple-lt:#C994F5;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 18px 96px}
+h1,h2,h3,h4{font-family:var(--cond);text-wrap:balance;margin:0;letter-spacing:.01em}
+h1{font-size:2.35rem;line-height:1.05;font-weight:700}
+h2{font-size:1.65rem;line-height:1.12;font-weight:600}
+h3{font-size:1.2rem;font-weight:600}
+h4{font-size:1.02rem;font-weight:600;letter-spacing:.02em}
+p{margin:0 0 .9em}
+a{color:var(--orange)}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:2.5px solid var(--focus);outline-offset:2px;border-radius:4px}
+.eyebrow{font-family:var(--cond);text-transform:uppercase;letter-spacing:.14em;
+  font-size:.78rem;font-weight:600;color:var(--ink-3)}
+
+/* ---------- morpheme chips: the subject's atoms ---------- */
+.wp{font-family:var(--mono);font-size:.94em;font-weight:500;white-space:nowrap;
+  padding:.06em .34em;border-radius:4px;background:var(--surface-2);
+  border:1px solid var(--line-soft);color:var(--ink)}
+.wp.pre{border-left:3px solid var(--orange)}
+.wp.suf{border-right:3px solid var(--teal)}
+.wp.cf{border-bottom:3px solid var(--gold)}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:40;background:var(--bg);
+  border-bottom:1px solid var(--line);}
+.topbar-in{max-width:var(--maxw);margin:0 auto;padding:10px 18px;
+  display:flex;align-items:center;gap:12px}
+.brandmark{font-family:var(--cond);font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;font-size:.9rem;color:var(--ink-2);
+  display:flex;align-items:center;gap:7px}
+.brandmark .dot{width:9px;height:9px;border-radius:2px;background:var(--orange);flex:none}
+.topbar .sp{flex:1}
+.iconbtn{background:none;border:1px solid var(--line);color:var(--ink-2);
+  border-radius:8px;width:34px;height:34px;display:grid;place-items:center;line-height:0}
+.iconbtn:hover{border-color:var(--orange);color:var(--orange)}
+.backbtn{background:none;border:none;color:var(--ink-2);padding:6px 0;
+  font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.82rem;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.backbtn:hover{color:var(--orange)}
+
+/* ---------- screens ---------- */
+.screen{display:none}
+.screen.active{display:block;animation:fade .22s ease}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .screen.active{animation:none}
+  *{transition:none!important}
+}
+
+/* ---------- hero ---------- */
+.hero{padding:30px 0 22px;border-bottom:1px solid var(--line)}
+.hero .kicker{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.tag{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.74rem;font-weight:600;padding:3px 9px;border-radius:999px;
+  border:1px solid var(--line);color:var(--ink-2);background:var(--surface)}
+.tag.hot{border-color:var(--orange);color:var(--orange)}
+.hero h1{margin-bottom:8px}
+.hero .sub{color:var(--ink-2);font-size:1.02rem;margin:0}
+
+/* the term-construction display: pre | root | suf */
+.termbuild{display:flex;align-items:stretch;margin:22px 0 4px;
+  border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+  background:var(--surface);font-family:var(--mono)}
+.termbuild div{flex:1;padding:11px 8px;text-align:center;min-width:0}
+.termbuild .lbl{display:block;font-family:var(--cond);font-size:.66rem;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);margin-bottom:3px}
+.termbuild .val{font-size:.98rem;font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.termbuild .p1{border-bottom:3px solid var(--orange)}
+.termbuild .p2{border-bottom:3px solid var(--gold);border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.termbuild .p3{border-bottom:3px solid var(--teal)}
+.termbuild-cap{font-size:.85rem;color:var(--ink-3);margin:8px 0 0;text-align:center}
+
+/* ---------- stat strip ---------- */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 10px}
+.stat .n{font-family:var(--cond);font-size:1.75rem;font-weight:700;line-height:1;
+  font-variant-numeric:tabular-nums;color:var(--orange)}
+.stat .l{font-size:.74rem;color:var(--ink-3);margin-top:4px;line-height:1.3}
+
+/* ---------- action cards ---------- */
+.actions{display:grid;gap:11px;margin:22px 0}
+.act{display:flex;align-items:center;gap:14px;text-align:left;width:100%;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:15px 16px;color:var(--ink);transition:border-color .15s,transform .15s}
+.act:hover{border-color:var(--orange);transform:translateX(2px)}
+.act .ic{width:38px;height:38px;flex:none;border-radius:8px;display:grid;place-items:center;
+  font-family:var(--cond);font-weight:700;font-size:1.1rem;color:#0D1B2A}
+.act>span:not(.ic):not(.ar){display:flex;flex-direction:column;gap:3px;min-width:0}
+.act .t{display:block;font-family:var(--cond);font-size:1.22rem;font-weight:600;line-height:1.15}
+.act .d{display:block;font-size:.84rem;color:var(--ink-3);line-height:1.35}
+.act .ar{margin-left:auto;color:var(--ink-3);font-size:1.2rem;flex:none}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin:18px 0 0;
+  overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:none;border:none;border-bottom:2.5px solid transparent;
+  padding:9px 13px;color:var(--ink-3);font-family:var(--cond);font-weight:600;
+  font-size:1rem;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--orange);border-bottom-color:var(--orange)}
+.tabpanel{display:none;padding-top:20px}
+.tabpanel.active{display:block}
+
+/* ---------- study guide ---------- */
+.sec{border:1px solid var(--line);border-radius:var(--r);margin-bottom:11px;
+  background:var(--surface);overflow:hidden}
+.sec-h{width:100%;display:flex;align-items:center;gap:12px;padding:14px 15px;
+  background:none;border:none;text-align:left;color:var(--ink)}
+.sec-h:hover{background:var(--surface-2)}
+.sec-w{font-family:var(--cond);font-size:.9rem;font-weight:700;color:var(--orange);
+  font-variant-numeric:tabular-nums;flex:none;min-width:34px}
+.sec-t{font-family:var(--cond);font-size:1.16rem;font-weight:600;line-height:1.2;flex:1}
+.sec-c{color:var(--ink-3);font-size:1.1rem;flex:none;transition:transform .2s}
+.sec.open .sec-c{transform:rotate(45deg)}
+.sec-body{display:none;padding:0 15px 16px;border-top:1px solid var(--line-soft)}
+.sec.open .sec-body{display:block}
+
+.layer{margin-top:16px;border-left:3px solid var(--line);padding-left:14px}
+.layer-h{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.79rem;font-weight:700;margin-bottom:9px}
+.layer.narr{border-left-color:var(--teal)} .layer.narr .layer-h{color:var(--teal)}
+.layer.deep{border-left-color:var(--orange)} .layer.deep .layer-h{color:var(--orange)}
+.layer.qref{border-left-color:var(--gold)} .layer.qref .layer-h{color:var(--gold)}
+.layer.note{border-left-color:var(--purple-lt)} .layer.note .layer-h{color:var(--purple-lt)}
+.layer p{font-size:.95rem}
+.layer ul{margin:.4em 0 .9em;padding-left:1.15em}
+.layer li{font-size:.94rem;margin-bottom:.45em}
+.layer h4{margin:1.1em 0 .4em;color:var(--ink)}
+.qr{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft);
+  border:1px solid var(--line-soft);border-radius:8px;overflow:hidden}
+@media(max-width:520px){.qr{grid-template-columns:1fr}}
+.qr>div{background:var(--surface);padding:8px 10px}
+.qr-term{font-family:var(--mono);font-size:.87rem;font-weight:600;color:var(--gold);
+  display:block;margin-bottom:2px}
+.qr-def{font-size:.85rem;color:var(--ink-2);line-height:1.4}
+.notes-block{background:color-mix(in srgb,var(--purple-lt) 9%,var(--surface));
+  border-radius:8px;padding:12px 13px}
+.notes-block p:last-child{margin-bottom:0}
+.trap{color:var(--red);font-weight:600}
+.sec-practice{margin-top:16px;width:100%;background:var(--surface-2);
+  border:1px dashed var(--line);border-radius:8px;padding:10px;color:var(--orange);
+  font-family:var(--cond);text-transform:uppercase;letter-spacing:.09em;
+  font-weight:600;font-size:.87rem}
+.sec-practice:hover{border-color:var(--orange);border-style:solid}
+
+/* ---------- quiz ---------- */
+.qbar{display:flex;align-items:center;gap:12px;margin:16px 0 4px}
+.qcount{font-family:var(--cond);font-weight:600;font-size:.9rem;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.qtrack{flex:1;height:5px;background:var(--line-soft);border-radius:3px;overflow:hidden}
+.qfill{height:100%;background:var(--orange);border-radius:3px;transition:width .3s}
+.qtopic{margin:14px 0 0}
+.qstem{font-size:1.14rem;line-height:1.5;margin:9px 0 18px;font-weight:500}
+.choices{display:grid;gap:9px}
+.ch{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;
+  background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r);
+  padding:13px 14px;color:var(--ink);line-height:1.45;transition:border-color .14s}
+.ch:hover:not(:disabled){border-color:var(--orange)}
+.ch:disabled{cursor:default}
+.ch .k{font-family:var(--cond);font-weight:700;color:var(--ink-3);flex:none;
+  width:20px;font-size:1.02rem}
+.ch.right{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 12%,var(--surface))}
+.ch.right .k{color:var(--teal)}
+.ch.wrong{border-color:var(--red);background:color-mix(in srgb,var(--red) 10%,var(--surface))}
+.ch.wrong .k{color:var(--red)}
+.expl{margin-top:16px;border-radius:var(--r);padding:14px;
+  border:1px solid var(--line);background:var(--surface-2);display:none}
+.expl.show{display:block}
+.expl .v{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.8rem;font-weight:700;margin-bottom:6px}
+.expl.ok .v{color:var(--teal)} .expl.no .v{color:var(--red)}
+.expl p{font-size:.93rem;margin:0}
+.expl .src{margin-top:9px;font-size:.79rem;color:var(--ink-3);font-family:var(--mono)}
+.btn{display:block;width:100%;background:var(--orange);color:#0D1B2A;border:none;
+  border-radius:var(--r);padding:14px;font-family:var(--cond);font-weight:700;
+  font-size:1.1rem;letter-spacing:.06em;text-transform:uppercase;margin-top:16px}
+.btn:hover{background:var(--orange-dim);color:#fff}
+.btn.ghost{background:none;border:1.5px solid var(--line);color:var(--ink-2)}
+.btn.ghost:hover{border-color:var(--orange);color:var(--orange);background:none}
+
+/* ---------- results ---------- */
+.ring{display:block;margin:22px auto 6px}
+.ring-n{font-family:var(--cond);font-size:2.6rem;font-weight:700;
+  fill:var(--ink);font-variant-numeric:tabular-nums}
+.ring-l{font-family:var(--sans);font-size:.72rem;fill:var(--ink-3)}
+.res-msg{text-align:center;color:var(--ink-2);margin-bottom:22px}
+.brk{display:grid;gap:7px;margin:18px 0}
+.brk-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;
+  padding:9px 12px;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+.brk-t{font-size:.88rem;line-height:1.3}
+.brk-s{font-family:var(--cond);font-weight:700;font-variant-numeric:tabular-nums;
+  font-size:.95rem;white-space:nowrap}
+
+/* ---------- resources ---------- */
+.rcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:15px 16px;margin-bottom:11px}
+.rcard h3{margin-bottom:3px}
+.rcard .meta{font-size:.83rem;color:var(--ink-3);margin-bottom:10px}
+.rlinks{display:grid;gap:7px}
+.rlink{display:flex;gap:9px;align-items:baseline;font-size:.89rem;
+  padding:7px 9px;background:var(--surface-2);border-radius:7px;text-decoration:none;color:var(--ink)}
+.rlink:hover{background:color-mix(in srgb,var(--orange) 12%,var(--surface-2))}
+.rlink .b{font-family:var(--cond);font-size:.66rem;text-transform:uppercase;
+  letter-spacing:.1em;font-weight:700;padding:2px 6px;border-radius:4px;flex:none;
+  background:var(--line-soft);color:var(--ink-3)}
+.rlink .b.core{background:var(--orange);color:#0D1B2A}
+.rlink .b.book{background:var(--teal);color:#0D1B2A}
+.rlink .b.topic{background:var(--gold);color:#0D1B2A}
+.rlink span:last-child{flex:1}
+
+/* ---------- misc ---------- */
+.callout{border-left:3px solid var(--orange);background:var(--surface);
+  padding:12px 14px;border-radius:0 8px 8px 0;margin:16px 0;font-size:.92rem}
+.callout strong{color:var(--orange)}
+.plan{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);
+  border-radius:8px;overflow:hidden;margin:14px 0}
+.plan-r{display:grid;grid-template-columns:1fr auto;background:var(--surface);
+  padding:8px 12px;font-size:.89rem;align-items:center}
+.plan-r.hd{background:var(--surface-2);font-family:var(--cond);text-transform:uppercase;
+  letter-spacing:.09em;font-size:.75rem;font-weight:700;color:var(--ink-3)}
+.plan-w{font-family:var(--cond);font-weight:700;font-variant-numeric:tabular-nums;color:var(--orange)}
+.foot{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--ink-3)}
+.foot p{margin-bottom:.5em}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <span class="brandmark"><span class="dot"></span>DC HOSA</span>
+    <span class="sp"></span>
+    <button class="iconbtn" id="themeBtn" aria-label="Switch theme" title="Switch theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<section id="home" class="screen active">
+  <div class="hero">
+    <div class="kicker">
+      <span class="tag hot">2026&ndash;2027</span>
+      <span class="tag">Leadership &middot; Middle School</span>
+      <span class="tag">Individual</span>
+      <span class="tag">Middle School</span>
+    </div>
+    <h1>Foundations of Healthy Living</h1>
+    <p class="sub">A 35-question test in 60 minutes, then a five-minute presentation with notecards. No portfolio in the Middle School division.</p>
+
+    <div class="termbuild" aria-hidden="true">
+      <div class="p1"><span class="lbl">Learn it</span><span class="val">the test</span></div>
+      <div class="p2"><span class="lbl">Live it</span><span class="val">the habit</span></div>
+      <div class="p3"><span class="lbl">Say it</span><span class="val">five minutes</span></div>
+    </div>
+    <p class="termbuild-cap">Round Two is five minutes of you talking, with notecards and nothing else. That is a skill, and it is one you can practise starting tonight.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="stQ">0</div><div class="l">practice questions</div></div>
+    <div class="stat"><div class="n">5</div><div class="l">test-plan topics</div></div>
+    <div class="stat"><div class="n" id="stBest">&mdash;</div><div class="l">your best score</div></div>
+  </div>
+
+  <div class="actions">
+    <button class="act" onclick="startQuiz('weighted')">
+      <span class="ic" style="background:var(--orange)">35</span>
+      <span><span class="t">Simulate the Test</span><span class="d">35 questions weighted exactly to the official 26-27 test plan</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="go('study')">
+      <span class="ic" style="background:var(--teal)">SG</span>
+      <span><span class="t">Study Guide</span><span class="d">All 5 topics, four layers deep &mdash; read to actually know it</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="startQuiz('all')">
+      <span class="ic" style="background:var(--gold)">&infin;</span>
+      <span><span class="t">Full Question Bank</span><span class="d">All <span id="stQ2">0</span> questions, shuffled &mdash; the long grind</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="go('resources')">
+      <span class="ic" style="background:var(--purple-lt)">R</span>
+      <span><span class="t">Official References</span><span class="d">The exact books HOSA writes the test from</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+  </div>
+
+  <div class="callout"><strong>Start here.</strong> Nutrition and Physical Activity are <strong>25 percent each</strong> &mdash; half the written test. And note the number that is different for your age: people aged 6 to 17 need <strong>60 minutes of physical activity a day</strong>, not the 150 minutes a week adults need. Then there is Round Two: a <strong>five-minute presentation, notecards only</strong>. Unlike the high school version there is no portfolio &mdash; just you, five minutes, and one clear idea.</div>
+
+  <h2 style="margin-top:26px">The official 26-27 test plan</h2>
+  <div class="plan" id="planTable"></div>
+  <p style="font-size:.85rem;color:var(--ink-3)">Simulate the Test draws questions in exactly these proportions. Mental Health is only 10 percent of the written test, but the goal-setting inside it is what your presentation is built on.</p>
+
+  <h2 style="margin-top:26px">How the test works</h2>
+  <p>Round One is <strong>35 questions in 60 minutes</strong> with a tiebreaker given in the same booklet, so budget time for it before you start. This is a Middle School Division event &mdash; you are competing against other middle schoolers, not against high school members.</p>
+
+  <div class="foot">
+    <p><strong>Foundations of Healthy Living Study Tool</strong> &middot; DC HOSA &middot; 2026&ndash;2027 season &middot; "Redefine the Standard"</p>
+    <p>Built from the official 2026-2027 HOSA competitive event guideline. Practice questions are original and written for this tool. No actual exam question is reproduced here.</p>
+  </div>
+</section>
+
+<section id="study" class="screen">
+  <button class="backbtn" onclick="go('home')">&larr; Back</button>
+  <h1 style="margin-top:8px">Study Guide</h1>
+  <p class="sub" style="color:var(--ink-2)">5 topics, four layers each. Read the narrative to understand it, the deep dive to outcompete, the quick reference to drill, and the study notes to stop losing points to traps.</p>
+  <div class="callout" style="border-left-color:var(--teal)">
+    <strong style="color:var(--teal)">How to use this.</strong> Don't read straight through. Open a topic, read the narrative once, then hit <em>Practice this topic</em> at the bottom of the section. Miss something? Come back to the deep dive. That loop beats re-reading every time.
+  </div>
+  <div id="guideList" style="margin-top:18px"></div>
+</section>
+
+<section id="resources" class="screen">
+  <button class="backbtn" onclick="go('home')">&larr; Back</button>
+  <h1 style="margin-top:8px">Official References</h1>
+  <p class="sub" style="color:var(--ink-2)">These are the sources listed in the 2026-2027 guideline. Test items are written from them and nowhere else.</p>
+
+  <div class="rcard" style="border-color:var(--orange)">
+    <h3>The HOSA Healthy Living course by NASM</h3>
+    <p class="meta">National Academy of Sports Medicine &middot; <strong style="color:var(--orange)">the only official reference</strong></p>
+    <p style="font-size:.91rem">There is no textbook for this event. NASM built a course just for this competition and it follows the test plan unit by unit &mdash; readings, articles and videos. Work the units that match the five topics and you have covered the test.</p>
+    <div class="rlinks">
+      <a class="rlink" href="https://hosa.org/guidelines/" target="_blank" rel="noopener"><span class="b core">Core</span><span>HOSA guidelines &mdash; the course link is in the event PDF</span></a>
+    </div>
+  </div>
+  <div class="rcard">
+    <h3>Physical Activity Guidelines for Americans &mdash; the youth numbers</h3>
+    <p class="meta">U.S. Department of Health and Human Services &middot; free</p>
+    <p style="font-size:.91rem">Where the 60-minutes-a-day recommendation comes from, along with the muscle- and bone-strengthening days. Free, short, and the numbers on this page are the ones the test uses.</p>
+    <div class="rlinks">
+      <a class="rlink" href="https://health.gov/our-work/nutrition-physical-activity/physical-activity-guidelines" target="_blank" rel="noopener"><span class="b core">Core</span><span>health.gov &mdash; Physical Activity Guidelines</span></a>
+      <a class="rlink" href="https://www.myplate.gov/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>MyPlate &mdash; the nutrition half, free</span></a>
+    </div>
+  </div>
+
+  <div class="rcard" style="border-color:var(--purple-lt)">
+    <h3>HOSA official guidelines</h3>
+    <p class="meta">hosa.org &middot; read the actual rules before your first conference</p>
+    <div class="rlinks">
+      <a class="rlink" href="https://hosa.org/guidelines/" target="_blank" rel="noopener"><span class="b core">Core</span><span>Competitive event guidelines &mdash; download the Foundations of Healthy Living PDF</span></a>
+      <a class="rlink" href="https://hosa.org/competitive-events/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>Competitive events overview and appendices</span></a>
+      <a class="rlink" href="https://hosa.org/scholarships/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>HOSA scholarships &mdash; applications open January 1, 2027</span></a>
+    </div>
+    <p style="font-size:.88rem;margin-top:12px;color:var(--ink-2)"><strong>Bring to the testing room:</strong> photo ID, two #2 wooden pencils with erasers (not mechanical), and optional neon foam earplugs &mdash; not earbuds. Business attire or official HOSA uniform earns bonus points. There are no verbal time announcements at ILC; you watch your own clock. For Round Two you may bring index cards or electronic notecards. Nothing else &mdash; no poster, no slides, no props.</p>
+  </div>
+</section>
+
+<section id="quiz" class="screen">
+  <button class="backbtn" onclick="quitQuiz()">&larr; End session</button>
+  <div class="qbar">
+    <span class="qcount" id="qCount">1 / 35</span>
+    <span class="qtrack"><span class="qfill" id="qFill" style="width:0%"></span></span>
+    <span class="qcount" id="qScore">0 &#10003;</span>
+  </div>
+  <div class="qtopic"><span class="eyebrow" id="qTopic">Topic</span></div>
+  <p class="qstem" id="qStem">Question</p>
+  <div class="choices" id="qChoices"></div>
+  <div class="expl" id="qExpl"><div class="v" id="qVerdict"></div><p id="qExplText"></p><div class="src" id="qSrc"></div></div>
+  <button class="btn" id="qNext" style="display:none" onclick="nextQ()">Next question</button>
+</section>
+
+<section id="results" class="screen">
+  <h1 style="margin-top:22px;text-align:center">Session complete</h1>
+  <svg class="ring" width="168" height="168" viewBox="0 0 168 168" role="img" aria-labelledby="ringLbl">
+    <title id="ringLbl">Score ring</title>
+    <circle cx="84" cy="84" r="70" fill="none" stroke="var(--line)" stroke-width="12"/>
+    <circle id="ringArc" cx="84" cy="84" r="70" fill="none" stroke="var(--orange)" stroke-width="12"
+            stroke-linecap="round" stroke-dasharray="439.8" stroke-dashoffset="439.8"
+            transform="rotate(-90 84 84)" style="transition:stroke-dashoffset .8s ease"/>
+    <text class="ring-n" id="ringPct" x="84" y="86" text-anchor="middle">0%</text>
+    <text class="ring-l" id="ringFrac" x="84" y="106" text-anchor="middle">0 of 0</text>
+  </svg>
+  <p class="res-msg" id="resMsg"></p>
+  <h3 style="margin-bottom:8px">Where you stand by topic</h3>
+  <div class="brk" id="resBrk"></div>
+  <button class="btn" onclick="repeatQuiz()">Run it again</button>
+  <button class="btn ghost" onclick="go('study')">Back to the study guide</button>
+  <button class="btn ghost" onclick="go('home')">Home</button>
+</section>
+
+</div>
+
+<script>
+/* ============================================================
+   DC HOSA — Foundations of Healthy Living Study Tool
+   Test plan and references: official 2026-2027 HOSA guideline.
+   All practice questions are original.
+   ============================================================ */
+
+const TOPICS = [
+  {
+    "n": "Nutrition",
+    "w": 25,
+    "c": "var(--orange)"
+  },
+  {
+    "n": "Physical Activity",
+    "w": 25,
+    "c": "var(--teal)"
+  },
+  {
+    "n": "Mental Health",
+    "w": 10,
+    "c": "var(--purple-lt)"
+  },
+  {
+    "n": "Wellness through the Lifespan",
+    "w": 20,
+    "c": "var(--gold)"
+  },
+  {
+    "n": "Disease Prevention",
+    "w": 20,
+    "c": "var(--teal)"
+  }
+];
+const TEST_N = 35;
+
+const GUIDE = [];
+
+// Foundations of Healthy Living (Middle School Division) — study guide content
+// Official test plan order: Nutrition 25 / Physical Activity 25 / Mental Health 10 /
+// Wellness through the Lifespan 20 / Disease Prevention 20. t=0..4
+
+GUIDE.push({t:0,
+narr:`<p>Start with something you should know before you study one word: <strong>there is no textbook for this event.</strong> The only official reference is the <strong>HOSA Healthy Living course created by NASM</strong>, the National Academy of Sports Medicine. NASM built that course for this competition, and it follows the same test plan you are reading now. It is a mix of PDFs, short articles, videos, and blog posts rather than chapters. That means your job is different from a normal class. You are not reading one book front to back. You are collecting a set of ideas from five modules and learning them well enough to use them. Nutrition is the biggest of those five, at <strong>25 percent of the test</strong>, and it is built around two things: <strong>food labels</strong> and <strong>health food bars</strong>.</p>
+<p>A <strong>food label</strong> is the panel of information a company is legally required to print on a packaged food. The agency that writes and enforces those rules in the United States is the <strong>FDA</strong>, the Food and Drug Administration. Labels did not always exist. The law that first required them was the <strong>Pure Food and Drug Act</strong>, passed in <strong>1906</strong>, after decades of companies selling food and medicine with no obligation to say what was inside. The modern <strong>Nutrition Facts</strong> panel, with calories and grams and percentages, came much later, but 1906 is the starting line.</p>
+<p>Here is the single most important habit when reading a label: <strong>every number on the panel is for one serving, not for the package.</strong> A box that says 175 calories with four servings inside holds 700 calories in total. A box of cereal with eight servings of one-half cup each holds four cups. Neither number is printed for you. You multiply. Students lose more points to this one habit than to any nutrition fact in the topic, because the panel is telling the truth and they are answering a question it did not ask.</p>
+<p>Labels also <strong>round</strong>, and the rounding is set by rule, not by the company. Anything under 5 calories per serving is printed as <strong>0 calories</strong>, which is why a drink with 4 real calories per serving can honestly be called calorie-free. Between 5 and 50 calories, the number rounds to the nearest 5. Above 50, it rounds to the nearest 10, so a serving of popcorn measured at 65 calories prints as <strong>70</strong>. The label is not lying to you. It is following an arithmetic rule you can learn in about a minute.</p>
+<p>What the panel must contain is also set by rule. <strong>Total fat, saturated fat, and trans fat</strong> are required. <strong>Unsaturated fat is not</strong> — a company may list it, but nobody has to. <strong>Sodium</strong> is the one mineral that appears up in the main body of the panel with the calories and the fats; vitamin D, calcium, iron, and potassium sit in a separate block at the bottom. <strong>Added sugars</strong> get their own line under total sugars, and the difference between the two lines is arithmetic: if a food lists 20 grams of total sugars and 3 grams occur naturally, then <strong>17 grams were added</strong>. The <strong>Daily Values</strong> printed as percentages are based on a 2,000-calorie day: <strong>28 grams of fiber</strong>, <strong>300 milligrams of cholesterol</strong>, <strong>2,300 milligrams of sodium</strong>.</p>
+<p>The other half of this topic is the <strong>health food bar</strong>, which is a genuinely interesting piece of food history. The first energy bars in the United States appeared in the <strong>1950s</strong>. In the 1960s, Pillsbury created the <strong>Space Food Stick</strong>, a protein bar designed with astronaut feeding in mind, and it caught the public imagination. Today bars are engineered for different jobs. An <strong>energy bar</strong> is fast-digesting carbohydrate meant to be eaten <em>during</em> long activity, like a marathon. A <strong>protein bar</strong> is built to supply protein; when it is plant-based, the label usually shows a <strong>blend</strong> of pea, rice, hemp, soy, and quinoa, because most single plant proteins are short on at least one amino acid and blending fills the gaps. A <strong>keto bar</strong> is high in fat and low in carbohydrate, so its ingredient list leans on nut butter, coconut oil, and palm oil. Bars sold for alertness and sports performance often add <strong>caffeine</strong> and <strong>green tea extract</strong>. None of these is better than the others in the abstract. The question is always what job the bar was built for.</p>`,
+deep:`<h4>What the Nutrition Facts panel must and must not include</h4>
+<ul>
+<li><strong>FDA</strong> regulates food labeling for most packaged foods. USDA writes the Dietary Guidelines and inspects meat and poultry — a different job.</li>
+<li><strong>Pure Food and Drug Act of 1906</strong> is the U.S. law that first required food labeling.</li>
+<li>Required fats: <strong>total fat, saturated fat, trans fat</strong>. <strong>Unsaturated fat is voluntary</strong> and is the correct answer to "which fat is not required."</li>
+<li><strong>Sodium</strong> is the only vitamin or mineral listed in the main upper area of the panel. Vitamin D, calcium, iron, and potassium appear in the lower block.</li>
+<li><strong>Added sugars</strong> appear indented under total sugars. Added = total minus naturally occurring.</li>
+<li>Daily Values for adults and children 4 and older: fiber <strong>28 g</strong>, cholesterol <strong>300 mg</strong>, sodium <strong>2,300 mg</strong>, saturated fat <strong>20 g</strong>, added sugars <strong>50 g</strong>, total carbohydrate <strong>275 g</strong>, protein <strong>50 g</strong>, potassium <strong>4,700 mg</strong>.</li>
+<li>5 percent DV or less of a nutrient is considered a little; 20 percent DV or more is considered a lot.</li>
+</ul>
+<h4>Serving math and the rounding rules</h4>
+<ul>
+<li>Total in package = amount per serving x servings per container. 175 cal x 4 servings = <strong>700 calories</strong>.</li>
+<li>Total volume = serving size x servings. Eight servings of one-half cup = <strong>4 cups</strong>.</li>
+<li>Calories: under 5 per serving prints as <strong>0</strong>; 5 to 50 rounds to the nearest 5; above 50 rounds to the nearest 10, so 65 prints as <strong>70</strong>.</li>
+<li>Fats: under 0.5 g prints as 0, which is how a product with a small amount of trans fat can show 0 g.</li>
+<li>The most accurate way to measure most foods for portion and nutrient work is by <strong>weight</strong>, not by volume, because density varies. A cup of spinach and a cup of rice are nothing alike.</li>
+<li>Energy math: carbohydrate <strong>4 kcal/g</strong>, protein <strong>4 kcal/g</strong>, fat <strong>9 kcal/g</strong>, alcohol 7 kcal/g. Fat is the most energy dense.</li>
+</ul>
+<h4>Health food bars: history, categories, ingredients</h4>
+<ul>
+<li>First energy bars in the U.S.: <strong>1950s</strong>. Pillsbury's <strong>Space Food Stick</strong>: <strong>1960s</strong>, tied to astronaut nutrition.</li>
+<li><strong>Energy bar</strong> — fast carbohydrate, eaten during endurance events such as a marathon.</li>
+<li><strong>Protein bar</strong> — protein-forward; plant versions blend <strong>pea, rice, hemp, soy, quinoa</strong> to complete the amino acid pattern.</li>
+<li><strong>Keto bar</strong> — high fat, low carbohydrate; nut butter, coconut oil, palm oil.</li>
+<li><strong>Meal replacement bar</strong> — built to stand in for a meal, so it carries more total calories and a wider spread of vitamins and minerals.</li>
+<li>Alertness and performance add-ins: <strong>caffeine</strong> and <strong>green tea extract</strong>.</li>
+<li>Coconut oil and palm oil are plant fats that are highly <strong>saturated</strong>. Plant does not automatically mean unsaturated.</li>
+</ul>
+<h4>Nutrients, allergies, and sensitivities</h4>
+<ul>
+<li><strong>Fiber</strong> is plant carbohydrate human enzymes cannot break down. It adds bulk that keeps material moving through the large intestine. Daily Value <strong>28 g</strong>.</li>
+<li>Excess <strong>sodium</strong> is most strongly linked to <strong>hypertension and cardiovascular disease</strong>.</li>
+<li>A <strong>food allergy</strong> involves an <strong>immune system response</strong> to a food protein. An <strong>intolerance</strong> does not — it is usually a missing digestive enzyme, like lactose intolerance.</li>
+<li><strong>Anaphylaxis</strong> is a rapid, whole-body allergic reaction: hives, swelling of lips and throat, trouble breathing, and a sudden drop in blood pressure. It is treated with epinephrine.</li>
+<li>The nine most common allergens must be declared on U.S. labels, including milk, eggs, peanuts, tree nuts, soy, wheat, fish, shellfish, and sesame.</li>
+</ul>`,
+qref:[["FDA","U.S. agency that regulates food labels"],["Pure Food and Drug Act","1906 law that first required food labels"],["Serving size","Amount the panel numbers refer to, not the package"],["Servings per container","How many servings the package holds; multiply by it"],["Added sugars","Total sugars minus naturally occurring sugars"],["Daily Value","Reference amount based on a 2,000-calorie day"],["Fiber DV","28 grams per day"],["Cholesterol DV","300 milligrams per day"],["Sodium DV","2,300 milligrams per day"],["Calorie rounding","Under 5 shows 0; over 50 rounds to nearest 10"],["Unsaturated fat","The fat not required on the label"],["Energy bar","Fast carbohydrate eaten during endurance activity"],["Protein bar","Protein-forward bar; plant versions blend several sources"],["Keto bar","High fat, low carbohydrate; nut butter and tropical oils"],["Space Food Stick","Pillsbury protein bar of the 1960s, astronaut-linked"],["Plant protein blend","Pea, rice, hemp, soy, quinoa combined for completeness"],["Food allergy","Immune system response to a food protein"],["Food intolerance","Non-immune reaction, often a missing enzyme"],["Anaphylaxis","Rapid whole-body allergic reaction; treated with epinephrine"],["Weight measurement","Most accurate way to measure most foods"]],
+notes:`<p><strong>The panel gives you one serving; the question usually asks about the box.</strong> This is the highest-frequency arithmetic mistake in the whole topic, and it is not a math problem, it is a reading problem. When a stem says four servings at 175 calories, the answer is 700. <span class="trap">175 calories</span> is tempting because it is printed right there on the label and it feels like the fact being tested. It is a real number answering a different question. Same trap in the other direction: eight servings of one-half cup is 4 cups, and <span class="trap">8 cups</span> is what you get if you forget that the serving is a half.</p>
+<p><strong>Zero on a label does not always mean none.</strong> The rounding rules are the reason. Under 5 calories per serving is printed as 0, so a drink carrying 4 real calories per serving is legally calorie-free. If a stem hands you a measured 4 calories and asks what the label shows, the answer is 0, and <span class="trap">4 calories</span> is the wrong answer that looks obviously right because it is the true value. Above 50 calories the rounding goes to the nearest 10, so a lab measurement of 65 prints as 70, and <span class="trap">65</span> is the same trap wearing different clothes. Read whether the stem asks what the food contains or what the label shows. Those are two different questions.</p>
+<p><strong>Only three fats are required, and unsaturated is not one of them.</strong> Total fat, saturated fat, and trans fat must appear. Students choose <span class="trap">trans fat</span> when asked which fat is not required, because trans fat is the one they have been told is bad and they assume the bad one is the special case. It is exactly backwards: trans fat got its own mandatory line precisely because of the concern about it. Unsaturated fat is the voluntary one. Related trap: sodium is the only vitamin or mineral in the main upper part of the panel, so <span class="trap">calcium</span> or <span class="trap">iron</span> is a tempting pick — those are real label nutrients, but they live in the lower block.</p>
+<p><strong>An energy bar and a protein bar are built for different moments.</strong> If the scenario puts an athlete in the middle of a marathon, the answer is <strong>energy bar</strong>, and <span class="trap">protein bar</span> is the wrong answer almost everyone reaches for, because protein sounds serious and athletic. During endurance activity the body needs fast carbohydrate to keep going, not protein to rebuild with; rebuilding comes later. Keep the four categories separate by their job: energy bar for fuel during activity, protein bar for protein, keto bar for high fat and low carbohydrate, meal replacement bar to stand in for a whole meal.</p>
+<p><strong>Plant-based does not mean unsaturated, and a plant protein blend is a clue, not a coincidence.</strong> Keto bars use coconut oil and palm oil, which are plant fats that are highly saturated — <span class="trap">olive oil</span> is the tempting answer when a question asks for a saturated plant fat, but olive oil is mostly monounsaturated. On the protein side, when a bar lists pea, rice, hemp, soy, and quinoa together, that blend exists because most single plant proteins run short on at least one amino acid. <span class="trap">Oat flour, honey, and dates</span> is the classic wrong pick: those are recognizable plant foods, but they are carbohydrate, not protein.</p>
+<p><strong>Allergy means immune system. Intolerance does not.</strong> That one sentence settles most questions in this pair. If a stem describes hives, swelling, trouble breathing, or anaphylaxis, the immune system is involved and the word is allergy. If it describes bloating and cramping after milk, the word is intolerance and the cause is a missing enzyme. <span class="trap">Lactose intolerance</span> is the standard wrong answer to "which of these is a food allergy," and it is tempting because it involves a food and produces real symptoms. Symptoms alone cannot tell the two apart; the mechanism can.</p>`});
+
+GUIDE.push({t:1,
+narr:`<p>Physical Activity is the other <strong>25 percent</strong> of the test, and it is the most number-heavy part of the event. Start with the number that applies to you and your competitors. Children and teenagers ages <strong>6 to 17</strong> should get <strong>60 minutes or more of moderate-to-vigorous physical activity every day</strong>. That figure comes from the <strong>Physical Activity Guidelines for Americans, second edition</strong>, published by the U.S. Department of Health and Human Services, and the <strong>World Health Organization</strong> gives the same 60-minute figure for ages 5 to 17. Notice that this is a <em>daily</em> number. Adults get a weekly one — 150 to 300 minutes of moderate activity per week — and mixing those two up is the fastest way to lose a point. Sixty minutes a day is the youth number. Read the age in the stem before you answer.</p>
+<p>The 60 minutes is not one undifferentiated block. Most of it should be aerobic — moving in a way that keeps your heart rate up. Inside the week, at least <strong>three days</strong> should include <strong>vigorous</strong> activity, at least <strong>three days</strong> should include <strong>muscle-strengthening</strong> activity, and at least <strong>three days</strong> should include <strong>bone-strengthening</strong> activity, which means the kind of impact you get from running, jumping, or basketball. A simple field test for intensity is the <strong>talk test</strong>: at moderate intensity you can talk but not comfortably sing; at vigorous intensity you can only get out a few words before you need a breath. The <strong>Centers for Disease Control and Prevention</strong> describes engaging in physical activity as one of the best things a person can do for their health, which is a strong claim from a cautious agency. Only about <strong>27 percent</strong> of students actually reach the 60-minute mark, so the gap between the recommendation and reality is wide.</p>
+<p>The second half of this topic is about how children learn to move, which is a real field of study rather than common sense. <strong>Fundamental movement skills</strong> are the building blocks everything else is made of. <strong>Gait</strong> is the technical word for walking. <strong>Throwing and catching</strong> are singled out as the skills that force a child to coordinate eyes, arms, and legs at the same time, which is why they take longer to learn than they look. <strong>Stopping and starting</strong> is the skill that builds control over the body during activity — being able to halt on purpose is harder than moving. <strong>Galloping</strong> builds the stabilization a child needs before jumping is safe and controlled.</p>
+<p>Coaching cues matter, and a few specific ones show up. When a child is learning to throw overhand, the instruction is to <strong>stand with the side to the target</strong>, not facing it, because that stance is what lets the body rotate and generate speed. When a child is learning to dribble a basketball, contact is made with the <strong>middle two fingers</strong>, not the palm and not the fingertips alone. These cues sound small. They are the difference between a skill a child keeps and a skill that frustrates them out of the sport.</p>
+<p>About <strong>72 percent</strong> of school-age students take part in organized sports, and that number is where <strong>early sport specialization</strong> becomes a public health question. Early sport specialization, often shortened to <strong>ESS</strong>, means a young athlete concentrating on a single sport, year-round, to the exclusion of others. The working threshold is <strong>at least eight months a year</strong> in one organized sport. The two named risks are <strong>overuse injury</strong> and <strong>burnout</strong> — burnout being the physical and emotional exhaustion that makes a young athlete stop enjoying the thing they were good at. The math is worth knowing plainly: out of <strong>100 young athletes</strong> specializing with heavy training and competition, roughly <strong>one</strong> reaches an elite level. Some sports pull toward specialization for structural reasons. <strong>Figure skating</strong> is the usual example, because its athletes peak at a young age. <strong>Baseball</strong> is the injury example, because repeated overhand pitching stresses the <strong>ulnar collateral ligament</strong> in the elbow, the injury that leads to <strong>Tommy John surgery</strong>.</p>
+<p>The guardrails are specific and easy to remember. A young athlete should take <strong>at least two days each week completely away from organized sport</strong>. Weekly organized training hours should not exceed the athlete's <strong>age in years</strong> — ten hours for a ten-year-old. And the athlete should get extended breaks across the year rather than training all twelve months. On the training side, <strong>plyometric</strong> work — jump training — is valued for building <strong>power and neuromuscular coordination</strong>, meaning how well the nervous system and muscles talk to each other. <strong>Stretching</strong>, once treated as optional, is now recommended for flexibility, injury risk, and movement quality. And recovery includes fluid: after activity, an athlete should drink about <strong>16 to 24 ounces of water for every pound of body weight lost</strong>.</p>`,
+deep:`<h4>The activity numbers, sorted by age</h4>
+<ul>
+<li><strong>Ages 6 to 17:</strong> 60 minutes or more of moderate-to-vigorous physical activity <strong>daily</strong> (HHS, 2nd edition). WHO gives the same 60 minutes for ages 5 to 17.</li>
+<li>Within the week, ages 6 to 17 need <strong>vigorous</strong> activity on at least 3 days, <strong>muscle-strengthening</strong> on at least 3 days, and <strong>bone-strengthening</strong> on at least 3 days.</li>
+<li><strong>Ages 3 to 5:</strong> physically active throughout the day; caregivers aim for about 3 hours per day across all intensities.</li>
+<li><strong>Adults:</strong> 150 to 300 minutes of moderate aerobic activity <strong>per week</strong>, or 75 to 150 vigorous, plus muscle-strengthening on 2 or more days.</li>
+<li><strong>Older adults:</strong> the adult guideline plus balance and functional strength work; the outcome that matters is fewer falls.</li>
+<li>Only about <strong>27 percent</strong> of students meet the 60-minute daily recommendation. About <strong>72 percent</strong> of school-age students participate in organized sports.</li>
+<li>Intensity check: moderate means you can talk but not sing; vigorous means only a few words at a time.</li>
+</ul>
+<h4>Fundamental movement skills and how they are taught</h4>
+<ul>
+<li><strong>Gait</strong> — the technical term for walking.</li>
+<li><strong>Throwing and catching</strong> — the skills that require coordinating eyes, arms, and legs simultaneously.</li>
+<li><strong>Stopping and starting</strong> — builds body control during physical activity.</li>
+<li><strong>Galloping</strong> — develops the stabilization that underlies controlled jumping.</li>
+<li>Overhand throw cue: <strong>stand with the side to the target</strong> so the trunk can rotate.</li>
+<li>Dribbling cue: contact the ball with the <strong>middle two fingers</strong>.</li>
+<li>Locomotor skills move the body through space (run, hop, skip, gallop); manipulative skills act on an object (throw, catch, kick, dribble); stability skills hold position (balance, twist, stop).</li>
+</ul>
+<h4>Early sport specialization: definition, risk, guardrails</h4>
+<ul>
+<li><strong>ESS</strong> = one sport, year-round, to the exclusion of others, begun at a young age. Threshold: <strong>at least 8 months per year</strong> in organized training and competition for that sport.</li>
+<li>Named risks: <strong>overuse injury</strong> and <strong>burnout</strong>. Specialized young athletes carry roughly double the overuse-injury risk of similarly active multi-sport peers.</li>
+<li>Of <strong>100</strong> specializing athletes aged 7 to 17, about <strong>one</strong> becomes an elite athlete.</li>
+<li><strong>Figure skating</strong> is the sport most cited as encouraging early specialization, because its athletes peak early.</li>
+<li><strong>Baseball</strong> stresses the <strong>ulnar collateral ligament (UCL)</strong> of the elbow; the repair is <strong>Tommy John surgery</strong>.</li>
+<li>Guardrails: <strong>at least 2 days per week</strong> away from organized sport; weekly organized hours no greater than the athlete's <strong>age in years</strong>; extended time off across the year.</li>
+<li>Multi-sport participation before specializing is associated with lower injury rates and longer athletic careers.</li>
+</ul>
+<h4>Training methods and recovery</h4>
+<ul>
+<li><strong>Plyometric training</strong> — jump-based work; primary benefits are <strong>increased power and neuromuscular coordination</strong>.</li>
+<li><strong>Stretching</strong> — once treated as optional, now recommended to improve flexibility, reduce injury risk, and support movement quality.</li>
+<li><strong>Rehydration:</strong> about <strong>16 to 24 ounces of fluid per pound of body weight lost</strong> after activity.</li>
+<li>Sweat carries sodium as well as water, which is why long or hot sessions call for electrolytes and not water alone.</li>
+<li>Progressive overload: the body adapts to a demand slightly greater than it is used to. Too large a jump in load is what produces overuse injury.</li>
+<li>Rest days are training. Adaptation happens during recovery, not during the session.</li>
+</ul>`,
+qref:[["60 minutes","Daily moderate-to-vigorous activity for ages 6 to 17"],["Physical Activity Guidelines","HHS document, second edition, source of U.S. numbers"],["Vigorous intensity","Only a few words possible before needing a breath"],["Moderate intensity","Can talk but not comfortably sing"],["Bone-strengthening","Impact activity; needed at least 3 days weekly"],["Talk test","Field method for judging exercise intensity"],["Gait","The technical term for walking"],["Throwing and catching","Skill coordinating eyes, arms, and legs at once"],["Stopping and starting","Skill that builds control of body movement"],["Galloping","Movement that develops stabilization for jumping"],["Overhand throw cue","Stand with the side toward the target"],["Dribbling cue","Contact ball with the middle two fingers"],["Early sport specialization","One sport, year-round, at least eight months yearly"],["Burnout","Physical and emotional exhaustion from overtraining"],["Overuse injury","Damage from repeated stress without adequate recovery"],["UCL","Elbow ligament stressed by pitching; Tommy John surgery"],["Two days off","Minimum weekly time away from organized sport"],["Plyometric training","Jump work building power and neuromuscular coordination"],["Rehydration rule","16 to 24 ounces of fluid per pound lost"],["27 percent","Share of students meeting the 60-minute daily goal"]],
+notes:`<p><strong>Sixty minutes a day is the youth number; 150 minutes a week is the adult number.</strong> This is the single most reliable trap in the topic, because both figures are correct and the stem decides which one applies. If the question names ages 6 to 17, or 5 to 17 under WHO, the answer is <strong>60 minutes daily</strong>. <span class="trap">150 minutes per week</span> is tempting because it is the number people hear most often in public health messaging — it is the adult aerobic minimum. A second version of the same trap swaps the units: <span class="trap">60 minutes per week</span> looks reasonable and is wrong by a factor of seven.</p>
+<p><strong>Three separate things need three days a week, and they are not the same three things.</strong> Ages 6 to 17 need vigorous activity on 3 or more days, muscle-strengthening on 3 or more days, and bone-strengthening on 3 or more days. Students who half-remember the adult guideline answer <span class="trap">2 days per week</span> for muscle-strengthening, which is genuinely the adult figure — adults need muscle work on 2 or more days. Youth is three. Keep them apart by remembering that young bodies are still building bone, which is why bone-strengthening gets its own line for children and does not appear in the adult guideline at all.</p>
+<p><strong>Eight months is the ESS threshold, and it is a floor, not a ceiling.</strong> A young athlete is considered specialized once they are training and competing in one organized sport for <strong>at least eight months a year</strong>. <span class="trap">Twelve months</span> is the tempting answer, because specialization is described as year-round and twelve feels like what year-round means. Eight is the number that triggers the classification. Pair it with the guardrail number that sits alongside it: <strong>two days per week</strong> completely away from organized sport. <span class="trap">One day</span> is the common wrong pick, borrowed from the idea of a single rest day.</p>
+<p><strong>Overuse injury and burnout are the two named risks of early specialization.</strong> When a question asks simply what the risk of ESS is, the expected answer is <strong>burnout</strong> — the physical and emotional exhaustion that makes an athlete quit a sport they were good at. Students talk themselves out of it and pick <span class="trap">a torn ligament</span> or another specific injury, because injury feels more serious than exhaustion. Both risks are real, but burnout is the outcome the specialization literature leads with, and it is the one that ends most young athletic careers. Keep the elite-athlete number handy too: out of 100 specializing athletes aged 7 to 17, about <strong>one</strong> makes it, and <span class="trap">ten</span> is the tempting answer because it sounds like a plausible percentage.</p>
+<p><strong>Throwing and catching is about three body parts at once; stopping and starting is about control.</strong> These two fundamental movement skills get swapped constantly because both sound like general athleticism. The distinguishing phrase for throwing and catching is <strong>eyes, arms, and legs simultaneously</strong>. The distinguishing phrase for stopping and starting is <strong>control over body movements</strong>. If a stem uses the word coordination and lists body parts, it wants throwing and catching. If it uses the word control, it wants stopping and starting. <span class="trap">Galloping</span> is the third member of this cluster and belongs to a different question: it is the one that builds <strong>stabilization for jumping</strong>.</p>
+<p><strong>Rehydration is measured per pound lost, not per hour or per bottle.</strong> The rule is <strong>16 to 24 ounces of fluid for every pound of body weight lost</strong> during activity, which means the athlete has to know their before-and-after weight for the number to mean anything. <span class="trap">8 ounces</span> is the tempting wrong answer because eight ounces is one cup and cups are the unit people think in. A pound of sweat is about 16 ounces of fluid, so replacing only 8 leaves the athlete short by half before you even account for what is still being lost afterward.</p>`});
+
+GUIDE.push({t:2,
+narr:`<p>Mental Health is <strong>10 percent</strong> of the test, the smallest slice, and the module behind it is <strong>Nutrition for Optimal Mental Health</strong>. The organizing idea is that the brain is a physical organ with a physical fuel bill. Your brain is about <strong>two percent of your body weight</strong>, but it consumes roughly <strong>20 percent of the glucose your body uses</strong>. Glucose is the sugar your body makes from food and carries in your blood. No other organ takes that big a share relative to its size. That is why thinking clearly and eating regularly are connected, and why the phrase used in this course is that the brain is an expensive organ to run.</p>
+<p>Certain foods come up again and again because of what they supply the brain. <strong>Salmon</strong> is the named example of a food carrying nutrients associated with producing calming brain chemicals such as <strong>dopamine</strong> and <strong>serotonin</strong> — two of the chemical messengers, called <strong>neurotransmitters</strong>, that carry signals between brain cells and influence mood. <strong>Olive oil</strong> is the named fat source associated with supporting long-term mental health. And <strong>fruit</strong> is the food type that current research links to increased <strong>creativity and curiosity</strong>. None of this means one food fixes a mood. It means the brain is built and run out of what you eat, the same as every other organ.</p>
+<p>Two named eating patterns show up, and they are easy to mix up because their letters look similar. The <strong>MIND</strong> diet is the brain one. It emphasizes <strong>berries and leafy green vegetables</strong> and is aimed at supporting brain function as people age. The <strong>DASH</strong> diet is the blood pressure one. Its full name is Dietary Approaches to Stop Hypertension, and it calls for <strong>limited intake of fats and excess sugar</strong> while raising fruits, vegetables, and low-fat dairy. MIND actually borrows from DASH and from the Mediterranean pattern, which is why they overlap — but if a question mentions <strong>berries and leafy greens for brain function</strong>, the answer is MIND.</p>
+<p>Food is one input among several, and the others are the ordinary ones. <strong>Sleep</strong> is where the brain consolidates what it learned during the day; middle schoolers generally need somewhere around nine to twelve hours a night, more than adults do, and getting less of it makes everything else harder. <strong>Physical activity</strong> shifts mood measurably and quickly. <strong>Stress</strong> is the body's response to demand, and it is not automatically bad — short bursts of it help you focus. It becomes a problem when it does not switch off. Practical tools that work for stress are unglamorous: regular sleep, moving your body, time outdoors, slowing your breathing, and time with people you like.</p>
+<p>The most important thing in this whole topic is also the simplest. <strong>When something feels like too much, tell a trusted adult.</strong> A parent, a school counselor, a teacher, a coach, your HOSA advisor. Talking to someone is not a last resort and it is not evidence that something is wrong with you. It is the normal first step, the same way you would tell someone about a sprained ankle. Health professionals treat mental health as health, without a separate category for it, and that framing is exactly what this event is trying to teach.</p>
+<p>One more use for this topic: <strong>Round Two is a five-minute presentation in front of judges</strong>, and being nervous about that is a stress response, not a character flaw. Your heart rate rises, your hands get cold, your mouth gets dry. That is your body preparing you, and it settles once you start talking. The two things that reduce it most are the boring ones. <strong>Sleep the night before</strong>, because a tired brain retrieves memories poorly. And <strong>practice out loud, standing up, on a timer</strong>, because the nervousness you feel in the room is mostly uncertainty about whether the words will come, and rehearsal removes that uncertainty. Slow your breathing before you walk in — a long exhale is the single fastest way to bring a racing heart rate down.</p>`,
+deep:`<h4>The brain's fuel</h4>
+<ul>
+<li>The brain is roughly <strong>2 percent of body weight</strong> and consumes about <strong>20 percent of the body's glucose</strong>.</li>
+<li><strong>Glucose</strong> is the body's circulating sugar and the brain's primary fuel. Unlike muscle, the brain stores almost none of it, so it depends on a steady supply from the blood.</li>
+<li><strong>Neurotransmitters</strong> are chemical messengers between nerve cells. <strong>Dopamine</strong> and <strong>serotonin</strong> are the two named in this module and both influence mood.</li>
+<li>The body builds serotonin from the amino acid <strong>tryptophan</strong>, which comes from dietary protein — a direct link from food to brain chemistry.</li>
+<li><strong>Omega-3 fatty acids</strong> are structural components of brain cell membranes. Fatty fish such as salmon is the standard food example.</li>
+</ul>
+<h4>Foods and eating patterns named in this course</h4>
+<ul>
+<li><strong>Salmon</strong> — the food associated with nutrients supporting calming brain chemicals such as dopamine and serotonin.</li>
+<li><strong>Olive oil</strong> — the fat source named as supporting long-term mental health.</li>
+<li><strong>Fruit</strong> — the food type research links to increased creativity and curiosity.</li>
+<li><strong>MIND diet</strong> — Mediterranean-DASH Intervention for Neurodegenerative Delay. Emphasizes <strong>berries and leafy green vegetables</strong>; aimed at brain function.</li>
+<li><strong>DASH diet</strong> — Dietary Approaches to Stop Hypertension. Recommends <strong>limited fats and excess sugar</strong>; aimed at blood pressure.</li>
+<li>MIND is a hybrid of the Mediterranean and DASH patterns, which is why the two overlap. The target organ is the tiebreaker: brain means MIND, blood pressure means DASH.</li>
+</ul>
+<h4>Everyday supports for mood and focus</h4>
+<ul>
+<li><strong>Sleep</strong> — school-age children and young teens generally need about 9 to 12 hours nightly. Sleep is when memory is consolidated.</li>
+<li><strong>Physical activity</strong> — produces measurable short-term mood improvement, independent of any long-term fitness change.</li>
+<li><strong>Stress</strong> — the body's response to a demand. Short-term stress sharpens attention; chronic, unresolved stress does the opposite.</li>
+<li><strong>Social contact</strong> — time with people you trust is one of the most consistent protective factors for mental well-being.</li>
+<li><strong>Talking to a trusted adult</strong> — a parent, counselor, teacher, coach, or advisor. This is the first step, not the last one.</li>
+</ul>
+<h4>Managing nerves before Round Two</h4>
+<ul>
+<li>Presentation nerves are a normal <strong>stress response</strong>: elevated heart rate, cold hands, dry mouth. It is your body mobilizing, and it fades once you begin speaking.</li>
+<li><strong>Slow exhales</strong> lower heart rate faster than anything else you can do in the hallway. Breathe out longer than you breathe in.</li>
+<li><strong>Sleep the night before</strong> matters more than one extra hour of cramming. Memory retrieval degrades sharply when you are short on sleep.</li>
+<li><strong>Rehearse out loud, standing, on a timer.</strong> Silent reading does not build the motor memory of speaking.</li>
+<li>Eat something before you compete. The brain runs on glucose, and a competitor who skipped breakfast is competing with a fuel problem, not a knowledge problem.</li>
+</ul>`,
+qref:[["Glucose","Blood sugar; the brain's primary fuel"],["20 percent","Share of body glucose consumed by the brain"],["2 percent","Share of body weight the brain represents"],["Neurotransmitter","Chemical messenger carrying signals between nerve cells"],["Dopamine","Neurotransmitter involved in motivation and reward"],["Serotonin","Neurotransmitter influencing mood and calm"],["Tryptophan","Amino acid the body uses to build serotonin"],["Omega-3 fatty acids","Fats forming part of brain cell membranes"],["Salmon","Food linked to calming brain chemical production"],["Olive oil","Fat source supporting long-term mental health"],["Fruit","Food type linked to creativity and curiosity"],["MIND diet","Brain-focused pattern emphasizing berries and leafy greens"],["DASH diet","Blood-pressure pattern limiting fats and excess sugar"],["Sleep need","About 9 to 12 hours nightly for this age"],["Stress","The body's response to a demand placed on it"],["Trusted adult","Parent, counselor, teacher, coach, or advisor to tell"],["Stress response","Fast heart rate and dry mouth before performing"],["Slow exhale","Fastest way to bring a racing heart rate down"]],
+notes:`<p><strong>MIND is the brain diet; DASH is the blood pressure diet.</strong> Both are four-letter capitalized acronyms, both were built from the Mediterranean pattern, and both tell you to eat vegetables — which is exactly why they get swapped. The tiebreaker is the target organ named in the stem. Berries and leafy greens to improve <strong>brain function</strong> means MIND. Limited fats and excess sugar to control <strong>blood pressure</strong> means DASH. <span class="trap">DASH</span> is the tempting wrong answer on a brain question because it is the more famous of the two, and its name contains no clue about what it targets. MIND at least sounds like the brain, which is a legitimate memory hook.</p>
+<p><strong>Twenty percent is the glucose share, not the body weight share.</strong> Two numbers travel together here and both are about the brain: it is about <strong>2 percent of body weight</strong> and it burns about <strong>20 percent of the body's glucose</strong>. Students who remember only that there are two numbers pick <span class="trap">2 percent</span> for the glucose question, which flips the pair. The whole point of the comparison is the mismatch: a tiny organ with an enormous fuel bill. If the number you choose does not sound disproportionate, you have chosen the wrong one.</p>
+<p><strong>Salmon is the answer for brain chemicals; olive oil is the answer for long-term support.</strong> These two foods sit close together and get traded. The stem wording separates them cleanly. If the question asks which <strong>food</strong> contains nutrients associated with producing calming brain chemicals like dopamine and serotonin, it wants <strong>salmon</strong>. If it asks which <strong>fat source</strong> supports long-term mental health, it wants <strong>olive oil</strong>. <span class="trap">Fruit</span> belongs to a third question entirely — it is the food type linked to creativity and curiosity, not to neurotransmitter production.</p>
+<p><strong>Serotonin and dopamine are both messengers, and neither one is a food.</strong> A common error is treating these as things you eat. You do not eat serotonin. Your body builds it, using tryptophan from dietary protein, which is why food shows up in a conversation about mood at all. <span class="trap">Glucose</span> is a tempting wrong answer when a question asks for a neurotransmitter, because glucose is the fuel word students associate with the brain — but glucose is a sugar the brain burns, not a signal it sends.</p>
+<p><strong>Presentation nerves are a physical stress response, and the fix is physical too.</strong> Competitors treat nervousness as a sign they are unprepared, and respond by cramming, which costs sleep and makes retrieval worse. The three interventions with the best return are unglamorous: sleep the night before, rehearse out loud on a timer, and slow your breathing before you walk in. <span class="trap">Reading your notecards silently one more time</span> feels like preparation and is the weakest of the options, because speaking is a motor skill and reading does not practice it.</p>`});
+
+GUIDE.push({t:3,
+narr:`<p>Wellness through the Lifespan is <strong>20 percent</strong> of the test, and it hangs on one distinction. <strong>Lifespan</strong> is how long a person lives. <strong>Healthspan</strong> is how <em>well</em> a person lives as they age — the years spent healthy, mobile, and independent rather than merely alive. Medicine over the last century has been very good at extending lifespan. The healthspan question is newer and harder: not how many years, but what those years are like. Almost everything in this module points back to that word.</p>
+<p><strong>Wellness</strong> itself is broader than health, and the standard framework comes from <strong>Dr. Bill Hettler</strong>, a co-founder of the National Wellness Institute. He proposed <strong>six dimensions of wellness</strong>: <strong>physical, emotional, intellectual, social, occupational, and spiritual</strong>. The point of a six-part model is that a person can be strong in one dimension and thin in another, and that the thin one still counts. Someone who trains every day but has no one to talk to is not well in the sense Hettler meant. The <strong>spiritual</strong> dimension is the one people forget when they try to list all six from memory, so learn that one deliberately.</p>
+<p>When researchers ask which factors contribute most to health and well-being across a whole life, two rise to the top together: <strong>physical activity and connecting with others</strong>. The <strong>CDC</strong> describes engaging in physical activity as one of the best things a person can do for their health. Social connection turns out to be the equal partner, not a nice extra. Researchers describe social connection in three parts: <strong>structure</strong> (how many people are in your life and how often you see them), <strong>function</strong> (what those relationships actually do for you, including whether you can rely on <strong>emotional support</strong>), and <strong>quality</strong> (whether those relationships feel good or corrosive). If a question asks which category covers being able to rely on emotional support, it is asking about <strong>function</strong>.</p>
+<p>Two vivid terms come out of the research on connection. <strong>Positive resonance</strong> describes an everyday interaction between people that carries shared positive feeling and non-verbal caring — a synchrony you can see in faces and posture, often in an exchange that lasts only seconds. <strong>Biological synchrony</strong> is the more startling one: when two people spend time together, their hearts can begin beating in the same rhythm. These are not metaphors. They are measurable, and they are part of why connection shows up in health outcomes at all.</p>
+<p>The applied piece of this module is the <strong>30 days to improve wellness</strong> plan, a four-week structure for building habits that stick. It works because it moves in small steps rather than one dramatic overhaul. <strong>Week 2 is exploration of movement</strong> — trying different ways of moving to find what you will actually keep doing. <strong>Week 4 brings other people in</strong>, so a competitor who invites a friend over to go biking is working on week 4, not week 2, even though biking is movement. Two ideas power the whole plan. <strong>Self-efficacy</strong> is a person's belief in their own ability to complete a task or do something new and complex, and it grows from small successes, not from pep talks. The <strong>adjacent possible</strong> is the idea that the most powerful next step is the small positive change you can make <em>right now</em>, from where you already stand — not the enormous change you might make someday. A student who is overwhelmed by overhauling their study habits should change one thing today. That is the adjacent possible in one sentence. And <strong>mindset</strong> matters enough to be measurable: in a well-known study of hotel room attendants, simply telling the workers that their daily job already counted as exercise produced real physical changes, without changing what they did all day.</p>
+<p>Now put that machinery to work on <strong>Round Two</strong>, because this is where goal-setting stops being abstract. Round Two is a <strong>five-minute presentation to judges</strong>. You may use <strong>notecards only</strong> — paper or electronic — and electronic notes may not be shown to the judges. No slides, no posters, no props. The rubric asks for three things: you must <strong>define your selected topic</strong>, explain <strong>why you chose it</strong>, and show <strong>what you learned and how you will use it going forward</strong>. That structure is your outline. Do not invent a different one. A good five-minute presentation has <strong>one clear goal</strong> — one idea the judges should be able to repeat back afterward — and a real <strong>beginning, middle, and end</strong>. The beginning names your topic and your why in the first thirty seconds. The middle is your knowledge, in two or three concrete points with an example attached to each. The end says what you will do with it, and then stops. Five minutes is roughly 600 to 700 spoken words, which is much less than it sounds like, so cutting is most of the work. <strong>Practise out loud, standing up, with a timer</strong> — silently reading your cards will fool you about length every time. Aim to finish around four and a half minutes; a timecard is shown at one minute remaining, and running out of time mid-sentence costs you the strongest part of your rubric, the ending. Look at the judges rather than at your cards. Cards should hold four or five key words per point, not sentences, because full sentences pull your eyes down and your voice flat. And dress in proper business attire or the official HOSA uniform, since bonus points are awarded for it.</p>`,
+deep:`<h4>Lifespan, healthspan, and the six dimensions</h4>
+<ul>
+<li><strong>Lifespan</strong> — how long a person lives. <strong>Healthspan</strong> — how well a person lives as they age.</li>
+<li><strong>Dr. Bill Hettler</strong>, co-founder of the National Wellness Institute, proposed the six-dimension model.</li>
+<li>The six dimensions: <strong>physical, emotional, intellectual, social, occupational, spiritual</strong>.</li>
+<li><strong>Spiritual</strong> is the dimension most often omitted when students list them from memory.</li>
+<li>Wellness is treated as active and multidimensional: a state you build, not simply the absence of disease.</li>
+<li>The two factors contributing most to health and well-being across the lifespan: <strong>physical activity and connecting with others</strong>.</li>
+<li>The <strong>CDC</strong> describes engaging in physical activity as one of the best things a person can do for their health.</li>
+</ul>
+<h4>Social connection, measured</h4>
+<ul>
+<li>Three categories of social connection: <strong>structure</strong> (how many, how often), <strong>function</strong> (what the relationships provide), <strong>quality</strong> (how good or harmful they are).</li>
+<li>Being able to rely on <strong>emotional support</strong> falls under <strong>function</strong>.</li>
+<li><strong>Positive resonance</strong> — an everyday interaction between people involving shared positive feeling and non-verbal caring synchrony.</li>
+<li><strong>Biological synchrony</strong> — two people's hearts beginning to beat in the same rhythm when they spend time together.</li>
+<li>Loneliness and social isolation are treated as measurable health risks, not moods.</li>
+</ul>
+<h4>The 30-day wellness plan and the ideas behind it</h4>
+<ul>
+<li>Structured across four weeks, moving from small internal changes outward to other people.</li>
+<li><strong>Week 2 — exploration of movement:</strong> sampling different kinds of activity to find what is sustainable.</li>
+<li><strong>Week 4 — connection:</strong> bringing other people into the plan, such as inviting a friend to ride bikes.</li>
+<li><strong>Self-efficacy</strong> — belief in your own ability to complete a task or do something complex or new. Built by small completed steps.</li>
+<li><strong>Adjacent possible</strong> — the best next move is the small positive change available to you right now, from where you already are.</li>
+<li><strong>Mindset</strong> — the component of movement studied in the hotel room attendants research, where telling workers their job counted as exercise produced measurable physical change.</li>
+<li><strong>Creatine</strong> is described as the single most effective supplement for building muscle. Most other supplements have far weaker evidence behind them.</li>
+</ul>
+<h4>Round Two: the five-minute presentation</h4>
+<ul>
+<li><strong>Five minutes</strong> with judges. <strong>Notecards only</strong>, paper or electronic, and optional. Electronic notes may not be shown to judges. <strong>No other materials or visual aids.</strong></li>
+<li>Rubric content: <strong>define the selected topic</strong>; explain the <strong>why</strong> of the choice; demonstrate <strong>knowledge of the topic</strong>; describe <strong>benefits of making healthy choices</strong> related to it; state <strong>how you will use the information moving forward</strong>.</li>
+<li>A <strong>timecard is shown at one minute remaining</strong>. When time is called, the competitor is excused — so the ending must land before the clock does.</li>
+<li>Five minutes is roughly <strong>600 to 700 spoken words</strong>. Target about four and a half minutes in rehearsal to leave margin.</li>
+<li>Structure: beginning names the topic and the why inside the first 30 seconds; middle carries two or three concrete points, each with an example; end states the forward use and stops.</li>
+<li><strong>One clear goal</strong> — one sentence a judge could repeat afterward. A presentation with three goals has none.</li>
+<li>Cards carry <strong>key words, not sentences</strong>. Full sentences pull the eyes down and flatten the voice. Number the cards.</li>
+<li><strong>Eye contact</strong> with each judge in turn. Rehearse standing, out loud, on a timer; silent reading misjudges length badly.</li>
+<li><strong>Dress:</strong> proper business attire or official HOSA uniform. <strong>Bonus points are awarded for proper dress.</strong></li>
+<li>Round One and Round Two scores are added for the final result. Ties are broken by the <strong>highest test score</strong>.</li>
+</ul>`,
+qref:[["Lifespan","How long a person lives"],["Healthspan","How well a person lives as they age"],["Bill Hettler","Proposed the six dimensions of wellness model"],["Six dimensions","Physical, emotional, intellectual, social, occupational, spiritual"],["Top two factors","Physical activity and connecting with others"],["Structure","Social connection category: how many, how often"],["Function","Social connection category: reliable emotional support"],["Quality","Social connection category: how good the relationships feel"],["Positive resonance","Everyday interaction with non-verbal caring synchrony"],["Biological synchrony","Two people's hearts beating in the same rhythm"],["Self-efficacy","Belief in your ability to do something new"],["Adjacent possible","The small positive change available right now"],["Week 2","Exploration of movement in the 30-day plan"],["Week 4","Bringing other people into the 30-day plan"],["Mindset","Movement component studied in hotel attendants research"],["Creatine","Most effective supplement for building muscle"],["Round Two","Five-minute presentation to judges, notecards only"],["Timecard","Shown to competitors at one minute remaining"],["Proper dress","Business attire or HOSA uniform; earns bonus points"]],
+notes:`<p><strong>Healthspan is quality; lifespan is quantity.</strong> The stem gives it away with a single word. "How long a person lives" is <strong>lifespan</strong>. "How well a person lives as they age" is <strong>healthspan</strong>. <span class="trap">Lifespan</span> is the tempting wrong answer on a healthspan question because it is the far more familiar word and it also contains the word span. Healthspan is the newer idea and it is the one this module is built around, so when both appear as options and the stem contains any word about wellness, quality, or aging well, take healthspan.</p>
+<p><strong>Spiritual is the sixth dimension, and it is the one that goes missing.</strong> Physical, emotional, intellectual, social, and occupational come easily. When a question asks which dimension Hettler includes, the answer is very often <strong>spiritual</strong>, precisely because it is the one students would not have guessed. <span class="trap">Environmental</span> and <span class="trap">financial</span> are the standard distractors, and they are tempting because later wellness models genuinely added them — seven-, eight-, and nine-dimension versions exist. Hettler's original model has <strong>six</strong>, and environmental and financial are not among them.</p>
+<p><strong>Function is the social connection category that covers emotional support.</strong> Structure, function, and quality all sound like they could mean anything, which is what makes this hard. Anchor each with a question. Structure asks <em>how many and how often</em>. Function asks <em>what do these relationships actually do for me</em> — and reliable emotional support is a thing a relationship does. Quality asks <em>are these relationships good or harmful</em>. <span class="trap">Quality</span> is the tempting answer on the emotional support question, because good support feels like a quality judgment. It is not; support is a function.</p>
+<p><strong>Week 4 is about people, even when the activity is exercise.</strong> This is the sharpest trap in the module. A competitor who invites a friend over to go biking is in <strong>week 4</strong>, because the defining feature is bringing another person in. <span class="trap">Week 2</span> is the wrong answer everyone reaches for, since week 2 is exploration of movement and biking is obviously movement. Read for the <em>social</em> element. If someone else is being invited, included, or relied on, you are in the connection week regardless of what the activity happens to be.</p>
+<p><strong>Adjacent possible means small and available now, not ambitious and eventual.</strong> Students hear a fancy phrase and assume it must mean something grand, so they pick <span class="trap">setting a large long-term goal</span>. The concept is the opposite: from where you are standing, only certain next steps are actually reachable, and the useful one is the small positive change you can make immediately. It pairs with <strong>self-efficacy</strong>, which is belief in your own ability to do something new — and which grows out of completing small things, which is exactly what the adjacent possible produces. Do not confuse self-efficacy with self-esteem: efficacy is about capability on a task, esteem is about how you feel about yourself overall.</p>
+<p><strong>The five-minute presentation is scored on structure, not on volume of facts.</strong> The rubric asks you to define the topic, explain the why, show your knowledge, and say how you will use it. Competitors who lose points here almost always made the same mistake: they treated the five minutes as a container to pour facts into and never answered the why. <span class="trap">Packing in more information</span> feels like preparation and reads to judges as a missing point of view. Pick one clear goal, give it a beginning, middle, and end, attach one concrete example to each point, and rehearse out loud on a timer until it lands near four and a half minutes.</p>`});
+
+GUIDE.push({t:4,
+narr:`<p>Disease Prevention is the final <strong>20 percent</strong>, and the module behind it is <strong>Insulin Resistance and Weight Loss</strong>. Before the biology, learn the framework that organizes all of prevention, because it turns a scattered topic into three clean boxes. <strong>Primary prevention</strong> stops a disease from ever starting — a vaccine, clean drinking water, a helmet, not starting to smoke. <strong>Secondary prevention</strong> catches a disease early, before symptoms, while it is still easy to treat — a screening, a blood pressure check, a vision test at school. <strong>Tertiary prevention</strong> manages a condition someone already has, to keep it from getting worse — the daily care and medication that lets a person with diabetes or asthma live a full life. Vaccine, screening, managing what you already have. Those three examples will carry you through most questions in this topic.</p>
+<p>Now the biology. <strong>Insulin</strong> is a hormone made by the <strong>pancreas</strong>, an organ tucked behind the stomach. The specific cells that produce and release it are the <strong>beta cells</strong>, which sit in clusters in the pancreas. Insulin's job is to act as a key. After you eat, glucose enters your blood, and insulin signals your cells to open up and take that glucose in. Insulin also gives storage instructions: put the extra away as <strong>glycogen</strong>, the stored form of carbohydrate in the liver and muscles, and as <strong>triglycerides</strong>, the stored form of fat.</p>
+<p><strong>Insulin resistance</strong> is what happens when cells stop responding normally to that signal. The key still turns, but the lock is stiff. The pancreas compensates by making more insulin, so for a long time blood glucose stays close to normal and the person feels fine — which is exactly why insulin resistance is often invisible until something else shows up. In the United States, roughly <strong>100 million adults over the age of 18</strong> are insulin resistant. That is not a rare condition; it is a common one that most of the people who have it do not know about. Excess body fat is the most discussed contributor, but it is not the only one. <strong>Infections</strong> can also drive insulin resistance, which is a useful reminder that the biology is more complicated than any single cause. A common condition that develops alongside insulin resistance is <strong>non-alcoholic fatty liver disease</strong>, in which fat accumulates in the liver of someone who does not drink alcohol.</p>
+<p>The two main forms of diabetes are worth keeping straight, because the difference is one sentence. In <strong>type 1 diabetes</strong>, the body does not make enough insulin, because the beta cells have been destroyed by the immune system. In <strong>type 2 diabetes</strong>, the body makes insulin but <strong>cannot respond normally to the insulin it makes</strong>. Type 2 is the one that follows from insulin resistance. Both are serious, both are manageable, and neither is anyone's fault.</p>
+<p>Type 2 diabetes can sometimes go into <strong>remission</strong>, meaning blood glucose returns to a normal range without diabetes medication. Research on adults with type 2 diabetes has consistently found that the more body weight a person loses, the higher their chance of remission, and the figure taught in this course is that losing about <strong>20 pounds or more raises the likelihood of remission by roughly 60 percent</strong>. Two things are worth saying plainly about that number. It comes from studies of <em>adults who already have type 2 diabetes</em>, and it does not describe healthy children or teenagers, whose bodies are still growing and who need enough food to grow. And bodies vary enormously for reasons no one chooses — genetics, medication, illness, income, where you live. Weight is a health measurement, not a measure of a person's worth or effort.</p>
+<p>A few other prevention items round out the topic. <strong>Metabolic syndrome</strong> — a cluster of findings including high blood pressure, high blood glucose, excess waist circumference, and abnormal cholesterol — is described as having a <strong>high level of control</strong>, meaning the factors that drive it are largely modifiable rather than fixed. Long-term <strong>hypertension</strong>, which is persistently high blood pressure, is the leading contributor to <strong>stroke</strong>, the condition in which blood flow to part of the brain is interrupted and brain cells begin to die. Excess <strong>sodium</strong> is most strongly linked to <strong>hypertension and cardiovascular disease</strong>. And one vocabulary word from this module travels widely in health science: <strong>atrophy</strong>, the wasting away or decrease in size of a body tissue — what happens to a muscle inside a cast for six weeks.</p>`,
+deep:`<h4>The three levels of prevention</h4>
+<ul>
+<li><strong>Primary</strong> — prevents the disease from occurring at all. Vaccines, clean water, seat belts, helmets, never starting to smoke, physical activity.</li>
+<li><strong>Secondary</strong> — detects disease early, before symptoms, when treatment works best. Screenings, blood pressure checks, vision and hearing screening, blood glucose testing.</li>
+<li><strong>Tertiary</strong> — manages established disease to limit damage and complications. Daily medication, rehabilitation after a stroke, foot care in diabetes.</li>
+<li>The same action can sit in different levels depending on who receives it: exercise is primary for a healthy person and tertiary for someone in cardiac rehabilitation.</li>
+<li><strong>Health promotion</strong> works upstream of all three, improving conditions so fewer people become at risk in the first place.</li>
+</ul>
+<h4>Insulin and how it works</h4>
+<ul>
+<li>Insulin is a hormone produced by the <strong>pancreas</strong>, specifically by the <strong>beta cells</strong> of the islets of Langerhans.</li>
+<li>Insulin signals cells to take up <strong>glucose</strong> from the blood, lowering blood glucose.</li>
+<li>Insulin instructs the body to store nutrients as <strong>glycogen</strong> (carbohydrate storage in liver and muscle) and as <strong>triglycerides</strong> (fat storage).</li>
+<li><strong>Glucagon</strong> is insulin's counterpart, also from the pancreas, from <strong>alpha cells</strong>. It raises blood glucose. Insulin lowers, glucagon raises.</li>
+<li>The brain depends on a steady blood glucose supply, which is why glucose regulation matters far beyond the pancreas.</li>
+</ul>
+<h4>Insulin resistance and type 2 diabetes</h4>
+<ul>
+<li><strong>Insulin resistance</strong> — cells respond poorly to insulin, so the pancreas produces more to compensate. Often present for years without symptoms.</li>
+<li>Approximately <strong>100 million U.S. adults over 18</strong> are insulin resistant.</li>
+<li>Contributors include excess body fat and also <strong>infections</strong>, among other causes.</li>
+<li><strong>Non-alcoholic fatty liver disease (NAFLD)</strong> — fat accumulation in the liver without alcohol use; a common condition associated with insulin resistance.</li>
+<li><strong>Type 1 diabetes</strong> — the body does not produce enough insulin; beta cells are destroyed by an autoimmune process.</li>
+<li><strong>Type 2 diabetes</strong> — the body <strong>cannot respond normally to the insulin it makes</strong>.</li>
+<li><strong>Remission</strong> — blood glucose returns to a normal range without diabetes medication. In adults with type 2 diabetes, greater weight loss is associated with a greater chance of remission; losing about <strong>20 pounds or more</strong> is linked to roughly a <strong>60 percent</strong> increase in that likelihood.</li>
+</ul>
+<h4>Related conditions and vocabulary</h4>
+<ul>
+<li><strong>Metabolic syndrome</strong> — cluster of high blood pressure, elevated blood glucose, excess waist circumference, and abnormal blood lipids. Described as having a <strong>high level of control</strong>, meaning its drivers are largely modifiable.</li>
+<li><strong>Hypertension</strong> — persistently elevated blood pressure. The leading contributor to stroke and a major one for heart and kidney disease.</li>
+<li><strong>Stroke</strong> — blood flow to part of the brain is interrupted and brain cells begin to die. Often linked to long-term hypertension.</li>
+<li>Excess <strong>sodium</strong> is most strongly associated with <strong>hypertension and cardiovascular disease</strong>.</li>
+<li><strong>Atrophy</strong> — the wasting away or decrease in size of a body tissue, such as a muscle immobilized in a cast. Its opposite is <strong>hypertrophy</strong>, an increase in tissue size.</li>
+<li>Physical activity improves how sensitive muscle cells are to insulin, which is why movement appears in nearly every prevention plan for type 2 diabetes.</li>
+</ul>`,
+qref:[["Primary prevention","Stops disease from starting; a vaccine"],["Secondary prevention","Finds disease early; a screening test"],["Tertiary prevention","Manages a disease someone already has"],["Insulin","Pancreatic hormone that lowers blood glucose"],["Pancreas","Organ that produces insulin"],["Beta cells","Pancreatic cells that produce and release insulin"],["Glucagon","Pancreatic hormone that raises blood glucose"],["Glycogen","Stored form of carbohydrate in liver and muscle"],["Triglycerides","Stored form of fat in the body"],["Insulin resistance","Cells respond poorly to insulin's signal"],["100 million","U.S. adults over 18 who are insulin resistant"],["NAFLD","Liver fat accumulation without alcohol use"],["Type 1 diabetes","Body does not produce enough insulin"],["Type 2 diabetes","Body cannot respond normally to its insulin"],["Remission","Normal blood glucose without diabetes medication"],["Metabolic syndrome","Cluster of risk findings with high level of control"],["Hypertension","Persistently elevated blood pressure"],["Stroke","Interrupted blood flow to part of the brain"],["Atrophy","Wasting away or decrease in size of tissue"],["Hypertrophy","Increase in the size of a tissue"]],
+notes:`<p><strong>Type 1 is not enough insulin; type 2 is not enough response.</strong> The two forms of diabetes differ by one idea, and the stem wording is the key. If the question says the body <strong>cannot respond normally to the insulin that is made</strong>, the answer is <strong>type 2</strong>. If it says the body does not produce enough insulin, the answer is type 1. <span class="trap">Type 1</span> is the tempting wrong answer on a type 2 stem because students associate the number one with the more severe or more primary version. Severity is not what the numbers mean. Insulin resistance is the doorway to type 2 specifically, so if resistance appears anywhere in the stem, you are in type 2 territory.</p>
+<p><strong>Beta cells produce insulin; the pancreas is the organ.</strong> Two questions can be built from the same fact and they want different levels of answer. If the stem asks which <strong>organ</strong> produces insulin, say <strong>pancreas</strong>. If it asks which <strong>cells</strong> produce and release it, say <strong>beta cells</strong>. <span class="trap">Alpha cells</span> is the standard distractor and it is a real thing — alpha cells sit right beside beta cells in the same clusters and secrete <strong>glucagon</strong>, which does the opposite job. Alphabetical order helps: alpha raises, beta brings down.</p>
+<p><strong>Insulin stores glucose as glycogen AND as triglycerides.</strong> Students who have only learned the carbohydrate half answer <span class="trap">glycogen</span> alone when a question asks what else insulin instructs the body to store nutrients as. Insulin is a storage hormone across the board: carbohydrate goes to glycogen in liver and muscle, and surplus energy also goes into fat storage as triglycerides. Knowing both halves is what makes the connection between insulin, insulin resistance, and fatty liver disease make sense rather than feel arbitrary.</p>
+<p><strong>Obesity is not the only cause of insulin resistance, and the question is usually asking for the other one.</strong> When a stem says "what <strong>else</strong> besides obesity or excess fat may cause insulin resistance," it has already told you not to answer with a weight-related option. The answer taught here is <strong>infections</strong>. <span class="trap">Lack of exercise</span> is the tempting choice because it is a genuine contributor and it is the thing students expect to hear — but it sits in the same lifestyle cluster the stem just excluded. Read the word "else" and let it eliminate half the options.</p>
+<p><strong>Primary, secondary, and tertiary are defined by timing, not by seriousness.</strong> Students assume tertiary means the most serious intervention. It does not; it means the latest one. Before the disease exists is primary, before symptoms is secondary, after diagnosis is tertiary. A screening mammogram or a school vision check is <strong>secondary</strong>, and <span class="trap">primary</span> is the tempting answer because screening feels preventive in ordinary speech. The tell is whether the disease might already be present. If the action is looking for something that may already be there, it is secondary.</p>
+<p><strong>Metabolic syndrome is the condition described as having a high level of control.</strong> The phrase means its drivers are largely modifiable, not that it is mild. <span class="trap">Type 1 diabetes</span> is the tempting contrast because students reach for the most familiar chronic disease, but type 1 is an autoimmune condition that cannot be prevented by changing behavior. Metabolic syndrome is a cluster of findings — blood pressure, blood glucose, waist measurement, blood lipids — and each of those findings responds to changes in activity, food, sleep, and medication, which is exactly what a high level of control means.</p>`});
+
+
+// Foundations of Healthy Living (Middle School Division) — Round One practice bank
+// Round One is 35 items in 60 minutes. Per-topic target = round(plan % x 1.2), minimum 6 per topic.
+//   t0 Nutrition                       25%  -> 30
+//   t1 Physical Activity               25%  -> 30
+//   t2 Mental Health                   10%  -> 12
+//   t3 Wellness through the Lifespan   20%  -> 24
+//   t4 Disease Prevention              20%  -> 24
+// TOTAL = 120
+
+const Q = [
+{"t":0,"q":"A student wants to know who decides what has to appear on a Nutrition Facts panel. Which U.S. agency writes and enforces those rules?","a":["CDC","USDA","FDA","NIH"],"c":2,"e":"The Food and Drug Administration regulates food labeling for most packaged foods. USDA is the tempting answer because it publishes the Dietary Guidelines and inspects meat and poultry, so students connect it with food generally. Keep the jobs separate: USDA gives dietary advice, FDA governs what the package must say."},
+{"t":0,"q":"Which U.S. law, passed in 1906, first required the use of food labels?","a":["The Food Safety Modernization Act","The Pure Food and Drug Act","The Nutrition Labeling and Education Act","The Federal Meat Inspection Act"],"c":1,"e":"The Pure Food and Drug Act of 1906 was the first federal law requiring food labeling in the United States. The Nutrition Labeling and Education Act is tempting because it created the modern Nutrition Facts panel students actually see, but that came decades later. 1906 is the starting line, not the finished panel."},
+{"t":0,"q":"A snack box lists 210 calories per serving and says it contains six servings. How many calories are in the whole box?","a":["210 calories","630 calories","840 calories","1,260 calories"],"c":3,"e":"Every number on the panel is per serving, so the box total is 210 times 6, which is 1,260 calories. Choosing 210 means reading the label correctly but answering a different question than the one asked. Always check servings per container before drawing a conclusion about a package."},
+{"t":0,"q":"A bag of crackers lists a serving size of three-quarters of a cup and says it holds ten servings. How many total cups of crackers are in the bag?","a":["7.5 cups","10 cups","13.3 cups","3.75 cups"],"c":0,"e":"Multiply the serving size by the number of servings: 0.75 times 10 equals 7.5 cups. Ten cups is the tempting answer because ten is the number printed on the panel, but that is the count of servings, not the volume. Serving size and servings per container are two different pieces of information and both are needed."},
+{"t":0,"q":"A flavored water contains 3 calories per serving when measured in a laboratory. Under U.S. labeling rules, what will the Calories line show?","a":["0 calories","3 calories","5 calories","Less than 5 calories"],"c":0,"e":"Anything under 5 calories per serving is declared as 0, which is how a drink with real calories in it can honestly be called calorie-free. Answering 3 is tempting because it is the true measured value, but the question asks what the label shows, not what the food contains. Read which of those two the stem is asking for."},
+{"t":0,"q":"A serving of granola is measured at 82 calories. What number appears on the Calories line of the label?","a":["82 calories","80 calories","85 calories","90 calories"],"c":1,"e":"Above 50 calories, the rule is to round to the nearest 10, so 82 becomes 80. Choosing 85 applies the rounding rule for the 5-to-50 range, which is the most common mistake here. The rounding tier depends on how large the number is, so check the size before you round."},
+{"t":0,"q":"Which type of fat is a company NOT required to list on a standard U.S. Nutrition Facts panel?","a":["Total fat","Saturated fat","Unsaturated fat","Trans fat"],"c":2,"e":"Total, saturated, and trans fat are mandatory; unsaturated fat is voluntary and many companies leave it off. Trans fat is the tempting pick because students know it is the one health messaging warns about and assume the warned-about one is the exception. It is the reverse: concern about trans fat is exactly why it got a required line."},
+{"t":0,"q":"Which vitamin or mineral appears in the main upper section of the Nutrition Facts panel, alongside calories and the fats?","a":["Calcium","Iron","Vitamin D","Sodium"],"c":3,"e":"Sodium is the only vitamin or mineral listed in the main upper area of the panel. Calcium and iron are tempting because they genuinely appear on the label, but they sit in the separate lower block with vitamin D and potassium. Position on the panel is the whole point of this question."},
+{"t":0,"q":"A yogurt label lists 24 grams of total sugars, of which 6 grams occur naturally. How many grams of added sugars does one serving contain?","a":["6 grams","18 grams","24 grams","30 grams"],"c":1,"e":"Added sugars equal total sugars minus naturally occurring sugars, so 24 minus 6 gives 18 grams. Choosing 24 means stopping at the total sugars line, which is exactly the mistake the added-sugars line was created to prevent. Sugars naturally present in fruit and dairy are not counted as added."},
+{"t":0,"q":"On a label based on a 2,000-calorie day, what is the Daily Value for dietary fiber?","a":["14 grams","20 grams","28 grams","50 grams"],"c":2,"e":"The Daily Value for dietary fiber for adults and children four and older is 28 grams. Fifty grams is tempting because it is a real Daily Value on the same panel, but it belongs to added sugars and to protein. Match the number to the nutrient rather than recognizing that it appeared somewhere on the label."},
+{"t":0,"q":"What is the Daily Value for cholesterol used on U.S. food labels?","a":["20 milligrams","50 milligrams","200 milligrams","300 milligrams"],"c":3,"e":"The cholesterol Daily Value is 300 milligrams per day. Two hundred is the classic wrong answer because it is a round number people associate with cholesterol from blood-test discussions, which measure something different. Label Daily Values and blood test targets are separate sets of numbers."},
+{"t":0,"q":"What is the Daily Value for sodium on the Nutrition Facts panel?","a":["2,300 milligrams","1,500 milligrams","3,000 milligrams","5,000 milligrams"],"c":0,"e":"The sodium Daily Value is 2,300 milligrams per day. The figure 1,500 is tempting because it is a lower target recommended for some adults with high blood pressure, but it is not the number used to calculate percent Daily Value on a label. The panel uses one reference figure for everyone."},
+{"t":0,"q":"A student is assessing portion sizes for a nutrition project. What is the most accurate way to measure most foods?","a":["Volume in cups","Weight","Counting pieces","Comparing to a hand size"],"c":1,"e":"Weight is the most accurate method because foods differ enormously in density. Cups is the tempting answer because measuring cups are what most kitchens have, but a cup of leafy greens and a cup of rice contain wildly different amounts of food. Hand comparisons are a rough estimate, useful but not accurate."},
+{"t":0,"q":"A snack contains 30 grams of carbohydrate, 12 grams of fat, and 8 grams of protein. How many calories does it supply?","a":["200 calories","232 calories","260 calories","450 calories"],"c":2,"e":"Carbohydrate and protein each give 4 calories per gram and fat gives 9, so 120 plus 108 plus 32 equals 260. Choosing 200 comes from treating fat as 4 calories per gram like the other two, which is the single most common error in this calculation. Fat is the most energy-dense of the three."},
+{"t":0,"q":"Which macronutrient supplies the most calories per gram?","a":["Carbohydrate","Protein","Fiber","Fat"],"c":3,"e":"Fat supplies about 9 calories per gram, more than double carbohydrate or protein at 4 each. Carbohydrate is tempting because it is the body's main fuel and students equate main fuel with most energy. Being the preferred fuel and being the most concentrated fuel are two different things."},
+{"t":0,"q":"A timeline of sports nutrition marks the arrival of the first energy bars in the United States. In which decade did they appear?","a":["1940s","1950s","1960s","1970s"],"c":1,"e":"The first energy bars in the United States appeared in the 1950s. The 1960s is tempting because that is when Pillsbury created the Space Food Stick, which is the bar most people can actually name. The famous product came a decade after the category itself began."},
+{"t":0,"q":"Pillsbury created a protein bar in the 1960s that captured public attention because of its connection to astronaut nutrition. What was it called?","a":["Power Bar","Meal in a Bar","Space Food Stick","Astro Ration"],"c":2,"e":"The Space Food Stick was Pillsbury's 1960s protein bar tied to feeding astronauts during flight. Power Bar is tempting because it is a real and far more familiar brand, but it arrived decades later. The space connection is the memory hook for the name and the era together."},
+{"t":0,"q":"A health food bar lists nut butter, coconut oil, and palm oil near the top of its ingredients. What kind of bar is it most likely to be?","a":["Keto bar","Energy bar","Meal replacement bar","Fiber bar"],"c":0,"e":"Keto bars are built to be high in fat and low in carbohydrate, so fat-dense ingredients like nut butter and tropical oils lead the list. Energy bar is the tempting answer because both are marketed to active people, but an energy bar leads with fast carbohydrate instead. Read the ingredients for what job the bar was engineered to do."},
+{"t":0,"q":"A runner needs something to eat during the middle of a marathon. Which type of bar is designed for that moment?","a":["Keto bar","Protein bar","Meal replacement bar","Energy bar"],"c":3,"e":"Energy bars supply fast-digesting carbohydrate, which is what the body needs while endurance activity is still happening. Protein bar is the answer most students choose because protein sounds athletic and serious, but protein rebuilds tissue afterward and digests too slowly to help mid-race. Match the bar to the moment, not to the reputation."},
+{"t":0,"q":"A plant-based bar advertises itself as high in protein. Which ingredient combination is the most likely source of that protein?","a":["Oat flour, honey, dates","Pea, rice, hemp, soy, quinoa","Coconut oil, palm oil, cocoa butter","Maltodextrin, glycerin, sorbitol"],"c":1,"e":"Most single plant proteins run short on at least one essential amino acid, so manufacturers blend several sources to fill the gaps. Oat flour, honey, and dates is the tempting choice because those are recognizable plant foods, but they are carbohydrate rather than protein. A long blend of plant sources on a label is a deliberate engineering choice."},
+{"t":0,"q":"Which ingredients would a manufacturer add to a bar marketed for alertness, energy, and sports performance?","a":["Pea protein and quinoa","Coconut oil and palm oil","Caffeine and green tea extract","Inulin and chicory root fiber"],"c":2,"e":"Caffeine and green tea extract are the stimulant ingredients added for alertness and performance claims. Coconut oil and palm oil is tempting because fat is dense in energy, but energy in the calorie sense and alertness in the stimulant sense are different things. Inulin and chicory root are fiber additions, not stimulants."},
+{"t":0,"q":"Which of these is a plant-derived fat that is highly saturated?","a":["Olive oil","Sunflower oil","Walnut oil","Coconut oil"],"c":3,"e":"Coconut oil and palm oil are tropical plant oils that are highly saturated, which is why they show up in keto bars. Olive oil is the tempting answer because it is the best-known plant oil, but it is mostly monounsaturated. The shortcut that plant equals unsaturated fails on exactly these tropical oils."},
+{"t":0,"q":"What separates a true food allergy from a food intolerance or sensitivity?","a":["It involves an immune system response","It only produces stomach symptoms","It requires eating a large portion","It can only be diagnosed in children"],"c":0,"e":"A food allergy is an immune reaction to a food protein; an intolerance is not and usually reflects a missing digestive enzyme. Stomach symptoms is the tempting answer because both conditions can cause them, which is precisely why symptoms alone cannot tell them apart. The mechanism is the dividing line."},
+{"t":0,"q":"Minutes after eating, a person develops hives, swelling of the lips and throat, difficulty breathing, and a sudden drop in blood pressure. What is happening?","a":["Food intolerance","Low blood sugar","Anaphylaxis","Fainting from stress"],"c":2,"e":"Anaphylaxis is a rapid whole-body allergic reaction involving skin, airway, and circulation at once, and it is treated with epinephrine. Low blood sugar is tempting because it can also cause sudden collapse, but it does not produce hives or airway swelling. Three body systems failing within minutes of eating is the defining pattern."},
+{"t":0,"q":"Taking in far more sodium than recommended over many years is most strongly associated with which conditions?","a":["Anemia and fatigue","Hypertension and cardiovascular disease","Osteoporosis and fractures","Anxiety and insomnia"],"c":1,"e":"Excess sodium intake is most strongly linked to high blood pressure and to cardiovascular disease that follows from it. Osteoporosis is tempting because very high sodium can increase calcium loss in urine, a real but much smaller effect. The main and best-supported association is with blood pressure."},
+{"t":0,"q":"What does dietary fiber do in the large intestine?","a":["It adds bulk that helps material move through","It is absorbed for quick energy","It is stored as glycogen","It supplies essential amino acids"],"c":0,"e":"Fiber is a plant carbohydrate that human enzymes cannot break down, so it stays in the digestive tract and adds bulk that keeps material moving. Quick energy is wrong for the same reason it is tempting: fiber is a carbohydrate, but an indigestible one, so it supplies almost no calories."},
+{"t":0,"q":"A cereal shows 22 percent Daily Value for iron per serving. How should that be interpreted?","a":["A little iron","An average amount of iron","Too much iron","A lot of iron"],"c":3,"e":"The general guide on a Nutrition Facts panel is that 5 percent Daily Value or less is a little and 20 percent or more is a lot, so 22 percent is a lot. Too much is the tempting answer because a large percentage sounds like an excess, but percent Daily Value describes contribution toward a daily target, not a warning."},
+{"t":0,"q":"A bar is designed to stand in for an entire meal. Compared with a small snack bar, what would you expect on its label?","a":["Fewer calories and fewer nutrients","More calories and a wider range of vitamins and minerals","No protein at all","Only fat and no carbohydrate"],"c":1,"e":"A meal replacement bar has to do the job of a meal, so it carries more total calories and a broader spread of vitamins and minerals. Fewer calories is tempting because bars are often marketed as light snacks, but replacing a meal with less energy than the meal contained defeats the purpose."},
+{"t":0,"q":"A student says lactose intolerance is a food allergy. Why is that incorrect?","a":["Lactose is not a food component","It only affects adults","It is caused by a missing enzyme, not the immune system","It never causes any symptoms"],"c":2,"e":"Lactose intolerance results from too little lactase, the enzyme that breaks down milk sugar, so it is a digestive problem rather than an immune one. It is the classic wrong answer to which of these is an allergy, because it involves a food and produces real discomfort. Symptoms are real; the mechanism is what makes it not an allergy."},
+{"t":0,"q":"A cookie contains 0.4 grams of trans fat per serving. What will the trans fat line on the label show?","a":["0 grams","0.4 grams","0.5 grams","1 gram"],"c":0,"e":"Fats below 0.5 grams per serving are declared as 0, so 0.4 grams prints as zero. Choosing 0.4 is tempting because it is the true amount, but the question asks what the label shows. This rounding rule is why a package can say zero trans fat and still list partially hydrogenated oil in the ingredients."},
+
+{"t":1,"q":"According to the Physical Activity Guidelines for Americans, how much moderate-to-vigorous physical activity should a 13-year-old get?","a":["30 minutes each day","60 minutes each day","150 minutes each week","60 minutes each week"],"c":1,"e":"Children and adolescents ages 6 to 17 need 60 minutes or more of moderate-to-vigorous activity every day. The figure 150 minutes per week is tempting because it is the number heard most in public health messaging, but that is the adult aerobic minimum. Check the age in the stem before choosing between the youth and adult numbers."},
+{"t":1,"q":"According to the World Health Organization, how much moderate-to-vigorous physical activity should children ages 5 to 17 get each day to support good health?","a":["20 minutes","40 minutes","60 minutes","90 minutes"],"c":2,"e":"WHO recommends 60 minutes daily for ages 5 to 17, matching the U.S. guideline for ages 6 to 17. Ninety minutes is tempting because more sounds healthier, but guidelines name an achievable target rather than an ideal maximum. The two organizations agree on this number, which makes it worth memorizing exactly."},
+{"t":1,"q":"An advisor explains that the adult activity target is different from the youth target. What is the adult aerobic recommendation?","a":["150 to 300 minutes of moderate activity per week","60 minutes of moderate activity per day","30 minutes of vigorous activity per day","300 minutes of vigorous activity per week"],"c":0,"e":"Adults need 150 to 300 minutes of moderate aerobic activity per week, or 75 to 150 vigorous minutes, plus muscle-strengthening on two or more days. Sixty minutes a day is the tempting answer because it is the number this event emphasizes, but that figure belongs to ages 6 to 17. Youth get a daily target; adults get a weekly one."},
+{"t":1,"q":"Within a typical week, on how many days should a 12-year-old include vigorous-intensity activity?","a":["Every day","1 day","2 days","At least 3 days"],"c":3,"e":"Youth guidelines call for vigorous-intensity activity on at least 3 days per week within the daily 60 minutes. Every day is tempting because the 60-minute target is daily, but the guideline asks for most of that hour to be moderate or vigorous, with vigorous specifically on three or more days. Daily total and weekly components are separate instructions."},
+{"t":1,"q":"How often should children and adolescents include bone-strengthening activity such as running or jumping?","a":["Once a month","At least 3 days per week","Only during sports seasons","Every other week"],"c":1,"e":"Bone-strengthening activity is recommended on at least 3 days a week for ages 6 to 17. This component appears in the youth guideline and not in the adult one, because young bones are still building density. Impact activities like jumping, running, and basketball all qualify."},
+{"t":1,"q":"A student is jogging and can hold a conversation but cannot comfortably sing. What intensity is that?","a":["Moderate intensity","Light intensity","Vigorous intensity","Sedentary"],"c":0,"e":"The talk test defines moderate intensity as being able to talk but not sing. Vigorous is the tempting answer because jogging sounds vigorous, but the activity name does not set the intensity; the person's effort does. A slow jog for a trained runner can be moderate work."},
+{"t":1,"q":"During a shuttle run, a competitor can only get out a few words at a time before needing a breath. What intensity is this?","a":["Light intensity","Moderate intensity","Vigorous intensity","Sedentary behavior"],"c":2,"e":"Being unable to say more than a few words without pausing for breath is the talk test signal for vigorous intensity. Moderate is tempting because students assume moderate means working hard, but at moderate intensity conversation is still comfortable. The breathing pattern, not the effort you feel, is the field test."},
+{"t":1,"q":"Roughly what share of students actually meets the recommendation of at least 60 minutes of physical activity each day?","a":["9 percent","50 percent","72 percent","27 percent"],"c":3,"e":"About 27 percent of students meet the daily 60-minute recommendation, which shows a wide gap between the guideline and reality. The figure 72 percent is tempting because it also appears in this topic, but that is the share of school-age students who take part in organized sports. Participating in a sport and meeting a daily activity target are different measures."},
+{"t":1,"q":"Approximately what percentage of school-age students participate in organized sports?","a":["27 percent","72 percent","45 percent","90 percent"],"c":1,"e":"About 72 percent of school-age students take part in organized sports. The number 27 percent is the tempting distractor because both figures live in this topic, but 27 percent is the share meeting the daily 60-minute activity target. Sports participation is high while daily activity attainment is low, and that contrast is the point."},
+{"t":1,"q":"What does the Centers for Disease Control and Prevention describe as one of the best things a person can do for their health?","a":["Engage in physical activity","Take a daily multivitamin","Avoid all dietary fat","Weigh yourself every morning"],"c":0,"e":"The CDC identifies engaging in physical activity as one of the best things a person can do for their health. A daily multivitamin is tempting because supplements are heavily marketed, but the evidence behind routine supplementation is far weaker than the evidence behind movement. Movement affects nearly every body system at once."},
+{"t":1,"q":"What is the technical term for walking?","a":["Stride","Locomotion","Gait","Ambulation pattern"],"c":2,"e":"Gait is the term used for walking and for the pattern of walking overall. Stride is tempting because it sounds technical and is genuinely related, but a stride is one unit of the pattern rather than the pattern itself. Gait describes the whole movement, which is why clinicians talk about analyzing someone's gait."},
+{"t":1,"q":"Which fundamental movement skill requires a child to coordinate their eyes, arms, and legs at the same time?","a":["Galloping","Balancing on one foot","Stopping and starting","Throwing and catching"],"c":3,"e":"Throwing and catching is singled out because it forces simultaneous coordination of eyes, arms, and legs, which is why it takes longer to learn than it looks. Stopping and starting is the tempting answer because both are listed as fundamental skills, but that one is about control rather than about coordinating multiple body parts on a moving target."},
+{"t":1,"q":"Which fundamental movement skill most directly helps a child develop better control over their body movements during activity?","a":["Stopping and starting","Throwing and catching","Kicking","Skipping rope"],"c":0,"e":"Stopping and starting is the skill named for building control over body movement, because halting on purpose is harder than moving. Throwing and catching is the frequent wrong choice since both appear on the same list, but that skill is described in terms of coordinating eyes, arms, and legs. Look for the word control in the stem."},
+{"t":1,"q":"Which movement helps a child develop the stabilization they need for jumping?","a":["Sprinting","Galloping","Crawling","Throwing"],"c":1,"e":"Galloping develops the stabilization that controlled jumping depends on, which is why it appears in early movement programs. Sprinting is tempting because it looks more athletic and involves both legs, but it does not build the same side-to-side stabilization pattern. Skills are taught in an order, and galloping comes before confident jumping."},
+{"t":1,"q":"A coach is teaching a young child to throw overhand. How should the child be instructed to stand?","a":["Facing the target squarely","Feet together and still","With the side to the target","With the back to the target"],"c":2,"e":"Standing with the side to the target lets the trunk rotate, which is where throwing speed actually comes from. Facing the target squarely is the instinctive answer and the one children do naturally, and it is exactly the habit the cue is meant to correct. Rotation, not arm strength, produces the throw."},
+{"t":1,"q":"When teaching a child to dribble a basketball, which part of the hand should contact the ball?","a":["The palm","The whole hand flat","The thumb and index finger","The middle two fingers"],"c":3,"e":"Contact is made with the middle two fingers, which gives control over direction and height. The palm is the tempting answer because it is the largest surface and feels most secure, but palm contact slaps the ball and removes fine control. Beginners default to the palm, which is why the cue exists."},
+{"t":1,"q":"Which of the following best describes early sport specialization?","a":["Concentrating on one sport year-round to the exclusion of others","Playing three different sports in three seasons","Starting any sport before age ten","Training with a private coach"],"c":0,"e":"Early sport specialization means intense year-round focus on a single sport at a young age, to the exclusion of other sports. Starting a sport before age ten is tempting because the word early appears in the term, but starting young is not itself specialization. Exclusivity and year-round volume are what define it."},
+{"t":1,"q":"At minimum, how many months per year must a young athlete devote to training and competition in one sport to be considered early sport specialized?","a":["4 months","8 months","10 months","12 months"],"c":1,"e":"The working threshold is at least 8 months per year in one organized sport. Twelve months is the tempting answer because specialization is described as year-round and twelve is what year-round sounds like. Eight is the number that triggers the classification, and knowing the exact figure matters."},
+{"t":1,"q":"A young athlete has played one sport year-round for three seasons and now dreads practice and no longer enjoys competing. What risk of early sport specialization does this describe?","a":["Dehydration","Growth plate fracture","Burnout","Poor nutrition"],"c":2,"e":"Burnout is the physical and emotional exhaustion that causes young athletes to stop enjoying and eventually quit their sport. A growth plate fracture is tempting because it sounds more serious and injury is also a documented risk, but the scenario describes exhaustion and lost enjoyment, not tissue damage. Read the symptoms in the stem."},
+{"t":1,"q":"Of 100 athletes aged 7 to 17 who specialize in a single sport with extensive training and competition, approximately how many become elite athletes?","a":["Fifty","Twenty-five","Ten","One"],"c":3,"e":"Roughly one out of 100 specializing young athletes reaches an elite level. Ten is the tempting choice because it sounds like a plausible percentage and students round toward optimism. The very small number is the entire reason the specialization conversation exists in youth sports."},
+{"t":1,"q":"Which individual sport is most often cited as encouraging early specialization because its athletes peak at a young age?","a":["Figure skating","Golf","Rowing","Long-distance running"],"c":0,"e":"Figure skating is the standard example, because competitive peaks come early and training must begin correspondingly early. Long-distance running is tempting because it is demanding and time-consuming, but distance runners commonly peak in their late twenties and thirties. The peak age is the structural reason, not the difficulty of the sport."},
+{"t":1,"q":"Repeated overhand pitching can damage the ulnar collateral ligament of the elbow, an injury often repaired with Tommy John surgery. Which sport is this associated with?","a":["Soccer","Baseball","Swimming","Basketball"],"c":1,"e":"Baseball pitching places repeated stress on the ulnar collateral ligament of the elbow, and Tommy John surgery is the reconstruction named after the pitcher who first had it. Swimming is tempting because it is another high-volume repetitive sport, but swimming overuse injuries concentrate in the shoulder rather than the elbow ligament."},
+{"t":1,"q":"To reduce the risk of overuse injury and burnout, what is the minimum amount of time each week a young athlete should spend away from organized sport?","a":["Half a day","One day","Two days","Four days"],"c":2,"e":"At least two days per week completely away from organized sport is the recommended minimum. One day is the tempting answer because a single rest day is the familiar idea from adult training schedules. Young athletes are still growing, and the recovery requirement is higher, not lower."},
+{"t":1,"q":"A guideline for youth sports says weekly organized training hours should not exceed a certain figure. What is that figure for a ten-year-old?","a":["Five hours","Twenty hours","Unlimited if supervised","Ten hours"],"c":3,"e":"The recommendation is that weekly organized sport hours should not exceed the athlete's age in years, so ten hours for a ten-year-old. Twenty hours is tempting because competitive club schedules often reach that, but common practice and recommended practice are different things. Age in years is an unusually easy rule to remember."},
+{"t":1,"q":"What are the primary benefits of plyometric training?","a":["Increased power and neuromuscular coordination","Increased flexibility and joint range","Improved digestion and appetite","Lower resting heart rate only"],"c":0,"e":"Plyometric or jump training primarily builds power and neuromuscular coordination, meaning how efficiently the nervous system recruits muscle. Flexibility is the tempting answer because plyometrics involve dynamic movement, but stretching is the method aimed at flexibility. Power is force produced quickly, and that is what jumping trains."},
+{"t":1,"q":"Which practice, once treated as optional in fitness routines, is now recommended to improve flexibility, reduce injury risk, and support overall movement?","a":["Ice baths","Stretching","Compression clothing","Fasting before workouts"],"c":1,"e":"Stretching moved from optional to recommended for flexibility, injury risk reduction, and movement quality. Ice baths are tempting because they are a visible part of athletic recovery culture, but the evidence behind them is far less settled. Stretching is the practice named as having shifted from optional to recommended."},
+{"t":1,"q":"An athlete loses 2 pounds of body weight during a long practice. About how much fluid should they drink to rehydrate properly?","a":["8 to 12 ounces","16 to 24 ounces","32 to 48 ounces","64 to 96 ounces"],"c":2,"e":"The rule is 16 to 24 ounces of fluid per pound lost, so 2 pounds calls for 32 to 48 ounces. Choosing 16 to 24 is the classic trap because that is the correct per-pound figure applied to the wrong number of pounds. Read how many pounds the stem gives before you multiply."},
+{"t":1,"q":"About how much physical activity should caregivers aim for with a preschool child aged 3 to 5?","a":["30 minutes per day","1 hour per day","2 hours per week","About 3 hours per day across all intensities"],"c":3,"e":"Preschoolers should be active throughout the day, with caregivers aiming for roughly 3 hours daily across light, moderate, and vigorous intensities. One hour per day is tempting because that is the number for ages 6 to 17, but younger children move in short bursts throughout the whole day rather than in a scheduled block."},
+{"t":1,"q":"How many days per week should a 14-year-old include muscle-strengthening activity?","a":["At least 3 days","At least 2 days","Every day","1 day"],"c":0,"e":"Youth ages 6 to 17 need muscle-strengthening activity on at least 3 days per week. At least 2 days is the tempting answer because that is genuinely the adult recommendation, and adult numbers are more widely publicized. Youth guidelines ask for three days each of vigorous, muscle-strengthening, and bone-strengthening work."},
+{"t":1,"q":"Compared with young athletes who play several sports, athletes who specialize in one sport year-round face what level of serious overuse injury risk?","a":["Slightly lower risk","Roughly double the risk","About the same risk","No measurable difference"],"c":1,"e":"Specialized young athletes carry roughly twice the risk of serious overuse injury compared with similarly active multi-sport peers. About the same risk is tempting because both groups are training hard and total activity seems comparable. The difference comes from repeating the same movement pattern rather than from the total amount of activity."},
+
+{"t":2,"q":"The brain is a small organ with a large fuel bill. What percentage of the body's glucose does it consume?","a":["20 percent","2 percent","5 percent","50 percent"],"c":0,"e":"The brain uses about 20 percent of the body's glucose. Two percent is the tempting wrong answer because it is the other number in this pair, and it describes the brain's share of body weight. The whole point of the comparison is the mismatch between a tiny organ and an enormous energy demand."},
+{"t":2,"q":"About what fraction of total body weight does the human brain represent?","a":["20 percent","2 percent","10 percent","15 percent"],"c":1,"e":"The brain is roughly 2 percent of body weight while consuming about 20 percent of the body's glucose. Twenty percent is the tempting answer because both figures travel together and students remember the striking one. If the number you pick does not sound disproportionate against the other, you have them reversed."},
+{"t":2,"q":"Which food is named as containing nutrients associated with the production of calming brain chemicals such as dopamine and serotonin?","a":["White rice","Pretzels","Salmon","Iceberg lettuce"],"c":2,"e":"Salmon is the food named for supplying nutrients tied to producing dopamine and serotonin, including omega-3 fatty acids and protein. White rice is tempting because carbohydrate is the brain's fuel and students connect fuel with function, but supplying energy and supplying the raw materials for neurotransmitters are different roles."},
+{"t":2,"q":"Which fat source is described as supporting long-term mental health?","a":["Butter","Coconut oil","Palm oil","Olive oil"],"c":3,"e":"Olive oil is the fat named for supporting long-term mental health, and it is a central part of the Mediterranean and MIND eating patterns. Coconut oil is tempting because it is a popular plant oil, but it is highly saturated and is not the one associated with brain health outcomes. Not every plant oil behaves the same way."},
+{"t":2,"q":"According to current research, which food type is linked to increased creativity and curiosity?","a":["Fruit","Bread","Cheese","Cereal"],"c":0,"e":"Fruit is the food type research connects with increased creativity and curiosity. Bread is tempting because carbohydrate feeds the brain and students reason from fuel to function, but the finding here is specific to fruit rather than to carbohydrate generally. Keep the specific food with its specific claim."},
+{"t":2,"q":"Which eating pattern emphasizes berries and leafy green vegetables to support brain function?","a":["DASH","MIND","Ketogenic","Paleo"],"c":1,"e":"The MIND pattern targets brain function and specifically emphasizes berries and leafy greens. DASH is the standard wrong answer because both are four-letter acronyms built from the Mediterranean pattern, but DASH targets blood pressure. Use the target organ named in the stem to pick between them."},
+{"t":2,"q":"Which diet recommends a limited intake of fats and excess sugar and was designed to lower blood pressure?","a":["MIND","Mediterranean","DASH","Ketogenic"],"c":2,"e":"DASH stands for Dietary Approaches to Stop Hypertension, so blood pressure is its target, and it calls for limiting fats and excess sugar. MIND is the tempting answer because the two share heritage and both promote vegetables, but MIND is aimed at the brain. Read the organ or outcome in the stem."},
+{"t":2,"q":"What is a neurotransmitter?","a":["A nutrient found in fish","A hormone made by the pancreas","A type of blood sugar","A chemical messenger between nerve cells"],"c":3,"e":"Neurotransmitters are chemical messengers that carry signals between nerve cells, and dopamine and serotonin are two examples. A type of blood sugar is tempting because glucose is discussed constantly alongside the brain, but glucose is fuel the brain burns rather than a signal it sends. Fuel and message are different jobs."},
+{"t":2,"q":"The body builds serotonin from which building block supplied by food?","a":["Tryptophan","Glucose","Calcium","Vitamin C"],"c":0,"e":"Serotonin is built from tryptophan, an amino acid that comes from dietary protein, which is one direct link between food and brain chemistry. Glucose is tempting because it is the brain's fuel and students associate it with everything the brain does, but burning fuel and constructing a molecule are separate processes."},
+{"t":2,"q":"Roughly how much sleep does a middle school student generally need each night?","a":["6 to 7 hours","9 to 12 hours","4 to 5 hours","13 to 15 hours"],"c":1,"e":"School-age children and young teens generally need about 9 to 12 hours of sleep per night, more than adults need. Six to seven hours is tempting because it is what many students actually get and what many adults report. What a person gets and what their body needs are different numbers."},
+{"t":2,"q":"A student has felt overwhelmed for several weeks and is not sure what to do. What is the recommended first step?","a":["Wait and see if it passes on its own","Search online for a diagnosis","Talk to a trusted adult such as a parent, counselor, teacher, or advisor","Stop attending activities they enjoy"],"c":2,"e":"Talking to a trusted adult is the recommended first step, not a last resort, and health professionals treat mental health as health. Waiting it out is tempting because it feels less awkward and students worry about making something bigger than it is. Telling someone is the same ordinary step you would take for a sprained ankle."},
+{"t":2,"q":"A competitor is nervous the night before their Round Two presentation. Which choice best supports how they will perform?","a":["Stay up late rereading notecards silently","Skip breakfast to avoid feeling nauseous","Practice once quietly in their head","Get a full night of sleep after rehearsing out loud on a timer"],"c":3,"e":"Sleep restores memory retrieval, and rehearsing aloud on a timer builds the actual skill of speaking within five minutes. Rereading cards silently is the tempting choice because it feels like studying, but speaking is a motor skill and silent reading does not practice it. Skipping breakfast leaves the brain short of glucose right when it needs fuel."},
+
+{"t":3,"q":"What term describes how well a person lives as they age, rather than simply how long?","a":["Healthspan","Lifespan","Longevity","Life expectancy"],"c":0,"e":"Healthspan is the quality measure: the years spent healthy, mobile, and independent. Lifespan is the tempting answer because it is the more familiar word and it also contains span, but lifespan counts years without describing them. When a stem asks how well rather than how long, take healthspan."},
+{"t":3,"q":"A researcher reports that average lifespan in a country has increased but healthspan has not. What does that mean?","a":["People are dying younger","People are living longer but spending more of those years in poor health","Fewer people are being born","Health care has become less available"],"c":1,"e":"Lifespan measures total years lived and healthspan measures the years lived in good health, so the two can move apart. Dying younger is tempting because a gap sounds like bad news overall, but lifespan rising means the opposite. The concern is added years spent unwell rather than fewer years altogether."},
+{"t":3,"q":"Dr. Bill Hettler's model of wellness includes six dimensions. Which of the following is one of them?","a":["Environmental","Financial","Spiritual","Digital"],"c":2,"e":"Hettler's six dimensions are physical, emotional, intellectual, social, occupational, and spiritual. Environmental and financial are tempting because later wellness models genuinely added them, producing seven-, eight-, and nine-dimension versions. The original model has six, and spiritual is the one students most often forget."},
+{"t":3,"q":"How many dimensions of wellness are in Dr. Bill Hettler's original model?","a":["Three","Four","Five","Six"],"c":3,"e":"Hettler proposed six dimensions: physical, emotional, intellectual, social, occupational, and spiritual. Five is the tempting answer because most students can name five without effort and then stop. The one that goes missing is usually spiritual, so count to six deliberately."},
+{"t":3,"q":"Which two factors contribute the most to overall health and well-being across the lifespan?","a":["Physical activity and connecting with others","Vitamins and sleep tracking","Genetics and body weight","Screen time limits and hydration"],"c":0,"e":"Physical activity and connecting with others rise to the top together across the research on lifelong well-being. Genetics is tempting because heredity clearly matters, but it is not something a person acts on, and the question asks what contributes most across a life. Social connection is an equal partner to movement, not a nice extra."},
+{"t":3,"q":"Being able to rely on someone for emotional support falls under which category of social connection?","a":["Structure","Function","Quality","Frequency"],"c":1,"e":"Function describes what relationships actually do for a person, including providing reliable emotional support. Quality is the tempting answer because good support feels like a judgment about how good the relationship is, but quality asks whether relationships are positive or harmful overall. Support is something a relationship performs, so it is a function."},
+{"t":3,"q":"Which category of social connection describes how many people are in someone's life and how often they see them?","a":["Function","Quality","Structure","Resonance"],"c":2,"e":"Structure counts the connections: how many, how often, and in what network. Function is tempting because both words sound abstract and interchangeable, but function asks what those relationships provide rather than how many there are. Structure is the headcount, function is the job, quality is the judgment."},
+{"t":3,"q":"A student has many acquaintances but finds most of those relationships draining and unkind. Which category of social connection is the concern?","a":["Structure","Function","Frequency","Quality"],"c":3,"e":"Quality describes whether relationships feel supportive or corrosive, and this student's problem is not the number of people. Structure is tempting because the stem mentions many acquaintances, but a large network is a structural strength, not the issue. Having connections and having good connections are separate measures."},
+{"t":3,"q":"What term describes an everyday interaction between people that may include non-verbal caring synchrony?","a":["Positive resonance","Social loading","Peer alignment","Emotional contagion"],"c":0,"e":"Positive resonance is the term for these brief shared moments of positive feeling and non-verbal caring between people. Emotional contagion is tempting because it also describes feelings spreading between people, but it does not require the mutual caring and shared quality that resonance describes. Resonance is mutual; contagion can be one-way."},
+{"t":3,"q":"What term describes two people's hearts beginning to beat in the same rhythm when they spend time together?","a":["Positive resonance","Biological synchrony","Cardiac coupling","Social mirroring"],"c":1,"e":"Biological synchrony names the measurable physical alignment, including heart rhythm, that occurs between people who are connected. Positive resonance is the close cousin and the tempting wrong answer, but resonance describes the interaction itself while synchrony describes the measurable body-level alignment."},
+{"t":3,"q":"In a 30-day plan to improve wellness, what is the focus of week 2?","a":["Financial planning","Cutting out food groups","Exploration of movement","Deep sleep tracking"],"c":2,"e":"Week 2 focuses on exploration of movement, sampling different kinds of activity to find what a person will actually keep doing. Cutting out food groups is tempting because restriction is what people picture when they hear wellness plan, but the plan is built on adding small sustainable changes rather than subtracting."},
+{"t":3,"q":"Marcus is working through his 30-day wellness plan and decides to invite a neighbor to walk with him after school. Which week is he focused on?","a":["Week 1","Week 2","Week 3","Week 4"],"c":3,"e":"Week 4 is the connection week, when the plan brings other people in, and inviting a neighbor is the defining feature here. Week 2 is the trap almost everyone falls into, because week 2 is exploration of movement and walking is obviously movement. Read for the social element rather than the activity."},
+{"t":3,"q":"What term describes someone's belief in their own ability to complete a task or do something complex or new?","a":["Self-efficacy","Self-esteem","Motivation","Resilience"],"c":0,"e":"Self-efficacy is belief in your capability on a specific task, and it grows out of completing small things successfully. Self-esteem is the tempting answer because the words look alike, but esteem is how you feel about yourself overall while efficacy is about what you believe you can do."},
+{"t":3,"q":"A student wants to improve their study habits but feels overwhelmed by changing everything at once. Which idea best describes making one small, positive change they can do right now?","a":["Delayed gratification","The adjacent possible","Progressive overload","The talk test"],"c":1,"e":"The adjacent possible is the idea that the most useful next step is the small positive change actually available from where you already stand. Delayed gratification is tempting because both concern self-control over time, but delayed gratification is about waiting for a reward, not about choosing a reachable next step. Small and now is the whole concept."},
+{"t":3,"q":"In a well-known study, hotel room attendants were told that their daily work already counted as exercise, and measurable physical changes followed. Which component of the movement piece of wellness does this illustrate?","a":["Intensity","Duration","Mindset","Frequency"],"c":2,"e":"Mindset is the component studied, because the workers' physical results changed after only their understanding of their work changed. Intensity is tempting because it is the variable people assume drives physical change, but the attendants did not work harder. What shifted was how they interpreted what they were already doing."},
+{"t":3,"q":"What is described as the single most effective supplement for building muscle?","a":["Vitamin C","Collagen","Branched-chain amino acids","Creatine"],"c":3,"e":"Creatine has the strongest evidence base of any supplement for building muscle. Branched-chain amino acids are the tempting choice because they are heavily marketed to athletes and sound directly muscle-related, but the evidence behind them is much weaker. Most supplements have far less support than their labels suggest."},
+{"t":3,"q":"According to the CDC, which action is one of the best things a person can do for their health at any age?","a":["Engage in physical activity","Take daily supplements","Follow a low-carbohydrate diet","Weigh yourself daily"],"c":0,"e":"The CDC names engaging in physical activity as one of the best things a person can do for their health. Following a specific diet is tempting because eating patterns get more attention in popular media, but no single diet carries the breadth of evidence that movement does across every age group."},
+{"t":3,"q":"How long is the Round Two presentation in this event?","a":["Three minutes","Five minutes","Seven minutes","Ten minutes"],"c":1,"e":"Round Two is a five-minute presentation to judges, with a timecard shown at one minute remaining. Seven and ten minutes are tempting because other HOSA presentation events use longer formats, and competitors carry over what they know from a teammate's event. Rehearse to this event's clock, not another one."},
+{"t":3,"q":"What materials may a competitor use during the Round Two presentation?","a":["A poster and handouts","A slide deck","Notecards only, paper or electronic","Any visual aid the competitor brings"],"c":2,"e":"Notecards only are permitted, paper or electronic, and they are optional; electronic notes may not be shown to the judges. A slide deck is tempting because presentations usually mean slides, but this event allows no other materials or visual aids. Preparing a visual you cannot use wastes the time you needed for rehearsal."},
+{"t":3,"q":"During the Round Two presentation, when is a timecard shown to the competitor?","a":["At the halfway point","Every minute","At the start only","With one minute remaining"],"c":3,"e":"A timecard is shown with one minute remaining, and once time is called the competitor is excused. The halfway point is tempting because that is how many classroom presentations are timed, but the single warning at one minute is what this event uses. Plan your ending to land before that card matters."},
+{"t":3,"q":"Beyond defining the selected topic, what must a Round Two presentation include according to the rubric?","a":["The why behind the topic choice and how the information will be used going forward","A citation list read aloud","A live demonstration of a skill","A question-and-answer period led by the competitor"],"c":0,"e":"The rubric asks the competitor to define the topic, explain why they chose it, show their knowledge and the benefits of healthy choices, and say how they will use the information moving forward. A skill demonstration is tempting because many HOSA events include one, but this event has no rated skills round. The why is the part competitors most often skip."},
+{"t":3,"q":"What is the dress expectation for this event?","a":["Athletic wear appropriate to the topic","Proper business attire or the official HOSA uniform, with bonus points awarded","Casual clothing","Any clothing, since dress is not scored"],"c":1,"e":"Proper business attire or the official HOSA uniform is expected, and bonus points are awarded for proper dress. Assuming dress is unscored is tempting because it feels separate from content, but points that are free to earn are the cheapest points in the event. Athletic wear is not appropriate even for a physical activity topic."},
+{"t":3,"q":"Round One and Round Two scores are added together. If two competitors finish with the same total, how is the tie broken?","a":["By presentation score","By dress code points","By the highest test score","By a coin toss"],"c":2,"e":"The highest Round One test score breaks a tie. Presentation score is the tempting answer because Round Two happens last and feels decisive, but the written test is the tiebreaker in this event. That makes test preparation worth more than its share of the total suggests."},
+{"t":3,"q":"A competitor is planning a five-minute presentation. Which approach best matches what judges are scoring?","a":["List as many facts as possible to show knowledge","Read the notecards word for word to avoid mistakes","Speak for the full five minutes without pausing","Build one clear goal with a beginning, middle, and end, and rehearse aloud on a timer"],"c":3,"e":"Judges score whether the topic is defined, why it was chosen, and how the competitor will use it, which requires structure rather than volume. Listing facts is the most common mistake because it feels like preparation, but it reads as a presentation with no point of view. Reading cards word for word costs eye contact, which judges notice immediately."},
+
+{"t":4,"q":"A child receives a vaccine before ever being exposed to a disease. Which level of prevention is this?","a":["Primary prevention","Secondary prevention","Tertiary prevention","Rehabilitation"],"c":0,"e":"Primary prevention stops a disease from ever starting, and vaccination is the clearest example. Secondary prevention is tempting because both happen before someone feels sick, but secondary looks for a disease that may already be present. Primary acts before there is anything to find."},
+{"t":4,"q":"A school runs vision screening for all students to catch problems that have not yet caused noticeable symptoms. Which level of prevention is this?","a":["Primary prevention","Secondary prevention","Tertiary prevention","Health promotion"],"c":1,"e":"Screening is secondary prevention because it detects a condition early, before symptoms, when treatment works best. Primary is the tempting answer because screening feels preventive in everyday speech. The tell is whether the condition might already be there; if you are looking for it, the level is secondary."},
+{"t":4,"q":"A person with diagnosed type 2 diabetes attends regular check-ups and manages their condition to avoid complications. Which level of prevention is this?","a":["Primary prevention","Secondary prevention","Tertiary prevention","Screening"],"c":2,"e":"Tertiary prevention manages a disease someone already has, limiting damage and complications. Secondary is tempting because both involve ongoing medical contact, but secondary is about finding disease that has not yet been diagnosed. Once the diagnosis exists, you are in tertiary."},
+{"t":4,"q":"Which of these actions is an example of primary prevention?","a":["A blood pressure screening at a health fair","Physical therapy after a stroke","Insulin therapy for diagnosed diabetes","Wearing a helmet while biking"],"c":3,"e":"Wearing a helmet prevents an injury from occurring at all, which is primary prevention. The blood pressure screening is the tempting choice because health fairs feel preventive, but a screening searches for a condition that may already exist and is therefore secondary. Ask whether the action comes before the condition or after it."},
+{"t":4,"q":"Which organ produces insulin?","a":["Pancreas","Liver","Kidney","Adrenal gland"],"c":0,"e":"Insulin is produced by the pancreas, an organ tucked behind the stomach. The liver is the tempting answer because it is deeply involved in blood glucose control and stores glycogen, but it responds to insulin rather than making it. Making the hormone and responding to it are different roles."},
+{"t":4,"q":"Which cells are responsible for producing and releasing insulin?","a":["Alpha cells","Beta cells","Red blood cells","Hepatocytes"],"c":1,"e":"Beta cells in the pancreas produce and release insulin. Alpha cells are the standard distractor because they sit in the same clusters, but they release glucagon, which does the opposite job. Alphabetical order helps: alpha raises blood glucose, beta brings it down."},
+{"t":4,"q":"Which pancreatic hormone raises blood glucose, doing the opposite of insulin's job?","a":["Adrenaline","Cortisol","Glucagon","Thyroxine"],"c":2,"e":"Glucagon, released by pancreatic alpha cells, raises blood glucose while insulin lowers it. Adrenaline is tempting because it also raises blood sugar during stress, but it comes from the adrenal glands and is not the pancreas hormone paired with insulin. The pancreas runs both sides of this control system."},
+{"t":4,"q":"Insulin instructs the body to store nutrients as glycogen and as what else?","a":["Amino acids","Cholesterol","Fiber","Triglycerides"],"c":3,"e":"Insulin is a storage hormone across the board: carbohydrate becomes glycogen in the liver and muscle, and surplus energy is also stored as triglycerides, the storage form of fat. Cholesterol is tempting because it is a lipid found in the blood, but it is a structural molecule rather than an energy store."},
+{"t":4,"q":"What does the term insulin resistance mean?","a":["Cells respond poorly to insulin's signal","The pancreas stops making insulin entirely","Insulin is destroyed in the stomach","The body makes antibodies against glucose"],"c":0,"e":"In insulin resistance, insulin is present but cells respond poorly to it, so the pancreas compensates by producing more. Stopping insulin production entirely is tempting because it sounds like a more severe version of the same problem, but that describes type 1 diabetes, a different condition. The key still turns; the lock is stiff."},
+{"t":4,"q":"Approximately how many adults over the age of 18 in the United States are insulin resistant?","a":["10 million","100 million","1 million","500 million"],"c":1,"e":"Roughly 100 million U.S. adults over 18 are insulin resistant, which makes it common rather than rare. Ten million is tempting because it sounds like a serious public health number without sounding implausible. The striking part of this figure is that most people who have it do not know."},
+{"t":4,"q":"Besides excess body fat, what else may contribute to insulin resistance?","a":["Drinking water","Sleeping on your side","Infections","Reading before bed"],"c":2,"e":"Infections can also drive insulin resistance, which shows the biology is more complicated than any single cause. The stem uses the word besides, which is doing important work here: it has already excluded the weight-related options. Read that word and let it narrow the field."},
+{"t":4,"q":"Which condition, involving fat accumulation in the liver of a person who does not drink alcohol, commonly occurs with insulin resistance?","a":["Cirrhosis from alcohol","Hepatitis A","Gallstones","Non-alcoholic fatty liver disease"],"c":3,"e":"Non-alcoholic fatty liver disease is fat build-up in the liver without alcohol use, and it is closely associated with insulin resistance. Alcohol-related cirrhosis is the tempting pick because liver damage is most commonly discussed in that context, but the entire point of the name is that alcohol is not involved."},
+{"t":4,"q":"Which form of diabetes occurs when the body cannot respond normally to the insulin that it makes?","a":["Type 2 diabetes","Type 1 diabetes","Gestational diabetes","Diabetes insipidus"],"c":0,"e":"Type 2 diabetes is defined by the body's inability to respond normally to the insulin it produces, which is where insulin resistance leads. Type 1 is the tempting answer because students associate the number one with the more primary or severe version. The numbers describe different mechanisms, not different severities."},
+{"t":4,"q":"In which form of diabetes does the body fail to produce enough insulin because the beta cells have been destroyed?","a":["Type 2 diabetes","Type 1 diabetes","Prediabetes","Metabolic syndrome"],"c":1,"e":"Type 1 diabetes involves destruction of the insulin-producing beta cells, so the body cannot make enough insulin. Type 2 is tempting because it is far more common and gets more attention, but in type 2 insulin is made and the cells respond poorly to it. Not enough insulin versus not enough response is the whole distinction."},
+{"t":4,"q":"What does it mean when type 2 diabetes goes into remission?","a":["The pancreas has been replaced","The person no longer needs to see a doctor","Blood glucose returns to a normal range without diabetes medication","The condition can never return"],"c":2,"e":"Remission means blood glucose has returned to a normal range without diabetes medication. Believing the condition can never return is tempting because remission sounds like a cure, but remission describes the current state and continued follow-up still matters. It is a meaningful outcome, not a permanent guarantee."},
+{"t":4,"q":"Research on adults with type 2 diabetes has found that losing about 20 pounds or more increases the likelihood of remission by approximately what percent?","a":["20 percent","30 percent","40 percent","60 percent"],"c":3,"e":"The figure taught here is roughly 60 percent for a loss of about 20 pounds or more in adults who already have type 2 diabetes. Thirty percent is tempting because students expect a modest effect from a modest amount of weight change. Note the population: this finding comes from adults with diagnosed diabetes, not from growing children or teenagers."},
+{"t":4,"q":"Which of the following is described as having a HIGH level of control, meaning its underlying factors are largely modifiable?","a":["Metabolic syndrome","Type 1 diabetes","Sickle cell disease","Cystic fibrosis"],"c":0,"e":"Metabolic syndrome is described as having a high level of control because blood pressure, blood glucose, waist measurement, and blood lipids all respond to changes in activity, food, sleep, and medication. Type 1 diabetes is the tempting contrast because it is the most familiar chronic disease here, but it is autoimmune and cannot be prevented by behavior."},
+{"t":4,"q":"Metabolic syndrome is a cluster of findings. Which set below describes it?","a":["Fever, cough, fatigue, and sore throat","High blood pressure, elevated blood glucose, excess waist circumference, and abnormal blood lipids","Joint pain, rash, hair loss, and light sensitivity","Hearing loss, dizziness, ringing ears, and nausea"],"c":1,"e":"Metabolic syndrome groups high blood pressure, elevated blood glucose, excess waist circumference, and abnormal blood lipids. Students sometimes look for a single defining measurement, but the word syndrome means a cluster, and no one finding alone establishes it. That clustering is why it responds so well to broad lifestyle change."},
+{"t":4,"q":"Long-term high blood pressure is most strongly linked to which serious condition?","a":["Asthma","Appendicitis","Stroke","Food poisoning"],"c":2,"e":"Long-standing hypertension is the leading contributor to stroke, because sustained pressure damages the blood vessels supplying the brain. Asthma is tempting because it is a common chronic condition students recognize, but it is a disease of the airways and is not driven by blood pressure. Vessels and airways are separate systems."},
+{"t":4,"q":"Which condition occurs when blood flow to part of the brain is interrupted, causing brain cells to begin dying?","a":["Migraine","Concussion","Seizure","Stroke"],"c":3,"e":"A stroke is an interruption of blood flow to part of the brain, and brain tissue begins to die within minutes. A concussion is tempting because both involve the brain and both are urgent, but a concussion results from an impact rather than from loss of blood supply. Cause of injury is what separates them."},
+{"t":4,"q":"Excess intake of which nutrient is most strongly associated with hypertension and cardiovascular disease?","a":["Sodium","Potassium","Calcium","Vitamin D"],"c":0,"e":"Excess sodium is most strongly linked to high blood pressure and cardiovascular disease. Potassium is the tempting answer because it appears in the same conversation, but potassium works in the opposite direction and is generally increased rather than restricted for blood pressure. The two minerals move opposite ways."},
+{"t":4,"q":"Which medical term refers to the wasting away or decrease in size of a body tissue?","a":["Hypertrophy","Atrophy","Necrosis","Edema"],"c":1,"e":"Atrophy is the decrease in size or wasting away of tissue, such as a muscle immobilized in a cast for weeks. Necrosis is tempting because both describe tissue in trouble, but necrosis means tissue death while atrophy means shrinkage of living tissue. Atrophy can be reversed with use; necrosis cannot."},
+{"t":4,"q":"What is the opposite of atrophy?","a":["Necrosis","Dystrophy","Hypertrophy","Ischemia"],"c":2,"e":"Hypertrophy is an increase in the size of a tissue, such as muscle growing in response to strength training. Dystrophy is tempting because it shares the same word ending and sounds like a matched pair, but dystrophy refers to a group of disorders causing progressive weakness. The prefix hyper meaning above is the clue."},
+{"t":4,"q":"Why does regular physical activity appear in nearly every prevention plan for type 2 diabetes?","a":["It removes sugar from food before digestion","It causes the pancreas to grow larger","It replaces the need for any medication","It improves how sensitive muscle cells are to insulin"],"c":3,"e":"Exercise makes muscle cells more responsive to insulin, which directly counters insulin resistance. Replacing medication entirely is tempting because activity has such strong effects, but treatment decisions belong to a medical team and activity works alongside care rather than instead of it. The mechanism is improved sensitivity, not sugar removal."}
+];
+
+
+/* ============================================================
+   Rendering + quiz engine
+   ============================================================ */
+const $ = id => document.getElementById(id);
+const esc = s => String(s);
+
+/* ---------- theme ---------- */
+(function(){
+  let saved = null;
+  try { saved = localStorage.getItem('mt-theme'); } catch(e){}
+  if (saved === 'dark' || saved === 'light') document.documentElement.setAttribute('data-theme', saved);
+  $('themeBtn').addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const isDark = cur ? cur === 'dark'
+      : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const next = isDark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('mt-theme', next); } catch(e){}
+  });
+})();
+
+/* ---------- best score ---------- */
+function readBest(){ try { return parseInt(localStorage.getItem('mt-best') || '', 10); } catch(e){ return NaN; } }
+function writeBest(p){ try { localStorage.setItem('mt-best', String(p)); } catch(e){} }
+(function(){ const b = readBest(); if (!isNaN(b)) $('stBest').textContent = b + '%'; })();
+
+/* ---------- navigation ---------- */
+function go(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0, behavior:'instant' in window ? 'auto' : 'auto'});
+}
+
+/* ---------- test plan table ---------- */
+(function(){
+  const rows = ['<div class="plan-r hd"><span>Topic</span><span>Weight</span></div>'];
+  TOPICS.forEach(t => rows.push(
+    '<div class="plan-r"><span>' + t.n + '</span><span class="plan-w">' +
+    (t.w > 0 ? t.w + '%' : 'Round 2') + '</span></div>'
+  ));
+  $('planTable').innerHTML = rows.join('');
+  $('stQ').textContent = Q.length;
+  const q2 = $('stQ2'); if (q2) q2.textContent = Q.length;
+})();
+
+/* ---------- study guide ---------- */
+(function(){
+  const out = [];
+  GUIDE.forEach((g, i) => {
+    const T = TOPICS[g.t];
+    const qr = g.qref.map(p =>
+      '<div><span class="qr-term">' + p[0] + '</span><span class="qr-def">' + p[1] + '</span></div>'
+    ).join('');
+    out.push(
+      '<div class="sec" id="sec' + g.t + '">' +
+        '<button class="sec-h" onclick="toggleSec(' + g.t + ')" aria-expanded="false">' +
+          '<span class="sec-w">' + T.w + '%</span>' +
+          '<span class="sec-t">' + T.n + '</span>' +
+          '<span class="sec-c">+</span>' +
+        '</button>' +
+        '<div class="sec-body">' +
+          '<div class="layer narr"><div class="layer-h">Narrative — read to understand</div>' + g.narr + '</div>' +
+          '<div class="layer deep"><div class="layer-h">Deep Dive — expert level</div>' + g.deep + '</div>' +
+          '<div class="layer qref"><div class="layer-h">Quick Reference — key terms</div><div class="qr">' + qr + '</div></div>' +
+          '<div class="layer note"><div class="layer-h">Top Competitor Study Notes</div><div class="notes-block">' + g.notes + '</div></div>' +
+          '<button class="sec-practice" onclick="startQuiz(' + g.t + ')">Practice this topic →</button>' +
+        '</div>' +
+      '</div>'
+    );
+  });
+  $('guideList').innerHTML = out.join('');
+})();
+
+function toggleSec(t){
+  const el = $('sec' + t);
+  const open = el.classList.toggle('open');
+  el.querySelector('.sec-h').setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+/* ---------- quiz engine ---------- */
+let session = [], idx = 0, score = 0, answered = false, lastMode = 'weighted';
+let curOrder = [0,1,2,3];
+const perTopic = {};
+
+function shuffle(a){
+  const r = a.slice();
+  for (let i = r.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [r[i], r[j]] = [r[j], r[i]];
+  }
+  return r;
+}
+
+/* Weighted draw: 45 / 5 x 11, largest-remainder over 50 items */
+function weightedSet(n){
+  const raw = TOPICS.map(t => t.w * n / 100);
+  const base = raw.map(Math.floor);
+  let left = n - base.reduce((a,b) => a+b, 0);
+  const order = raw.map((v,i) => [v - Math.floor(v), i])
+                   .sort((a,b) => b[0] - a[0] || a[1] - b[1]);
+  for (let k = 0; k < order.length && left > 0; k++, left--) base[order[k][1]]++;
+  let out = [];
+  base.forEach((cnt, t) => {
+    const pool = shuffle(Q.filter(q => q.t === t));
+    out = out.concat(pool.slice(0, Math.min(cnt, pool.length)));
+  });
+  return shuffle(out);
+}
+
+function startQuiz(mode){
+  lastMode = mode;
+  if (mode === 'weighted')      session = weightedSet(typeof TEST_N !== 'undefined' ? TEST_N : 50);
+  else if (mode === 'all')      session = shuffle(Q);
+  else                          session = shuffle(Q.filter(q => q.t === mode));
+  idx = 0; score = 0;
+  for (const k in perTopic) delete perTopic[k];
+  go('quiz');
+  renderQ();
+}
+
+function renderQ(){
+  answered = false;
+  const q = session[idx];
+  $('qCount').textContent = (idx + 1) + ' / ' + session.length;
+  $('qScore').textContent = score + ' ✓';
+  $('qFill').style.width = (idx / session.length * 100) + '%';
+  const T = TOPICS[q.t];
+  $('qTopic').textContent = T.n.replace('&amp;','&');
+  $('qTopic').style.color = T.c;
+  $('qStem').innerHTML = q.q;
+  curOrder = shuffle([0,1,2,3]);
+  const letters = ['A','B','C','D'];
+  $('qChoices').innerHTML = curOrder.map((orig, i) =>
+    '<button class="ch" onclick="answer(' + i + ')"><span class="k">' + letters[i] + '</span><span>' + q.a[orig] + '</span></button>'
+  ).join('');
+  const ex = $('qExpl');
+  ex.className = 'expl';
+  $('qNext').style.display = 'none';
+}
+
+function answer(i){
+  if (answered) return;
+  answered = true;
+  const q = session[idx];
+  const btns = $('qChoices').querySelectorAll('.ch');
+  btns.forEach((b, k) => {
+    b.disabled = true;
+    if (curOrder[k] === q.c) b.classList.add('right');
+    else if (k === i) b.classList.add('wrong');
+  });
+  const ok = curOrder[i] === q.c;
+  if (ok) score++;
+  if (!perTopic[q.t]) perTopic[q.t] = {c:0, n:0};
+  perTopic[q.t].n++;
+  if (ok) perTopic[q.t].c++;
+  const ex = $('qExpl');
+  ex.className = 'expl show ' + (ok ? 'ok' : 'no');
+  $('qVerdict').textContent = ok ? 'Correct' : 'Not quite';
+  $('qExplText').innerHTML = q.e;
+  $('qSrc').textContent = TOPICS[q.t].n.replace('&amp;','&') + (TOPICS[q.t].w > 0 ? ' · ' + TOPICS[q.t].w + '% of the test' : ' · Round Two material');
+  $('qScore').textContent = score + ' ✓';
+  $('qNext').style.display = 'block';
+  $('qNext').textContent = idx + 1 >= session.length ? 'See results' : 'Next question';
+  $('qNext').focus();
+}
+
+function nextQ(){
+  idx++;
+  if (idx >= session.length) return showResults();
+  renderQ();
+}
+
+function quitQuiz(){
+  if (idx > 0 || answered) return showResults();
+  go('home');
+}
+
+function showResults(){
+  const total = Math.max(1, Object.values(perTopic).reduce((a,b) => a + b.n, 0));
+  const pct = Math.round(score / total * 100);
+  go('results');
+  $('ringPct').textContent = pct + '%';
+  $('ringFrac').textContent = score + ' of ' + total;
+  const circ = 2 * Math.PI * 70;
+  requestAnimationFrame(() => {
+    $('ringArc').style.strokeDashoffset = circ * (1 - pct / 100);
+  });
+  $('ringArc').setAttribute('stroke', pct >= 80 ? 'var(--teal)' : pct >= 60 ? 'var(--orange)' : 'var(--red)');
+  const ranked = Object.keys(perTopic).filter(t => perTopic[t].n >= 2)
+    .sort((a,b) => (perTopic[a].c/perTopic[a].n) - (perTopic[b].c/perTopic[b].n));
+  const weakest = ranked.length ? TOPICS[ranked[0]].n.replace('&amp;','&') : null;
+  const second  = ranked.length > 1 ? TOPICS[ranked[1]].n.replace('&amp;','&') : null;
+  let msg;
+  if (pct >= 90)      msg = 'Medal range. Keep the full-length sessions coming and hold this line.' + (weakest ? ' Your softest spot is still ' + weakest + '.' : '');
+  else if (pct >= 80) msg = 'Strong.' + (weakest && second ? ' Read the Deep Dive for ' + weakest + ' and ' + second + ' tonight.' : ' Go find your two weakest topics below.');
+  else if (pct >= 65) msg = 'Solid base, real gaps.' + (weakest ? ' Work ' + weakest + ' before you take another full test.' : '');
+  else if (pct >= 45) msg = 'You know some of it.' + (weakest ? ' Open the study guide at ' + weakest + ' and read the narrative, then the deep dive.' : '');
+  else                msg = 'Start at the study guide, not the quiz.' + (weakest ? ' Begin with ' + weakest + '.' : ' Read the highest-weighted topic first.');
+  $('resMsg').textContent = msg;
+  const rows = Object.keys(perTopic).sort((a,b) => a - b).map(t => {
+    const d = perTopic[t], p = Math.round(d.c / d.n * 100);
+    const col = p >= 80 ? 'var(--teal)' : p >= 50 ? 'var(--orange)' : 'var(--red)';
+    return '<div class="brk-row"><span class="brk-t">' + TOPICS[t].n + '</span>' +
+           '<span class="brk-s" style="color:' + col + '">' + d.c + '/' + d.n + ' · ' + p + '%</span></div>';
+  });
+  $('resBrk').innerHTML = rows.join('') || '<div class="brk-row"><span class="brk-t">No questions answered</span><span class="brk-s">—</span></div>';
+  if (lastMode === 'weighted' && total >= (typeof TEST_N !== 'undefined' ? TEST_N : 50) * 0.8){
+    const b = readBest();
+    if (isNaN(b) || pct > b){ writeBest(pct); $('stBest').textContent = pct + '%'; }
+  }
+}
+
+function repeatQuiz(){ startQuiz(lastMode); }
+</script>
+
+</body>
+</html>

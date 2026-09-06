@@ -1,0 +1,1151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Biomedical Equipment Technician Study Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --navy:#0D1B2A; --navy-mid:#162438; --navy-hi:#1E3350;
+  --orange:#E8821A; --orange-dim:#A85C10;
+  --teal:#1A8A8A; --teal-dim:#125F5F;
+  --gold:#C9991A; --purple:#8C50C8; --purple-lt:#C07EF0;
+  --red:#D9544D;
+  --ink:#0D1B2A; --ink-2:#3E5068; --ink-3:#63758C;
+  --bg:#EEF1F5; --surface:#FFFFFF; --surface-2:#F5F7FA;
+  --line:#D3DBE5; --line-soft:#E4EAF1;
+  --focus:#E8821A;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --cond:'Barlow Condensed','Inter Tight',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','SFMono-Regular',Menlo,Consolas,monospace;
+  --r:10px; --maxw:680px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ink:#F4F6F8; --ink-2:#B6C4D6; --ink-3:#8A9BB0;
+    --bg:#0D1B2A; --surface:#162438; --surface-2:#1B2C44;
+    --line:#2A3F5C; --line-soft:#22344E;
+    --orange:#F5941F; --teal:#25A5A5; --gold:#DCAB27; --purple-lt:#C994F5;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#F4F6F8; --ink-2:#B6C4D6; --ink-3:#8A9BB0;
+  --bg:#0D1B2A; --surface:#162438; --surface-2:#1B2C44;
+  --line:#2A3F5C; --line-soft:#22344E;
+  --orange:#F5941F; --teal:#25A5A5; --gold:#DCAB27; --purple-lt:#C994F5;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 18px 96px}
+h1,h2,h3,h4{font-family:var(--cond);text-wrap:balance;margin:0;letter-spacing:.01em}
+h1{font-size:2.35rem;line-height:1.05;font-weight:700}
+h2{font-size:1.65rem;line-height:1.12;font-weight:600}
+h3{font-size:1.2rem;font-weight:600}
+h4{font-size:1.02rem;font-weight:600;letter-spacing:.02em}
+p{margin:0 0 .9em}
+a{color:var(--orange)}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:2.5px solid var(--focus);outline-offset:2px;border-radius:4px}
+.eyebrow{font-family:var(--cond);text-transform:uppercase;letter-spacing:.14em;
+  font-size:.78rem;font-weight:600;color:var(--ink-3)}
+
+/* ---------- morpheme chips: the subject's atoms ---------- */
+.wp{font-family:var(--mono);font-size:.94em;font-weight:500;white-space:nowrap;
+  padding:.06em .34em;border-radius:4px;background:var(--surface-2);
+  border:1px solid var(--line-soft);color:var(--ink)}
+.wp.pre{border-left:3px solid var(--orange)}
+.wp.suf{border-right:3px solid var(--teal)}
+.wp.cf{border-bottom:3px solid var(--gold)}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:40;background:var(--bg);
+  border-bottom:1px solid var(--line);}
+.topbar-in{max-width:var(--maxw);margin:0 auto;padding:10px 18px;
+  display:flex;align-items:center;gap:12px}
+.brandmark{font-family:var(--cond);font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;font-size:.9rem;color:var(--ink-2);
+  display:flex;align-items:center;gap:7px}
+.brandmark .dot{width:9px;height:9px;border-radius:2px;background:var(--orange);flex:none}
+.topbar .sp{flex:1}
+.iconbtn{background:none;border:1px solid var(--line);color:var(--ink-2);
+  border-radius:8px;width:34px;height:34px;display:grid;place-items:center;line-height:0}
+.iconbtn:hover{border-color:var(--orange);color:var(--orange)}
+.backbtn{background:none;border:none;color:var(--ink-2);padding:6px 0;
+  font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.82rem;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.backbtn:hover{color:var(--orange)}
+
+/* ---------- screens ---------- */
+.screen{display:none}
+.screen.active{display:block;animation:fade .22s ease}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .screen.active{animation:none}
+  *{transition:none!important}
+}
+
+/* ---------- hero ---------- */
+.hero{padding:30px 0 22px;border-bottom:1px solid var(--line)}
+.hero .kicker{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.tag{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.74rem;font-weight:600;padding:3px 9px;border-radius:999px;
+  border:1px solid var(--line);color:var(--ink-2);background:var(--surface)}
+.tag.hot{border-color:var(--orange);color:var(--orange)}
+.hero h1{margin-bottom:8px}
+.hero .sub{color:var(--ink-2);font-size:1.02rem;margin:0}
+
+/* the term-construction display: pre | root | suf */
+.termbuild{display:flex;align-items:stretch;margin:22px 0 4px;
+  border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+  background:var(--surface);font-family:var(--mono)}
+.termbuild div{flex:1;padding:11px 8px;text-align:center;min-width:0}
+.termbuild .lbl{display:block;font-family:var(--cond);font-size:.66rem;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);margin-bottom:3px}
+.termbuild .val{font-size:.98rem;font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.termbuild .p1{border-bottom:3px solid var(--orange)}
+.termbuild .p2{border-bottom:3px solid var(--gold);border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.termbuild .p3{border-bottom:3px solid var(--teal)}
+.termbuild-cap{font-size:.85rem;color:var(--ink-3);margin:8px 0 0;text-align:center}
+
+/* ---------- stat strip ---------- */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 10px}
+.stat .n{font-family:var(--cond);font-size:1.75rem;font-weight:700;line-height:1;
+  font-variant-numeric:tabular-nums;color:var(--orange)}
+.stat .l{font-size:.74rem;color:var(--ink-3);margin-top:4px;line-height:1.3}
+
+/* ---------- action cards ---------- */
+.actions{display:grid;gap:11px;margin:22px 0}
+.act{display:flex;align-items:center;gap:14px;text-align:left;width:100%;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:15px 16px;color:var(--ink);transition:border-color .15s,transform .15s}
+.act:hover{border-color:var(--orange);transform:translateX(2px)}
+.act .ic{width:38px;height:38px;flex:none;border-radius:8px;display:grid;place-items:center;
+  font-family:var(--cond);font-weight:700;font-size:1.1rem;color:#0D1B2A}
+.act>span:not(.ic):not(.ar){display:flex;flex-direction:column;gap:3px;min-width:0}
+.act .t{display:block;font-family:var(--cond);font-size:1.22rem;font-weight:600;line-height:1.15}
+.act .d{display:block;font-size:.84rem;color:var(--ink-3);line-height:1.35}
+.act .ar{margin-left:auto;color:var(--ink-3);font-size:1.2rem;flex:none}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin:18px 0 0;
+  overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:none;border:none;border-bottom:2.5px solid transparent;
+  padding:9px 13px;color:var(--ink-3);font-family:var(--cond);font-weight:600;
+  font-size:1rem;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--orange);border-bottom-color:var(--orange)}
+.tabpanel{display:none;padding-top:20px}
+.tabpanel.active{display:block}
+
+/* ---------- study guide ---------- */
+.sec{border:1px solid var(--line);border-radius:var(--r);margin-bottom:11px;
+  background:var(--surface);overflow:hidden}
+.sec-h{width:100%;display:flex;align-items:center;gap:12px;padding:14px 15px;
+  background:none;border:none;text-align:left;color:var(--ink)}
+.sec-h:hover{background:var(--surface-2)}
+.sec-w{font-family:var(--cond);font-size:.9rem;font-weight:700;color:var(--orange);
+  font-variant-numeric:tabular-nums;flex:none;min-width:34px}
+.sec-t{font-family:var(--cond);font-size:1.16rem;font-weight:600;line-height:1.2;flex:1}
+.sec-c{color:var(--ink-3);font-size:1.1rem;flex:none;transition:transform .2s}
+.sec.open .sec-c{transform:rotate(45deg)}
+.sec-body{display:none;padding:0 15px 16px;border-top:1px solid var(--line-soft)}
+.sec.open .sec-body{display:block}
+
+.layer{margin-top:16px;border-left:3px solid var(--line);padding-left:14px}
+.layer-h{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.79rem;font-weight:700;margin-bottom:9px}
+.layer.narr{border-left-color:var(--teal)} .layer.narr .layer-h{color:var(--teal)}
+.layer.deep{border-left-color:var(--orange)} .layer.deep .layer-h{color:var(--orange)}
+.layer.qref{border-left-color:var(--gold)} .layer.qref .layer-h{color:var(--gold)}
+.layer.note{border-left-color:var(--purple-lt)} .layer.note .layer-h{color:var(--purple-lt)}
+.layer p{font-size:.95rem}
+.layer ul{margin:.4em 0 .9em;padding-left:1.15em}
+.layer li{font-size:.94rem;margin-bottom:.45em}
+.layer h4{margin:1.1em 0 .4em;color:var(--ink)}
+.qr{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft);
+  border:1px solid var(--line-soft);border-radius:8px;overflow:hidden}
+@media(max-width:520px){.qr{grid-template-columns:1fr}}
+.qr>div{background:var(--surface);padding:8px 10px}
+.qr-term{font-family:var(--mono);font-size:.87rem;font-weight:600;color:var(--gold);
+  display:block;margin-bottom:2px}
+.qr-def{font-size:.85rem;color:var(--ink-2);line-height:1.4}
+.notes-block{background:color-mix(in srgb,var(--purple-lt) 9%,var(--surface));
+  border-radius:8px;padding:12px 13px}
+.notes-block p:last-child{margin-bottom:0}
+.trap{color:var(--red);font-weight:600}
+.sec-practice{margin-top:16px;width:100%;background:var(--surface-2);
+  border:1px dashed var(--line);border-radius:8px;padding:10px;color:var(--orange);
+  font-family:var(--cond);text-transform:uppercase;letter-spacing:.09em;
+  font-weight:600;font-size:.87rem}
+.sec-practice:hover{border-color:var(--orange);border-style:solid}
+
+/* ---------- quiz ---------- */
+.qbar{display:flex;align-items:center;gap:12px;margin:16px 0 4px}
+.qcount{font-family:var(--cond);font-weight:600;font-size:.9rem;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.qtrack{flex:1;height:5px;background:var(--line-soft);border-radius:3px;overflow:hidden}
+.qfill{height:100%;background:var(--orange);border-radius:3px;transition:width .3s}
+.qtopic{margin:14px 0 0}
+.qstem{font-size:1.14rem;line-height:1.5;margin:9px 0 18px;font-weight:500}
+.choices{display:grid;gap:9px}
+.ch{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;
+  background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r);
+  padding:13px 14px;color:var(--ink);line-height:1.45;transition:border-color .14s}
+.ch:hover:not(:disabled){border-color:var(--orange)}
+.ch:disabled{cursor:default}
+.ch .k{font-family:var(--cond);font-weight:700;color:var(--ink-3);flex:none;
+  width:20px;font-size:1.02rem}
+.ch.right{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 12%,var(--surface))}
+.ch.right .k{color:var(--teal)}
+.ch.wrong{border-color:var(--red);background:color-mix(in srgb,var(--red) 10%,var(--surface))}
+.ch.wrong .k{color:var(--red)}
+.expl{margin-top:16px;border-radius:var(--r);padding:14px;
+  border:1px solid var(--line);background:var(--surface-2);display:none}
+.expl.show{display:block}
+.expl .v{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.8rem;font-weight:700;margin-bottom:6px}
+.expl.ok .v{color:var(--teal)} .expl.no .v{color:var(--red)}
+.expl p{font-size:.93rem;margin:0}
+.expl .src{margin-top:9px;font-size:.79rem;color:var(--ink-3);font-family:var(--mono)}
+.btn{display:block;width:100%;background:var(--orange);color:#0D1B2A;border:none;
+  border-radius:var(--r);padding:14px;font-family:var(--cond);font-weight:700;
+  font-size:1.1rem;letter-spacing:.06em;text-transform:uppercase;margin-top:16px}
+.btn:hover{background:var(--orange-dim);color:#fff}
+.btn.ghost{background:none;border:1.5px solid var(--line);color:var(--ink-2)}
+.btn.ghost:hover{border-color:var(--orange);color:var(--orange);background:none}
+
+/* ---------- results ---------- */
+.ring{display:block;margin:22px auto 6px}
+.ring-n{font-family:var(--cond);font-size:2.6rem;font-weight:700;
+  fill:var(--ink);font-variant-numeric:tabular-nums}
+.ring-l{font-family:var(--sans);font-size:.72rem;fill:var(--ink-3)}
+.res-msg{text-align:center;color:var(--ink-2);margin-bottom:22px}
+.brk{display:grid;gap:7px;margin:18px 0}
+.brk-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;
+  padding:9px 12px;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+.brk-t{font-size:.88rem;line-height:1.3}
+.brk-s{font-family:var(--cond);font-weight:700;font-variant-numeric:tabular-nums;
+  font-size:.95rem;white-space:nowrap}
+
+/* ---------- resources ---------- */
+.rcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:15px 16px;margin-bottom:11px}
+.rcard h3{margin-bottom:3px}
+.rcard .meta{font-size:.83rem;color:var(--ink-3);margin-bottom:10px}
+.rlinks{display:grid;gap:7px}
+.rlink{display:flex;gap:9px;align-items:baseline;font-size:.89rem;
+  padding:7px 9px;background:var(--surface-2);border-radius:7px;text-decoration:none;color:var(--ink)}
+.rlink:hover{background:color-mix(in srgb,var(--orange) 12%,var(--surface-2))}
+.rlink .b{font-family:var(--cond);font-size:.66rem;text-transform:uppercase;
+  letter-spacing:.1em;font-weight:700;padding:2px 6px;border-radius:4px;flex:none;
+  background:var(--line-soft);color:var(--ink-3)}
+.rlink .b.core{background:var(--orange);color:#0D1B2A}
+.rlink .b.book{background:var(--teal);color:#0D1B2A}
+.rlink .b.topic{background:var(--gold);color:#0D1B2A}
+.rlink span:last-child{flex:1}
+
+/* ---------- misc ---------- */
+.callout{border-left:3px solid var(--orange);background:var(--surface);
+  padding:12px 14px;border-radius:0 8px 8px 0;margin:16px 0;font-size:.92rem}
+.callout strong{color:var(--orange)}
+.plan{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);
+  border-radius:8px;overflow:hidden;margin:14px 0}
+.plan-r{display:grid;grid-template-columns:1fr auto;background:var(--surface);
+  padding:8px 12px;font-size:.89rem;align-items:center}
+.plan-r.hd{background:var(--surface-2);font-family:var(--cond);text-transform:uppercase;
+  letter-spacing:.09em;font-size:.75rem;font-weight:700;color:var(--ink-3)}
+.plan-w{font-family:var(--cond);font-weight:700;font-variant-numeric:tabular-nums;color:var(--orange)}
+.foot{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--ink-3)}
+.foot p{margin-bottom:.5em}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <span class="brandmark"><span class="dot"></span>DC HOSA</span>
+    <span class="sp"></span>
+    <button class="iconbtn" id="themeBtn" aria-label="Switch theme" title="Switch theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<section id="home" class="screen active">
+  <div class="hero">
+    <div class="kicker">
+      <span class="tag hot">2026&ndash;2027</span>
+      <span class="tag">Health Science</span>
+      <span class="tag">Individual</span>
+      <span class="tag">Secondary &amp; Postsecondary</span>
+    </div>
+    <h1>Biomedical Equipment Technician</h1>
+    <p class="sub">Round One is a 50-question test in 60 minutes, with an essay tiebreaker. The people who keep every device in the hospital working and safe.</p>
+
+    <div class="termbuild" aria-hidden="true">
+      <div class="p1"><span class="lbl">Symptom</span><span class="val">what it does</span></div>
+      <div class="p2"><span class="lbl">Subsystem</span><span class="val">where it fails</span></div>
+      <div class="p3"><span class="lbl">Verify</span><span class="val">and document</span></div>
+    </div>
+    <p class="termbuild-cap">Nearly a quarter of this test is reasoning, not recall. Learn to move from a symptom to a subsystem and you have learned the event.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="stQ">0</div><div class="l">practice questions</div></div>
+    <div class="stat"><div class="n">6</div><div class="l">test-plan topics</div></div>
+    <div class="stat"><div class="n" id="stBest">&mdash;</div><div class="l">your best score</div></div>
+  </div>
+
+  <div class="actions">
+    <button class="act" onclick="startQuiz('weighted')">
+      <span class="ic" style="background:var(--orange)">50</span>
+      <span><span class="t">Simulate the Test</span><span class="d">50 questions weighted exactly to the official 26-27 test plan</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="go('study')">
+      <span class="ic" style="background:var(--teal)">SG</span>
+      <span><span class="t">Study Guide</span><span class="d">All 6 topics, four layers deep &mdash; read to actually know it</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="startQuiz('all')">
+      <span class="ic" style="background:var(--gold)">&infin;</span>
+      <span><span class="t">Full Question Bank</span><span class="d">All <span id="stQ2">0</span> questions, shuffled &mdash; the long grind</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="go('resources')">
+      <span class="ic" style="background:var(--purple-lt)">R</span>
+      <span><span class="t">Official References</span><span class="d">The exact books HOSA writes the test from</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+  </div>
+
+  <div class="callout"><strong>Read this before anything else.</strong> <strong>Reasoning is 24 percent</strong> of this test — the largest block — and it is not a body of facts you can memorize. It is troubleshooting logic: check power first, isolate the fault, verify with the right test instrument, document what you did. Medical devices and public safety add another 22 percent. Between them, nearly half the exam is about equipment behaving badly and what you do about it.</div>
+
+  <h2 style="margin-top:26px">The official 26-27 test plan</h2>
+  <div class="plan" id="planTable"></div>
+  <p style="font-size:.85rem;color:var(--ink-3)">Simulate the Test draws questions in exactly these proportions. Anatomy and physiology is only 10 percent here — enough to understand what a device is measuring and why a bad reading matters clinically, not a full A&amp;P course.</p>
+
+  <h2 style="margin-top:26px">The certification pathway is part of the point</h2>
+  <p>In the event of a tie, the essay is judged. Worth knowing beyond the test: completing the two official courses lets HOSA members sit the AAMI Certified Associate of Biomedical Technology (CABT) exam at a reduced student rate, and the same coursework feeds registered apprenticeship programs through AAMI and American Healthcare Apprenticeship. This is one of the few competitive events with a direct credential attached.</p>
+
+  <div class="foot">
+    <p><strong>Biomedical Equipment Technician Study Tool</strong> &middot; DC HOSA &middot; 2026&ndash;2027 season &middot; "Redefine the Standard"</p>
+    <p>Built from the official 2026-2027 HOSA competitive event guideline. Practice questions are original and written for this tool. No actual exam question is reproduced here.</p>
+  </div>
+</section>
+
+<section id="study" class="screen">
+  <button class="backbtn" onclick="go('home')">&larr; Back</button>
+  <h1 style="margin-top:8px">Study Guide</h1>
+  <p class="sub" style="color:var(--ink-2)">6 topics, four layers each. Read the narrative to understand it, the deep dive to outcompete, the quick reference to drill, and the study notes to stop losing points to traps.</p>
+  <div class="callout" style="border-left-color:var(--teal)">
+    <strong style="color:var(--teal)">How to use this.</strong> Don't read straight through. Open a topic, read the narrative once, then hit <em>Practice this topic</em> at the bottom of the section. Miss something? Come back to the deep dive. That loop beats re-reading every time.
+  </div>
+  <div id="guideList" style="margin-top:18px"></div>
+</section>
+
+<section id="resources" class="screen">
+  <button class="backbtn" onclick="go('home')">&larr; Back</button>
+  <h1 style="margin-top:8px">Official References</h1>
+  <p class="sub" style="color:var(--ink-2)">These are the sources listed in the 2026-2027 guideline. Test items are written from them and nowhere else.</p>
+
+  <div class="rcard" style="border-color:var(--orange)">
+    <h3>The two official courses &mdash; one HOSA sign-in</h3>
+    <p class="meta">AAMI BMET 101 and CBET MET 100 series &middot; <strong style="color:var(--orange)">both reachable from a single login</strong></p>
+    <p style="font-size:.91rem">Unlike most Health Science events, this one has no textbook. The reference list is two online courses, and HOSA set up one sign-in that reaches both. Completing them does more than prepare you for the test: it qualifies you to sit the AAMI Certified Associate of Biomedical Technology (CABT) exam at a reduced student rate, and counts as a pre-apprenticeship pathway into registered apprenticeship programs.</p>
+    <div class="rlinks">
+      <a class="rlink" href="https://hosa-cbet.talentlms.com/plus/" target="_blank" rel="noopener"><span class="b core">Core</span><span>Single sign-in for both official courses</span></a>
+      <a class="rlink" href="https://www.aami.org/training" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>AAMI training &mdash; BMET 101</span></a>
+      <a class="rlink" href="https://www.cbet.edu/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>College of Biomedical Equipment Training &mdash; MET 100 series</span></a>
+    </div>
+  </div>
+  <div class="rcard">
+    <h3>Certification and career pathway</h3>
+    <p class="meta">Listed in the guideline as optional resources for competitors and advisors</p>
+    <p style="font-size:.91rem">Healthcare Technology Management is a real career with a real shortage. The candidate handbook tells you what the certification actually tests, which is a useful second view of the test plan.</p>
+    <div class="rlinks">
+      <a class="rlink" href="https://www.aami.org/certification" target="_blank" rel="noopener"><span class="b core">Core</span><span>ACI &mdash; AAMI Credentials Institute certification handbook</span></a>
+      <a class="rlink" href="https://www.aami.org/htm" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>HTM in a Box &mdash; the field explained</span></a>
+    </div>
+  </div>
+  <div class="rcard">
+    <h3>Free standards and reference sources</h3>
+    <p class="meta">Not on the guideline list, but this is where the rules actually come from</p>
+    <p style="font-size:.91rem">Device regulation, safety standards, and health IT interoperability all have authoritative free sources. Useful when a course module states a rule and you want to see the original.</p>
+    <div class="rlinks">
+      <a class="rlink" href="https://www.fda.gov/medical-devices" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>FDA Medical Devices &mdash; classification and recalls</span></a>
+      <a class="rlink" href="https://www.osha.gov/healthcare" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>OSHA Healthcare &mdash; workplace safety standards</span></a>
+      <a class="rlink" href="https://www.healthit.gov/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>HealthIT.gov &mdash; interoperability and health records</span></a>
+    </div>
+  </div>
+
+  <div class="rcard" style="border-color:var(--purple-lt)">
+    <h3>HOSA official guidelines</h3>
+    <p class="meta">hosa.org &middot; read the actual rules before your first conference</p>
+    <div class="rlinks">
+      <a class="rlink" href="https://hosa.org/guidelines/" target="_blank" rel="noopener"><span class="b core">Core</span><span>Competitive event guidelines &mdash; download the Biomedical Equipment Technician PDF</span></a>
+      <a class="rlink" href="https://hosa.org/competitive-events/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>Competitive events overview and appendices</span></a>
+      <a class="rlink" href="https://hosa.org/scholarships/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>HOSA scholarships &mdash; applications open January 1, 2027</span></a>
+    </div>
+    <p style="font-size:.88rem;margin-top:12px;color:var(--ink-2)"><strong>Bring to the testing room:</strong> photo ID, two #2 wooden pencils with erasers (not mechanical), and optional neon foam earplugs &mdash; not earbuds. Business attire or official HOSA uniform earns bonus points. There are no verbal time announcements at ILC; you watch your own clock.</p>
+  </div>
+</section>
+
+<section id="quiz" class="screen">
+  <button class="backbtn" onclick="quitQuiz()">&larr; End session</button>
+  <div class="qbar">
+    <span class="qcount" id="qCount">1 / 50</span>
+    <span class="qtrack"><span class="qfill" id="qFill" style="width:0%"></span></span>
+    <span class="qcount" id="qScore">0 &#10003;</span>
+  </div>
+  <div class="qtopic"><span class="eyebrow" id="qTopic">Topic</span></div>
+  <p class="qstem" id="qStem">Question</p>
+  <div class="choices" id="qChoices"></div>
+  <div class="expl" id="qExpl"><div class="v" id="qVerdict"></div><p id="qExplText"></p><div class="src" id="qSrc"></div></div>
+  <button class="btn" id="qNext" style="display:none" onclick="nextQ()">Next question</button>
+</section>
+
+<section id="results" class="screen">
+  <h1 style="margin-top:22px;text-align:center">Session complete</h1>
+  <svg class="ring" width="168" height="168" viewBox="0 0 168 168" role="img" aria-labelledby="ringLbl">
+    <title id="ringLbl">Score ring</title>
+    <circle cx="84" cy="84" r="70" fill="none" stroke="var(--line)" stroke-width="12"/>
+    <circle id="ringArc" cx="84" cy="84" r="70" fill="none" stroke="var(--orange)" stroke-width="12"
+            stroke-linecap="round" stroke-dasharray="439.8" stroke-dashoffset="439.8"
+            transform="rotate(-90 84 84)" style="transition:stroke-dashoffset .8s ease"/>
+    <text class="ring-n" id="ringPct" x="84" y="86" text-anchor="middle">0%</text>
+    <text class="ring-l" id="ringFrac" x="84" y="106" text-anchor="middle">0 of 0</text>
+  </svg>
+  <p class="res-msg" id="resMsg"></p>
+  <h3 style="margin-bottom:8px">Where you stand by topic</h3>
+  <div class="brk" id="resBrk"></div>
+  <button class="btn" onclick="repeatQuiz()">Run it again</button>
+  <button class="btn ghost" onclick="go('study')">Back to the study guide</button>
+  <button class="btn ghost" onclick="go('home')">Home</button>
+</section>
+
+</div>
+
+<script>
+/* ============================================================
+   DC HOSA — Biomedical Equipment Technician Study Tool
+   Test plan and references: official 2026-2027 HOSA guideline.
+   All practice questions are original.
+   ============================================================ */
+
+const TOPICS = [
+  {
+    "n": "Anatomy &amp; Physiology",
+    "w": 10,
+    "c": "var(--teal)"
+  },
+  {
+    "n": "Medical Devices &amp; Public Safety",
+    "w": 22,
+    "c": "var(--orange)"
+  },
+  {
+    "n": "Safety in Healthcare",
+    "w": 16,
+    "c": "var(--gold)"
+  },
+  {
+    "n": "Fundamentals of Electricity &amp; Electronics",
+    "w": 14,
+    "c": "var(--purple-lt)"
+  },
+  {
+    "n": "Reasoning &amp; Troubleshooting",
+    "w": 24,
+    "c": "var(--orange)"
+  },
+  {
+    "n": "Healthcare IT",
+    "w": 14,
+    "c": "var(--teal)"
+  }
+];
+
+const GUIDE = [];
+
+// Biomedical Equipment Technician — Study Guide layers
+// Test plan (2026-2027): A&P 10% | Medical Devices & Public Safety 22% | Safety in Healthcare 16%
+// Fundamentals in Electricity & Electronics 14% | Reasoning 24% | Healthcare IT 14%
+
+GUIDE.push({t:0,
+narr:`<p>A biomedical equipment technician does not treat patients, but every device a BMET touches is measuring or supporting a living body. That is why <strong>anatomy and physiology</strong> is on this test at all. You cannot judge whether an ECG trace looks wrong if you do not know what the heart's electrical cycle is supposed to do, and you cannot tell a nurse that a capnograph is reading correctly if you do not know what exhaled carbon dioxide represents. A&P is ten percent of the exam — the smallest block — so learn it efficiently: body organization, directional language, the cavities, and the physiology behind the signals your equipment records.</p>
+<p>Start with <strong>levels of organization</strong>. The body builds upward from the <strong>chemical level</strong> (atoms and molecules), to the <strong>cellular level</strong>, to <strong>tissues</strong> (groups of similar cells doing one job), to <strong>organs</strong>, to <strong>organ systems</strong>, to the whole organism. Calcium turns up constantly at the chemical level because it is both a major mineral component of bone tissue and the ion that triggers muscle contraction. Cells specialize: muscle cells exist to <strong>contract and produce movement</strong>, and <strong>stem cells</strong> are defined by their ability to divide and differentiate into other cell types.</p>
+<p>Directional terms are the shared language of every service manual and clinical conversation. <strong>Proximal</strong> means closer to the point of attachment or the trunk; <strong>distal</strong> means farther from it. <strong>Anterior</strong> (ventral) is toward the front, <strong>posterior</strong> (dorsal) toward the back, <strong>superior</strong> above, <strong>inferior</strong> below, <strong>medial</strong> toward the midline, <strong>lateral</strong> away from it. The <strong>body cavities</strong> matter for the same reason: the <strong>cranial cavity</strong> holds the brain, the <strong>thoracic cavity</strong> holds the heart and lungs, and the <strong>abdominal cavity</strong> holds the stomach, liver, and intestines. Knowing that the abdominal cavity — not the pelvic or thoracic — contains the liver keeps you oriented when a clinician describes where a probe or catheter is going.</p>
+<p>The systems you will meet most as a BMET are cardiovascular, respiratory, and nervous. The <strong>heart</strong> generates its own electrical impulse at the <strong>SA node</strong>, which spreads through the atria, pauses at the <strong>AV node</strong>, then races down the bundle of His and Purkinje fibers to the ventricles. That sequence is exactly what an ECG records: the <strong>P wave</strong> is the first deflection and represents atrial depolarization, the <strong>QRS complex</strong> is ventricular depolarization, and the <strong>T wave</strong> is ventricular repolarization. In the vessels, <strong>capillaries</strong> are where nutrients, oxygen, and wastes are actually exchanged with tissue; arteries and veins are only transport. <strong>Platelets</strong> handle clotting. <strong>Blood pressure</strong> is reported in <strong>mmHg</strong>, which is why an NIBP monitor's calibration is checked against a pressure standard in the same units.</p>
+<p>In the respiratory system, <strong>tidal volume</strong> is the amount of air moved in a single normal breath, and gas exchange happens across the alveoli. That single definition explains most ventilator settings. In the nervous system, the <strong>autonomic nervous system</strong> runs involuntary function and drives the fight-or-flight response through its sympathetic division, while <strong>serotonin</strong> is the neurotransmitter tied to mood, sleep, and appetite. In the endocrine system, the <strong>pituitary</strong> is called the master gland because its hormones direct other glands. Musculoskeletal detail is light but reliable: <strong>smooth muscle</strong> is involuntary and lines hollow organs like the stomach and intestines, cardiac muscle is involuntary and only in the heart, skeletal muscle is voluntary, and <strong>synovial fluid</strong> reduces friction and nourishes joint cartilage.</p>
+<p>Keep the scope honest. Nobody expects you to pass a nursing exam. The official preparation for this event is the two online courses reached through a single HOSA sign-in — <strong>AAMI BMET 101</strong> and the College of Biomedical Equipment Training <strong>MET 100 series</strong> — and their anatomy content is exactly this: enough physiology to understand what the machine is measuring and why an out-of-range reading matters to a patient. Learn the vocabulary cold, connect each fact to a device, and move your study time to the larger blocks.</p>`,
+deep:`<h4>Levels of organization and cell biology</h4>
+<ul>
+<li><strong>Chemical level:</strong> atoms and molecules — the level that explores the composition of matter making up the body, not the structure of whole cells.</li>
+<li><strong>Cellular level:</strong> the smallest unit of life; the cellular level explores the structural and functional aspects of cells.</li>
+<li><strong>Calcium</strong> is a major component of bone tissue and the ion required for muscle contraction and blood clotting cascades.</li>
+<li><strong>Stem cells</strong> are uniquely defined by the ability to divide and differentiate into specialized cell types.</li>
+<li><strong>Muscle cells</strong> exist for contraction and movement; nerve cells for conduction; epithelial cells for covering and lining.</li>
+<li>Four primary tissue types: epithelial, connective, muscle, nervous.</li>
+</ul>
+<h4>Directional terms, planes, and cavities</h4>
+<ul>
+<li><strong>Proximal</strong> = closer to the point of attachment; <strong>distal</strong> = away from the point of attachment. Do not swap these with anterior/posterior.</li>
+<li><strong>Anterior/ventral</strong> = front; <strong>posterior/dorsal</strong> = back; <strong>superior</strong> = above; <strong>inferior</strong> = below; <strong>medial</strong> = toward midline; <strong>lateral</strong> = away from midline.</li>
+<li><strong>Sagittal</strong> plane divides left and right; <strong>frontal/coronal</strong> divides front and back; <strong>transverse</strong> divides top and bottom — the plane a CT slice represents.</li>
+<li><strong>Dorsal cavity:</strong> cranial (brain) and spinal. <strong>Ventral cavity:</strong> thoracic (heart, lungs), abdominal (stomach, liver, intestines), pelvic (bladder, reproductive organs).</li>
+<li>The <strong>diaphragm</strong> separates thoracic from abdominal cavities; the <strong>mediastinum</strong> is the thoracic space between the lungs holding the heart.</li>
+</ul>
+<h4>Physiology behind the signals your equipment records</h4>
+<ul>
+<li><strong>ECG conduction order:</strong> SA node to AV node to bundle of His to bundle branches to Purkinje fibers. The <strong>P wave</strong> is the first deflection of the ECG waveform.</li>
+<li>An <strong>arterial blood pressure</strong> signal is a <strong>pulse wave</strong> — repeating pressure pulses with a systolic peak, dicrotic notch, and diastolic trough. It is not a sine wave.</li>
+<li><strong>Blood pressure units are mmHg;</strong> normal adult reference is about 120/80. Capnography measures exhaled <strong>carbon dioxide</strong>; pulse oximetry measures oxygen saturation.</li>
+<li><strong>Tidal volume</strong> = air moved per normal respiration cycle, roughly 6 to 8 mL/kg of ideal body weight in ventilated adults.</li>
+<li><strong>Capillaries</strong> exchange nutrients and oxygen with tissue; <strong>platelets</strong> (thrombocytes) initiate clotting; red cells carry oxygen on hemoglobin; white cells fight infection.</li>
+<li>Body temperature is influenced by time of day, age, activity, measurement site, and health status — not by ethnicity.</li>
+</ul>
+<h4>Nervous, endocrine, and musculoskeletal essentials</h4>
+<ul>
+<li><strong>Autonomic nervous system:</strong> involuntary control; its <strong>sympathetic</strong> division produces fight-or-flight, its <strong>parasympathetic</strong> division rest-and-digest.</li>
+<li><strong>Serotonin</strong> regulates mood, sleep, and appetite; dopamine handles reward and movement; acetylcholine drives skeletal muscle contraction at the neuromuscular junction.</li>
+<li><strong>Pituitary</strong> = master gland, directing thyroid, adrenal, and gonadal output; the hypothalamus controls the pituitary.</li>
+<li><strong>Smooth muscle:</strong> involuntary, in walls of hollow organs. <strong>Cardiac muscle:</strong> involuntary, striated, heart only. <strong>Skeletal muscle:</strong> voluntary, striated, attached to bone.</li>
+<li><strong>Synovial fluid</strong> reduces friction and nourishes joint cartilage inside synovial joints.</li>
+</ul>`,
+qref:[["Proximal","Closer to the point of attachment or trunk"],["Distal","Farther from the point of attachment"],["Anterior","Toward the front of the body"],["Posterior","Toward the back of the body"],["Abdominal cavity","Holds stomach, liver, and intestines"],["Thoracic cavity","Holds heart and lungs above the diaphragm"],["P wave","First deflection of the ECG; atrial depolarization"],["QRS complex","Ventricular depolarization on the ECG"],["SA node","Heart's natural pacemaker in the right atrium"],["Capillary","Vessel exchanging oxygen and nutrients with tissue"],["Platelet","Blood cell fragment responsible for clotting"],["mmHg","Unit used to report blood pressure"],["Tidal volume","Air moved during one normal respiration cycle"],["Stem cell","Cell able to divide and differentiate"],["Smooth muscle","Involuntary muscle in walls of internal organs"],["Synovial fluid","Reduces joint friction and nourishes cartilage"],["Autonomic nervous system","Involuntary control; drives fight-or-flight response"],["Serotonin","Neurotransmitter for mood, sleep, and appetite"],["Pituitary gland","Master gland directing other endocrine glands"],["Calcium","Bone mineral required for muscle contraction"]],
+notes:`<p><strong>Proximal and distal are about attachment, not front and back.</strong> The trap on directional terms is that all four options sound anatomical. <span class="trap">Toward the front of the body</span> is a real definition — of <em>anterior</em> — and it is the answer students grab when they are reading fast. Proximal means closer to the point of attachment; distal means away from it. Say it as a sentence you can rebuild under pressure: the elbow is proximal to the wrist because it is nearer the shoulder.</p>
+<p><strong>The abdominal cavity is where the stomach, liver, and intestines live.</strong> <span class="trap">Pelvic</span> is the tempting wrong answer because the two cavities are continuous and are sometimes discussed together as the abdominopelvic cavity. On a single-answer item, the pelvic cavity holds the bladder, rectum, and reproductive organs; the abdominal cavity holds the digestive organs above them. <span class="trap">Thoracic</span> is wrong for a different reason — the diaphragm is the wall between them.</p>
+<p><strong>The P wave is the first deflection of the ECG, not the biggest one.</strong> <span class="trap">QRS complex</span> is the trap here, and it is tempting for a good reason: the QRS is the tallest, most obvious feature on a strip, so students who picture an ECG rather than reading the question choose it. The question is about order, not amplitude. P comes first (atria), then QRS (ventricles depolarizing), then T (ventricles recovering).</p>
+<p><strong>Arterial blood pressure is a pulse wave; the ECG is what gives you a P wave.</strong> Students mix the two because both scroll across the same monitor. <span class="trap">Sine wave</span> is the classic decoy on the arterial line question because sine waves dominate the electronics half of this event. An arterial waveform is not sinusoidal — it has a sharp systolic upstroke, a dicrotic notch as the aortic valve closes, and a diastolic decay.</p>
+<p><strong>Smooth muscle is the involuntary muscle of hollow organs; cardiac muscle is involuntary too, but only in the heart.</strong> When a stem names the stomach and intestines, <span class="trap">cardiac</span> is the trap for anyone who remembers only that "involuntary" excludes skeletal. Both smooth and cardiac are involuntary. Location decides the answer: walls of internal organs means smooth.</p>
+<p><strong>Ethnicity is not a factor in measuring body temperature.</strong> This kind of item lists three legitimate variables — time of day, age, measurement site or activity level — plus one that sounds plausible because it appears in other clinical contexts. <span class="trap">Ethnicity</span> is that option. Measurement factors are physiological and technical: where you measure, when you measure, what the patient was just doing, and what device you used.</p>`});
+
+GUIDE.push({t:1,
+narr:`<p>This is the largest content block on the exam at twenty-two percent, and it is the heart of what a BMET actually does. The framing matters: devices are treated here <strong>as related to public safety</strong>. Every fact in this topic connects back to one question — what happens to a patient if this device fails, and what system exists to prevent that? Learn the device categories, learn what each machine measures or delivers, and learn the regulatory scaffolding that keeps them safe.</p>
+<p>In the United States, medical devices are regulated by the <strong>FDA</strong>, specifically the Center for Devices and Radiological Health. The FDA sorts devices into three risk classes. <strong>Class I</strong> devices carry the lowest risk and are subject to general controls — bandages, exam gloves, manual stethoscopes. <strong>Class II</strong> devices need special controls and usually a <strong>510(k)</strong> premarket notification showing substantial equivalence to a legally marketed device — infusion pumps, patient monitors, powered wheelchairs. <strong>Class III</strong> devices sustain life or present the highest risk and generally require <strong>premarket approval (PMA)</strong> — implantable pacemakers, heart valves. Hospitals participate in this system after the sale through <strong>incoming inspection</strong>, scheduled <strong>preventive maintenance</strong>, recall handling, and adverse-event reporting under the Medical Device Reporting rule.</p>
+<p>Group the devices by function. <strong>Monitoring</strong> devices track a patient's condition or a physiological parameter over time: the <strong>ECG</strong> monitors the electrical activity of the heart to detect rate and abnormalities, <strong>NIBP</strong> measures blood pressure in mmHg, <strong>pulse oximetry</strong> reports oxygen saturation, and <strong>capnography</strong> measures the carbon dioxide output of a patient. A <strong>fetal heart rate monitor</strong> belongs in labor and delivery. <strong>Therapeutic and life-support</strong> devices do something to the patient: ventilators move air, <strong>CPAP and BiPAP</strong> deliver positive pressure to the airway, infusion pumps deliver fluids and drugs at controlled rates, and defibrillators deliver energy to the heart.</p>
+<p>Respiratory equipment rewards precise vocabulary. A ventilator controls and reports volume, pressure, rate, and oxygen concentration — it does not measure a blood cell count. <strong>Pressure control ventilation</strong> maintains a set airway pressure throughout inspiration, while volume control delivers a set tidal volume. Because dry gas injures the airway, ventilator circuits need a <strong>humidification</strong> system. On the suction side, an aspirator uses a <strong>hydrophobic filter</strong> so that liquid stops at the filter instead of reaching the pump. Defibrillators have two modes worth separating: unsynchronized <strong>defibrillation</strong> for chaotic rhythms, and <strong>cardioversion</strong>, which is synchronized to deliver the shock at a specific point in the cardiac cycle so the energy does not land on the vulnerable T wave.</p>
+<p><strong>Imaging</strong> is its own vocabulary set. Plain radiography, <strong>fluoroscopy</strong>, <strong>CT</strong> (x-rays plus computer processing to build cross-sectional images), <strong>mammography</strong> (dedicated breast imaging), and nuclear medicine all use ionizing radiation. <strong>MRI</strong> uses a strong magnetic field and radiofrequency pulses and produces <strong>no ionizing radiation</strong>, which is why its hazards are magnetic and acoustic rather than radiological. <strong>Ultrasound</strong> uses high-frequency sound and is tested with a <strong>phantom</strong>, a tissue-mimicking object with known targets that lets you verify resolution and depth. Radiation terms belong here too: <strong>absorbed dose</strong> is radiation energy deposited in tissue divided by the mass of that tissue, <strong>dosimetry</strong> is the science of determining dose by measurement or calculation, and <strong>ALARA</strong> — As Low As Reasonably Achievable — is the governing principle.</p>
+<p>Finally, know the shop-level devices and their signature parts, because exam items often describe a machine by its components. A <strong>centrifuge</strong> has a rotor, a motor, and a control interface. An <strong>otoscope</strong> views the ear; an <strong>ophthalmoscope</strong> views the eyes. Anesthesia machines blend medical gases including <strong>nitrous oxide</strong>, the gas known as laughing gas. Dental units bring handpieces, compressors, and vacuum pumps into scope. Surgical robots and electrosurgical units add high-energy hazards. In every case the public-safety question is the same: is it performing to specification, is it electrically safe, and is the failure documented.</p>`,
+deep:`<h4>Regulation, classification, and the device lifecycle</h4>
+<ul>
+<li>US medical devices comply with <strong>FDA</strong> regulation (CDRH). Manufacturers follow the Quality System Regulation; hospitals follow accreditation and Healthcare Technology Management requirements.</li>
+<li><strong>Class I</strong> = general controls, lowest risk. <strong>Class II</strong> = special controls, usually <strong>510(k)</strong> substantial equivalence. <strong>Class III</strong> = life-sustaining or highest risk, usually <strong>PMA</strong>.</li>
+<li><strong>Incoming inspection</strong> happens before a new device enters service: verify performance, electrical safety, inventory it in the CMMS, and set the PM interval.</li>
+<li><strong>Preventive maintenance (PM)</strong> is scheduled and calendar- or usage-based; <strong>corrective maintenance</strong> is repair after failure. Both are documented in the CMMS.</li>
+<li><strong>Recalls</strong> and <strong>Medical Device Reporting</strong> exist so that a failure at one facility protects patients everywhere — this is the public-safety loop.</li>
+</ul>
+<h4>Monitoring and diagnostic devices</h4>
+<ul>
+<li><strong>ECG:</strong> monitors electrical activity of the heart to detect rate and abnormalities. <strong>NIBP:</strong> blood pressure in mmHg by oscillometric cuff. <strong>SpO2:</strong> oxygen saturation by red/infrared absorption.</li>
+<li><strong>Capnography</strong> measures exhaled carbon dioxide (EtCO2) — the patient's carbon dioxide output — and confirms ventilation and tube placement.</li>
+<li><strong>Otoscope</strong> = ear; <strong>ophthalmoscope</strong> = eyes; <strong>sphygmomanometer</strong> = blood pressure cuff; <strong>diopter</strong> is a unit of lens power, not a device.</li>
+<li><strong>Fetal heart rate monitors</strong> are found in labor and delivery; <strong>centrifuges</strong> (rotor, motor, control interface) live in the laboratory.</li>
+<li>A patient monitoring device tracks a patient's disease, condition, or other medical parameter over time — the emphasis is continuous surveillance, not one-time diagnosis.</li>
+</ul>
+<h4>Respiratory, cardiac therapy, and fluid devices</h4>
+<ul>
+<li>Ventilators measure and control tidal volume, respiratory rate, airway pressure, and FiO2. They do <strong>not</strong> measure blood cell counts or any laboratory value.</li>
+<li><strong>Pressure Control Ventilation (PCV)</strong> maintains a set airway pressure during inspiration; volume control delivers a set volume regardless of pressure.</li>
+<li><strong>CPAP</strong> delivers one continuous pressure; <strong>BiPAP</strong> delivers a higher inspiratory and lower expiratory pressure. Both deliver positive pressure to the airway.</li>
+<li><strong>Humidification</strong> prevents drying of the patient airway in ventilator and high-flow circuits; a <strong>hydrophobic filter</strong> prevents fluids from entering an aspirator or suction pump.</li>
+<li><strong>Defibrillation</strong> is unsynchronized; <strong>cardioversion</strong> is synchronized to deliver the shock at a given point in the cardiac cycle. A <strong>defibrillator analyzer</strong> verifies delivered energy and simulates cardiac rhythms.</li>
+<li>Infusion pumps are tested for flow rate accuracy and occlusion alarm pressure; free-flow protection is a core patient-safety feature.</li>
+</ul>
+<h4>Imaging and radiation</h4>
+<ul>
+<li><strong>Ionizing:</strong> radiography, fluoroscopy, CT, mammography, nuclear medicine. <strong>Non-ionizing:</strong> MRI and ultrasound.</li>
+<li><strong>CT</strong> combines x-rays with computer technology to produce cross-sectional images; <strong>mammography</strong> is dedicated to breast imaging.</li>
+<li><strong>MRI</strong> uses no ionizing radiation; its hazards are the static magnetic field (ferromagnetic projectiles), gradient noise, and RF heating. Zone control and screening are the safety controls.</li>
+<li>An <strong>ultrasound phantom</strong> is the test object for ultrasound: it mimics tissue and contains known targets for resolution, depth, and distance accuracy checks.</li>
+<li><strong>Absorbed dose</strong> = radiation energy deposited per unit mass of tissue (gray). <strong>Dosimetry</strong> = determining dose by measurement, calculation, or both. <strong>ALARA</strong> = As Low As Reasonably Achievable, applied through time, distance, and shielding.</li>
+</ul>`,
+qref:[["FDA","US agency regulating medical devices"],["510(k)","Premarket notification showing substantial equivalence"],["Class III device","Highest risk; usually requires premarket approval"],["ECG","Monitors heart electrical activity, rate, abnormalities"],["Capnography","Measurement of a patient's carbon dioxide output"],["Pulse oximeter","Measures blood oxygen saturation noninvasively"],["CPAP/BiPAP","Deliver positive pressure to the airway"],["Pressure Control Ventilation","Maintains set airway pressure during inspiration"],["Humidification","Prevents drying of the patient's airway"],["Hydrophobic filter","Blocks fluid from entering an aspirator"],["Cardioversion","Shock synchronized to the cardiac cycle"],["Defibrillator analyzer","Verifies delivered energy; simulates cardiac rhythms"],["Phantom","Test object used to check ultrasound units"],["CT","X-rays plus computing for cross-sectional images"],["MRI","Imaging using magnetism; no ionizing radiation"],["Mammography","Imaging device dedicated to the breast"],["Absorbed dose","Radiation energy deposited divided by tissue mass"],["Dosimetry","Science of determining radiation dose"],["Centrifuge","Device with rotor, motor, and control interface"],["Otoscope","Instrument used for viewing the ear"]],
+notes:`<p><strong>Cardioversion is the synchronized mode; defibrillation is not.</strong> When a stem says the shock is delivered "at a given time in the cardiac cycle," <span class="trap">Defibrillation</span> is the trap, because it is the word every student associates with a defibrillator. The distinction is functional: defibrillation fires immediately into a chaotic rhythm, while cardioversion waits for the R wave so the energy never lands on the T wave. Same box, different mode, different clinical purpose.</p>
+<p><strong>A ventilator does not measure anything from the blood.</strong> On a NOT question listing tidal volume, respiratory rate, airway pressure, and <span class="trap">blood cell count</span>, students hesitate because ventilated patients do get lab draws. Draw the boundary at the device: a ventilator handles gas — volume, pressure, rate, oxygen concentration. Hematology comes from a laboratory analyzer, never from the ventilator.</p>
+<p><strong>A phantom is the test tool for ultrasound; an oscilloscope is not.</strong> <span class="trap">Oscilloscope</span> is the tempting choice on any "what would you use to test this" item because it is the most famous instrument in the shop. An oscilloscope displays a voltage waveform over time and is how you look for signal patterns or abnormalities in electronics. To verify an ultrasound unit's imaging performance you need a tissue-mimicking phantom with targets at known depths.</p>
+<p><strong>MRI is the imaging modality with no ionizing radiation.</strong> <span class="trap">CT</span> is the trap, and it is a good one — CT looks the most like MRI to a beginner, both produce cross-sectional slices, and both are big bore scanners in the same department. CT is x-ray based and delivers a substantial dose. MRI uses magnetism and radiofrequency, so its safety program is about ferromagnetic screening and zoning, not dosimetry.</p>
+<p><strong>The otoscope views the ear and the ophthalmoscope views the eyes.</strong> These are confused constantly because they share a handle, a battery, and a shelf. Use the roots: <em>oto-</em> is ear, <em>ophthalmo-</em> is eye. When a stem asks what an ophthalmoscope is used for, <span class="trap">viewing the ear</span> will be sitting right there as an option.</p>
+<p><strong>Absorbed dose and dosimetry are not the same word.</strong> Absorbed dose is the <em>quantity</em> — energy deposited in tissue divided by that tissue's mass. Dosimetry is the <em>science</em> of determining that quantity by measurement, calculation, or both. If a stem defines a ratio of energy to mass, <span class="trap">dosimetry</span> is the decoy; if it describes the process or discipline of determining dose, absorbed dose is the decoy.</p>`});
+
+GUIDE.push({t:2,
+narr:`<p>Sixteen percent of this exam is <strong>safety in healthcare</strong>, and the courses that back this event are blunt about why: a BMET works in occupied clinical space, around chemicals, compressed gases, radiation, energized equipment, and patients who cannot move away from a hazard. The safety content is largely regulatory and it is highly memorizable, which makes it some of the cheapest points on the test. Learn the standards, the acronyms, the color codes, and the section numbers.</p>
+<p><strong>OSHA</strong> — the Occupational Safety and Health Administration — sets and enforces workplace safety rules in the United States. Its <strong>Hazard Communication Standard (HCS)</strong> is the right-to-know rule: <strong>manufacturers and importers</strong> must evaluate the hazards of the chemicals they produce or import and must prepare labels and <strong>Safety Data Sheets</strong> to convey that hazard information downstream to employers and workers. Employers then maintain the SDS collection, label secondary containers, and train employees. An <strong>SDS</strong> has sixteen standardized sections; three are worth memorizing by number. <strong>Section 3</strong> is Composition/Information on Ingredients — what is actually in the product. <strong>Section 7</strong> is Handling and Storage, which is where general hygiene practice advice lives. <strong>Section 10</strong> is Stability and Reactivity, which tells you whether a change in physical appearance signals a safety problem.</p>
+<p><strong>PPE</strong> stands for <strong>personal protective equipment</strong>, and its role is to minimize the risk of exposure to hazards — it is the last line of defense, below elimination, substitution, engineering controls, and administrative controls in the hierarchy. <strong>Universal precautions</strong> and the broader concept of <strong>standard precautions</strong> tell you to treat all blood and body fluids as potentially infectious, protecting against most possible hazards regardless of a patient's known diagnosis. That is why infection control and biohazard procedures exist at all: their primary purpose is to <strong>maintain a safe working environment</strong> for staff and patients, not to protect confidentiality or improve appearance.</p>
+<p>Two hazard-control practices define the technician's day. <strong>LOTO — lockout/tagout</strong> — is the energy control procedure: before servicing, you isolate every energy source, apply your own lock and tag, and verify zero energy so the equipment cannot be started while your hands are inside it. Only the person who applied a lock removes it. The second is <strong>fire safety</strong>. Extinguishers are classed by fuel: <strong>Class A</strong> for ordinary combustibles like paper, wood, and cloth; <strong>Class B</strong> for flammable liquids; <strong>Class C</strong> for energized electrical equipment; <strong>Class D</strong> for combustible metals; <strong>Class K</strong> for kitchen oils. A <strong>water-filled extinguisher is for Class A only</strong> — water conducts electricity and spreads burning liquid, so it must never be used on electrical or liquid fires. In a healthcare facility, remember <strong>RACE</strong> (Rescue, Alarm, Confine, Extinguish) for the response and <strong>PASS</strong> (Pull, Aim, Squeeze, Sweep) for the extinguisher.</p>
+<p>Color coding is a recurring source of easy points and easy losses. Under <strong>ANSI</strong> — the American National Standards Institute — and OSHA safety color conventions, <strong>red</strong> marks danger and fire equipment, <strong>orange</strong> marks warning and dangerous machine parts, <strong>yellow</strong> marks caution and physical hazards such as tripping, falling, and striking, <strong>green</strong> marks safety equipment and first aid, and <strong>blue</strong> communicates information unrelated to personal injury or other hazards. Medical gas cylinders have their own US color scheme: oxygen is <strong>green</strong>, nitrous oxide <strong>blue</strong>, medical air <strong>yellow</strong>, carbon dioxide <strong>gray</strong>, and <strong>nitrogen is black</strong>. Cylinders must be secured upright, never dropped, and never handled with oil on your hands.</p>
+<p>Wrap the topic in <strong>risk management</strong>. The point of a hospital risk-management methodology is to <strong>identify potential safety risks and mitigate them</strong> before harm occurs — hazard identification, risk analysis, control, and monitoring, with incident reporting feeding the loop. <strong>Environmental safety</strong> in that framework means the potential safety risks present in the surrounding environment: wet floors, blocked egress, clutter in corridors, poor lighting, cords across walkways. When you evaluate a chemical situation, <strong>fire risk</strong> is the hazard to name first, because so many shop and clinical chemicals are flammable.</p>`,
+deep:`<h4>OSHA, hazard communication, and the SDS</h4>
+<ul>
+<li><strong>OSHA</strong> = Occupational Safety and Health Administration; <strong>ANSI</strong> = American National Standards Institute; <strong>HCS</strong> = Hazard Communication Standard (the right-to-know rule).</li>
+<li>Under the HCS, <strong>manufacturers and importers</strong> — both, not one or the other — evaluate chemical hazards and prepare labels and safety data sheets to convey them downstream.</li>
+<li><strong>SDS has 16 sections.</strong> Section 1 Identification; <strong>Section 2</strong> Hazard Identification; <strong>Section 3</strong> Composition/Information on Ingredients; Section 4 First Aid; Section 5 Firefighting; Section 6 Accidental Release; <strong>Section 7</strong> Handling and Storage; Section 8 Exposure Controls/PPE; Section 9 Physical and Chemical Properties; <strong>Section 10</strong> Stability and Reactivity; Sections 11-16 toxicological, ecological, disposal, transport, regulatory, other.</li>
+<li>General hygiene practice advice is found in <strong>Section 7 (Handling and Storage)</strong>; whether a change in physical appearance signals a hazard is in <strong>Section 10 (Stability and Reactivity)</strong>.</li>
+<li>GHS pictograms and signal words ("Danger" for severe, "Warning" for less severe) appear on the label, not only the SDS.</li>
+</ul>
+<h4>PPE, precautions, and infection control</h4>
+<ul>
+<li><strong>PPE</strong> = personal protective equipment; its role is to minimize risk of exposure to hazards. It is the lowest tier of the hierarchy of controls.</li>
+<li><strong>Hierarchy of controls:</strong> elimination, substitution, engineering controls, administrative controls, then PPE.</li>
+<li><strong>Universal precautions</strong> treat all blood and certain body fluids as infectious — measures that protect against most possible hazards regardless of diagnosis. <strong>Standard precautions</strong> extend this to all body fluids, non-intact skin, and mucous membranes.</li>
+<li>The primary purpose of biohazard and infection control procedures is to <strong>maintain a safe working environment</strong>.</li>
+<li>Equipment leaving a patient area must be disinfected per manufacturer instructions before shop work; sharps go in rigid, labeled sharps containers.</li>
+</ul>
+<h4>Energy control, fire, and gases</h4>
+<ul>
+<li><strong>LOTO = lockout/tagout.</strong> Isolate all energy sources (electrical, pneumatic, hydraulic, stored/capacitive), apply lock and tag, verify zero energy. Only the applier removes the lock.</li>
+<li><strong>Extinguisher classes:</strong> A ordinary combustibles, B flammable liquids, C energized electrical, D combustible metals, K cooking oils. <strong>Water-filled extinguishers are Class A only</strong> and must never be used on electrical or liquid fires.</li>
+<li><strong>RACE:</strong> Rescue, Alarm, Confine, Extinguish. <strong>PASS:</strong> Pull, Aim, Squeeze, Sweep.</li>
+<li><strong>US medical gas cylinder colors:</strong> oxygen green, nitrous oxide blue, medical air yellow, carbon dioxide gray, nitrogen <strong>black</strong>, vacuum white. Nitrous oxide is the gas called laughing gas.</li>
+<li>Compressed gas cylinders are stored upright and secured; regulators and valves are kept free of oil and grease because oil ignites in high-pressure oxygen.</li>
+</ul>
+<h4>Color codes, radiation, and risk management</h4>
+<ul>
+<li><strong>ANSI/OSHA safety colors:</strong> <strong>red</strong> danger and fire protection; <strong>orange</strong> warning, exposed machine hazards; <strong>yellow</strong> caution and physical hazards (tripping, falling, striking); <strong>green</strong> safety and first aid; <strong>blue</strong> information unrelated to personal injury or other hazards.</li>
+<li><strong>ALARA</strong> = As Low As Reasonably Achievable, achieved through <strong>time, distance, and shielding</strong>; personnel wear dosimeters in radiation areas.</li>
+<li><strong>Risk management methodology</strong> exists to identify potential safety risks and mitigate them; <strong>environmental safety</strong> means potential safety risks within the surrounding environment.</li>
+<li>Chemical situations carry <strong>fire risk</strong> first, plus inhalation, corrosive contact, and reactive-mixture hazards; know where eyewash stations and spill kits are before you need them.</li>
+<li>Report every incident, near miss, and device-related injury — the report is what drives the corrective action, and withholding it is the failure.</li>
+</ul>`,
+qref:[["OSHA","US agency enforcing workplace safety standards"],["ANSI","American National Standards Institute"],["Hazard Communication Standard","OSHA right-to-know rule for chemical hazards"],["SDS","Safety Data Sheet; 16 standardized sections"],["SDS Section 3","Composition and information on ingredients"],["SDS Section 7","Handling and storage, including hygiene practices"],["SDS Section 10","Stability and reactivity information"],["PPE","Personal protective equipment minimizing exposure risk"],["Universal precautions","Treat all blood and fluids as infectious"],["LOTO","Lockout/tagout energy control before servicing"],["Class A fire","Ordinary combustibles; water extinguisher appropriate"],["Class C fire","Energized electrical equipment; never use water"],["RACE","Rescue, Alarm, Confine, Extinguish"],["PASS","Pull, Aim, Squeeze, Sweep"],["Yellow (ANSI)","Caution color for physical hazards"],["Blue (ANSI)","Information unrelated to injury or hazards"],["Nitrogen cylinder","Color coded black in the United States"],["Nitrous oxide","Laughing gas; blue cylinder color"],["ALARA","As Low As Reasonably Achievable radiation exposure"],["Environmental safety","Safety risks within the surrounding environment"]],
+notes:`<p><strong>Water extinguishers are for Class A only — the fires they must never touch are electrical and liquid.</strong> The trap is direction: read whether the question asks what water is <em>for</em> or what it must <em>not</em> be used on. <span class="trap">Class B</span> is the decoy on the "never use" version because flammable liquids feel like something water should smother; in fact water spreads burning liquid and conducts current back to you. Water fights paper, wood, and cloth.</p>
+<p><strong>Yellow is caution for physical hazards; blue is pure information.</strong> Students lose these because all five colors sound reasonable. Anchor two of them and the rest follow: <span class="trap">Red</span> is danger and fire equipment — the strongest signal, never a general caution — and blue is the one color that carries no injury message at all. Yellow owns tripping, falling, and striking hazards.</p>
+<p><strong>Under the Hazard Communication Standard the duty falls on manufacturers AND importers.</strong> When the answer options split them, <span class="trap">Manufacturers</span> alone is the tempting pick because the manufacturer made the chemical. An importer who brings a foreign chemical into the country has the same duty to evaluate hazards and produce labels and safety data sheets, because otherwise imported products would arrive with no hazard information at all.</p>
+<p><strong>SDS section numbers are worth memorizing, and the near-miss sections are the trap.</strong> Ingredient identity is <strong>Section 3</strong>, and <span class="trap">Section 2, Hazard Identification</span> sits right next to it as the decoy. Hygiene practices are in <strong>Section 7, Handling and Storage</strong>, with <span class="trap">Section 8, Exposure Controls/PPE</span> as the near miss. Appearance changes that signal a hazard are <strong>Section 10, Stability and Reactivity</strong>.</p>
+<p><strong>LOTO is lockout/tagout, not lookout.</strong> The letters make "lookout" sound right, and the safety context reinforces the guess. It is <em>lock</em>-out: a physical lock isolating the energy source, plus a tag identifying who applied it. If you remember the padlock, you will never write <span class="trap">lookout</span> again.</p>
+<p><strong>Infection control exists to maintain a safe working environment.</strong> On the purpose question, <span class="trap">Ensure patient confidentiality</span> is the trap — confidentiality is a genuine healthcare obligation, just a different one, governed by privacy rules rather than biohazard procedure. Aesthetics and equipment protection are also decoys. Biohazard and infection control procedures protect people from pathogens.</p>`});
+
+GUIDE.push({t:3,
+narr:`<p>Fourteen percent of the exam is <strong>fundamentals of electricity and electronics</strong>, and this is the block where a student who actually understands circuits pulls ahead. Everything in a hospital that plugs in is a load on a distribution system that was designed with the patient in mind. Start at the atom and build up: matter is anything that possesses mass and occupies space; an atom's <strong>protons</strong> are positive, electrons negative, neutrons neutral, and <strong>the number of protons determines the chemical identity</strong> of the element. A material with more electrons than protons is <strong>negatively charged</strong>; more protons than electrons and it is <strong>positively charged</strong>. Current is the flow of that charge.</p>
+<p><strong>Ohm's law</strong> is the spine of the topic: voltage equals current times resistance, <strong>V = I × R</strong>. Read it as a relationship rather than a formula. At fixed resistance, current is <strong>directly proportional to the applied voltage</strong> — double the volts, double the amps. At fixed voltage, current is <strong>inversely proportional to resistance</strong> — double the ohms, halve the amps. Power follows: <strong>P = V × I</strong>, and also I²R and V²/R. Power is measured in watts, and <strong>energy is measured in joules</strong> — a watt is one joule per second, which is exactly why defibrillator output is specified in joules.</p>
+<p>Circuit topology decides how faults behave. In a <strong>series</strong> circuit there is one path: current is the same everywhere, voltages add, and a single open component kills the whole circuit — think of the old string of lights. In a <strong>parallel</strong> circuit there are multiple branches: voltage is the same across every branch, currents add, and the circuit <strong>can continue to function when one component fails</strong>. That is why building wiring and most redundant medical subsystems are parallel. Total resistance in series is the simple sum; in parallel it is always less than the smallest single resistor.</p>
+<p>Distinguish <strong>DC</strong> from <strong>AC</strong>. Direct current possesses a voltage with <strong>constant polarity</strong> — batteries and most internal device rails. Alternating current reverses direction periodically; in the US, mains power is a 60 Hz sine wave. For a sine wave, the <strong>peak value</strong> is the maximum reached in either the positive or negative direction, peak-to-peak is twice that, and the <strong>RMS value is approximately 0.707 of the peak</strong> because RMS expresses the equivalent heating power of DC. Waveform vocabulary carries over to biomedical signals: <strong>amplitude</strong> represents magnitude or intensity, and higher amplitude indicates higher energy in the signal; <strong>frequency</strong> is cycles per second; <strong>period</strong> is the time for one cycle; and a <strong>phase shift</strong> is the time delay between two waveforms. In AC power, real power does work, reactive power sloshes back and forth in inductance and capacitance, and <strong>apparent power is the combination of real and reactive power</strong>, expressed in volt-amperes. Large imaging and HVAC loads use <strong>three-phase</strong> power — three sinusoidal voltages offset by 120 degrees, giving smoother, more efficient power delivery.</p>
+<p>Now make it clinical. The three conductors at a receptacle are <strong>hot</strong> (always carrying an electric charge), <strong>neutral</strong> (the return path), and <strong>ground</strong> (a protective path that normally carries no current). Grounding is the single most important electrical safety concept in a hospital, because a broken ground turns an enclosure fault into a patient hazard. <strong>Leakage current</strong> is the small unintended current that escapes through insulation, capacitance, and the ground conductor; it is measured in microamps and limited tightly, most tightly for direct cardiac connections, because current delivered straight to the heart is dangerous at levels a person cannot even feel. That is the difference between <strong>macroshock</strong> — current applied across the skin at levels high enough to be felt and to cause harm — and <strong>microshock</strong>, tiny current delivered through a conductive path directly to the myocardium. <strong>Isolation transformers</strong> and isolated power systems break the direct connection to earth so that a single fault does not create a shock path, and a line isolation monitor watches for that first fault. <strong>GFCI</strong> devices trip when current out and current back do not match.</p>
+<p>Finally, the instruments. A <strong>digital multimeter</strong> measures voltage <strong>across</strong> a component (in parallel) and current <strong>through</strong> it (in series); for resistance you place the meter <strong>across the component</strong> with power removed and the component isolated. The multimeter acts as a <strong>load device when measuring voltage</strong>. A closed switch or good conductor reads <strong>zero or minimal ohms</strong>; an open circuit reads infinite. If you measure <strong>zero voltage with power supplied</strong> across a load, the circuit is <strong>open</strong> somewhere upstream. An <strong>oscilloscope</strong> shows signal patterns and abnormalities over time. An <strong>electrical safety analyzer</strong> measures ground resistance and leakage current; a <strong>defibrillator analyzer</strong> measures delivered energy and <strong>simulates cardiac rhythms</strong>; a <strong>patient simulator</strong> feeds known ECG, respiration, blood pressure, and temperature signals into a monitor; an <strong>ultrasound phantom</strong> checks imaging performance. Hand tools count too: the screwdriver you pick is determined by the <strong>fastener type</strong>, a <strong>torque wrench</strong> gives accurate tightening, a <strong>socket wrench</strong> has the built-in ratcheting mechanism, and <strong>side-cutting pliers</strong> cut wires, leads, and cables.</p>`,
+deep:`<h4>Charge, Ohm's law, and power</h4>
+<ul>
+<li><strong>Matter</strong> possesses mass and occupies space. <strong>Protons</strong> are positive, electrons negative, neutrons neutral; the <strong>number of protons</strong> sets the element's chemical identity.</li>
+<li>More electrons than protons = <strong>negatively charged</strong>; more protons than electrons = <strong>positively charged</strong>.</li>
+<li><strong>V = I × R.</strong> Current is directly proportional to applied voltage and inversely proportional to resistance.</li>
+<li><strong>P = V × I = I²R = V²/R.</strong> Power in watts; <strong>energy in joules</strong> (1 W = 1 J/s). Defibrillator output is specified in joules.</li>
+<li>Units: volt (potential), ampere (current), ohm (resistance), farad (capacitance), henry (inductance), hertz (frequency).</li>
+</ul>
+<h4>Series, parallel, AC waveforms, and power systems</h4>
+<ul>
+<li><strong>Series:</strong> one path, same current throughout, voltages add, R total = sum. One open component stops everything.</li>
+<li><strong>Parallel:</strong> multiple paths, same voltage across branches, currents add, R total less than the smallest branch. A <strong>parallel circuit can continue to function when a component fails</strong>.</li>
+<li><strong>DC</strong> has constant polarity; <strong>AC</strong> reverses periodically (60 Hz in the US).</li>
+<li><strong>Peak value</strong> = maximum reached in the positive or negative direction. <strong>RMS ≈ 0.707 × peak</strong>; peak ≈ 1.414 × RMS; peak-to-peak = 2 × peak.</li>
+<li><strong>Amplitude</strong> = magnitude or intensity; higher amplitude means higher signal energy. <strong>Phase shift</strong> = time delay between two waveforms. <strong>Frequency</strong> = 1/period.</li>
+<li><strong>Apparent power</strong> = combination of real and reactive power, in volt-amperes; power factor = real ÷ apparent. <strong>Three-phase</strong> systems use three sinusoidal voltages 120 degrees apart for smoother, more efficient delivery to large loads.</li>
+</ul>
+<h4>Grounding, leakage, and electrical safety in patient care</h4>
+<ul>
+<li><strong>Hot</strong> conductor always carries an electric charge; <strong>neutral</strong> is the return; <strong>ground</strong> is the protective path that normally carries no current.</li>
+<li><strong>Macroshock:</strong> current applied across the skin at a level high enough to be perceived and to cause injury. <strong>Microshock:</strong> very small current delivered directly to the myocardium through a conductive path such as a pacing lead or fluid-filled catheter.</li>
+<li><strong>Leakage current</strong> is unintended current through insulation, capacitive coupling, or the ground conductor. It is measured in microamps and limited most strictly for patient-connected and cardiac-connected parts.</li>
+<li><strong>Isolation transformers</strong> and isolated power systems remove the direct earth reference so one fault does not create a complete shock path; a line isolation monitor annunciates the first fault. <strong>GFCI</strong> devices trip on a hot/neutral current imbalance.</li>
+<li>Equipotential grounding in patient care areas keeps all exposed conductive surfaces at the same potential so no voltage difference exists across the patient.</li>
+</ul>
+<h4>Components, test equipment, and hand tools</h4>
+<ul>
+<li><strong>Switch types</strong> are named by poles and throws: SPST, SPDT, DPST, DPDT. <strong>Double-pole</strong> refers to a switch. A <strong>relay's</strong> opening and closing contacts make it a <strong>controlling device</strong> in a circuit.</li>
+<li>A <strong>closed switch</strong> or intact conductor reads <strong>zero or minimal ohms</strong>; an open switch or blown fuse reads infinite (OL). Measuring <strong>zero voltage with power supplied</strong> means the circuit is <strong>open</strong>.</li>
+<li><strong>Multimeter placement:</strong> voltage across (parallel), current through (series), resistance <strong>across the component</strong> with power off. The meter behaves as a <strong>load device when measuring voltage</strong>.</li>
+<li><strong>Test equipment:</strong> oscilloscope for signal patterns and abnormalities; electrical safety analyzer for ground resistance and leakage; <strong>defibrillator analyzer</strong> for delivered energy and simulating cardiac rhythms; patient simulator for ECG, respiration, NIBP, and temperature; ultrasound phantom for imaging performance; flow analyzer for ventilators; infusion pump analyzer for flow rate.</li>
+<li>A <strong>generator</strong> contains brushes, rotor windings, and stator windings; a transformer changes AC voltage by turns ratio and has no brushes.</li>
+<li><strong>Hand tools:</strong> screwdriver chosen by <strong>fastener type</strong>; <strong>torque wrench</strong> for accurate tightening to specification; <strong>socket wrench</strong> for its built-in ratcheting mechanism; <strong>side-cutting pliers</strong> to cut wires, leads, and cables; needle-nose for gripping in tight spaces. Use ESD wrist straps and mats when handling boards.</li>
+</ul>`,
+qref:[["Ohm's law","V = I × R; current proportional to voltage"],["Power","P = V × I, measured in watts"],["Joule","Unit of energy; defibrillator output unit"],["Series circuit","One path; one open component stops all"],["Parallel circuit","Multiple paths; keeps working if one fails"],["Direct current","Voltage with constant polarity"],["Peak value","Maximum AC value, positive or negative direction"],["RMS value","About 0.707 of the peak for sine waves"],["Amplitude","Magnitude or intensity of a waveform"],["Phase shift","Time delay between two waveforms"],["Apparent power","Combination of real and reactive power"],["Hot wire","Conductor always carrying an electric charge"],["Leakage current","Small unintended current through insulation or ground"],["Macroshock","Skin-applied current large enough to be felt"],["Microshock","Tiny current delivered directly to the heart"],["Isolation transformer","Removes direct earth reference to limit shock"],["Electrical safety analyzer","Measures ground resistance and leakage current"],["Defibrillator analyzer","Measures delivered energy; simulates cardiac rhythms"],["Closed switch","Reads zero or minimal ohms"],["Torque wrench","Tightens a fastener to accurate specification"]],
+notes:`<p><strong>Ohm's law is a proportion question, and the trap is the word inversely.</strong> Current is <em>directly</em> proportional to applied voltage and <em>inversely</em> proportional to resistance. Options often offer <span class="trap">inversely proportional to the applied voltage</span>, which pairs the right relationship with the wrong variable. Fix it with a number: at 10 ohms, 10 V gives 1 A and 20 V gives 2 A. Voltage up, current up.</p>
+<p><strong>A parallel circuit is the one that keeps working when a component fails.</strong> <span class="trap">Series</span> is the tempting answer for students who remember only that series circuits are "simple and reliable." Series has a single path, so one open component ends the story. Parallel branches are independent — that is why hospital receptacles, lamps in a room, and redundant fans are wired in parallel.</p>
+<p><strong>Resistance is measured across the component, with the power off.</strong> The decoy is <span class="trap">in series with the component</span>, which is correct for current and only for current. Voltage and resistance both go across; current goes through. And an ohmmeter supplies its own small test current, so external power must be removed or the reading is meaningless and the meter may be damaged.</p>
+<p><strong>Zero volts with power supplied means the circuit is open, not shorted.</strong> <span class="trap">Shorted</span> feels right because "no voltage" sounds like something collapsed. Think about where the voltage went: if the path is broken upstream, the full source voltage drops across the break and nothing reaches your test points. A short would show near-zero volts across the shorted element while current climbs and protection devices trip.</p>
+<p><strong>Macroshock crosses the skin; microshock bypasses it.</strong> When a stem specifies current applied to the skin at a level high enough to be perceived, the answer is macro, and <span class="trap">micro</span> is the decoy for students who associate "shock hazard in a hospital" with the microshock lectures. Microshock is defined by the pathway — a conductive route straight to the myocardium — which makes currents far too small to feel potentially lethal.</p>
+<p><strong>Apparent power is the combination of real and reactive power, not just the useful part.</strong> <span class="trap">Real power only</span> is the trap, since real power is what does the work and what the utility bills. Apparent power is the total volt-amperes the system must actually carry, which is why generators and isolation transformers are rated in VA or kVA rather than watts.</p>`});
+
+GUIDE.push({t:4,
+narr:`<p><strong>Reasoning is the single largest block on this exam at twenty-four percent</strong>, and it is not a content domain. It is troubleshooting and diagnostic logic applied to medical equipment, plus the numerical and graphical reasoning a technician uses to interpret readings. You cannot memorize your way through it. What you can do is internalize a method so completely that any scenario stem sorts itself into a step, and then pick the option that belongs to the step you are actually standing on.</p>
+<p>Use a seven-step frame. <strong>One: identify and verify the problem.</strong> Talk to the user who reported it and reproduce the fault yourself — a device that works on your bench is a different problem from a device that fails on your bench. <strong>Two: gather information.</strong> Read the error codes, the event log, the service history in the CMMS, and the <strong>service manual</strong>, which assists maintenance by offering step-by-step instructions for troubleshooting and repair. <strong>Three: check the obvious, starting with power.</strong> Is it plugged in, is the receptacle live, is the breaker set, is the battery charged, is the switch on, is the fuse intact? When a patient monitoring device will not power on, the reason lives in the <strong>battery and charging circuit</strong> long before it lives in the display board. Along with power, do the mechanical and visual inspection first: when you begin evaluating a circuit, the <strong>mechanical</strong> check — damaged cases, burnt components, loose connectors, corrosion, cracked cables — comes before you energize anything.</p>
+<p><strong>Four: determine the probable cause.</strong> This is the analytical step, and it is where you reach for a <strong>circuit extraction or systems diagram</strong> to understand how the subsystems connect and where a single failure could produce the reported symptom. <strong>Five: isolate the fault.</strong> Work from symptom to subsystem using <strong>half-splitting</strong> — test at the midpoint of the signal chain so each measurement eliminates half the remaining possibilities. Use <strong>process of elimination</strong> deliberately: its role is to identify the correct solution by eliminating incorrect options, and incorrect options should be actively ruled out rather than ignored. Substitution with a known-good module and signal tracing are the other two workhorses.</p>
+<p><strong>Six: solve the problem.</strong> Now you repair or replace, and now — not earlier — is when the question "do you need any parts?" belongs. Ordering a board before you have isolated the fault is guessing with the department's budget. <strong>Seven: verify and document.</strong> Confirm the device meets performance specification with the right test equipment, run the electrical safety test, and write the record: symptom, findings, cause, action, parts, and test results, in the CMMS. Documentation is not paperwork; it is how the next technician recognizes a repeat failure and how the facility proves the device was safe. Codes like <strong>DNDE — device did not de-energize at the right time</strong> exist precisely so that a fault is recorded in language everyone reads the same way.</p>
+<p>Learn the fault signatures. <strong>Intermittent</strong> symptoms — erratic behavior, readings that come and go, faults that appear only when the cart is moved — point to connectors, cables, cold solder joints, thermal drift, and vibration, not to a cleanly dead component. Readings that are consistently present but wrong point to <strong>calibration errors</strong>: a defibrillator with intermittent readings and erratic delivered energy is telling you its calibration is out, not that its clinical use has changed. Total dead means power path. One channel wrong and the others right means that channel's front end. All channels wrong means a shared supply, reference, or ground. And always separate <strong>user error and setup</strong> from device failure: wrong cuff size, dried electrode gel, a disconnected sample line, and an incorrect mode setting look like device faults to the person reporting them.</p>
+<p>The reasoning block also carries measurement and data logic. <strong>Tolerance</strong> is the permissible deviation from a standard, so a device with a tolerance of ±0.1% reading 500 units is acceptable anywhere from 499.5 to 500.5. Metric conversion must be automatic: 2.4 micrograms is 0.0000024 g, one kilogram is about 2.2 pounds, and you read a graduated cylinder at the bottom of the <strong>meniscus</strong> at eye level. Graph reading is the same skill in another form: in a bar chart the lengths of the bars represent frequency or quantity; a scatter plot organizes data using dots that represent individual data points, and a strong negative correlation means one variable increases as the other decreases. When the area under a curve represents a physical quantity, the <strong>slope</strong> represents its rate of change — on a velocity-time graph, that slope is acceleration. One last habit separates a good technician from a fast one: knowing when to stop. If a device is unsafe, you tag it out of service and remove it from the clinical area rather than continuing to test it in place. If the fault exceeds your training, the manufacturer's technical support and the service manual's escalation path exist for exactly that. Choosing the safe, documented, reversible next step is almost always the defensible answer.</p>`,
+deep:`<h4>The troubleshooting sequence, step by step</h4>
+<ul>
+<li><strong>1. Identify and verify:</strong> interview the user, reproduce the fault, note exactly when and how it occurs. A symptom you cannot reproduce is itself information.</li>
+<li><strong>2. Gather information:</strong> error codes, event logs, CMMS service history, and the <strong>service manual</strong>, which provides step-by-step troubleshooting and repair instructions plus specifications and diagrams.</li>
+<li><strong>3. Check the obvious:</strong> power source, cord, receptacle, breaker, battery and charging circuit, on/off switch, fuse, and the <strong>mechanical/visual</strong> inspection — the first step when evaluating a circuit is mechanical, before energizing.</li>
+<li><strong>4. Determine the probable cause:</strong> the step where a <strong>circuit extraction or systems diagram</strong> is used to map symptom to subsystem.</li>
+<li><strong>5. Isolate:</strong> half-split the signal chain, substitute known-good modules, trace or inject signals, and apply <strong>process of elimination</strong> — eliminate incorrect options to identify the correct solution.</li>
+<li><strong>6. Solve the problem:</strong> repair or replace. Parts questions ("do you need any parts?") belong to this step, after isolation.</li>
+<li><strong>7. Verify and document:</strong> performance test to specification, electrical safety test, then record symptom, cause, action, parts, and results in the CMMS.</li>
+</ul>
+<h4>Fault signatures and what they point to</h4>
+<ul>
+<li><strong>Completely dead:</strong> power path — cord, fuse, switch, supply, battery and charging circuit.</li>
+<li><strong>Intermittent or erratic, worse with motion:</strong> connectors, cables, strain reliefs, cold solder joints, vibration; heat-related drift if it appears after warm-up.</li>
+<li><strong>Consistently wrong but stable readings:</strong> <strong>calibration errors</strong> — verify against a known standard with the correct analyzer before condemning a board.</li>
+<li><strong>One channel bad, others good:</strong> that channel's front end, lead, or transducer. <strong>All channels bad:</strong> shared power supply, reference, or ground.</li>
+<li><strong>Works on the bench, fails in the room:</strong> environment — receptacle, network, gas supply, EMI, or user technique.</li>
+<li>Always rule out <strong>setup and user error</strong> — wrong accessory size, expired electrodes, wrong mode, disconnected line — before disassembly.</li>
+</ul>
+<h4>Measurement, tolerance, and unit reasoning</h4>
+<ul>
+<li><strong>Tolerance</strong> = permissible deviation from a standard. ±0.1% of 500 units = 0.5 units, so the acceptable range is <strong>499.5 to 500.5</strong>.</li>
+<li>Metric prefixes: kilo 10³, milli 10⁻³, micro 10⁻⁶, nano 10⁻⁹. <strong>2.4 micrograms = 0.0000024 g.</strong> 1 kg ≈ <strong>2.2 lb</strong>.</li>
+<li>Read liquid volume at the bottom of the <strong>meniscus</strong>, with your eye level with the surface, to avoid parallax error.</li>
+<li>Accuracy is closeness to the true value; precision is repeatability. A device can be precise and still out of calibration.</li>
+<li>Compare a reading against the <strong>manufacturer's specification</strong>, not against your expectation — pass/fail is defined by the spec sheet.</li>
+</ul>
+<h4>Data interpretation and professional judgment</h4>
+<ul>
+<li><strong>Bar chart:</strong> bar length represents frequency or quantity. <strong>Scatter plot:</strong> dots represent individual data points; a strong negative correlation means one variable increases as the other decreases.</li>
+<li><strong>Line graph slope</strong> = rate of change; on a velocity-time graph the slope is <strong>acceleration</strong>, while the area under the curve is distance.</li>
+<li><strong>Trend data</strong> from a CMMS turns single repairs into patterns: repeat failures on one model justify a design fix, vendor escalation, or replacement.</li>
+<li><strong>DNDE</strong> = device did not de-energize at the right time — an example of standardized fault language that makes records searchable and comparable.</li>
+<li>An unsafe device is <strong>tagged and removed from service</strong>, not left in the room for later. Escalate beyond your training to the manufacturer's technical support rather than improvising.</li>
+<li>Communicate the outcome to the clinical user in plain language — half of a BMET's value is explaining what happened and how to prevent it.</li>
+</ul>`,
+qref:[["Verify the complaint","Reproduce the reported fault before repairing anything"],["Service manual","Gives step-by-step troubleshooting and repair instructions"],["Check power first","Cord, breaker, battery, switch, and fuse"],["Mechanical inspection","First step evaluating a circuit; look before energizing"],["Probable cause step","Where circuit and systems diagrams are used"],["Half-splitting","Test midpoint to eliminate half the chain"],["Process of elimination","Rule out incorrect options to find the solution"],["Substitution","Swap a known-good module to isolate a fault"],["Solve the problem","Step where parts are ordered and repairs made"],["Verification test","Confirm performance to spec after repair"],["Documentation","Record symptom, cause, action, parts, results"],["CMMS","Computerized maintenance management system record"],["DNDE","Device did not de-energize at the right time"],["Intermittent fault","Suspect connectors, cables, thermal, or vibration"],["Calibration error","Stable readings that are consistently wrong"],["Tolerance","Permissible deviation from a standard value"],["Meniscus","Curved liquid level read on a cylinder"],["Bar chart bars","Lengths represent frequency or quantity"],["Negative correlation","One variable increases as the other decreases"],["Tag out of service","Remove an unsafe device from clinical use"]],
+notes:`<p><strong>Ordering parts is not a diagnostic step.</strong> When a stem asks where "do you need any parts?" fits, <span class="trap">Determining the probable cause</span> is the tempting answer because parts feel like planning. They are not — a parts question presumes you already know what failed. It belongs to <strong>solving the problem</strong>, the step where the repair is actually executed. Reversing the two is how a shop ends up with a shelf of boards it never needed.</p>
+<p><strong>Diagrams belong to determining the probable cause.</strong> The mirror-image trap is choosing <span class="trap">Solve the problem</span> for the circuit extraction or systems diagram question, since diagrams are open on the bench during the repair. Ask what the diagram is <em>for</em>: it tells you how the subsystems connect so you can reason about which single failure could produce this symptom. That reasoning is the probable-cause step.</p>
+<p><strong>A device that will not power on is a power-path problem until proven otherwise.</strong> <span class="trap">Display or screen failure</span> is the seductive wrong answer because a dark screen is what the user actually saw. Start with the <strong>battery and charging circuit</strong>, cord, fuse, and supply. Replacing a display on a unit whose charging circuit is dead wastes a part and leaves the device broken.</p>
+<p><strong>Erratic, intermittent readings with no other symptom point to calibration, not to a dead component.</strong> <span class="trap">Complete power failure</span> is inconsistent with the evidence — a device that is powering up and producing readings has power. When a defibrillator delivers energy inconsistently across tests, verify against a defibrillator analyzer and treat calibration as the working hypothesis.</p>
+<p><strong>Process of elimination means actively rejecting wrong options, not skipping them.</strong> The trap is the passive version: <span class="trap">ignore them and move on</span>. Elimination only narrows the field if you can articulate why each rejected candidate cannot explain the symptom. That is also the difference between a technician who fixes a device once and one who fixes it for good.</p>
+<p><strong>Tolerance is a range around the standard, so read the percentage carefully.</strong> With ±0.1% at 500 units, the window is 0.5 units wide on each side: 499.5 to 500.5. The classic decoy is <span class="trap">495 to 505</span>, which is what you get by using 1% instead of 0.1%. Compute the deviation explicitly before you look at the options.</p>`});
+
+GUIDE.push({t:5,
+narr:`<p><strong>Healthcare IT</strong> is fourteen percent of the exam, and it exists on a BMET test because modern medical devices are network endpoints. A patient monitor pushes vitals to a central station and into the medical record, an infusion pump pulls a drug library from a server, and an imaging system sends studies to <strong>PACS</strong>. When those connections break, the clinical staff calls the same technician who fixes the hardware. Expect fundamentals: computer parts, network types and topologies, addressing, wireless, security, and hospital information systems.</p>
+<p>Start with the computer. The <strong>CPU</strong> is the brain — it executes instructions. <strong>RAM</strong> is volatile <strong>temporary data storage</strong> for whatever is running right now; it empties at power off. Long-term storage lives on a drive, and an <strong>SSD (solid state drive)</strong> has faster data access than a traditional spinning hard disk because it has no moving parts. The <strong>GPU</strong> handles graphics rendering, which is why imaging workstations spend money there. The <strong>OS — operating system</strong> — manages hardware and provides the platform applications run on. <strong>Peripherals</strong> are devices attached to the computer; a <strong>keyboard</strong> is both a peripheral and an <strong>input device</strong>, while a monitor and printer are output devices. A smart watch counts as a <strong>mobile device</strong>. Connector color coding is a small but real item: <strong>USB 3.0</strong> ports and connectors are conventionally <strong>blue</strong>, and <strong>coaxial cable</strong> in medical and video applications typically uses a <strong>BNC connector</strong>.</p>
+<p>Networks are classified by reach. A <strong>PAN — personal area network</strong> — is the few-meter network around one person, and <strong>Bluetooth</strong> is its defining technology: a wireless standard for short-range communication between devices. A <strong>LAN</strong> covers a building or campus, a <strong>MAN</strong> a city, and a <strong>WAN</strong> spans large geographic distances — the internet is the largest WAN. <strong>Topology</strong> describes the physical or logical arrangement: <strong>bus</strong> uses one shared backbone and <strong>requires termination at both ends</strong> to prevent signal reflection; <strong>star</strong> connects every node to a central switch and dominates modern wiring; <strong>ring</strong> passes traffic around a loop; <strong>mesh</strong> gives redundant paths. Wired media matter too: <strong>UTP</strong> — unshielded twisted pair — normally contains <strong>four pairs</strong> of conductors terminated in an RJ45 plug, while fiber carries light and is immune to electromagnetic interference, which is valuable near imaging equipment.</p>
+<p>Addressing and models are memorization with logic behind them. A byte, called an <strong>octet</strong> in networking, contains <strong>8 bits</strong>, and an IPv4 address is four octets. <strong>IP address classes are A, B, C, D, and E</strong>, with A through C used for normal host addressing, D reserved for multicast, and E experimental. The <strong>OSI model</strong> has seven layers — physical, data link, network, transport, session, presentation, application — and the <strong>TCP/IP model</strong> collapses them into four, with <strong>Ethernet residing at the link layer</strong>. <strong>Firewalls</strong> that filter traffic by IP address and port operate at the <strong>network layer</strong>, and intrusion detection and prevention systems monitor at that same layer. <strong>CSMA/CD</strong> stands for <strong>Carrier Sense Multiple Access with Collision Detection</strong>, the legacy Ethernet method for sharing a medium: listen first, transmit, detect collisions, back off, retry.</p>
+<p>Know your network hardware by function. A <strong>router</strong> connects networks and moves traffic between them; the <strong>default gateway</strong> is usually built into the router. A <strong>switch</strong> forwards frames within a LAN by MAC address. A <strong>hub</strong> repeats to every port and is obsolete. A <strong>repeater boosts distance</strong> by regenerating a weakened signal. An access point provides wireless service. Wireless networks rely on <strong>radio frequency</strong> technology; a <strong>wireless router facilitates communication between devices without physical connections</strong>. <strong>WPA2</strong> contributes to wireless security by <strong>encrypting data for secure communication</strong>, and <strong>QoS — Quality of Service — prioritizes data traffic</strong> so that latency-sensitive clinical traffic gets bandwidth before someone's file download.</p>
+<p>Security and clinical systems close the topic. <strong>Anti-virus software is a network security component</strong>, alongside firewalls, encryption, access control, patch management, and network segmentation that puts medical devices on their own VLAN. Health information is protected under HIPAA, so protected health information must be encrypted in transit and at rest and access must be role-based and logged. On the clinical side, <strong>EMR</strong> stands for <strong>electronic medical record</strong> and an EHR is the shareable version that follows a patient across organizations; a <strong>Hospital Information System</strong> ties admissions, orders, results, and billing together. <strong>Integrating biomedical devices into hospital information systems improves patient care and data accuracy</strong> by removing manual transcription — and the leading challenge in doing it is <strong>interoperability</strong>: different vendors, different data formats, different versions. <strong>HL7</strong> is the messaging standard for clinical data and <strong>DICOM</strong> is the standard for medical images, and both exist because interoperability had to be engineered rather than assumed.</p>`,
+deep:`<h4>Computer hardware and the operating system</h4>
+<ul>
+<li><strong>CPU</strong> = the brain, executing instructions. <strong>RAM</strong> = volatile temporary data storage for active programs. <strong>GPU</strong> = graphics rendering.</li>
+<li><strong>SSD</strong> = solid state drive; faster data access than a traditional hard disk drive because there are no moving parts. <strong>HDD</strong> uses spinning magnetic platters.</li>
+<li><strong>OS</strong> = operating system: manages hardware resources and hosts applications. Medical devices often run embedded or real-time operating systems that still need patching.</li>
+<li><strong>Input devices:</strong> keyboard, mouse, scanner, barcode reader, touchscreen. <strong>Output:</strong> monitor, printer, speaker. <strong>Peripheral</strong> = any device attached to the computer.</li>
+<li><strong>Mobile devices</strong> include smart watches, tablets, and phones. <strong>USB 3.0</strong> connectors are conventionally blue; <strong>coaxial cable</strong> commonly terminates in a <strong>BNC</strong> connector.</li>
+</ul>
+<h4>Network types, topologies, and media</h4>
+<ul>
+<li><strong>PAN</strong> (Bluetooth, a few meters) &lt; <strong>LAN</strong> (building/campus) &lt; <strong>MAN</strong> (city) &lt; <strong>WAN</strong> (large geographic area; the internet).</li>
+<li><strong>Bus topology requires termination at both ends</strong> to prevent signal reflection. <strong>Star</strong> centralizes on a switch. <strong>Ring</strong> forms a loop. <strong>Mesh</strong> provides redundant paths.</li>
+<li><strong>UTP cabling normally has 4 pairs</strong> (8 conductors) with RJ45 termination; twisting cancels crosstalk. Shielded twisted pair adds foil for noisy environments; <strong>fiber</strong> is immune to EMI.</li>
+<li><strong>CSMA/CD</strong> = Carrier Sense Multiple Access / Collision Detection — listen, transmit, detect collision, back off, retry. Wireless uses CSMA/CA (collision avoidance).</li>
+<li><strong>Router:</strong> connects networks, holds the <strong>default gateway</strong>. <strong>Switch:</strong> forwards frames by MAC within a LAN. <strong>Repeater:</strong> boosts distance by regenerating the signal. <strong>Access point:</strong> provides wireless coverage.</li>
+</ul>
+<h4>Addressing, models, and wireless</h4>
+<ul>
+<li>An <strong>octet is 8 bits</strong>; an IPv4 address is four octets, usually written in dotted decimal.</li>
+<li><strong>IP address classes: A, B, C, D, E.</strong> A-C for hosts, D multicast, E experimental. Private ranges exist in A, B, and C.</li>
+<li><strong>OSI layers:</strong> Physical, Data Link, Network, Transport, Session, Presentation, Application. <strong>Firewalls</strong> filtering by IP address and port, and IDS/IPS monitoring, operate at the <strong>network layer</strong>.</li>
+<li><strong>TCP/IP model:</strong> Link, Internet, Transport, Application. <strong>Ethernet resides at the link layer.</strong></li>
+<li>Wireless networks rely on <strong>radio frequency</strong>. <strong>WPA2 encrypts data</strong> for secure communication; <strong>QoS prioritizes data traffic</strong> for better performance on latency-sensitive clinical streams.</li>
+</ul>
+<h4>Security, clinical systems, and device integration</h4>
+<ul>
+<li><strong>Network security components:</strong> anti-virus, firewall, encryption, access control and authentication, patch management, IDS/IPS, and VLAN segmentation isolating medical devices.</li>
+<li><strong>HIPAA</strong> governs protected health information; encrypt data in transit and at rest, use unique role-based logins, and never share credentials on a shared clinical workstation.</li>
+<li><strong>EMR</strong> = electronic medical record (one organization); <strong>EHR</strong> = electronic health record (shared across organizations); <strong>HIS</strong> = hospital information system for admissions, orders, results, billing.</li>
+<li><strong>HL7</strong> is the standard for exchanging clinical data messages; <strong>DICOM</strong> is the standard for medical imaging; <strong>PACS</strong> stores and distributes images.</li>
+<li>Integrating biomedical devices with hospital information systems <strong>improves patient care and data accuracy</strong> by eliminating manual transcription; the primary challenge is <strong>interoperability</strong> across vendors, formats, and software versions.</li>
+<li>Medical device cybersecurity is now part of the BMET role: inventory networked devices, apply vendor-approved patches, change default credentials, and report suspected compromise immediately.</li>
+</ul>`,
+qref:[["CPU","The brain of the computer; executes instructions"],["RAM","Volatile temporary data storage for running programs"],["SSD","Solid state drive; faster access than HDD"],["GPU","Handles graphics rendering"],["OS","Operating system managing hardware and applications"],["Peripheral","Device attached to a computer, such as a keyboard"],["PAN","Personal area network; Bluetooth is the example"],["LAN","Network covering one building or campus"],["Bus topology","Requires cable termination at both ends"],["UTP cable","Unshielded twisted pair, usually four pairs"],["Octet","Eight bits; one section of an IPv4 address"],["IP classes","A, B, C, D, and E"],["Router","Connects networks; holds the default gateway"],["Repeater","Boosts distance by regenerating the signal"],["CSMA/CD","Carrier Sense Multiple Access / Collision Detection"],["WPA2","Encrypts wireless data for secure communication"],["QoS","Prioritizes data traffic for better performance"],["Firewall layer","Filters by IP and port at the network layer"],["EMR","Electronic medical record"],["Interoperability","Challenge of making different systems exchange data"]],
+notes:`<p><strong>Bluetooth defines the personal area network, not the local area network.</strong> <span class="trap">LAN</span> is the trap on any network-type question because it is the acronym students know best and because a Bluetooth device does sit inside a building. Classification is by <em>range and purpose</em>: a PAN is the handful of meters around one person and one set of devices. Bluetooth is short-range wireless communication between devices.</p>
+<p><strong>RAM is temporary; the drive is permanent.</strong> When a stem asks for RAM's primary function, <span class="trap">Permanent data storage</span> is waiting, and it is tempting because both are called memory or storage in everyday speech. RAM is volatile — cut power and its contents are gone. An SSD keeps data without power and reaches it faster than a hard disk because nothing has to spin or seek.</p>
+<p><strong>Bus is the topology that needs termination.</strong> <span class="trap">Star</span> is the decoy because star is the topology students actually see in a wiring closet. A bus is one shared cable, and without a terminating resistor at each end the signal reflects back and corrupts traffic. Star networks terminate at the switch port, so no separate terminator is involved.</p>
+<p><strong>A repeater boosts distance; it does not boost speed or security.</strong> <span class="trap">Increases bandwidth</span> is the appealing wrong answer, since "boost" sounds like more throughput. A repeater regenerates a weakened signal so it can travel farther along the same medium. It adds reach, and it can add latency — never capacity.</p>
+<p><strong>WPA2 secures wireless by encrypting data; QoS is about priority, not protection.</strong> These two get swapped because both are configured on the same access point. If a stem asks about security, the answer involves <span class="trap">prioritizing traffic</span> only as a decoy — encryption is the security function. If the stem asks about performance for latency-sensitive traffic, QoS is correct and encryption is the decoy.</p>
+<p><strong>The main challenge of device-to-HIS integration is interoperability.</strong> <span class="trap">Cost</span> and staffing are real-world obstacles and therefore attractive options, but the technical answer named in this field is interoperability: different manufacturers, different data formats, different software versions, and different message standards that were never designed to talk. The benefit side of the same coin is improved patient care and data accuracy from removing manual transcription.</p>`});
+
+
+// Biomedical Equipment Technician — practice items
+// Per-topic targets = round(plan % x 1.4):
+// t0 Anatomy & Physiology 10% -> 14
+// t1 Medical Devices as Related to Public Safety 22% -> 31
+// t2 Safety in Healthcare 16% -> 22
+// t3 Fundamentals in Electricity and Electronics 14% -> 20
+// t4 Reasoning 24% -> 34
+// t5 Healthcare IT 14% -> 20
+// Total = 141
+
+const Q = [
+{"t":0,"q":"A clinician tells you the damaged tissue is distal to the elbow. Where is it?","a":["Farther from the point of attachment than the elbow","Toward the front surface of the arm","Nearer the shoulder than the elbow","Toward the midline of the body"],"c":0,"e":"Distal means away from the point of attachment; proximal means closer to it. 'Toward the front' is the definition of anterior, which is the option students grab when they read directional terms too quickly."},
+{"t":0,"q":"An ultrasound exam is imaging the liver, stomach, and intestines. Which body cavity is being scanned?","a":["Thoracic","Pelvic","Abdominal","Cranial"],"c":2,"e":"The abdominal cavity holds the digestive organs. Pelvic is the tempting miss because the two are continuous and are often discussed together, but the pelvic cavity holds the bladder and reproductive organs. The diaphragm separates thoracic from abdominal."},
+{"t":0,"q":"You are checking a patient simulator's ECG output. Which waveform component appears first in each cardiac cycle?","a":["QRS complex","P wave","T wave","U wave"],"c":1,"e":"The P wave is the first deflection and represents atrial depolarization, following the SA node's impulse. QRS is the trap because it is the tallest feature on the strip, but the question asks about order, not amplitude."},
+{"t":0,"q":"Why do capillaries matter physiologically in a way that arteries and veins do not?","a":["They store the body's reserve blood volume","They generate the pressure that drives circulation","They filter pathogens out of the bloodstream","They exchange oxygen and nutrients directly with tissue"],"c":3,"e":"Capillaries are the exchange vessels; their thin walls let oxygen, nutrients, and wastes cross into and out of tissue. Arteries and veins are transport only, and pressure generation is the heart's job."},
+{"t":0,"q":"A patient's lab result flags a low platelet count. Which function is most directly impaired?","a":["Oxygen transport","Immune antibody production","Blood clotting","Fluid balance regulation"],"c":2,"e":"Platelets are the cell fragments that initiate clotting. Oxygen transport is the tempting answer because it is the most famous blood function, but that belongs to hemoglobin in red blood cells."},
+{"t":0,"q":"A noninvasive blood pressure module reports 118/76. What unit applies to those numbers?","a":["mmHg","kPa","cmH2O","psi"],"c":0,"e":"Blood pressure is reported in millimeters of mercury. cmH2O is the trap because it is a real clinical pressure unit, but it is used for airway pressures on ventilators, not for blood pressure."},
+{"t":0,"q":"During a ventilator performance check you verify tidal volume. What does tidal volume describe?","a":["The maximum air a patient can forcibly exhale","The total lung capacity at full inspiration","The air left in the lungs after full exhalation","The air moved during one normal respiration cycle"],"c":3,"e":"Tidal volume is the air moved in a single normal breath. The maximum forced exhalation is vital capacity and the air remaining after full exhalation is residual volume, both of which sound plausible on a ventilator question."},
+{"t":0,"q":"Which muscle type is involuntary and found in the walls of the stomach and intestines?","a":["Skeletal muscle","Smooth muscle","Cardiac muscle","Striated voluntary muscle"],"c":1,"e":"Smooth muscle is the involuntary muscle of hollow organs. Cardiac muscle is the trap because it is also involuntary, but it exists only in the heart. Location, not voluntary control alone, decides this answer."},
+{"t":0,"q":"What is the purpose of synovial fluid in a joint?","a":["To transmit nerve signals across the joint","To reduce friction and nourish joint cartilage","To harden cartilage into bone over time","To carry immune cells into the joint capsule"],"c":1,"e":"Synovial fluid lubricates the joint surfaces and delivers nutrients to avascular cartilage. Hardening cartilage into bone describes ossification, an unrelated developmental process."},
+{"t":0,"q":"A patient's heart rate and blood pressure spike during a stressful procedure. Which division of the nervous system is driving that response?","a":["The peripheral sensory system","The parasympathetic division of the autonomic nervous system","The somatic motor system","The sympathetic division of the autonomic nervous system"],"c":3,"e":"Fight-or-flight is the sympathetic response within the autonomic nervous system. Parasympathetic is the decoy because it is the other autonomic branch, but it produces rest-and-digest effects that lower heart rate."},
+{"t":0,"q":"Which gland is called the master gland because its hormones direct the output of other endocrine glands?","a":["Pituitary","Adrenal","Thyroid","Pancreas"],"c":0,"e":"The pituitary releases hormones that control the thyroid, adrenals, and gonads. Thyroid is the tempting choice because it is the gland students hear about most, but it is one of the glands the pituitary directs."},
+{"t":0,"q":"Which neurotransmitter is most associated with mood regulation, sleep, and appetite?","a":["Acetylcholine","Dopamine","Serotonin","Norepinephrine"],"c":2,"e":"Serotonin is the neurotransmitter tied to mood, sleep, and appetite. Dopamine is the common miss because it is also a mood-related transmitter, but it is more closely linked to reward, motivation, and movement control."},
+{"t":0,"q":"What characteristic uniquely defines a stem cell?","a":["It contains more mitochondria than other cells","It lacks a cell nucleus","It survives indefinitely without nutrients","It can divide and differentiate into specialized cell types"],"c":3,"e":"Stem cells are defined by self-renewal plus the ability to differentiate. Lacking a nucleus describes mature red blood cells, which is a real fact placed here to look like a distinguishing feature."},
+{"t":0,"q":"Which of the following is NOT a factor considered in measuring body temperature?","a":["Time of day","Ethnicity","Measurement site","Recent physical activity"],"c":1,"e":"Temperature varies with circadian rhythm, the site used, age, and recent activity. Ethnicity is the option placed here because it appears in other clinical contexts, but it is not a measurement factor for body temperature."},
+{"t":1,"q":"A hospital is bringing a new infusion pump model into service. Which agency's regulations govern that device in the United States?","a":["ANSI","OSHA","FDA","FCC"],"c":2,"e":"The FDA regulates medical devices through the Center for Devices and Radiological Health. OSHA is the tempting pick on a hospital question, but OSHA regulates worker safety, not device marketing and performance."},
+{"t":1,"q":"An implantable pacemaker is being manufactured. Which FDA device class and pathway apply?","a":["Class III with premarket approval","Class II with a 510(k) notification","Class I with general controls only","Class II with a letter to file"],"c":0,"e":"Life-sustaining implants are Class III and generally require premarket approval, the most rigorous pathway. Class II with a 510(k) is the trap because most hospital equipment does clear that way, but a pacemaker's risk level pushes it higher."},
+{"t":1,"q":"A manufacturer demonstrates that its new patient monitor is substantially equivalent to a device already on the market. What is that submission called?","a":["A 510(k) premarket notification","A premarket approval application","A recall notice","A Medical Device Report"],"c":0,"e":"A 510(k) establishes substantial equivalence to a legally marketed predicate device. Premarket approval is the decoy, but PMA requires independent clinical evidence of safety and effectiveness rather than a comparison."},
+{"t":1,"q":"Which device is defined as monitoring the electrical activity of the heart to detect rate and abnormalities?","a":["Capnograph","Pulse oximeter","ECG","Sphygmomanometer"],"c":2,"e":"The ECG records cardiac electrical activity. The pulse oximeter is the frequent miss because it also displays a heart rate, but it derives that rate optically from a pulsating blood volume, not from electrical signals."},
+{"t":1,"q":"A respiratory therapist asks you to verify the module that measures a patient's carbon dioxide output. Which technology is it?","a":["Pulse oximetry","Capnography","Spirometry","Impedance pneumography"],"c":1,"e":"Capnography measures exhaled carbon dioxide and confirms ventilation and airway placement. Pulse oximetry is the trap because both are respiratory monitors, but oximetry measures oxygen saturation in blood, not exhaled CO2."},
+{"t":1,"q":"What does a pulse oximeter actually measure?","a":["Partial pressure of oxygen in arterial blood","Concentration of oxygen in inspired gas","Total oxygen delivered per minute","Percentage of hemoglobin saturated with oxygen"],"c":3,"e":"An oximeter reports oxygen saturation as a percentage using red and infrared light absorption. Partial pressure is the near miss, but that value comes from an arterial blood gas analyzer, not from a finger probe."},
+{"t":1,"q":"CPAP and BiPAP machines share what basic clinical purpose?","a":["Measuring lung compliance during sleep","Removing carbon dioxide from arterial blood","Delivering positive pressure to the airway","Nebulizing medication into the bloodstream"],"c":2,"e":"Both deliver positive airway pressure; CPAP holds one level while BiPAP uses separate inspiratory and expiratory pressures. Measuring lung compliance is the decoy because these devices are used in sleep studies, but that is diagnostic testing, not their function."},
+{"t":1,"q":"Which ventilator mode maintains a set airway pressure throughout inspiration?","a":["Pressure control ventilation","Volume control ventilation","Continuous mandatory rate control","Pressure support triggering"],"c":0,"e":"Pressure control ventilation holds a target pressure for the inspiratory time, with volume varying by lung compliance. Volume control is the mirror image: it guarantees a set volume while pressure varies, which is why the two are easily reversed."},
+{"t":1,"q":"Which of the following is NOT measured or controlled by a ventilator?","a":["Tidal volume","Respiratory rate","Airway pressure","Blood cell count"],"c":3,"e":"Ventilators manage gas: volume, rate, pressure, and oxygen concentration. Blood cell count is the trap because ventilated patients are heavily lab-monitored, but hematology values come from a laboratory analyzer."},
+{"t":1,"q":"A ventilator circuit is being configured for a long-term patient. What system prevents drying of the patient's airway?","a":["Scavenging system","Humidification system","Hydrophobic filtration","Nebulizer bypass"],"c":1,"e":"Humidification adds heat and moisture to inspired gas so the airway mucosa is not injured by dry medical gas. A scavenging system is a real component, but it removes waste anesthetic gas from the room."},
+{"t":1,"q":"What type of filter keeps fluid from being pulled into an aspirator's pump?","a":["HEPA filter","Hydrophobic filter","Electrostatic filter","Coalescing oil filter"],"c":1,"e":"A hydrophobic filter repels water, so liquid stops at the filter instead of reaching the vacuum pump. HEPA is the tempting answer because it is the filter students know, but HEPA targets airborne particles, not fluid blocking."},
+{"t":1,"q":"A physician needs a shock delivered at a specific point in the cardiac cycle. Which defibrillator setting accomplishes this?","a":["Asynchronous defibrillation","External overdrive","Pacing at demand rate","Cardioversion"],"c":3,"e":"Cardioversion synchronizes the shock to the R wave so energy never lands on the vulnerable T wave. Defibrillation is the trap because it is the word associated with the device, but it fires immediately without timing to the cycle."},
+{"t":1,"q":"Which piece of test equipment simulates cardiac rhythms and verifies delivered energy?","a":["Defibrillator analyzer","Patient simulator","Oscilloscope","Electrical safety analyzer"],"c":0,"e":"A defibrillator analyzer measures delivered joules and can present arrhythmias to test synchronization. An electrical safety analyzer is the decoy: it tests ground resistance and leakage current, which every device needs, but it cannot measure discharge energy."},
+{"t":1,"q":"You need to verify the imaging performance of an ultrasound unit. What do you scan?","a":["An oscilloscope probe","A defibrillator analyzer","A tissue-mimicking phantom","A resistive load box"],"c":2,"e":"A phantom contains targets at known depths and spacings so resolution, depth of penetration, and distance accuracy can be checked. An oscilloscope is the standing trap on test-equipment items because it is the most familiar instrument in the shop."},
+{"t":1,"q":"A patient with a history of frequent imaging asks which scanner uses no ionizing radiation. Which do you name?","a":["CT","Fluoroscopy","Mammography","MRI"],"c":3,"e":"MRI uses a magnetic field and radiofrequency pulses, so no ionizing radiation is involved. CT is the trap because it also produces cross-sectional images in a large bore scanner, but it is x-ray based and delivers a substantial dose."},
+{"t":1,"q":"Which modality combines x-rays with computer processing to produce cross-sectional images?","a":["Ultrasound","CT","MRI","Nuclear medicine"],"c":1,"e":"CT rotates an x-ray source around the patient and reconstructs slices computationally. MRI is the near miss because it also yields cross-sections, but its signal comes from magnetic resonance rather than x-ray attenuation."},
+{"t":1,"q":"Which imaging device is dedicated specifically to breast imaging?","a":["Fluoroscope","C-arm","Mammography unit","Bone densitometer"],"c":2,"e":"Mammography uses low-energy x-rays and compression optimized for breast tissue. A bone densitometer is the plausible distractor because it is also a specialized low-dose x-ray system, but it measures bone mineral density."},
+{"t":1,"q":"What term names the radiation energy deposited in tissue divided by the mass of that tissue?","a":["Absorbed dose","Dosimetry","Exposure rate","Half-value layer"],"c":0,"e":"Absorbed dose is the quantity: energy per unit mass, measured in gray. Dosimetry is the decoy because the words look related, but dosimetry is the science of determining dose, not the dose itself."},
+{"t":1,"q":"What is dosimetry?","a":["The science of determining radiation dose by measurement or calculation","The shielding thickness required for a radiation room","The maximum annual exposure allowed for a worker","The rate at which a radioactive source decays"],"c":0,"e":"Dosimetry determines dose through measurement, calculation, or both. The annual limit option is tempting because dosimeters are worn to track those limits, but the limit is a regulatory number, not the discipline."},
+{"t":1,"q":"A work order describes a laboratory device with a rotor, a motor, and a control interface. What is it?","a":["Incubator","Autoclave","Centrifuge","Blood gas analyzer"],"c":2,"e":"Those three parts describe a centrifuge, which spins samples to separate components by density. An autoclave is the tempting lab answer, but it uses steam pressure and has no rotor."},
+{"t":1,"q":"A clinic asks you to check an instrument used for viewing the ear. Which is it?","a":["Ophthalmoscope","Otoscope","Laryngoscope","Endoscope"],"c":1,"e":"Oto- means ear, so the otoscope views the ear canal and tympanic membrane. Ophthalmoscope is the constant trap because the two share a handle and battery, but ophthalmo- means eye."},
+{"t":1,"q":"An ophthalmoscope is used for what purpose?","a":["Viewing the ear canal","Testing color vision","Measuring intraocular pressure","Viewing the interior structures of the eye"],"c":3,"e":"An ophthalmoscope illuminates and magnifies the retina and optic disc. Measuring intraocular pressure is a real eye procedure done by a tonometer, which makes it a credible distractor on an eye-instrument question."},
+{"t":1,"q":"Where in a hospital would you expect to service fetal heart rate monitors?","a":["Emergency department","Cardiac catheterization lab","Labor and delivery","Radiology"],"c":2,"e":"Fetal monitors are standard in labor and delivery for tracking fetal heart rate against uterine activity. Cardiac catheterization is the decoy because the words heart rate appear in the stem, but that lab monitors the adult cardiac patient."},
+{"t":1,"q":"Which medical gas is commonly called laughing gas?","a":["Nitrous oxide","Nitrogen","Carbon dioxide","Medical air"],"c":0,"e":"Nitrous oxide is the analgesic and anxiolytic gas nicknamed laughing gas, blue coded in the US. Nitrogen is the trap because the names are similar, but nitrogen drives surgical tools and is coded black."},
+{"t":1,"q":"How is a patient monitoring device best described?","a":["A device that delivers therapy based on preset limits","A device that sterilizes reusable instruments","A device that records a single diagnostic image","A device that tracks a patient's disease, condition, or other medical parameter over time"],"c":3,"e":"Monitoring means continuous surveillance of a parameter so change can be detected. Delivering therapy is the trap because monitors have alarms, but alarms notify staff rather than treat the patient."},
+{"t":1,"q":"Which performance characteristic is most critical to verify on an infusion pump?","a":["Display brightness","Flow rate accuracy and occlusion alarm pressure","Speaker frequency response","Battery case color coding"],"c":1,"e":"An infusion pump's patient risk lives in how much drug it delivers and whether it detects a blocked line. Display brightness is a real usability item, but it does not determine whether a patient receives an unsafe dose."},
+{"t":1,"q":"A newly purchased patient monitor arrives at the loading dock. What happens before it goes into clinical use?","a":["It is placed in service and inspected at the next scheduled PM","It receives an incoming inspection with performance and electrical safety testing","It is inspected only if the clinical staff report a problem","It is inspected by the manufacturer's representative on the unit's first patient"],"c":1,"e":"Incoming inspection verifies the device arrived undamaged and meets specification, and it starts the CMMS record and PM schedule. Waiting for the first scheduled PM is the tempting shortcut, but that leaves an unverified device on a patient."},
+{"t":1,"q":"What distinguishes preventive maintenance from corrective maintenance?","a":["Preventive requires no documentation","Preventive is done by the manufacturer; corrective is done in house","Preventive applies only to imaging equipment","Preventive is scheduled before failure; corrective repairs after a fault occurs"],"c":3,"e":"PM is planned on a calendar or usage interval to catch drift and wear early; corrective maintenance responds to an actual failure. Both are documented in the CMMS, so the no-documentation option is never correct."},
+{"t":1,"q":"A device failure at your facility causes a serious patient injury. Beyond repairing the unit, what is the public-safety obligation?","a":["Report the adverse event through the facility's device reporting process","Discard the device so it cannot be used again","Wait for the manufacturer to issue a recall","Note it verbally to the department manager only"],"c":0,"e":"Reporting feeds the national system that produces recalls and safety alerts, protecting patients at other facilities. Discarding the device is the appealing wrong answer because it feels decisive, but it destroys the evidence needed for the investigation."},
+{"t":1,"q":"An electrosurgical unit is being tested. What is its principal patient hazard?","a":["Ionizing radiation exposure","Excessive acoustic noise","Burns from unintended current paths, including at the return electrode","Magnetic attraction of ferrous objects"],"c":2,"e":"An ESU passes high-frequency current through the patient, so a poorly applied return electrode or an alternate ground path can burn tissue. Magnetic attraction is the MRI hazard, placed here because both are high-energy surgical-suite devices."},
+{"t":1,"q":"A dental operatory reports weak suction at every chair. Which shared component should be evaluated?","a":["Each handpiece turbine","The individual chair upholstery","The operatory light bulbs","The central vacuum pump and its collection system"],"c":3,"e":"When every station is affected, the fault is in the shared system rather than any one chair, so the central vacuum pump, traps, and lines come first. Handpiece turbines are the decoy because they are the parts that fail most often individually."},
+{"t":2,"q":"What does OSHA stand for?","a":["Office of Safety and Hazard Assessment","Occupational Safety and Health Administration","Organization for Standards in Healthcare Administration","Occupational Standards for Hospital Accreditation"],"c":1,"e":"OSHA is the federal agency that sets and enforces workplace safety standards. The healthcare-sounding options are attractive on a hospital exam, but OSHA covers all workplaces, not just clinical ones."},
+{"t":2,"q":"What does ANSI stand for?","a":["Association of National Safety Inspectors","Applied Nuclear Safety Initiative","American National Standards Institute","American Nursing Standards Institute"],"c":2,"e":"ANSI coordinates voluntary consensus standards in the United States, including safety color and sign conventions. The nursing option is placed there because the acronym letters fit and the setting is clinical."},
+{"t":2,"q":"Under the Hazard Communication Standard, who must evaluate chemical hazards and prepare labels and safety data sheets?","a":["Manufacturers and importers","Employers only","Manufacturers only","The end user of the chemical"],"c":0,"e":"Both manufacturers and importers carry the duty, because otherwise an imported chemical would arrive with no hazard information at all. Manufacturers alone is the tempting pick since they made the product; employers then maintain the SDS collection and train staff."},
+{"t":2,"q":"Which SDS section identifies the ingredients contained in the product?","a":["Section 3: Composition/Information on Ingredients","Section 2: Hazard Identification","Section 8: Exposure Controls","Section 9: Physical and Chemical Properties"],"c":0,"e":"Section 3 lists the chemical identities and concentrations. Section 2 is the classic near miss because hazard identification sits immediately before it and also describes what is dangerous about the product."},
+{"t":2,"q":"In which SDS section would you find advice on general hygiene practices while working with a chemical?","a":["Section 4: First Aid","Section 11: Toxicological Information","Section 7: Handling and Storage","Section 13: Disposal"],"c":2,"e":"Handling and storage covers safe work practices, including hygiene, and safe storage conditions. Section 8, exposure controls and PPE, is the usual near miss because both address protecting the worker during use."},
+{"t":2,"q":"A stored disinfectant has changed color and developed sediment. Which SDS section addresses whether that signals a safety issue?","a":["Section 5: Firefighting Measures","Section 10: Stability and Reactivity","Section 6: Accidental Release","Section 14: Transport Information"],"c":1,"e":"Stability and reactivity covers chemical stability, conditions to avoid, and incompatible materials, which is exactly what a change in appearance may indicate. Accidental release is the decoy because it also deals with something going wrong, but only after a spill."},
+{"t":2,"q":"Safety Data Sheets exist primarily for what purpose?","a":["Documenting employee training hours","Tracking patient exposure to medications","Recording equipment maintenance history","Handling chemical and hazardous materials associated with products"],"c":3,"e":"The SDS conveys hazard, handling, storage, exposure control, and emergency information for a chemical product. Training records are a related compliance item, which makes them a believable but incorrect option."},
+{"t":2,"q":"What role does personal protective equipment play in a clinical scenario?","a":["It eliminates the hazard at its source","It replaces the need for engineering controls","It minimizes the risk of exposure to hazards","It certifies the area as hazard free"],"c":2,"e":"PPE reduces exposure but does not remove the hazard, which is why it sits at the bottom of the hierarchy of controls beneath elimination, substitution, engineering, and administrative controls. Eliminating the hazard is the tempting overstatement."},
+{"t":2,"q":"Universal precautions in healthcare are based on which principle?","a":["Treat all blood and body fluids as potentially infectious","Protect only when a patient has a confirmed infection","Use protective measures only during surgical procedures","Rely on the patient's chart to determine risk"],"c":0,"e":"Universal precautions assume infectivity regardless of diagnosis, protecting against most possible hazards. Relying on the chart is the intuitive wrong answer, but many infections are undiagnosed at the time of contact."},
+{"t":2,"q":"What is the primary purpose of biohazard and infection control procedures?","a":["Enhance workplace appearance","Ensure patient confidentiality","Reduce equipment purchase costs","Maintain a safe working environment"],"c":3,"e":"These procedures exist to keep staff and patients from being exposed to infectious material. Confidentiality is the trap because it is a genuine healthcare duty, but it is governed by privacy rules rather than biohazard procedure."},
+{"t":2,"q":"What does LOTO stand for in a safety program?","a":["Lookout-Tagout","Lockout-Tagout","Log-Out Time-Out","Load-Out Test-Out"],"c":1,"e":"Lockout/tagout is the energy control procedure: isolate every energy source, apply a physical lock and identifying tag, then verify zero energy. Lookout is the trap because the word sounds like a safety warning, but the practice is built around an actual padlock."},
+{"t":2,"q":"You are about to open an energized imaging system for service. What does LOTO require before you begin?","a":["Post a warning sign at the room entrance","Isolate all energy sources, apply your lock and tag, and verify zero energy","Ask a coworker to hold the power switch off","Turn off only the main circuit breaker"],"c":1,"e":"All energy sources must be isolated, including stored energy in capacitors, and the isolation must be verified. Turning off the breaker alone is the common shortcut, but it does not prevent someone from restoring power or account for stored charge."},
+{"t":2,"q":"On what class of fire should a water-filled extinguisher be used?","a":["Class D","Class B","Class C","Class A"],"c":3,"e":"Water is for ordinary combustibles such as paper, wood, and cloth. Class B is the frequent miss because water intuitively seems like it should smother a liquid fire, when it actually spreads burning liquid."},
+{"t":2,"q":"Which type of fire extinguisher should NOT be used on electrical or flammable liquid fires?","a":["Water filled","Dry chemical","Carbon dioxide","Clean agent"],"c":0,"e":"Water conducts electricity and spreads burning liquid, making it dangerous on both. Carbon dioxide is the tempting choice for anyone who remembers only that CO2 leaves residue concerns, but CO2 is specifically appropriate for energized electrical fires."},
+{"t":2,"q":"A fire starts in an energized electrical panel. Which extinguisher class is indicated?","a":["Class A","Class B","Class C","Class K"],"c":2,"e":"Class C covers fires involving energized electrical equipment and requires a nonconductive agent. Class B is the near miss because many extinguishers are rated BC, but the electrical hazard is what makes the C rating mandatory here."},
+{"t":2,"q":"You discover a small fire in a patient room. What does RACE direct you to do first?","a":["Locate the nearest pull station","Activate the extinguisher","Close the doors to confine the fire","Rescue anyone in immediate danger"],"c":3,"e":"RACE is Rescue, Alarm, Confine, Extinguish, and people come before property in that order. Pulling the alarm is the very close second step, which is why it is the most common wrong answer."},
+{"t":2,"q":"Under ANSI and OSHA color conventions, which color marks cautionary physical hazards such as tripping, falling, or striking?","a":["Red","Yellow","Orange","Green"],"c":1,"e":"Yellow is the caution color for physical hazards. Red is the trap because it is the strongest visual warning, but red is reserved for danger and fire protection equipment."},
+{"t":2,"q":"Which safety color communicates information unrelated to personal injury or other hazards?","a":["White","Green","Blue","Orange"],"c":2,"e":"Blue is the informational color and carries no injury message. Green is the near miss because it is also non-alarming, but green specifically marks safety equipment, first aid, and emergency egress."},
+{"t":2,"q":"In United States medical gas color coding, what does a black cylinder indicate?","a":["Nitrogen","Nitrous oxide","Oxygen","Carbon dioxide"],"c":0,"e":"Nitrogen cylinders are black in the US scheme; oxygen is green, nitrous oxide blue, medical air yellow, and carbon dioxide gray. Carbon dioxide is the common miss because gray and black read similarly at a glance."},
+{"t":2,"q":"What does the acronym ALARA stand for?","a":["As Low As Reasonably Achievable","Approved Limits And Radiation Allowances","Annual Level of Absorbed Radiation Accumulation","Assessed Load And Risk Analysis"],"c":0,"e":"ALARA directs that exposure be kept as low as reasonably achievable through time, distance, and shielding. The options built from radiation vocabulary are attractive because each word individually belongs to the field."},
+{"t":2,"q":"What is the purpose of a risk management methodology when working with medical equipment?","a":["To assign blame after an adverse event","To reduce the number of devices a facility owns","To identify potential safety risks and mitigate them","To satisfy the manufacturer's warranty terms"],"c":2,"e":"Risk management is proactive: identify hazards, analyze them, control them, and monitor the result. Assigning blame is the cynical decoy, but a program that punishes reporting destroys the data it needs."},
+{"t":2,"q":"In hazard identification, what does environmental safety refer to?","a":["Proper disposal of recyclable packaging","Potential safety risks within the surrounding environment","The facility's carbon emissions","The temperature rating of stored equipment"],"c":1,"e":"Environmental safety means the hazards present in the space where work occurs, such as wet floors, blocked exits, clutter, and poor lighting. Carbon emissions is the trap because environmental is used differently in everyday speech."},
+{"t":3,"q":"Ohm's law tells you that current is:","a":["equal to the applied voltage times resistance","inversely proportional to the applied voltage","independent of the applied voltage","directly proportional to the applied voltage"],"c":3,"e":"With resistance fixed, doubling voltage doubles current. The inverse relationship is real but belongs to resistance, and swapping the two variables is the single most common error on this item."},
+{"t":3,"q":"A heating element measures 24 ohms and is operated at 12 volts. What current flows?","a":["288 A","2 A","0.5 A","12 A"],"c":2,"e":"I equals V divided by R, so 12 divided by 24 is 0.5 A. Choosing 2 A comes from dividing resistance by voltage, which is the reversed form of the same equation."},
+{"t":3,"q":"Energy is measured in which unit?","a":["Joules","Watts","Volts","Amperes"],"c":0,"e":"The joule is the unit of energy, which is why defibrillator output is specified in joules. Watts is the trap because power and energy are used interchangeably in conversation, but a watt is one joule per second."},
+{"t":3,"q":"What kind of circuit can continue to function when one component fails open?","a":["Series circuit","Single-loop circuit","Series-only control circuit","Parallel circuit"],"c":3,"e":"Parallel branches are independent, so an open in one branch leaves the others powered. A series circuit has one path, so a single open component stops everything, which is why building wiring is parallel."},
+{"t":3,"q":"What possesses a voltage with constant polarity?","a":["Alternating current","Direct current","Three-phase power","Reactive power"],"c":1,"e":"DC holds one polarity, as in batteries and internal device rails. Alternating current is the decoy because it also has a defined voltage, but its polarity reverses each half cycle."},
+{"t":3,"q":"For a sine wave, the RMS value is approximately:","a":["1.414 times the peak value","0.707 of the peak value","equal to the peak-to-peak value","half of the peak-to-peak value"],"c":1,"e":"RMS is peak times 0.707 and represents the equivalent DC heating value. The 1.414 factor is the inverse relationship, converting RMS back to peak, so the two constants are easy to flip."},
+{"t":3,"q":"What is the peak value of an AC waveform?","a":["The average value over one full cycle","The difference between the highest and lowest points","The value that produces equivalent DC heating","The maximum value reached in the positive or negative direction"],"c":3,"e":"Peak is the maximum excursion from zero in either direction. The equivalent-heating definition describes RMS, and the highest-to-lowest difference describes peak-to-peak, so all three definitions live on the same waveform."},
+{"t":3,"q":"How does the amplitude of a waveform relate to the energy in a signal?","a":["Higher amplitude indicates higher energy","Higher amplitude indicates lower energy","Amplitude is unrelated to energy","Amplitude determines only the frequency"],"c":0,"e":"Amplitude represents the magnitude or intensity of the signal, and greater magnitude means more energy. Amplitude and frequency are independent properties, which is why the frequency option is a plausible trap."},
+{"t":3,"q":"In waveform analysis, what does a phase shift between two signals indicate?","a":["A difference in amplitude","A change in the number of cycles per second","A time delay between the two waveforms","A loss of signal energy"],"c":2,"e":"Phase shift expresses how far one waveform lags or leads another in time, usually stated in degrees. Amplitude difference is the trap because both appear on the same oscilloscope display, but amplitude is vertical and phase is horizontal."},
+{"t":3,"q":"What is apparent power in an AC system?","a":["Only the power that performs useful work","The power delivered during one half cycle","The power lost as heat in the conductors","The combination of real and reactive power"],"c":3,"e":"Apparent power, in volt-amperes, is the total the system must carry, combining real power that does work with reactive power that circulates. Real power alone is the trap, since that is the part the utility bills and the part that feels useful."},
+{"t":3,"q":"Which conductor at a standard receptacle is always carrying an electric charge?","a":["Neutral wire","Hot wire","Ground wire","Bonding jumper"],"c":1,"e":"The hot conductor is energized relative to ground at all times when the circuit is live. Neutral is the trap because it is a current-carrying conductor during operation, but it sits near ground potential rather than being energized."},
+{"t":3,"q":"You are performing an electrical safety test on a patient monitor. Which instrument measures ground resistance and leakage current?","a":["Oscilloscope","Defibrillator analyzer","Electrical safety analyzer","Function generator"],"c":2,"e":"The electrical safety analyzer performs ground bond resistance and chassis or patient lead leakage measurements. An oscilloscope is the reflex answer because it is the best known instrument, but it displays waveforms rather than performing safety tests."},
+{"t":3,"q":"A current is applied across the skin at a level high enough to be perceived and cause injury. What is this called?","a":["Macroshock","Microshock","Leakage fault","Dielectric breakdown"],"c":0,"e":"Macroshock is skin-applied current at a perceptible, harmful level. Microshock is the decoy because it is the hazard emphasized in hospital training, but microshock is defined by a direct conductive path to the heart at currents too small to feel."},
+{"t":3,"q":"Why are isolation transformers used in certain patient care areas?","a":["To remove the direct earth reference so a single fault does not create a shock path","To raise the supply voltage for heavy equipment","To convert alternating current to direct current","To reduce the frequency of the supply"],"c":0,"e":"An isolated power system means neither conductor is referenced to earth, so touching one line and ground does not complete a circuit; a line isolation monitor flags the first fault. Voltage change is the tempting answer because transformers usually change voltage, but isolation is the purpose here."},
+{"t":3,"q":"When measuring resistance, the multimeter should be placed:","a":["in series with the component, power applied","in series with the source, power applied","across the component, power removed","across the source, power applied"],"c":2,"e":"An ohmmeter supplies its own test current, so it goes across the component with external power removed and the component isolated. In series is correct only for current measurement, which is why it is the standing distractor."},
+{"t":3,"q":"You measure zero volts across a load while the supply is energized. What does this tell you?","a":["The circuit is shorted","The circuit is open","The load is drawing excess current","The supply voltage is too high"],"c":1,"e":"An open upstream drops the entire source voltage across the break, so nothing appears at your test points. Shorted is the intuitive wrong answer because no voltage sounds like a collapse, but a short drives current up and trips protection."},
+{"t":3,"q":"What does an ohmmeter read across a closed switch in good condition?","a":["A value equal to the load resistance","Infinite resistance","The supply voltage","Zero or minimal ohms"],"c":3,"e":"A closed switch is a conductor, so it reads essentially zero ohms. Infinite resistance is what an open switch or blown fuse reads, and reversing the two is the fastest way to misdiagnose a control circuit."},
+{"t":3,"q":"Which component contains brushes, rotor windings, and stator windings?","a":["Transformer","Capacitor bank","Generator","Rectifier"],"c":2,"e":"Brushes plus rotating and stationary windings describe a generator or motor. A transformer is the tempting answer because it also uses windings, but it has no moving parts and therefore no brushes or rotor."},
+{"t":3,"q":"A material has more electrons than protons. It is:","a":["negatively charged","neutrally charged","positively charged","chemically inert"],"c":0,"e":"Electrons carry negative charge, so an excess makes the material negative. Positively charged is the reversed answer and describes a material with more protons than electrons, which is the mirror-image version of this item."},
+{"t":3,"q":"You are removing a chassis panel held by unfamiliar fasteners. What determines the screwdriver you select?","a":["The size of the chassis","The manufacturer's country of origin","The voltage of the device","The fastener type"],"c":3,"e":"Tip style and size are dictated by the fastener head, and using the wrong driver rounds the recess and damages the device. Device size and voltage feel relevant on a service call but have nothing to do with tip selection."},
+{"t":4,"q":"A nurse reports that a patient monitor will not power on at all. Where should you look first?","a":["The display board","The battery and charging circuit","The ECG front-end module","The network interface card"],"c":1,"e":"No power at all points to the power path: cord, fuse, supply, and battery and charging circuit. The display board is the seductive answer because a dark screen is what the user saw, but replacing it leaves a dead charging circuit untouched."},
+{"t":4,"q":"Asking whether any parts are needed belongs to which step of the troubleshooting process?","a":["Identify the problem","Solve the problem","Determine the probable cause","Document the findings"],"c":1,"e":"A parts question presumes you already know what failed, so it belongs to the repair step. Determining the probable cause is the trap because ordering parts feels like planning, but ordering before isolation is guessing with the budget."},
+{"t":4,"q":"A circuit extraction or systems diagram is used in which troubleshooting step?","a":["Verifying the complaint","Performing the final safety test","Documenting the repair","Determining the probable cause"],"c":3,"e":"A diagram shows how subsystems connect so you can reason about which single failure produces this symptom, which is exactly the probable-cause step. Choosing the repair step is tempting because the diagram stays open on the bench during the fix."},
+{"t":4,"q":"When you begin evaluating a circuit on a bench, what is the first step?","a":["Perform the mechanical and visual inspection","Apply power and measure supply rails","Replace the most likely component","Run a full electrical safety test"],"c":0,"e":"Look before you energize: burnt components, corrosion, loose connectors, and cracked cables are found with your eyes and can make energizing dangerous. Measuring rails first is the reflex of an experienced tech, but it can destroy evidence or the board."},
+{"t":4,"q":"How does a service manual assist in equipment maintenance?","a":["By certifying the device as safe for use","By replacing the need for test equipment","By offering step-by-step instructions for troubleshooting and repair","By documenting the facility's PM completion rate"],"c":2,"e":"The manual supplies procedures, specifications, diagrams, and part numbers. Certifying safety is the trap because the manual defines the safety test, but only your measured results can certify a specific device."},
+{"t":4,"q":"A defibrillator is reported as intermittently failing. It works normally on your bench. What is the best next step?","a":["Return it to service and note that no fault was found","Remove it from the inventory permanently","Replace the main board as a precaution","Interview the user about exactly when and how the failure occurs and try to reproduce those conditions"],"c":3,"e":"An unreproduced fault is not a resolved fault; the conditions the user describes are the missing variable. Returning it with no fault found is tempting because your test passed, but an intermittent defibrillator failure is a patient-safety event waiting to happen."},
+{"t":4,"q":"You are tracing a signal chain with six stages. Which approach isolates the fault fastest?","a":["Test each stage in order from the input","Test at the midpoint, then halve the remaining section each time","Replace each stage one at a time","Test only the final output stage"],"c":1,"e":"Half-splitting eliminates half the remaining chain with each measurement, so six stages resolve in about three tests. Sequential testing from the input eventually works but takes far longer on a long chain."},
+{"t":4,"q":"In equipment maintenance, what is the role of the process of elimination?","a":["To shorten the documentation needed","To reduce the number of tools required","To identify the correct solution by eliminating incorrect options","To avoid consulting the service manual"],"c":2,"e":"Systematically ruling out candidates narrows the field to the one explanation that fits the evidence. Reducing tools is a real benefit of efficient work but is not what elimination is for."},
+{"t":4,"q":"During the process of elimination, what should be done with the incorrect options?","a":["Actively rule them out so the correct answer is identified","Ignore them and move on quickly","Record them as probable causes","Test them again at the end"],"c":0,"e":"Elimination only narrows the field if you can state why each rejected candidate cannot explain the symptom. Ignoring them is the passive version, and it leaves you guessing rather than reasoning."},
+{"t":4,"q":"A vital signs monitor drops its ECG trace only when the cart is moved. What is the most likely cause?","a":["A cable, connector, or strain relief fault","A failed power supply","An outdated software version","An incorrect alarm limit setting"],"c":0,"e":"Motion-dependent, intermittent symptoms almost always trace to mechanical connection problems. A failed power supply is the decoy, but a device with a failing supply misbehaves continuously rather than only when jostled."},
+{"t":4,"q":"A defibrillator shows erratic delivered energy and inconsistent readings across repeated analyzer tests. What is the leading hypothesis?","a":["Complete power failure","A disconnected patient cable","Calibration error","An expired battery label"],"c":2,"e":"A device that powers up and produces varying but present readings has power, so calibration is the working hypothesis, verified against a defibrillator analyzer. Complete power failure contradicts the evidence in the stem."},
+{"t":4,"q":"You have repaired an infusion pump. What must happen before it returns to the floor?","a":["Return it immediately since the fault is fixed","Verify performance to specification and complete the electrical safety test","Wait for the next scheduled PM to test it","Have the nurse test it during the next infusion"],"c":1,"e":"Verification proves the repair worked and that the device is still electrically safe after being opened. Returning it immediately is tempting under time pressure, but an untested repair puts an unverified device on a patient."},
+{"t":4,"q":"Why does a technician review a device's service history in the CMMS before starting work?","a":["To calculate the department's budget","To identify which nurse reported it","To determine the device's purchase price","To see whether this is a repeat failure with a known pattern"],"c":3,"e":"History turns a single repair into a pattern; three identical failures justify escalation to the vendor or replacement. Budget and price are real CMMS data but do not help diagnose the fault in front of you."},
+{"t":4,"q":"A service record uses the code DNDE. What does it mean?","a":["Device not documented on entry","Diagnostic node data error","Device did not de-energize at the right time","Device needs direct evaluation"],"c":2,"e":"DNDE records that the device failed to de-energize when it should have, which is a safety-relevant fault. Standardized fault language exists so records stay searchable and every technician reads the entry the same way."},
+{"t":4,"q":"You determine that a warming device is delivering unsafe temperatures. What do you do with it?","a":["Tag it out of service and remove it from the clinical area","Leave it in the room with a note for the next shift","Continue testing it in the patient room","Reset it and return it to use pending parts"],"c":0,"e":"An unsafe device must be tagged and physically removed so nobody can use it while you investigate. Leaving a note is the appealing shortcut, but notes get moved and busy staff reach for the nearest device."},
+{"t":4,"q":"A fault on a linear accelerator exceeds your training and your service manual's scope. What is the defensible next step?","a":["Attempt the repair to save the service call fee","Return the unit to service and monitor it","Substitute parts from a similar device","Contact the manufacturer's technical support and follow the escalation path"],"c":3,"e":"Escalation is a documented part of the troubleshooting process, not an admission of failure. Improvising on a high-energy therapeutic device risks patient harm and voids the manufacturer's support position."},
+{"t":4,"q":"A multichannel monitor shows incorrect readings on every parameter at once. Where do you look?","a":["Each individual transducer","A shared power supply, reference, or ground","The alarm speaker","The paper printer module"],"c":1,"e":"A symptom common to all channels points to something all channels share. Checking each transducer is the decoy because transducers do fail, but simultaneous failure of all of them is far less likely than one common cause."},
+{"t":4,"q":"Three ECG leads read correctly and one reads noise on the same monitor. What is the most efficient next test?","a":["Replace the monitor's main board","Swap that lead and its front-end input with a known-good one","Recalibrate every channel","Replace the power supply"],"c":1,"e":"A single bad channel with three good ones isolates the fault to that channel's lead, cable, or front end, and substitution confirms it in one step. Replacing the main board would affect all channels, which contradicts the evidence."},
+{"t":4,"q":"A ventilator passes every bench test but alarms constantly in one specific patient room. What should you investigate?","a":["The ventilator's internal software","The ventilator's serial number","The bench test equipment","The room environment, including gas supply, receptacle, and network drop"],"c":3,"e":"When a device works on the bench and fails in one location, the variable is the environment, not the device. Suspecting internal software is tempting, but software faults would follow the device to the bench."},
+{"t":4,"q":"A nurse reports that an NIBP monitor reads blood pressure far too high on a large patient. What do you check before opening the device?","a":["The cuff size and placement","The main processor board","The internal pump motor","The device's network configuration"],"c":0,"e":"An undersized cuff produces falsely elevated readings, and setup error is far more common than device failure. Opening the case first wastes time and risks introducing a new fault into a working device."},
+{"t":4,"q":"A device has a tolerance of plus or minus 0.1 percent and reads 500 units. What is the acceptable range?","a":["495 to 505 units","499.9 to 500.1 units","499.5 to 500.5 units","450 to 550 units"],"c":2,"e":"0.1 percent of 500 is 0.5, so the window is 499.5 to 500.5. The 495 to 505 option is what you get by using 1 percent instead of 0.1 percent, which is the most common arithmetic slip on this item."},
+{"t":4,"q":"Tolerance in a measurement specification refers to:","a":["The smallest increment the instrument can display","The total measurement range","The instrument's warm-up time","The permissible deviation from a standard"],"c":3,"e":"Tolerance defines how far a reading may stray from the standard and still pass. The smallest displayable increment is resolution, which is a genuinely different specification and the most common substitution here."},
+{"t":4,"q":"Convert 2.4 micrograms to grams.","a":["0.0024 g","0.0000024 g","0.00000024 g","2400 g"],"c":1,"e":"Micro means ten to the minus sixth, so 2.4 micrograms is 2.4 times ten to the minus sixth grams, or 0.0000024 g. The 0.0024 answer comes from applying milli instead of micro, a three-decimal-place error."},
+{"t":4,"q":"A patient weighs 70 kilograms. Approximately how many pounds is that?","a":["35 lb","70 lb","154 lb","220 lb"],"c":2,"e":"One kilogram is about 2.2 pounds, so 70 times 2.2 is roughly 154 pounds. Choosing 35 comes from dividing by 2 instead of multiplying, which is the reflex error when the conversion direction is unclear."},
+{"t":4,"q":"When reading a volume in a graduated cylinder, which level do you use?","a":["The meniscus","The top edge of the liquid film on the glass","The midpoint between the highest and lowest visible marks","The level as seen from above the cylinder"],"c":0,"e":"Read the bottom of the meniscus with your eye at the same level as the liquid to avoid parallax. Reading from above is the trap because it is the natural posture, and it consistently produces a low reading."},
+{"t":4,"q":"In a bar chart, what do the lengths of the bars typically represent?","a":["Frequency or quantity","The passage of time","The correlation between variables","The margin of measurement error"],"c":0,"e":"Bar length encodes how much or how many for each category. Correlation is the decoy because it is a genuine statistical relationship, but correlation between two continuous variables is shown on a scatter plot."},
+{"t":4,"q":"How is data organized in a scatter plot?","a":["Using wedges proportional to a whole","Using connected segments to show a running total","Using dots to represent individual data points","Using stacked bars grouped by category"],"c":2,"e":"Each dot places one observation at its x and y values, which is what makes relationships between two variables visible. Connected segments describe a line graph, which students confuse with scatter plots because both use axes."},
+{"t":4,"q":"A scatter plot shows a strong negative correlation between two variables. What does that mean?","a":["Neither variable changes","One variable increases as the other decreases","Both variables increase together","The variables are unrelated"],"c":1,"e":"Negative correlation means the variables move in opposite directions, and strong means the points cluster tightly around that trend. Unrelated describes a correlation near zero, which is a different result entirely."},
+{"t":4,"q":"On a velocity-versus-time graph, what does the slope of the curve indicate?","a":["Distance traveled","Average velocity","Total elapsed time","Acceleration"],"c":3,"e":"Slope is the rate of change of the plotted quantity, so on a velocity-time plot it is acceleration. Distance traveled is the tempting answer, but that is the area under the curve, not the slope."},
+{"t":4,"q":"An analyzer repeats the same reading five times but the value is consistently 8 percent off the standard. How do you describe it?","a":["Accurate but not precise","Both accurate and precise","Precise but not accurate","Neither accurate nor precise"],"c":2,"e":"Repeatability is precision; closeness to the true value is accuracy. A device that repeats a wrong value is precise and out of calibration, which is exactly why calibration checks against a known standard matter."},
+{"t":4,"q":"You measure a device's output as 4 percent below nominal. How do you decide whether it passes?","a":["Compare it with the manufacturer's published specification","Compare it with a device of the same model on the unit","Accept anything within 10 percent as standard practice","Ask the clinical staff whether it seems acceptable"],"c":0,"e":"Pass and fail are defined by the specification, not by expectation or comparison to another unit that may itself be drifting. Asking clinical staff is well intentioned but transfers a technical decision to people who cannot make it."},
+{"t":4,"q":"A device is completely dead. Which sequence reflects sound troubleshooting?","a":["Replace the most expensive assembly first","Internal boards, power supply, fuse, then cord","Power supply, display, cord, then fuse","Cord and receptacle, fuse, switch, power supply, then internal boards"],"c":3,"e":"Work from the outside in, cheapest and most accessible first, because that order matches both probability and cost. Starting at the boards is what makes an easy fuse replacement into a two-hour teardown."},
+{"t":4,"q":"You suspect a specific module but have not confirmed it. What is the best move before ordering a replacement?","a":["Order the part so it arrives sooner","Substitute a known-good module of the same type and observe","Return the device to service and wait for the fault to recur","Order all three candidate modules"],"c":1,"e":"Substitution converts a suspicion into evidence at no cost. Ordering early feels efficient, but a wrong guess spends the department's money and still leaves the device broken when the part arrives."},
+{"t":4,"q":"After completing a repair, what belongs in the documentation?","a":["Only the part number replaced","The reported symptom, findings, cause, action taken, parts used, and test results","Only the total labor hours","A note that the device is working"],"c":1,"e":"A complete record lets the next technician recognize a repeat failure and lets the facility prove the device was verified safe. A bare 'working' note is worse than useless because it hides the pattern behind the failure."},
+{"t":5,"q":"Which component is considered the brain of a computer?","a":["RAM","GPU","SSD","CPU"],"c":3,"e":"The CPU executes instructions and coordinates the system. GPU is the tempting modern answer because graphics processors are powerful, but the GPU is a specialized coprocessor for rendering."},
+{"t":5,"q":"What is the primary function of RAM in a computer system?","a":["Temporary data storage for running programs","Graphics rendering","Permanent data storage","Network packet routing"],"c":0,"e":"RAM is volatile working memory that clears when power is removed. Permanent storage is the trap because both are casually called memory, but permanent storage is the drive's job."},
+{"t":5,"q":"An imaging workstation is upgraded for faster data access. Which storage device is chosen?","a":["Optical disc","HDD","SSD","Magnetic tape"],"c":2,"e":"A solid state drive has no moving parts, so access times are far shorter than a traditional spinning hard disk. HDD is the decoy because it is still the familiar mass-storage device and can offer more capacity per dollar."},
+{"t":5,"q":"What is the purpose of a GPU in a computer system?","a":["Managing file permissions","Assigning IP addresses","Providing temporary program memory","Graphics rendering"],"c":3,"e":"The GPU handles the parallel math behind image rendering, which is why imaging review stations invest in it. Temporary memory is the trap because both RAM and GPU are performance upgrades discussed together."},
+{"t":5,"q":"Which of the following is an input device?","a":["Monitor","Keyboard","Printer","Speaker"],"c":1,"e":"A keyboard sends data into the computer, making it both an input device and a peripheral. Monitors, printers, and speakers all move information outward, so they are output devices."},
+{"t":5,"q":"A wireless earpiece pairs directly with a handheld device a meter away. Which network type is this?","a":["Local Area Network","Wide Area Network","Personal Area Network","Metropolitan Area Network"],"c":2,"e":"Bluetooth operates over a few meters around one person, which is the definition of a PAN. LAN is the trap because it is the most familiar acronym and the devices are inside a building, but classification is by range and purpose."},
+{"t":5,"q":"Which network topology requires cable termination at both ends?","a":["Bus","Star","Ring","Mesh"],"c":0,"e":"A bus is one shared backbone, and terminating resistors prevent the signal from reflecting back and corrupting traffic. Star is the decoy because it is the topology students actually see in a wiring closet, but it terminates at switch ports."},
+{"t":5,"q":"How many pairs of conductors does UTP cabling usually contain?","a":["4 pair","2 pair","6 pair","8 pair"],"c":0,"e":"Standard UTP has four twisted pairs, eight conductors, terminated in an RJ45 plug. Choosing 8 pair comes from counting individual wires instead of pairs, which is the most common error here."},
+{"t":5,"q":"How many bits are in an octet?","a":["4 bits","16 bits","8 bits","32 bits"],"c":2,"e":"An octet is eight bits, and an IPv4 address is four octets, or 32 bits total. Choosing 32 confuses the whole address with one of its four sections."},
+{"t":5,"q":"Which list correctly names the IP address classes?","a":["1, 2, 3, 4","A, B, C, D, E","A, B, C","Public, private, reserved"],"c":1,"e":"There are five classes, A through E, with A to C used for host addressing, D for multicast, and E experimental. Stopping at C is the tempting answer because those are the only classes used for ordinary addressing."},
+{"t":5,"q":"At which OSI layer does a firewall filter traffic based on IP addresses and ports?","a":["Physical","Data Link","Presentation","Network"],"c":3,"e":"IP addressing is a network layer function, so packet filtering happens there, as does intrusion detection and prevention monitoring. Data Link is the near miss because switches operate there using MAC addresses rather than IP."},
+{"t":5,"q":"In the TCP/IP model, at which layer does Ethernet reside?","a":["Application layer","Transport layer","Link layer","Internet layer"],"c":2,"e":"Ethernet defines framing and media access, which is the link layer in the four-layer TCP/IP model. The internet layer is the near miss, but that is where IP lives, one level above Ethernet."},
+{"t":5,"q":"What does CSMA/CD stand for?","a":["Carrier Sense Multiple Access / Collision Detection","Central Switching Media Access / Cable Distribution","Carrier Signal Modulation Access / Channel Division","Coded Segment Multiple Access / Collision Deferral"],"c":0,"e":"Legacy Ethernet devices listen before transmitting, detect collisions, back off, and retry. Wireless uses CSMA/CA, collision avoidance, because a wireless station cannot reliably hear a collision while transmitting."},
+{"t":5,"q":"A default gateway address is usually configured on which device?","a":["Switch","Access point","Repeater","Router"],"c":3,"e":"The router connects one network to others, so it is the exit point traffic uses to leave the local subnet. A switch is the trap because it is the device everything plugs into, but it forwards within a LAN by MAC address."},
+{"t":5,"q":"What do repeaters do on a network?","a":["Increase available bandwidth","Boost distance by regenerating the signal","Encrypt traffic between segments","Assign addresses to new devices"],"c":1,"e":"A repeater regenerates a weakened signal so it can travel farther on the same medium. Increasing bandwidth is the appealing wrong answer because the word boost sounds like more throughput, when repeaters add reach and can add latency."},
+{"t":5,"q":"How does WPA2 contribute to the security of a wireless network?","a":["It prioritizes clinical traffic","It encrypts data for secure communication","It extends the coverage area","It assigns static IP addresses"],"c":1,"e":"WPA2 encrypts the wireless link so intercepted frames are unreadable. Prioritizing traffic is the trap because that is QoS, configured on the same access point but serving performance rather than security."},
+{"t":5,"q":"What is the role of QoS in a wireless network?","a":["Encrypting sensitive patient data","Backing up device configurations","Blocking unauthorized MAC addresses","Prioritizing data traffic for better performance"],"c":3,"e":"QoS gives latency-sensitive traffic such as telemetry priority over bulk transfers. Encryption is the mirror-image trap: it is the security function, while QoS is purely about performance and traffic ordering."},
+{"t":5,"q":"What does EMR stand for?","a":["Electronic Medical Record","Emergency Medical Response","Equipment Maintenance Report","Encrypted Medical Registry"],"c":0,"e":"An EMR is a patient's chart held within one organization; an EHR is the version shared across organizations. Equipment Maintenance Report is placed there because it is exactly what a BMET would expect the letters to mean."},
+{"t":5,"q":"What is the leading challenge when integrating biomedical devices into hospital information systems?","a":["Insufficient electrical outlets","Lack of physical storage space","Interoperability between vendors, formats, and software versions","Excess network bandwidth"],"c":2,"e":"Different manufacturers use different data formats and message standards that were never designed to communicate, which is why HL7 and DICOM exist. Cost and staffing are real obstacles, but interoperability is the technical answer this field names."},
+{"t":5,"q":"Which of the following is a network security component?","a":["Optical drive","Graphics card","Print spooler","Anti-virus software"],"c":3,"e":"Anti-virus sits alongside firewalls, encryption, access control, and patching in a layered security program. The other options are ordinary computer hardware and services with no protective function."}
+];
+
+
+/* ============================================================
+   Rendering + quiz engine
+   ============================================================ */
+const $ = id => document.getElementById(id);
+const esc = s => String(s);
+
+/* ---------- theme ---------- */
+(function(){
+  let saved = null;
+  try { saved = localStorage.getItem('mt-theme'); } catch(e){}
+  if (saved === 'dark' || saved === 'light') document.documentElement.setAttribute('data-theme', saved);
+  $('themeBtn').addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const isDark = cur ? cur === 'dark'
+      : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const next = isDark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('mt-theme', next); } catch(e){}
+  });
+})();
+
+/* ---------- best score ---------- */
+function readBest(){ try { return parseInt(localStorage.getItem('mt-best') || '', 10); } catch(e){ return NaN; } }
+function writeBest(p){ try { localStorage.setItem('mt-best', String(p)); } catch(e){} }
+(function(){ const b = readBest(); if (!isNaN(b)) $('stBest').textContent = b + '%'; })();
+
+/* ---------- navigation ---------- */
+function go(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0, behavior:'instant' in window ? 'auto' : 'auto'});
+}
+
+/* ---------- test plan table ---------- */
+(function(){
+  const rows = ['<div class="plan-r hd"><span>Topic</span><span>Weight</span></div>'];
+  TOPICS.forEach(t => rows.push(
+    '<div class="plan-r"><span>' + t.n + '</span><span class="plan-w">' + t.w + '%</span></div>'
+  ));
+  $('planTable').innerHTML = rows.join('');
+  $('stQ').textContent = Q.length;
+  const q2 = $('stQ2'); if (q2) q2.textContent = Q.length;
+})();
+
+/* ---------- study guide ---------- */
+(function(){
+  const out = [];
+  GUIDE.forEach((g, i) => {
+    const T = TOPICS[g.t];
+    const qr = g.qref.map(p =>
+      '<div><span class="qr-term">' + p[0] + '</span><span class="qr-def">' + p[1] + '</span></div>'
+    ).join('');
+    out.push(
+      '<div class="sec" id="sec' + g.t + '">' +
+        '<button class="sec-h" onclick="toggleSec(' + g.t + ')" aria-expanded="false">' +
+          '<span class="sec-w">' + T.w + '%</span>' +
+          '<span class="sec-t">' + T.n + '</span>' +
+          '<span class="sec-c">+</span>' +
+        '</button>' +
+        '<div class="sec-body">' +
+          '<div class="layer narr"><div class="layer-h">Narrative — read to understand</div>' + g.narr + '</div>' +
+          '<div class="layer deep"><div class="layer-h">Deep Dive — expert level</div>' + g.deep + '</div>' +
+          '<div class="layer qref"><div class="layer-h">Quick Reference — key terms</div><div class="qr">' + qr + '</div></div>' +
+          '<div class="layer note"><div class="layer-h">Top Competitor Study Notes</div><div class="notes-block">' + g.notes + '</div></div>' +
+          '<button class="sec-practice" onclick="startQuiz(' + g.t + ')">Practice this topic →</button>' +
+        '</div>' +
+      '</div>'
+    );
+  });
+  $('guideList').innerHTML = out.join('');
+})();
+
+function toggleSec(t){
+  const el = $('sec' + t);
+  const open = el.classList.toggle('open');
+  el.querySelector('.sec-h').setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+/* ---------- quiz engine ---------- */
+let session = [], idx = 0, score = 0, answered = false, lastMode = 'weighted';
+let curOrder = [0,1,2,3];
+const perTopic = {};
+
+function shuffle(a){
+  const r = a.slice();
+  for (let i = r.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [r[i], r[j]] = [r[j], r[i]];
+  }
+  return r;
+}
+
+/* Weighted draw: 45 / 5 x 11, largest-remainder over 50 items */
+function weightedSet(n){
+  const raw = TOPICS.map(t => t.w * n / 100);
+  const base = raw.map(Math.floor);
+  let left = n - base.reduce((a,b) => a+b, 0);
+  const order = raw.map((v,i) => [v - Math.floor(v), i])
+                   .sort((a,b) => b[0] - a[0] || a[1] - b[1]);
+  for (let k = 0; k < order.length && left > 0; k++, left--) base[order[k][1]]++;
+  let out = [];
+  base.forEach((cnt, t) => {
+    const pool = shuffle(Q.filter(q => q.t === t));
+    out = out.concat(pool.slice(0, Math.min(cnt, pool.length)));
+  });
+  return shuffle(out);
+}
+
+function startQuiz(mode){
+  lastMode = mode;
+  if (mode === 'weighted')      session = weightedSet(50);
+  else if (mode === 'all')      session = shuffle(Q);
+  else                          session = shuffle(Q.filter(q => q.t === mode));
+  idx = 0; score = 0;
+  for (const k in perTopic) delete perTopic[k];
+  go('quiz');
+  renderQ();
+}
+
+function renderQ(){
+  answered = false;
+  const q = session[idx];
+  $('qCount').textContent = (idx + 1) + ' / ' + session.length;
+  $('qScore').textContent = score + ' ✓';
+  $('qFill').style.width = (idx / session.length * 100) + '%';
+  const T = TOPICS[q.t];
+  $('qTopic').textContent = T.n.replace('&amp;','&');
+  $('qTopic').style.color = T.c;
+  $('qStem').innerHTML = q.q;
+  curOrder = shuffle([0,1,2,3]);
+  const letters = ['A','B','C','D'];
+  $('qChoices').innerHTML = curOrder.map((orig, i) =>
+    '<button class="ch" onclick="answer(' + i + ')"><span class="k">' + letters[i] + '</span><span>' + q.a[orig] + '</span></button>'
+  ).join('');
+  const ex = $('qExpl');
+  ex.className = 'expl';
+  $('qNext').style.display = 'none';
+}
+
+function answer(i){
+  if (answered) return;
+  answered = true;
+  const q = session[idx];
+  const btns = $('qChoices').querySelectorAll('.ch');
+  btns.forEach((b, k) => {
+    b.disabled = true;
+    if (curOrder[k] === q.c) b.classList.add('right');
+    else if (k === i) b.classList.add('wrong');
+  });
+  const ok = curOrder[i] === q.c;
+  if (ok) score++;
+  if (!perTopic[q.t]) perTopic[q.t] = {c:0, n:0};
+  perTopic[q.t].n++;
+  if (ok) perTopic[q.t].c++;
+  const ex = $('qExpl');
+  ex.className = 'expl show ' + (ok ? 'ok' : 'no');
+  $('qVerdict').textContent = ok ? 'Correct' : 'Not quite';
+  $('qExplText').innerHTML = q.e;
+  $('qSrc').textContent = TOPICS[q.t].n.replace('&amp;','&') + ' · ' + TOPICS[q.t].w + '% of the test';
+  $('qScore').textContent = score + ' ✓';
+  $('qNext').style.display = 'block';
+  $('qNext').textContent = idx + 1 >= session.length ? 'See results' : 'Next question';
+  $('qNext').focus();
+}
+
+function nextQ(){
+  idx++;
+  if (idx >= session.length) return showResults();
+  renderQ();
+}
+
+function quitQuiz(){
+  if (idx > 0 || answered) return showResults();
+  go('home');
+}
+
+function showResults(){
+  const total = Math.max(1, Object.values(perTopic).reduce((a,b) => a + b.n, 0));
+  const pct = Math.round(score / total * 100);
+  go('results');
+  $('ringPct').textContent = pct + '%';
+  $('ringFrac').textContent = score + ' of ' + total;
+  const circ = 2 * Math.PI * 70;
+  requestAnimationFrame(() => {
+    $('ringArc').style.strokeDashoffset = circ * (1 - pct / 100);
+  });
+  $('ringArc').setAttribute('stroke', pct >= 80 ? 'var(--teal)' : pct >= 60 ? 'var(--orange)' : 'var(--red)');
+  const ranked = Object.keys(perTopic).filter(t => perTopic[t].n >= 2)
+    .sort((a,b) => (perTopic[a].c/perTopic[a].n) - (perTopic[b].c/perTopic[b].n));
+  const weakest = ranked.length ? TOPICS[ranked[0]].n.replace('&amp;','&') : null;
+  const second  = ranked.length > 1 ? TOPICS[ranked[1]].n.replace('&amp;','&') : null;
+  let msg;
+  if (pct >= 90)      msg = 'Medal range. Keep the full-length sessions coming and hold this line.' + (weakest ? ' Your softest spot is still ' + weakest + '.' : '');
+  else if (pct >= 80) msg = 'Strong.' + (weakest && second ? ' Read the Deep Dive for ' + weakest + ' and ' + second + ' tonight.' : ' Go find your two weakest topics below.');
+  else if (pct >= 65) msg = 'Solid base, real gaps.' + (weakest ? ' Work ' + weakest + ' before you take another full test.' : '');
+  else if (pct >= 45) msg = 'You know some of it.' + (weakest ? ' Open the study guide at ' + weakest + ' and read the narrative, then the deep dive.' : '');
+  else                msg = 'Start at the study guide, not the quiz.' + (weakest ? ' Begin with ' + weakest + '.' : ' Read the highest-weighted topic first.');
+  $('resMsg').textContent = msg;
+  const rows = Object.keys(perTopic).sort((a,b) => a - b).map(t => {
+    const d = perTopic[t], p = Math.round(d.c / d.n * 100);
+    const col = p >= 80 ? 'var(--teal)' : p >= 50 ? 'var(--orange)' : 'var(--red)';
+    return '<div class="brk-row"><span class="brk-t">' + TOPICS[t].n + '</span>' +
+           '<span class="brk-s" style="color:' + col + '">' + d.c + '/' + d.n + ' · ' + p + '%</span></div>';
+  });
+  $('resBrk').innerHTML = rows.join('') || '<div class="brk-row"><span class="brk-t">No questions answered</span><span class="brk-s">—</span></div>';
+  if (lastMode === 'weighted' && total >= 40){
+    const b = readBest();
+    if (isNaN(b) || pct > b){ writeBest(pct); $('stBest').textContent = pct + '%'; }
+  }
+}
+
+function repeatQuiz(){ startQuiz(lastMode); }
+</script>
+
+</body>
+</html>

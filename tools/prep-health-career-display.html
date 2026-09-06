@@ -1,0 +1,920 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Health Career Display Prep Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --navy:#0D1B2A; --navy-mid:#162438; --navy-hi:#1E3350;
+  --orange:#E8821A; --orange-dim:#A85C10;
+  --teal:#1A8A8A; --teal-dim:#125F5F;
+  --gold:#C9991A; --purple:#8C50C8; --purple-lt:#C07EF0;
+  --red:#D9544D;
+  --ink:#0D1B2A; --ink-2:#3E5068; --ink-3:#63758C;
+  --bg:#EEF1F5; --surface:#FFFFFF; --surface-2:#F5F7FA;
+  --line:#D3DBE5; --line-soft:#E4EAF1;
+  --focus:#E8821A;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --cond:'Barlow Condensed','Inter Tight',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','SFMono-Regular',Menlo,Consolas,monospace;
+  --r:10px; --maxw:680px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ink:#F4F6F8; --ink-2:#B6C4D6; --ink-3:#8A9BB0;
+    --bg:#0D1B2A; --surface:#162438; --surface-2:#1B2C44;
+    --line:#2A3F5C; --line-soft:#22344E;
+    --orange:#F5941F; --teal:#25A5A5; --gold:#DCAB27; --purple-lt:#C994F5;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#F4F6F8; --ink-2:#B6C4D6; --ink-3:#8A9BB0;
+  --bg:#0D1B2A; --surface:#162438; --surface-2:#1B2C44;
+  --line:#2A3F5C; --line-soft:#22344E;
+  --orange:#F5941F; --teal:#25A5A5; --gold:#DCAB27; --purple-lt:#C994F5;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 18px 96px}
+h1,h2,h3,h4{font-family:var(--cond);text-wrap:balance;margin:0;letter-spacing:.01em}
+h1{font-size:2.35rem;line-height:1.05;font-weight:700}
+h2{font-size:1.65rem;line-height:1.12;font-weight:600}
+h3{font-size:1.2rem;font-weight:600}
+h4{font-size:1.02rem;font-weight:600;letter-spacing:.02em}
+p{margin:0 0 .9em}
+a{color:var(--orange)}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:2.5px solid var(--focus);outline-offset:2px;border-radius:4px}
+.eyebrow{font-family:var(--cond);text-transform:uppercase;letter-spacing:.14em;
+  font-size:.78rem;font-weight:600;color:var(--ink-3)}
+
+/* ---------- morpheme chips: the subject's atoms ---------- */
+.wp{font-family:var(--mono);font-size:.94em;font-weight:500;white-space:nowrap;
+  padding:.06em .34em;border-radius:4px;background:var(--surface-2);
+  border:1px solid var(--line-soft);color:var(--ink)}
+.wp.pre{border-left:3px solid var(--orange)}
+.wp.suf{border-right:3px solid var(--teal)}
+.wp.cf{border-bottom:3px solid var(--gold)}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:40;background:var(--bg);
+  border-bottom:1px solid var(--line);}
+.topbar-in{max-width:var(--maxw);margin:0 auto;padding:10px 18px;
+  display:flex;align-items:center;gap:12px}
+.brandmark{font-family:var(--cond);font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;font-size:.9rem;color:var(--ink-2);
+  display:flex;align-items:center;gap:7px}
+.brandmark .dot{width:9px;height:9px;border-radius:2px;background:var(--orange);flex:none}
+.topbar .sp{flex:1}
+.iconbtn{background:none;border:1px solid var(--line);color:var(--ink-2);
+  border-radius:8px;width:34px;height:34px;display:grid;place-items:center;line-height:0}
+.iconbtn:hover{border-color:var(--orange);color:var(--orange)}
+.backbtn{background:none;border:none;color:var(--ink-2);padding:6px 0;
+  font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.82rem;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.backbtn:hover{color:var(--orange)}
+
+/* ---------- screens ---------- */
+.screen{display:none}
+.screen.active{display:block;animation:fade .22s ease}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .screen.active{animation:none}
+  *{transition:none!important}
+}
+
+/* ---------- hero ---------- */
+.hero{padding:30px 0 22px;border-bottom:1px solid var(--line)}
+.hero .kicker{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.tag{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.74rem;font-weight:600;padding:3px 9px;border-radius:999px;
+  border:1px solid var(--line);color:var(--ink-2);background:var(--surface)}
+.tag.hot{border-color:var(--orange);color:var(--orange)}
+.hero h1{margin-bottom:8px}
+.hero .sub{color:var(--ink-2);font-size:1.02rem;margin:0}
+
+/* the term-construction display: pre | root | suf */
+.termbuild{display:flex;align-items:stretch;margin:22px 0 4px;
+  border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+  background:var(--surface);font-family:var(--mono)}
+.termbuild div{flex:1;padding:11px 8px;text-align:center;min-width:0}
+.termbuild .lbl{display:block;font-family:var(--cond);font-size:.66rem;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);margin-bottom:3px}
+.termbuild .val{font-size:.98rem;font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.termbuild .p1{border-bottom:3px solid var(--orange)}
+.termbuild .p2{border-bottom:3px solid var(--gold);border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.termbuild .p3{border-bottom:3px solid var(--teal)}
+.termbuild-cap{font-size:.85rem;color:var(--ink-3);margin:8px 0 0;text-align:center}
+
+/* ---------- stat strip ---------- */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 10px}
+.stat .n{font-family:var(--cond);font-size:1.75rem;font-weight:700;line-height:1;
+  font-variant-numeric:tabular-nums;color:var(--orange)}
+.stat .l{font-size:.74rem;color:var(--ink-3);margin-top:4px;line-height:1.3}
+
+/* ---------- action cards ---------- */
+.actions{display:grid;gap:11px;margin:22px 0}
+.act{display:flex;align-items:center;gap:14px;text-align:left;width:100%;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:15px 16px;color:var(--ink);transition:border-color .15s,transform .15s}
+.act:hover{border-color:var(--orange);transform:translateX(2px)}
+.act .ic{width:38px;height:38px;flex:none;border-radius:8px;display:grid;place-items:center;
+  font-family:var(--cond);font-weight:700;font-size:1.1rem;color:#0D1B2A}
+.act>span:not(.ic):not(.ar){display:flex;flex-direction:column;gap:3px;min-width:0}
+.act .t{display:block;font-family:var(--cond);font-size:1.22rem;font-weight:600;line-height:1.15}
+.act .d{display:block;font-size:.84rem;color:var(--ink-3);line-height:1.35}
+.act .ar{margin-left:auto;color:var(--ink-3);font-size:1.2rem;flex:none}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin:18px 0 0;
+  overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:none;border:none;border-bottom:2.5px solid transparent;
+  padding:9px 13px;color:var(--ink-3);font-family:var(--cond);font-weight:600;
+  font-size:1rem;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--orange);border-bottom-color:var(--orange)}
+.tabpanel{display:none;padding-top:20px}
+.tabpanel.active{display:block}
+
+/* ---------- study guide ---------- */
+.sec{border:1px solid var(--line);border-radius:var(--r);margin-bottom:11px;
+  background:var(--surface);overflow:hidden}
+.sec-h{width:100%;display:flex;align-items:center;gap:12px;padding:14px 15px;
+  background:none;border:none;text-align:left;color:var(--ink)}
+.sec-h:hover{background:var(--surface-2)}
+.sec-w{font-family:var(--cond);font-size:.9rem;font-weight:700;color:var(--orange);
+  font-variant-numeric:tabular-nums;flex:none;min-width:34px}
+.sec-t{font-family:var(--cond);font-size:1.16rem;font-weight:600;line-height:1.2;flex:1}
+.sec-c{color:var(--ink-3);font-size:1.1rem;flex:none;transition:transform .2s}
+.sec.open .sec-c{transform:rotate(45deg)}
+.sec-body{display:none;padding:0 15px 16px;border-top:1px solid var(--line-soft)}
+.sec.open .sec-body{display:block}
+
+.layer{margin-top:16px;border-left:3px solid var(--line);padding-left:14px}
+.layer-h{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.79rem;font-weight:700;margin-bottom:9px}
+.layer.narr{border-left-color:var(--teal)} .layer.narr .layer-h{color:var(--teal)}
+.layer.deep{border-left-color:var(--orange)} .layer.deep .layer-h{color:var(--orange)}
+.layer.qref{border-left-color:var(--gold)} .layer.qref .layer-h{color:var(--gold)}
+.layer.note{border-left-color:var(--purple-lt)} .layer.note .layer-h{color:var(--purple-lt)}
+.layer p{font-size:.95rem}
+.layer ul{margin:.4em 0 .9em;padding-left:1.15em}
+.layer li{font-size:.94rem;margin-bottom:.45em}
+.layer h4{margin:1.1em 0 .4em;color:var(--ink)}
+.qr{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft);
+  border:1px solid var(--line-soft);border-radius:8px;overflow:hidden}
+@media(max-width:520px){.qr{grid-template-columns:1fr}}
+.qr>div{background:var(--surface);padding:8px 10px}
+.qr-term{font-family:var(--mono);font-size:.87rem;font-weight:600;color:var(--gold);
+  display:block;margin-bottom:2px}
+.qr-def{font-size:.85rem;color:var(--ink-2);line-height:1.4}
+.notes-block{background:color-mix(in srgb,var(--purple-lt) 9%,var(--surface));
+  border-radius:8px;padding:12px 13px}
+.notes-block p:last-child{margin-bottom:0}
+.trap{color:var(--red);font-weight:600}
+.sec-practice{margin-top:16px;width:100%;background:var(--surface-2);
+  border:1px dashed var(--line);border-radius:8px;padding:10px;color:var(--orange);
+  font-family:var(--cond);text-transform:uppercase;letter-spacing:.09em;
+  font-weight:600;font-size:.87rem}
+.sec-practice:hover{border-color:var(--orange);border-style:solid}
+
+/* ---------- quiz ---------- */
+.qbar{display:flex;align-items:center;gap:12px;margin:16px 0 4px}
+.qcount{font-family:var(--cond);font-weight:600;font-size:.9rem;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.qtrack{flex:1;height:5px;background:var(--line-soft);border-radius:3px;overflow:hidden}
+.qfill{height:100%;background:var(--orange);border-radius:3px;transition:width .3s}
+.qtopic{margin:14px 0 0}
+.qstem{font-size:1.14rem;line-height:1.5;margin:9px 0 18px;font-weight:500}
+.choices{display:grid;gap:9px}
+.ch{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;
+  background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r);
+  padding:13px 14px;color:var(--ink);line-height:1.45;transition:border-color .14s}
+.ch:hover:not(:disabled){border-color:var(--orange)}
+.ch:disabled{cursor:default}
+.ch .k{font-family:var(--cond);font-weight:700;color:var(--ink-3);flex:none;
+  width:20px;font-size:1.02rem}
+.ch.right{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 12%,var(--surface))}
+.ch.right .k{color:var(--teal)}
+.ch.wrong{border-color:var(--red);background:color-mix(in srgb,var(--red) 10%,var(--surface))}
+.ch.wrong .k{color:var(--red)}
+.expl{margin-top:16px;border-radius:var(--r);padding:14px;
+  border:1px solid var(--line);background:var(--surface-2);display:none}
+.expl.show{display:block}
+.expl .v{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.8rem;font-weight:700;margin-bottom:6px}
+.expl.ok .v{color:var(--teal)} .expl.no .v{color:var(--red)}
+.expl p{font-size:.93rem;margin:0}
+.expl .src{margin-top:9px;font-size:.79rem;color:var(--ink-3);font-family:var(--mono)}
+.btn{display:block;width:100%;background:var(--orange);color:#0D1B2A;border:none;
+  border-radius:var(--r);padding:14px;font-family:var(--cond);font-weight:700;
+  font-size:1.1rem;letter-spacing:.06em;text-transform:uppercase;margin-top:16px}
+.btn:hover{background:var(--orange-dim);color:#fff}
+.btn.ghost{background:none;border:1.5px solid var(--line);color:var(--ink-2)}
+.btn.ghost:hover{border-color:var(--orange);color:var(--orange);background:none}
+
+/* ---------- results ---------- */
+.ring{display:block;margin:22px auto 6px}
+.ring-n{font-family:var(--cond);font-size:2.6rem;font-weight:700;
+  fill:var(--ink);font-variant-numeric:tabular-nums}
+.ring-l{font-family:var(--sans);font-size:.72rem;fill:var(--ink-3)}
+.res-msg{text-align:center;color:var(--ink-2);margin-bottom:22px}
+.brk{display:grid;gap:7px;margin:18px 0}
+.brk-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;
+  padding:9px 12px;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+.brk-t{font-size:.88rem;line-height:1.3}
+.brk-s{font-family:var(--cond);font-weight:700;font-variant-numeric:tabular-nums;
+  font-size:.95rem;white-space:nowrap}
+
+/* ---------- resources ---------- */
+.rcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:15px 16px;margin-bottom:11px}
+.rcard h3{margin-bottom:3px}
+.rcard .meta{font-size:.83rem;color:var(--ink-3);margin-bottom:10px}
+.rlinks{display:grid;gap:7px}
+.rlink{display:flex;gap:9px;align-items:baseline;font-size:.89rem;
+  padding:7px 9px;background:var(--surface-2);border-radius:7px;text-decoration:none;color:var(--ink)}
+.rlink:hover{background:color-mix(in srgb,var(--orange) 12%,var(--surface-2))}
+.rlink .b{font-family:var(--cond);font-size:.66rem;text-transform:uppercase;
+  letter-spacing:.1em;font-weight:700;padding:2px 6px;border-radius:4px;flex:none;
+  background:var(--line-soft);color:var(--ink-3)}
+.rlink .b.core{background:var(--orange);color:#0D1B2A}
+.rlink .b.book{background:var(--teal);color:#0D1B2A}
+.rlink .b.topic{background:var(--gold);color:#0D1B2A}
+.rlink span:last-child{flex:1}
+
+/* ---------- misc ---------- */
+.callout{border-left:3px solid var(--orange);background:var(--surface);
+  padding:12px 14px;border-radius:0 8px 8px 0;margin:16px 0;font-size:.92rem}
+.callout strong{color:var(--orange)}
+.plan{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);
+  border-radius:8px;overflow:hidden;margin:14px 0}
+.plan-r{display:grid;grid-template-columns:1fr auto;background:var(--surface);
+  padding:8px 12px;font-size:.89rem;align-items:center}
+.plan-r.hd{background:var(--surface-2);font-family:var(--cond);text-transform:uppercase;
+  letter-spacing:.09em;font-size:.75rem;font-weight:700;color:var(--ink-3)}
+.plan-w{font-family:var(--cond);font-weight:700;font-variant-numeric:tabular-nums;color:var(--orange)}
+.foot{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--ink-3)}
+.foot p{margin-bottom:.5em}
+</style>
+</head>
+<body>
+<style>
+.pg-lede{font-size:1.02rem;color:var(--ink-2)}
+.pg-facts{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);
+  border-radius:8px;overflow:hidden;margin:20px 0;grid-template-columns:minmax(0,1fr)}
+.pg-fact{display:grid;grid-template-columns:minmax(84px,26%) minmax(0,1fr);background:var(--surface);
+  padding:10px 13px;font-size:.92rem;gap:12px;align-items:baseline}
+.pg-fact dt{font-family:var(--cond);text-transform:uppercase;letter-spacing:.09em;
+  font-size:.74rem;font-weight:700;color:var(--ink-3)}
+.pg-fact dd{margin:0}
+.pg-cal{border:1px solid var(--line);border-radius:var(--r);background:var(--surface);
+  overflow:hidden;margin:20px 0}
+.pg-cal-h{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;font-size:.76rem;
+  font-weight:700;color:var(--ink-3);margin:0;padding:11px 15px 9px;background:var(--surface-2);
+  border-bottom:1px solid var(--line-soft)}
+.pg-stage{padding:13px 15px;border-bottom:1px solid var(--line-soft);border-left:3px solid transparent}
+.pg-stage:last-child{border-bottom:0}
+.pg-stage.s1{border-left-color:var(--red)}
+.pg-stage.s2{border-left-color:var(--teal)}
+.pg-stage.s3{border-left-color:var(--line)}
+.pg-stage p{margin:0;font-size:.92rem;line-height:1.5}
+.pg-stage p + p{margin-top:7px}
+.pg-stage-w{font-family:var(--cond);text-transform:uppercase;letter-spacing:.09em;font-size:.73rem;
+  font-weight:700;margin-bottom:5px}
+.pg-stage.s1 .pg-stage-w{color:var(--red)}
+.pg-stage.s2 .pg-stage-w{color:var(--teal)}
+.pg-stage.s3 .pg-stage-w{color:var(--ink-3)}
+.pg-cal-note{color:var(--ink-3);font-size:.86rem !important}
+.pg-due{border-left:3px solid var(--red);background:color-mix(in srgb,var(--red) 8%,var(--surface));
+  border-radius:0 8px 8px 0;padding:12px 14px;margin:16px 0;font-size:.93rem}
+.pg-due strong{color:var(--red)}
+.pg-new{border-left:3px solid var(--gold);background:var(--surface);border-radius:0 8px 8px 0;
+  padding:12px 14px;margin:16px 0;font-size:.92rem}
+.pg-new strong{color:var(--gold)}
+ol.pg-parts{list-style:none;counter-reset:pt;margin:16px 0 0;padding:0;display:grid;gap:10px;
+  grid-template-columns:minmax(0,1fr)}
+ol.pg-parts > li{counter-increment:pt;position:relative;background:var(--surface);
+  border:1px solid var(--line);border-left:3px solid var(--teal);border-radius:8px;
+  padding:13px 15px 13px 44px}
+ol.pg-parts > li::before{content:counter(pt);position:absolute;left:14px;top:13px;
+  font:700 .9rem/1.4 var(--cond);color:var(--teal)}
+/* nested lists inside a part description are plain bullets, not cards */
+.pg-parts .pg-pd ul,.pg-parts .pg-pd ol{list-style:disc;margin:.45em 0 0;padding-left:1.15em}
+.pg-parts .pg-pd ol{list-style:decimal}
+.pg-parts .pg-pd li{counter-increment:none;position:static;background:none;border:0;
+  border-radius:0;padding:0;margin-bottom:.3em;display:list-item}
+.pg-parts .pg-pd li::before{content:none}
+.pg-parts .pg-pd li::marker{color:var(--ink-3)}
+.pg-pn{font-family:var(--cond);font-size:1.12rem;font-weight:600;line-height:1.2;
+  display:flex;gap:8px;align-items:baseline;flex-wrap:wrap;min-width:0}
+.pg-lim{font:600 .68rem/1.6 var(--mono);letter-spacing:.05em;text-transform:uppercase;
+  color:var(--orange);border:1px solid color-mix(in srgb,var(--orange) 40%,transparent);
+  border-radius:4px;padding:1px 6px;max-width:100%;min-width:0;overflow-wrap:anywhere}
+.pg-pd{font-size:.92rem;color:var(--ink-2);margin:6px 0 0}
+.pg-pd ul{margin:.4em 0 0;padding-left:1.1em}
+.pg-pd li{margin-bottom:.3em}
+table.pg-spec{width:100%;border-collapse:collapse;margin:16px 0;font-size:.91rem}
+table.pg-spec th,table.pg-spec td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line-soft);
+  vertical-align:top}
+table.pg-spec th{font-family:var(--cond);text-transform:uppercase;letter-spacing:.09em;
+  font-size:.72rem;color:var(--ink-3);background:var(--surface-2);white-space:nowrap;width:34%}
+table.pg-spec td{font-family:var(--mono);font-size:.87rem}
+.pg-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.pg-check{display:grid;gap:8px;margin:16px 0;grid-template-columns:minmax(0,1fr)}
+.pg-ck{display:flex;gap:11px;align-items:flex-start;background:var(--surface);
+  border:1px solid var(--line);border-radius:8px;padding:11px 13px;cursor:pointer;
+  font-size:.93rem;line-height:1.45;text-align:left;width:100%;color:var(--ink)}
+.pg-ck:hover{border-color:var(--teal)}
+.pg-ck .bx{flex:none;width:19px;height:19px;border:2px solid var(--line);border-radius:5px;
+  display:grid;place-items:center;margin-top:1px;font:700 .78rem/1 var(--cond);color:transparent}
+.pg-ck.on .bx{background:var(--teal);border-color:var(--teal);color:#fff}
+.pg-ck.on{border-color:var(--teal)}
+.pg-ck.on span:last-child{color:var(--ink-3);text-decoration:line-through}
+.pg-prog{font-family:var(--mono);font-size:.8rem;color:var(--ink-3);margin:0 0 4px}
+.pg-tl{display:grid;gap:0;margin:16px 0;position:relative;grid-template-columns:minmax(0,1fr)}
+.pg-tl::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:2px;background:var(--line)}
+.pg-ti{position:relative;padding:0 0 18px 30px}
+.pg-ti:last-child{padding-bottom:0}
+.pg-ti::before{content:'';position:absolute;left:2px;top:5px;width:12px;height:12px;border-radius:50%;
+  background:var(--surface);border:2px solid var(--teal)}
+.pg-tw{font-family:var(--cond);text-transform:uppercase;letter-spacing:.09em;font-size:.75rem;
+  font-weight:700;color:var(--teal)}
+.pg-tt{font-size:.93rem;margin:2px 0 0;color:var(--ink-2)}
+.pg-judge{display:grid;gap:9px;margin:16px 0;grid-template-columns:minmax(0,1fr)}
+.pg-jr{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--purple-lt);
+  border-radius:8px;padding:12px 14px}
+.pg-jn{font-family:var(--cond);font-size:1.05rem;font-weight:600;line-height:1.2}
+.pg-jd{font-size:.9rem;color:var(--ink-2);margin:5px 0 0}
+/* long tokens — URLs, dimensions, file names — must never widen a track */
+.pg-parts,.pg-judge,.pg-check,.pg-tl,.pg-facts,.pg-due,.pg-new{min-width:0}
+.pg-parts > li,.pg-jr,.pg-ck,.pg-ti,.pg-fact,.pg-pd,.pg-pn,.pg-jd,.pg-tt{min-width:0;overflow-wrap:anywhere}
+table.pg-spec td,table.pg-spec th{overflow-wrap:anywhere}
+.rlink,.rcard{min-width:0;overflow-wrap:anywhere}
+</style>
+<div class="topbar">
+  <div class="topbar-in">
+    <span class="brandmark"><span class="dot"></span>DC HOSA</span>
+    <span class="sp"></span>
+    <button class="iconbtn" id="themeBtn" aria-label="Switch theme" title="Switch theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<section id="home" class="screen active">
+  <div class="hero">
+    <div class="kicker">
+      <span class="tag hot">2026&ndash;2027</span>
+      <span class="tag">Teamwork</span>
+      <span class="tag">Team of 2</span>
+      <span class="tag">Middle School, Secondary &amp; Postsecondary/Collegiate</span>
+    </div>
+    <h1>Health Career Display</h1>
+    <p class="sub pg-lede">Two of you pick ONE health career, build a tri-fold display board about it, upload a slide outline of that board plus a photo of the finished board, and then stand with the board at the conference and give a five-minute talk about the career.</p>
+  </div>
+
+  <dl class="pg-facts">
+    <div class="pg-fact"><dt>You submit</dt><dd>One combined PDF of the display board outline, uploaded by ONE member of the team to the HOSA Digital Upload System by the DC HOSA upload deadline. The outline is built in PowerPoint slide style (any platform — PowerPoint, Google Slides, Canva) and is no more than 16 slides, not counting reference slides. One of those slides must be a photo of your completed display board. At the conference you bring the physical display, stand with it during the required Project Display Time, and — if you advance — give a five-minute presentation to judges. Photo ID is required. Notecards, paper or electronic, are optional.</dd></div>
+    <div class="pg-fact"><dt>Rounds</dt><dd>Round One is the digital outline and the photo of the completed display, pre-judged virtually before the conference. Round Two is a five-minute prepared oral presentation to judges. Only the top-scoring teams from Round One advance to Round Two; how many advance depends on Round One criteria, and on the space and time available. Separate from both rounds, EVERY team at ILC must attend the required Project Display Time and stand with its board. Round One and Round Two scores are added together for the final result.</dd></div>
+    <div class="pg-fact"><dt>Dress</dt><dd>Proper business attire or official HOSA uniform. Bonus points will be awarded for proper dress. Both team members must be properly dressed for the team to receive the bonus points.</dd></div>
+  </dl>
+
+  <div class="pg-cal">
+    <p class="pg-cal-h">The DC HOSA calendar &mdash; read this before the guideline&rsquo;s dates</p>
+    <div class="pg-stage s1">
+      <div class="pg-stage-w">Stage 1 &middot; SLC &mdash; binding first</div>
+      <p><strong>DC HOSA collects uploads and pre-judged material by the end of the first week of February.</strong>
+      What you submit then must be <strong>final and complete</strong> &mdash; every required element, in the
+      right format. It is judged exactly as submitted. The State Leadership Conference itself is in March,
+      but the upload closes over a month before it. This is the deadline DC competitors miss.</p>
+    </div>
+    <div class="pg-stage s2">
+      <div class="pg-stage-w">Stage 2 &middot; ILC &mdash; only if you qualify</div>
+      <p>Qualify at SLC and you may revise and improve the work. DC HOSA&rsquo;s ILC upload deadline is
+      <strong>generally around 1 May</strong>, deliberately ahead of the national date, so there is time to
+      confirm every file landed in the right place and fix it if it did not.</p>
+    </div>
+    <div class="pg-stage s3">
+      <div class="pg-stage-w">For reference &middot; the national deadline</div>
+      <p>The guideline states: "May 15 at midnight EST is the final deadline, and there will be NO EXCEPTIONS." That is HOSA's national ILC upload deadline.</p>
+      <p class="pg-cal-note">Work to the DC dates, not this one. DC&rsquo;s deadlines shift a little year to
+      year &mdash; confirm the exact dates with your chapter advisor or the state advisor before you plan
+      around them.</p>
+    </div>
+  </div>
+  <div class="pg-new"><strong>New for 2026-2027.</strong> Pre-judging and advancement to Round Two has been clarified. Editorial changes have been made.</div>
+
+  <div class="actions">
+    <button class="act" onclick="go('brief')">
+      <span class="ic" style="background:var(--teal)">1</span>
+      <span><span class="t">What You Build</span><span class="d">12 required parts, with every limit the guideline sets</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="go('spec')">
+      <span class="ic" style="background:var(--red)">2</span>
+      <span><span class="t">Format Rules</span><span class="d">The hard requirements &mdash; get one wrong and it costs you</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="go('judge')">
+      <span class="ic" style="background:var(--purple-lt)">3</span>
+      <span><span class="t">What Judges Score</span><span class="d">The criteria your entry is rated against</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="go('plan')">
+      <span class="ic" style="background:var(--gold)">4</span>
+      <span><span class="t">Working Backward</span><span class="d">When to start, and a checklist to work through</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="go('resources')">
+      <span class="ic" style="background:var(--orange)">R</span>
+      <span><span class="t">Official References</span><span class="d">The sources the guideline names</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+  </div>
+
+  <div class="callout"><strong>Read this before anything else.</strong> Your display board has to be finished before you upload, not after. The outline you submit at the February upload must include "one photo of their completed display board." So the board is not a summer-into-spring project you finish the week of the conference — it has to be built, mounted and photographed while there is still time to upload. Then measure it. Once the board and everything else is sitting on the table, the whole display may be no more than 48 inches wide, 24 inches deep and 36 inches tall, measured from the tabletop to the highest point of anything on the display. The tri-fold board itself is 36 inches tall, which means the 36-inch height limit is already used up by the board — nothing can stick up above it. Nothing may hang off the edge of the table either, because the next team's table may be very close. "Displays which do not adhere to these dimensions will be assessed penalty points in Round Two," and anything outside the limits is not judged at all. Measure the assembled display at home with a tape measure, models and props included, before you take the photo.</div>
+
+  <div class="foot">
+    <p><strong>Health Career Display Prep Guide</strong> &middot; DC HOSA &middot; 2026&ndash;2027 season</p>
+    <p>Built from the official 2026-2027 HOSA competitive event guideline. Format requirements and
+    judged criteria are reproduced from it. Always check the guideline PDF and your advisor for
+    the SLC deadline, which differs from the ILC deadline shown here.</p>
+  </div>
+</section>
+
+<section id="brief" class="screen">
+  <button class="backbtn" onclick="go('home')">&larr; Back</button>
+  <h1 style="margin-top:8px">What You Build</h1>
+  <p class="sub" style="color:var(--ink-2)">The digital outline must include these parts, in this order, within the slide limits shown. After the outline come the two physical requirements: the display board itself and the five-minute presentation.</p>
+  <ol class="pg-parts" id="partList"></ol>
+</section>
+
+<section id="spec" class="screen">
+  <button class="backbtn" onclick="go('home')">&larr; Back</button>
+  <h1 style="margin-top:8px">Format Rules</h1>
+  <p class="sub" style="color:var(--ink-2)">Straight from the guideline. These are not style advice &mdash; they are the requirements your entry is checked against before anyone reads it.</p>
+  <div class="pg-scroll"><table class="pg-spec"><tbody id="specRows"></tbody></table></div>
+  <div class="pg-due" id="trapBlock"></div>
+</section>
+
+<section id="judge" class="screen">
+  <button class="backbtn" onclick="go('home')">&larr; Back</button>
+  <h1 style="margin-top:8px">What Judges Score</h1>
+  <p class="sub" style="color:var(--ink-2)">Round One is pre-judged virtually in early June from your uploaded PDF alone — no one meets your team. Round Two is the five-minute presentation, and finalists are announced on-site at ILC. "Scores from Round One will be added to Round Two to determine the final results." A tie is broken by the rating sheet section with the highest point value, then the next highest, in descending order. This extract does not include the rating sheet, so the exact points attached to each criterion are in the official guideline PDF — download it and read it with your partner.</p>
+  <div class="pg-judge" id="judgeList"></div>
+</section>
+
+<section id="plan" class="screen">
+  <button class="backbtn" onclick="go('home')">&larr; Back</button>
+  <h1 style="margin-top:8px">Working Backward</h1>
+  <p class="sub" style="color:var(--ink-2)">Counted back from the upload deadline. Slide the whole thing earlier if your chapter sets its own internal date.</p>
+  <div class="pg-tl" id="timeline"></div>
+  <h2 style="margin-top:28px">Before you submit</h2>
+  <p class="pg-prog" id="ckProg"></p>
+  <div class="pg-check" id="checkList"></div>
+</section>
+
+<section id="resources" class="screen">
+  <button class="backbtn" onclick="go('home')">&larr; Back</button>
+  <h1 style="margin-top:8px">Official References</h1>
+  <p class="sub" style="color:var(--ink-2)">The sources named in the 2026-2027 guideline, plus the HOSA pages you will need.</p>
+  <div class="rcard"><h3>Official guideline and rules</h3><p class="meta">Start here every time</p><p>The full Health Career Display guideline PDF, including the rating sheet and its point values, plus the General Rules and Regulations you are required to be familiar with. Appendix I, referenced in the guideline for equipment, is in the same document set.</p><div class="rlinks"><a class="rlink" href="https://hosa.org/guidelines/">HOSA Competitive Events Guidelines <span class="b core">Core</span></a><a class="rlink" href="https://hosa.org/guidelines/">General Rules and Regulations <span class="b core">Core</span></a></div></div><div class="rcard"><h3>Digital Upload System</h3><p class="meta">Where the outline goes</p><p>ONE team member uploads the outline here as ONE combined PDF by the DC HOSA upload deadline. Read the instructions before the week it is due — the guideline strongly suggests not waiting until the last minute, to avoid problems with the system.</p><div class="rlinks"><a class="rlink" href="https://hosa.org/competitive-event-digital-uploads/">HOSA Competitive Event Digital Uploads <span class="b core">Core</span></a></div></div><div class="rcard"><h3>Choosing a health career</h3><p class="meta">Named by the guideline</p><p>The guideline sends you to these two sites for a sample list of health careers, and tells you to review carefully to be sure your career meets the criteria. Firefighter, flight attendant and special education teacher are its examples of jobs that are NOT health careers.</p><div class="rlinks"><a class="rlink" href="https://www.healthscienceconsortium.org/">National Consortium for Health Science Education <span class="b core">Core</span></a><a class="rlink" href="https://explorehealthcareers.org/">Explore Health Careers <span class="b core">Core</span></a></div></div><div class="rcard"><h3>Salary and job outlook data</h3><p class="meta">For the entry level salary slides</p><p>The guideline asks for entry level salary at the local, national and global level. These sources give you numbers you can cite on your reference page instead of a figure from a job board.</p><div class="rlinks"><a class="rlink" href="https://www.bls.gov/ooh/healthcare/">Occupational Outlook Handbook: Healthcare <span class="b topic">Topic</span></a><a class="rlink" href="https://www.bls.gov/oes/current/oessrcma.htm">BLS metropolitan area wage data <span class="b topic">Topic</span></a><a class="rlink" href="https://www.careeronestop.org/">CareerOneStop <span class="b topic">Topic</span></a><a class="rlink" href="https://www.who.int/health-topics/health-workforce">WHO Health Workforce <span class="b topic">Topic</span></a></div></div><div class="rcard"><h3>APA reference style</h3><p class="meta">For the reference slides</p><p>APA is the preferred resource in Health Sciences. Points are awarded for a clean, legible reference page listing the literature cited, though the formatting itself is not judged — so getting close is good enough.</p><div class="rlinks"><a class="rlink" href="https://apastyle.apa.org/style-grammar-guidelines/references">APA Style: References <span class="b topic">Topic</span></a></div></div>
+</section>
+
+</div>
+
+<script>
+const PARTS = [
+ {
+  "n": "Title Slide",
+  "limit": "1 slide only",
+  "d": "<p>A checklist, not a design project. The guideline requires all of these on it:</p><ul><li>Event Name</li><li>Team Member Names</li><li>HOSA Division</li><li>HOSA Chapter #</li><li>School Name</li><li>Chartered Association</li></ul>"
+ },
+ {
+  "n": "Career overview",
+  "limit": "2 slides max",
+  "d": "<p>An overview of the ONE health career your team chose. The career must be a HEALTH career — the guideline gives firefighter, flight attendant and special education teacher as examples of jobs that are NOT health careers. The same one career is used for the Round One outline and the Round Two presentation.</p>"
+ },
+ {
+  "n": "Job responsibilities",
+  "limit": "2 slides max",
+  "d": "<p>What a person in this career actually does day to day.</p>"
+ },
+ {
+  "n": "Educational requirements",
+  "limit": "2 slides max",
+  "d": "<p>The schooling, degrees, certifications or licenses a person needs to enter this career.</p>"
+ },
+ {
+  "n": "Entry level salary at the local/national/global level",
+  "limit": "2 slides max",
+  "d": "<p>The guideline names three levels, so give all three: what someone starting this career earns locally, nationally, and globally. Cite where each number came from on your reference page.</p>"
+ },
+ {
+  "n": "Benefits/challenges associated with this career",
+  "limit": "2 slides max",
+  "d": "<p>Both sides. What is good about this career, and what is hard about it.</p>"
+ },
+ {
+  "n": "Additional relevant career information",
+  "limit": "2 slides max",
+  "d": "<p>Anything else about the career that a judge should know and that does not fit the sections above.</p>"
+ },
+ {
+  "n": "Creative and artistic impact",
+  "limit": "2 slides max",
+  "d": "<p>The guideline asks three questions here, and you should answer all three:</p><ul><li>Describe how your display looks.</li><li>What elements are included to showcase the selected career?</li><li>What makes your board stand out from others?</li></ul><p>Teams are encouraged to use creativity and design elements in the outline itself, \"as points will be rewarded for originality.\"</p>"
+ },
+ {
+  "n": "Photo of the completed display board",
+  "limit": "1 slide only",
+  "d": "<p>One photo of your finished board. \"The picture only needs to include the board, not other items teams plan to put on the table.\" Make the photo clear enough that judges can see the entire project — good light, straight on, all three panels visible, no glare, no shadow from the person taking it.</p>"
+ },
+ {
+  "n": "Reference Page(s)",
+  "limit": "As many slides as needed; reference slides do NOT count toward the 16-slide maximum",
+  "d": "<p>\"List the literature cited to give guidance to the project.\" American Psychological Association (APA) is the preferred resource in Health Sciences.</p><p>The guideline is direct about this: \"Points will be awarded for compiling a clean, legible reference page(s), but the formatting of the reference page(s) is not judged.\" Having references earns points; getting every comma right does not.</p>"
+ },
+ {
+  "n": "The physical display board",
+  "limit": "Tri-fold board no larger than 36\" H x 48\" W; whole display max 48\" W x 24\" D x 36\" H on the table",
+  "d": "<p>A single wall tri-fold presentation display board, no larger than 36 inches high by 48 inches wide, in any color, made of foam or corrugated cardboard. It must be able to stand on its own on a standard conference table furnished on-site.</p><p>Besides the board, the display may include models, mannequins, pamphlets, brochures, or any other physical objects — as long as the whole thing stays inside the overall dimensions. No computers, electronics, solar power, batteries, or electricity of any kind.</p><p>Write your Event Name, Team Member Names, HOSA Division, HOSA Chapter #, School Name, and Chartered Association on the BACK of the display so staff can identify it on-site.</p>"
+ },
+ {
+  "n": "Round Two presentation",
+  "limit": "5 minutes",
+  "d": "<p>If your team advances, you report to the scheduled room at your assigned appointment time and give a five-minute prepared oral presentation to the judges. Time cards are shown with one minute remaining, and time is called at five minutes.</p><p>The guideline says the presentation may include, but is not limited to:</p><ul><li>Why you chose this career or career cluster</li><li>What you learned by researching it</li><li>What you included on the display and why</li></ul><p>Both team members must take an active role. You may pick up display items while presenting. Index card notes are allowed; electronic notecards on a tablet, phone or laptop are allowed but will not be shown to judges. No other materials or props.</p>"
+ }
+];
+const SPEC  = [
+ {
+  "n": "File format",
+  "v": "Display board outline as ONE combined PDF file"
+ },
+ {
+  "n": "Not one PDF",
+  "v": "Judge will NOT view it and NO points will be awarded"
+ },
+ {
+  "n": "Inaccessible links/files",
+  "v": "No points awarded for anything the judge cannot open"
+ },
+ {
+  "n": "Slide style",
+  "v": "\"PowerPoint slide\" style and format; any platform (Canva, PPT, Google Slides, or team's choice)"
+ },
+ {
+  "n": "Slide maximum",
+  "v": "No more than 16 slides total, NOT counting reference page slides"
+ },
+ {
+  "n": "Photo of board",
+  "v": "REQUIRED in the outline — 1 slide only, clear enough to see the entire project"
+ },
+ {
+  "n": "Who uploads",
+  "v": "ONE member of the team, not both"
+ },
+ {
+  "n": "Upload system",
+  "v": "HOSA Digital Upload System"
+ },
+ {
+  "n": "Deadline",
+  "v": "DC SLC is the operative deadline: uploads close at the end of the first week of February and are judged exactly as submitted. DC's ILC upload, for SLC qualifiers only, is generally around 1 May. National reference: the DC HOSA upload deadline — NO EXCEPTIONS. Confirm the exact DC dates with your advisor"
+ },
+ {
+  "n": "No upload",
+  "v": "Not eligible for Round Two; no ILC appointment time given"
+ },
+ {
+  "n": "Team size",
+  "v": "Team Event: 2 competitors per team"
+ },
+ {
+  "n": "Career choice",
+  "v": "ONE health career, used for both rounds; must be a HEALTH career"
+ },
+ {
+  "n": "Not health careers",
+  "v": "Guideline's examples: firefighter, flight attendant, special education teacher"
+ },
+ {
+  "n": "Original work",
+  "v": "For BOTH rounds the work must be the original work of the competitors, including artistic aspects"
+ },
+ {
+  "n": "Allowable artwork",
+  "v": "Competitor-produced illustrations/designs/computer graphics; clip art and photographs used in compliance with copyright law; computer or machine generated lettering"
+ },
+ {
+  "n": "Reference style",
+  "v": "APA preferred; formatting of the reference page(s) is not judged"
+ },
+ {
+  "n": "Board size",
+  "v": "Single wall tri-fold board, no larger than 36\" H x 48\" W"
+ },
+ {
+  "n": "Board material",
+  "v": "Foam or corrugated cardboard, any color; must stand on a standard conference table"
+ },
+ {
+  "n": "Overall WIDTH",
+  "v": "48 inches maximum"
+ },
+ {
+  "n": "Overall DEPTH",
+  "v": "24 inches maximum"
+ },
+ {
+  "n": "Overall HEIGHT",
+  "v": "36 inches maximum, measured from the tabletop to the highest point"
+ },
+ {
+  "n": "How it is measured",
+  "v": "Section Leader or Event Manager measures widest-to-opposite point, deepest-to-opposite point, tabletop to highest point"
+ },
+ {
+  "n": "What counts",
+  "v": "Dimensions include models, mannequins, and ALL other display items"
+ },
+ {
+  "n": "Over-size penalty",
+  "v": "Penalty points in Round Two; items outside the dimensions are not judged but still count as part of the display"
+ },
+ {
+  "n": "Table edge",
+  "v": "Display materials may not extend beyond the edge of the display table"
+ },
+ {
+  "n": "Table sharing",
+  "v": "One or two teams per table; all teams get the same size table"
+ },
+ {
+  "n": "Power",
+  "v": "NO computers, electronics, solar power, batteries, or electricity of any kind"
+ },
+ {
+  "n": "Prohibited items",
+  "v": "No flames, body fluids, living organisms, or sharps (even capped and locked); no invasive procedures or skin puncturing"
+ },
+ {
+  "n": "Equipment provided",
+  "v": "No equipment/supplies except tables; the team provides and maintains everything else"
+ },
+ {
+  "n": "Setup time",
+  "v": "15 minutes to assemble the display and table exhibit before display time begins"
+ },
+ {
+  "n": "Who may set up",
+  "v": "Only registered competitors"
+ },
+ {
+  "n": "Back of display",
+  "v": "Event Name, Team Member Names, HOSA Division, HOSA Chapter #, School Name, Chartered Association"
+ },
+ {
+  "n": "Project Display Time",
+  "v": "REQUIRED for all competitors at ILC; team stands with the display and shares career information with delegates"
+ },
+ {
+  "n": "Missing display time",
+  "v": "15-point deduction from Round Two"
+ },
+ {
+  "n": "Teardown",
+  "v": "Displays must be picked up as instructed; anything left becomes HOSA property and may be discarded"
+ },
+ {
+  "n": "Round Two time",
+  "v": "Five (5) minutes; one-minute time card shown; time called at 5:00"
+ },
+ {
+  "n": "Round Two materials",
+  "v": "Display board and index card notes only. Electronic notecards allowed but not shown to judges. No other materials/props."
+ },
+ {
+  "n": "Handling items",
+  "v": "Presenters are allowed to pick up display items during the judge presentation"
+ },
+ {
+  "n": "Team participation",
+  "v": "All team members must take an active role in the presentation"
+ },
+ {
+  "n": "Photo ID",
+  "v": "Required"
+ },
+ {
+  "n": "Final score",
+  "v": "Round One score + Round Two score"
+ },
+ {
+  "n": "Tiebreaker",
+  "v": "Rating sheet section(s) with the highest point value, in descending order"
+ }
+];
+const JUDGE = [
+ {
+  "n": "The career is a health career, and there is only one",
+  "d": "The team chooses ONE health career and uses that same career for both rounds. The guideline names firefighter, flight attendant and special education teacher as jobs that are not classified as health careers, and tells teams to review the criteria carefully before choosing."
+ },
+ {
+  "n": "The outline gives judges a clear vision of the board",
+  "d": "\"From the digital outline, judges should have a clear vision of what to expect when they see the team's display board in person.\" The outline should convince judges of the value of the project and leave them wanting to see the full display and hear the presentation."
+ },
+ {
+  "n": "Career overview",
+  "d": "An overview of the chosen health career, within 2 slides."
+ },
+ {
+  "n": "Job responsibilities",
+  "d": "What the job involves day to day, within 2 slides."
+ },
+ {
+  "n": "Educational requirements",
+  "d": "The education, degrees, certifications or licensure needed to enter the career, within 2 slides."
+ },
+ {
+  "n": "Entry level salary",
+  "d": "Entry level salary at the local, national AND global level — three levels named in the guideline — within 2 slides."
+ },
+ {
+  "n": "Benefits and challenges",
+  "d": "The benefits and the challenges associated with this career, within 2 slides."
+ },
+ {
+  "n": "Additional relevant career information",
+  "d": "Other information about the career worth knowing, within 2 slides."
+ },
+ {
+  "n": "Creative and artistic impact",
+  "d": "A description of how the display looks, what elements showcase the career, and what makes the board stand out from others. Teams are encouraged to use creativity and design elements in the outline itself, \"as points will be rewarded for originality.\""
+ },
+ {
+  "n": "Photo of the completed display board",
+  "d": "One clear photo of the finished board, on its own slide, showing the entire project."
+ },
+ {
+  "n": "Reference page(s)",
+  "d": "Points are awarded for compiling a clean, legible reference page listing the literature cited. APA is preferred in Health Sciences. The formatting of the reference page itself is not judged."
+ },
+ {
+  "n": "Original work",
+  "d": "For both rounds the work MUST be the original work of the competitors, including the artistic aspects. Allowable artwork is limited to competitor-produced illustrations, designs and computer-generated graphics; clip art and photographs used in compliance with copyright law; and computer or machine generated lettering."
+ },
+ {
+  "n": "Display dimensions",
+  "d": "48 inches wide, 24 inches deep, 36 inches tall, measured with everything in place. \"Displays which do not adhere to these dimensions will be assessed penalty points in Round Two,\" and items outside the dimensions are not judged."
+ },
+ {
+  "n": "Required Project Display Time",
+  "d": "Every competitor at ILC must attend the HOSA Project Display Time and stand with the display, sharing career information with conference delegates. Failure to attend is a 15-point deduction from Round Two."
+ },
+ {
+  "n": "Round Two: communicating the career",
+  "d": "\"Each team that advances to the presentation round will be judged on their ability to communicate information about the career area to the judges.\" The guideline suggests, without limiting you to, why you chose this career, what you learned researching it, and what you put on the display and why."
+ },
+ {
+  "n": "Round Two: timing and participation",
+  "d": "Five minutes, with a one-minute card and time called at 5:00. All team members must take an active role."
+ },
+ {
+  "n": "Dress code bonus",
+  "d": "Bonus points are awarded for proper business attire or official HOSA uniform. Both team members must be properly dressed for the team to receive them."
+ }
+];
+const PLAN  = [
+ {
+  "when": "September — choose the career and start the research",
+  "what": "Pick your partner and pick ONE health career in the first weeks of school. Check it against the rule before you fall in love with it: firefighter, flight attendant and special education teacher are the guideline's examples of jobs that do NOT count. Use the National Consortium for Health Science Education and Explore Health Careers lists to confirm yours is a health career. Whatever you pick is the career for both rounds — you cannot switch later. Start collecting sources the same month."
+ },
+ {
+  "when": "October — finish the research and design the board on paper",
+  "what": "Gather what you need for all seven content sections: overview, job responsibilities, educational requirements, entry level salary at the local AND national AND global level, benefits and challenges, and additional information. Save every source in an APA reference list as you go — the salary section is the one teams underestimate, because three levels means three sourced numbers. In the same month, sketch the tri-fold layout panel by panel: left panel, centre, right, and what three-dimensional items sit on the table. Decide what will make the board stand out, because you have to explain that in the Creative and Artistic Impact slides. Every word and image has to be your own original work or properly licensed clip art or photos."
+ },
+ {
+  "when": "November — build the board and measure it. This is the deadline nobody expects.",
+  "what": "Round One requires a photograph of the COMPLETED board, and the DC upload closes at the end of the first week of February — so the board has to be finished in the autumn, not the week of the March conference. Buy a tri-fold no larger than 36 inches high by 48 inches wide, foam or corrugated cardboard, and build the whole display including models, brochures and props. Then set it up on a table at home and measure with a tape: 48 inches wide, 24 inches deep, 36 inches tall from tabletop to the highest point of anything. Check it stands on its own. Confirm there is nothing electronic, no batteries, no flames, no sharps, no living organisms. Write your event name, both names, division, chapter number, school and Chartered Association on the BACK."
+ },
+ {
+  "when": "Late November into early December — photograph the finished board",
+  "what": "Take the photo that goes in the outline. Good light, straight on, all three panels visible, nothing blocking it, no glare and no shadow of the photographer. Look at it full-screen: can a stranger read the board and see the whole project? If not, retake it while the board is still standing in front of you. The photo only needs to show the board, not the table items."
+ },
+ {
+  "when": "December into mid-January — build the outline and count the slides",
+  "what": "Build the outline in slide format on whatever platform you like, ordered exactly as the guideline lists it. Count: title slide (1) plus seven sections at up to 2 slides each (14) plus the board photo (1) equals 16 — the maximum. There is no spare slide, so if a section needs two you have to be disciplined everywhere else. Reference slides go at the end and do not count. Export the whole thing as ONE combined PDF."
+ },
+ {
+  "when": "Late January — finish and check",
+  "what": "Nothing gets written after this. Proofread every slide, confirm the total slide count and every section limit, confirm the title slide carries all six required items, and confirm the reference page is clean and legible. Re-export as one combined PDF, then open that PDF from a different account and on a different device to be sure a judge can view it. Fix formatting now, not in February."
+ },
+ {
+  "when": "First week of February — the DC SLC upload",
+  "what": "DC HOSA collects all pre-judged material by the end of the first week of February, and what you submit then is judged exactly as submitted — final and complete, every required element, correctly formatted. ONE team member uploads the single combined PDF to the HOSA Digital Upload System. Confirm the exact date with your advisor, and upload several days early rather than on the closing day."
+ },
+ {
+  "when": "March — the State Leadership Conference",
+  "what": "Between the February upload and SLC, rehearse the five-minute presentation with a timer until both of you speak, you can do it from index cards, and you finish under 5:00. Practise standing with the board too — at Project Display Time you talk to delegates walking by, not to judges. Pack the board so it travels without bending or scuffing, and bring photo ID."
+ },
+ {
+  "when": "After SLC, to around 1 May — only if you qualify",
+  "what": "This stage exists only for teams that advance from SLC to ILC. It is your window to revise and improve: retake a weak board photo, rebuild a section judges marked down, tighten the outline. DC HOSA's ILC upload deadline is generally around 1 May — deliberately ahead of the national date so your state advisor can confirm every file uploaded correctly and help fix it if it did not. Confirm the date with your advisor."
+ }
+];
+const CHECK = [
+ "The outline is ONE combined PDF file — not several files, not a link, not a slide deck link.",
+ "Exactly one team member uploaded it, both of you know who, and the uploaded PDF opens for someone who is not signed in to your account.",
+ "The outline is 16 slides or fewer, not counting reference slides, and no section went over its slide limit.",
+ "The title slide lists all six required items: event name, both team member names, HOSA division, HOSA chapter number, school name, and Chartered Association.",
+ "All seven content sections are there in order — career overview, job responsibilities, educational requirements, entry level salary, benefits and challenges, additional information, creative and artistic impact — and the salary section gives local, national AND global figures.",
+ "There is one clear photo of the completed display board on its own slide, and you can see the whole board in it.",
+ "The reference page lists the literature you used, in APA style, and is clean and legible.",
+ "Every image and every piece of lettering is your own work, or clip art or a photo you are allowed to use under copyright law.",
+ "The career you chose is a health career, and it is the same career in the outline and in the presentation.",
+ "You measured the assembled display with a tape measure: 48 inches wide or less, 24 inches deep or less, 36 inches tall or less from the tabletop, with all models and props in place.",
+ "The board is a tri-fold no larger than 36 by 48 inches, made of foam or corrugated cardboard, and it stands up by itself on a table.",
+ "There is nothing electronic, no batteries, no solar, no flames, no body fluids, no living organisms and no sharps anywhere in the display.",
+ "Your event name, both names, division, chapter number, school and Chartered Association are written on the BACK of the board.",
+ "The upload is submitted before DC HOSA's SLC deadline at the end of the first week of February, not on the closing day, and your advisor has confirmed the exact date; if your team advances, you upload again for ILC by DC's deadline around 1 May."
+];
+const TRAPS = "<strong>What actually costs people points.</strong> The most expensive mistake is the one you cannot fix at the conference: a display that does not fit. The limits are 48 inches wide, 24 inches deep and 36 inches tall measured from the tabletop to the highest point of anything, and \"dimensions include models, mannequins, and all other display items.\" Because the tri-fold board is itself 36 inches tall, the height limit is already spent — a sign, a model or a stand on top of the board puts you over. Over-size displays are \"assessed penalty points in Round Two,\" and anything outside the limits is not judged, so the extra item costs you twice. Measure it at home. Second: the photo. The outline must include a photo of the COMPLETED board, which means the board has to be built and finished well before the February upload, not the night before the conference — and a dark, angled or glare-covered photo is the judges' only look at your board in Round One. Third: the single-PDF rule is absolute — \"If the upload is not submitted as a single PDF document, the judge will NOT view it and NO points will be awarded,\" and the same goes for any link a judge cannot open. Fourth: the required Project Display Time. Every team at ILC has to stand with its board, whether or not it advanced, and \"failure to attend the Project Display Time will result in a 15-point deduction from Round Two.\" Finally, watch the career itself and the power rule: a career that is not a health career, or a board with a laptop, screen, light strip or battery on it, undoes months of work over one sentence in the guideline.";
+const SKEY  = "dchosa-health-career-display-check";
+
+const $ = id => document.getElementById(id);
+
+$('partList').innerHTML = PARTS.map(p =>
+  '<li><div class="pg-pn"><span>' + p.n + '</span>' +
+  (p.limit ? '<span class="pg-lim">' + p.limit + '</span>' : '') + '</div>' +
+  '<div class="pg-pd">' + p.d + '</div></li>').join('');
+
+$('specRows').innerHTML = SPEC.map(s =>
+  '<tr><th>' + s.n + '</th><td>' + s.v + '</td></tr>').join('');
+
+$('trapBlock').innerHTML = TRAPS;
+
+$('judgeList').innerHTML = JUDGE.map(j =>
+  '<div class="pg-jr"><div class="pg-jn">' + j.n + '</div>' +
+  '<p class="pg-jd">' + j.d + '</p></div>').join('');
+
+$('timeline').innerHTML = PLAN.map(p =>
+  '<div class="pg-ti"><div class="pg-tw">' + p.when + '</div>' +
+  '<p class="pg-tt">' + p.what + '</p></div>').join('');
+
+/* checklist — remembered per viewer, best effort */
+let done = {};
+try { done = JSON.parse(localStorage.getItem(SKEY) || '{}') || {}; } catch (e) { done = {}; }
+function drawChecks(){
+  $('checkList').innerHTML = CHECK.map((c, i) =>
+    '<button class="pg-ck' + (done[i] ? ' on' : '') + '" onclick="tick(' + i + ')">' +
+    '<span class="bx">&#10003;</span><span>' + c + '</span></button>').join('');
+  const n = CHECK.filter((_, i) => done[i]).length;
+  $('ckProg').textContent = n + ' of ' + CHECK.length + ' done';
+}
+function tick(i){
+  done[i] = !done[i];
+  try { localStorage.setItem(SKEY, JSON.stringify(done)); } catch (e) {}
+  drawChecks();
+}
+drawChecks();
+
+/* navigation */
+function go(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* theme */
+(function(){
+  const root = document.documentElement, b = $('themeBtn');
+  try { const s = localStorage.getItem('dchosa-theme'); if (s) root.dataset.theme = s; } catch (e) {}
+  b.addEventListener('click', () => {
+    const dark = root.dataset.theme
+      ? root.dataset.theme === 'dark'
+      : matchMedia('(prefers-color-scheme: dark)').matches;
+    root.dataset.theme = dark ? 'light' : 'dark';
+    try { localStorage.setItem('dchosa-theme', root.dataset.theme); } catch (e) {}
+  });
+})();
+</script>
+
+</body>
+</html>

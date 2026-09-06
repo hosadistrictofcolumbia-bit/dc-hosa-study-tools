@@ -1,0 +1,1218 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Epidemiology Study Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --navy:#0D1B2A; --navy-mid:#162438; --navy-hi:#1E3350;
+  --orange:#E8821A; --orange-dim:#A85C10;
+  --teal:#1A8A8A; --teal-dim:#125F5F;
+  --gold:#C9991A; --purple:#8C50C8; --purple-lt:#C07EF0;
+  --red:#D9544D;
+  --ink:#0D1B2A; --ink-2:#3E5068; --ink-3:#63758C;
+  --bg:#EEF1F5; --surface:#FFFFFF; --surface-2:#F5F7FA;
+  --line:#D3DBE5; --line-soft:#E4EAF1;
+  --focus:#E8821A;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --cond:'Barlow Condensed','Inter Tight',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','SFMono-Regular',Menlo,Consolas,monospace;
+  --r:10px; --maxw:680px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ink:#F4F6F8; --ink-2:#B6C4D6; --ink-3:#8A9BB0;
+    --bg:#0D1B2A; --surface:#162438; --surface-2:#1B2C44;
+    --line:#2A3F5C; --line-soft:#22344E;
+    --orange:#F5941F; --teal:#25A5A5; --gold:#DCAB27; --purple-lt:#C994F5;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#F4F6F8; --ink-2:#B6C4D6; --ink-3:#8A9BB0;
+  --bg:#0D1B2A; --surface:#162438; --surface-2:#1B2C44;
+  --line:#2A3F5C; --line-soft:#22344E;
+  --orange:#F5941F; --teal:#25A5A5; --gold:#DCAB27; --purple-lt:#C994F5;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 18px 96px}
+h1,h2,h3,h4{font-family:var(--cond);text-wrap:balance;margin:0;letter-spacing:.01em}
+h1{font-size:2.35rem;line-height:1.05;font-weight:700}
+h2{font-size:1.65rem;line-height:1.12;font-weight:600}
+h3{font-size:1.2rem;font-weight:600}
+h4{font-size:1.02rem;font-weight:600;letter-spacing:.02em}
+p{margin:0 0 .9em}
+a{color:var(--orange)}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:2.5px solid var(--focus);outline-offset:2px;border-radius:4px}
+.eyebrow{font-family:var(--cond);text-transform:uppercase;letter-spacing:.14em;
+  font-size:.78rem;font-weight:600;color:var(--ink-3)}
+
+/* ---------- morpheme chips: the subject's atoms ---------- */
+.wp{font-family:var(--mono);font-size:.94em;font-weight:500;white-space:nowrap;
+  padding:.06em .34em;border-radius:4px;background:var(--surface-2);
+  border:1px solid var(--line-soft);color:var(--ink)}
+.wp.pre{border-left:3px solid var(--orange)}
+.wp.suf{border-right:3px solid var(--teal)}
+.wp.cf{border-bottom:3px solid var(--gold)}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:40;background:var(--bg);
+  border-bottom:1px solid var(--line);}
+.topbar-in{max-width:var(--maxw);margin:0 auto;padding:10px 18px;
+  display:flex;align-items:center;gap:12px}
+.brandmark{font-family:var(--cond);font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;font-size:.9rem;color:var(--ink-2);
+  display:flex;align-items:center;gap:7px}
+.brandmark .dot{width:9px;height:9px;border-radius:2px;background:var(--orange);flex:none}
+.topbar .sp{flex:1}
+.iconbtn{background:none;border:1px solid var(--line);color:var(--ink-2);
+  border-radius:8px;width:34px;height:34px;display:grid;place-items:center;line-height:0}
+.iconbtn:hover{border-color:var(--orange);color:var(--orange)}
+.backbtn{background:none;border:none;color:var(--ink-2);padding:6px 0;
+  font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.82rem;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.backbtn:hover{color:var(--orange)}
+
+/* ---------- screens ---------- */
+.screen{display:none}
+.screen.active{display:block;animation:fade .22s ease}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .screen.active{animation:none}
+  *{transition:none!important}
+}
+
+/* ---------- hero ---------- */
+.hero{padding:30px 0 22px;border-bottom:1px solid var(--line)}
+.hero .kicker{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.tag{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.74rem;font-weight:600;padding:3px 9px;border-radius:999px;
+  border:1px solid var(--line);color:var(--ink-2);background:var(--surface)}
+.tag.hot{border-color:var(--orange);color:var(--orange)}
+.hero h1{margin-bottom:8px}
+.hero .sub{color:var(--ink-2);font-size:1.02rem;margin:0}
+
+/* the term-construction display: pre | root | suf */
+.termbuild{display:flex;align-items:stretch;margin:22px 0 4px;
+  border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+  background:var(--surface);font-family:var(--mono)}
+.termbuild div{flex:1;padding:11px 8px;text-align:center;min-width:0}
+.termbuild .lbl{display:block;font-family:var(--cond);font-size:.66rem;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);margin-bottom:3px}
+.termbuild .val{font-size:.98rem;font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.termbuild .p1{border-bottom:3px solid var(--orange)}
+.termbuild .p2{border-bottom:3px solid var(--gold);border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.termbuild .p3{border-bottom:3px solid var(--teal)}
+.termbuild-cap{font-size:.85rem;color:var(--ink-3);margin:8px 0 0;text-align:center}
+
+/* ---------- stat strip ---------- */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 10px}
+.stat .n{font-family:var(--cond);font-size:1.75rem;font-weight:700;line-height:1;
+  font-variant-numeric:tabular-nums;color:var(--orange)}
+.stat .l{font-size:.74rem;color:var(--ink-3);margin-top:4px;line-height:1.3}
+
+/* ---------- action cards ---------- */
+.actions{display:grid;gap:11px;margin:22px 0}
+.act{display:flex;align-items:center;gap:14px;text-align:left;width:100%;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:15px 16px;color:var(--ink);transition:border-color .15s,transform .15s}
+.act:hover{border-color:var(--orange);transform:translateX(2px)}
+.act .ic{width:38px;height:38px;flex:none;border-radius:8px;display:grid;place-items:center;
+  font-family:var(--cond);font-weight:700;font-size:1.1rem;color:#0D1B2A}
+.act>span:not(.ic):not(.ar){display:flex;flex-direction:column;gap:3px;min-width:0}
+.act .t{display:block;font-family:var(--cond);font-size:1.22rem;font-weight:600;line-height:1.15}
+.act .d{display:block;font-size:.84rem;color:var(--ink-3);line-height:1.35}
+.act .ar{margin-left:auto;color:var(--ink-3);font-size:1.2rem;flex:none}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin:18px 0 0;
+  overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:none;border:none;border-bottom:2.5px solid transparent;
+  padding:9px 13px;color:var(--ink-3);font-family:var(--cond);font-weight:600;
+  font-size:1rem;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--orange);border-bottom-color:var(--orange)}
+.tabpanel{display:none;padding-top:20px}
+.tabpanel.active{display:block}
+
+/* ---------- study guide ---------- */
+.sec{border:1px solid var(--line);border-radius:var(--r);margin-bottom:11px;
+  background:var(--surface);overflow:hidden}
+.sec-h{width:100%;display:flex;align-items:center;gap:12px;padding:14px 15px;
+  background:none;border:none;text-align:left;color:var(--ink)}
+.sec-h:hover{background:var(--surface-2)}
+.sec-w{font-family:var(--cond);font-size:.9rem;font-weight:700;color:var(--orange);
+  font-variant-numeric:tabular-nums;flex:none;min-width:34px}
+.sec-t{font-family:var(--cond);font-size:1.16rem;font-weight:600;line-height:1.2;flex:1}
+.sec-c{color:var(--ink-3);font-size:1.1rem;flex:none;transition:transform .2s}
+.sec.open .sec-c{transform:rotate(45deg)}
+.sec-body{display:none;padding:0 15px 16px;border-top:1px solid var(--line-soft)}
+.sec.open .sec-body{display:block}
+
+.layer{margin-top:16px;border-left:3px solid var(--line);padding-left:14px}
+.layer-h{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.79rem;font-weight:700;margin-bottom:9px}
+.layer.narr{border-left-color:var(--teal)} .layer.narr .layer-h{color:var(--teal)}
+.layer.deep{border-left-color:var(--orange)} .layer.deep .layer-h{color:var(--orange)}
+.layer.qref{border-left-color:var(--gold)} .layer.qref .layer-h{color:var(--gold)}
+.layer.note{border-left-color:var(--purple-lt)} .layer.note .layer-h{color:var(--purple-lt)}
+.layer p{font-size:.95rem}
+.layer ul{margin:.4em 0 .9em;padding-left:1.15em}
+.layer li{font-size:.94rem;margin-bottom:.45em}
+.layer h4{margin:1.1em 0 .4em;color:var(--ink)}
+.qr{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft);
+  border:1px solid var(--line-soft);border-radius:8px;overflow:hidden}
+@media(max-width:520px){.qr{grid-template-columns:1fr}}
+.qr>div{background:var(--surface);padding:8px 10px}
+.qr-term{font-family:var(--mono);font-size:.87rem;font-weight:600;color:var(--gold);
+  display:block;margin-bottom:2px}
+.qr-def{font-size:.85rem;color:var(--ink-2);line-height:1.4}
+.notes-block{background:color-mix(in srgb,var(--purple-lt) 9%,var(--surface));
+  border-radius:8px;padding:12px 13px}
+.notes-block p:last-child{margin-bottom:0}
+.trap{color:var(--red);font-weight:600}
+.sec-practice{margin-top:16px;width:100%;background:var(--surface-2);
+  border:1px dashed var(--line);border-radius:8px;padding:10px;color:var(--orange);
+  font-family:var(--cond);text-transform:uppercase;letter-spacing:.09em;
+  font-weight:600;font-size:.87rem}
+.sec-practice:hover{border-color:var(--orange);border-style:solid}
+
+/* ---------- quiz ---------- */
+.qbar{display:flex;align-items:center;gap:12px;margin:16px 0 4px}
+.qcount{font-family:var(--cond);font-weight:600;font-size:.9rem;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.qtrack{flex:1;height:5px;background:var(--line-soft);border-radius:3px;overflow:hidden}
+.qfill{height:100%;background:var(--orange);border-radius:3px;transition:width .3s}
+.qtopic{margin:14px 0 0}
+.qstem{font-size:1.14rem;line-height:1.5;margin:9px 0 18px;font-weight:500}
+.choices{display:grid;gap:9px}
+.ch{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;
+  background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r);
+  padding:13px 14px;color:var(--ink);line-height:1.45;transition:border-color .14s}
+.ch:hover:not(:disabled){border-color:var(--orange)}
+.ch:disabled{cursor:default}
+.ch .k{font-family:var(--cond);font-weight:700;color:var(--ink-3);flex:none;
+  width:20px;font-size:1.02rem}
+.ch.right{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 12%,var(--surface))}
+.ch.right .k{color:var(--teal)}
+.ch.wrong{border-color:var(--red);background:color-mix(in srgb,var(--red) 10%,var(--surface))}
+.ch.wrong .k{color:var(--red)}
+.expl{margin-top:16px;border-radius:var(--r);padding:14px;
+  border:1px solid var(--line);background:var(--surface-2);display:none}
+.expl.show{display:block}
+.expl .v{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.8rem;font-weight:700;margin-bottom:6px}
+.expl.ok .v{color:var(--teal)} .expl.no .v{color:var(--red)}
+.expl p{font-size:.93rem;margin:0}
+.expl .src{margin-top:9px;font-size:.79rem;color:var(--ink-3);font-family:var(--mono)}
+.btn{display:block;width:100%;background:var(--orange);color:#0D1B2A;border:none;
+  border-radius:var(--r);padding:14px;font-family:var(--cond);font-weight:700;
+  font-size:1.1rem;letter-spacing:.06em;text-transform:uppercase;margin-top:16px}
+.btn:hover{background:var(--orange-dim);color:#fff}
+.btn.ghost{background:none;border:1.5px solid var(--line);color:var(--ink-2)}
+.btn.ghost:hover{border-color:var(--orange);color:var(--orange);background:none}
+
+/* ---------- results ---------- */
+.ring{display:block;margin:22px auto 6px}
+.ring-n{font-family:var(--cond);font-size:2.6rem;font-weight:700;
+  fill:var(--ink);font-variant-numeric:tabular-nums}
+.ring-l{font-family:var(--sans);font-size:.72rem;fill:var(--ink-3)}
+.res-msg{text-align:center;color:var(--ink-2);margin-bottom:22px}
+.brk{display:grid;gap:7px;margin:18px 0}
+.brk-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;
+  padding:9px 12px;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+.brk-t{font-size:.88rem;line-height:1.3}
+.brk-s{font-family:var(--cond);font-weight:700;font-variant-numeric:tabular-nums;
+  font-size:.95rem;white-space:nowrap}
+
+/* ---------- resources ---------- */
+.rcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:15px 16px;margin-bottom:11px}
+.rcard h3{margin-bottom:3px}
+.rcard .meta{font-size:.83rem;color:var(--ink-3);margin-bottom:10px}
+.rlinks{display:grid;gap:7px}
+.rlink{display:flex;gap:9px;align-items:baseline;font-size:.89rem;
+  padding:7px 9px;background:var(--surface-2);border-radius:7px;text-decoration:none;color:var(--ink)}
+.rlink:hover{background:color-mix(in srgb,var(--orange) 12%,var(--surface-2))}
+.rlink .b{font-family:var(--cond);font-size:.66rem;text-transform:uppercase;
+  letter-spacing:.1em;font-weight:700;padding:2px 6px;border-radius:4px;flex:none;
+  background:var(--line-soft);color:var(--ink-3)}
+.rlink .b.core{background:var(--orange);color:#0D1B2A}
+.rlink .b.book{background:var(--teal);color:#0D1B2A}
+.rlink .b.topic{background:var(--gold);color:#0D1B2A}
+.rlink span:last-child{flex:1}
+
+/* ---------- misc ---------- */
+.callout{border-left:3px solid var(--orange);background:var(--surface);
+  padding:12px 14px;border-radius:0 8px 8px 0;margin:16px 0;font-size:.92rem}
+.callout strong{color:var(--orange)}
+.plan{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);
+  border-radius:8px;overflow:hidden;margin:14px 0}
+.plan-r{display:grid;grid-template-columns:1fr auto;background:var(--surface);
+  padding:8px 12px;font-size:.89rem;align-items:center}
+.plan-r.hd{background:var(--surface-2);font-family:var(--cond);text-transform:uppercase;
+  letter-spacing:.09em;font-size:.75rem;font-weight:700;color:var(--ink-3)}
+.plan-w{font-family:var(--cond);font-weight:700;font-variant-numeric:tabular-nums;color:var(--orange)}
+.foot{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--ink-3)}
+.foot p{margin-bottom:.5em}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <span class="brandmark"><span class="dot"></span>DC HOSA</span>
+    <span class="sp"></span>
+    <button class="iconbtn" id="themeBtn" aria-label="Switch theme" title="Switch theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<section id="home" class="screen active">
+  <div class="hero">
+    <div class="kicker">
+      <span class="tag hot">2026&ndash;2027</span>
+      <span class="tag">Emergency Preparedness</span>
+      <span class="tag">Individual</span>
+      <span class="tag">Secondary &amp; Postsecondary</span>
+    </div>
+    <h1>Epidemiology</h1>
+    <p class="sub">A 50-question test in 60 minutes with an essay tiebreaker. Half of it is the CDC MMWR — the actual reports, not the theory.</p>
+
+    <div class="termbuild" aria-hidden="true">
+      <div class="p1"><span class="lbl">Person</span><span class="val">who</span></div>
+      <div class="p2"><span class="lbl">Place</span><span class="val">where</span></div>
+      <div class="p3"><span class="lbl">Time</span><span class="val">when</span></div>
+    </div>
+    <p class="termbuild-cap">Descriptive epidemiology in three words. Every outbreak investigation and every MMWR report you will read is organized around them.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="stQ">0</div><div class="l">practice questions</div></div>
+    <div class="stat"><div class="n">3</div><div class="l">test-plan topics</div></div>
+    <div class="stat"><div class="n" id="stBest">&mdash;</div><div class="l">your best score</div></div>
+  </div>
+
+  <div class="actions">
+    <button class="act" onclick="startQuiz('weighted')">
+      <span class="ic" style="background:var(--orange)">50</span>
+      <span><span class="t">Simulate the Test</span><span class="d">50 questions weighted exactly to the official 26-27 test plan</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="go('study')">
+      <span class="ic" style="background:var(--teal)">SG</span>
+      <span><span class="t">Study Guide</span><span class="d">All 3 topics, four layers deep &mdash; read to actually know it</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="startQuiz('all')">
+      <span class="ic" style="background:var(--gold)">&infin;</span>
+      <span><span class="t">Full Question Bank</span><span class="d">All <span id="stQ2">0</span> questions, shuffled &mdash; the long grind</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="go('resources')">
+      <span class="ic" style="background:var(--purple-lt)">R</span>
+      <span><span class="t">Official References</span><span class="d">The exact books HOSA writes the test from</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+  </div>
+
+  <div class="callout"><strong>Read this before anything else.</strong> <strong>Half of this test is the CDC Morbidity and Mortality Weekly Report</strong> &mdash; twenty-five questions on real reports published in the window the guideline points to, not on textbook epidemiology. You cannot cram that from a study guide alone. Read MMWR weekly from now until your conference, learn the anatomy of a report, and practise pulling the case definition, the study design, the key rate and the recommendation out of each one. This tool teaches you how, then works through the actual reports.</div>
+
+  <h2 style="margin-top:26px">The official 26-27 test plan</h2>
+  <div class="plan" id="planTable"></div>
+  <p style="font-size:.85rem;color:var(--ink-3)">Simulate the Test draws questions in exactly these proportions, so a practice run will feel MMWR-heavy. That is the exam, not the tool.</p>
+
+  <h2 style="margin-top:26px">How ties are broken</h2>
+  <p>In the event of a tie, the essay is judged. It is administered with the test, so budget time for it inside your 60 minutes &mdash; and at ILC there are no verbal time warnings.</p>
+
+  <div class="foot">
+    <p><strong>Epidemiology Study Tool</strong> &middot; DC HOSA &middot; 2026&ndash;2027 season &middot; "Redefine the Standard"</p>
+    <p>Built from the official 2026-2027 HOSA competitive event guideline. Practice questions are original and written for this tool. No actual exam question is reproduced here.</p>
+  </div>
+</section>
+
+<section id="study" class="screen">
+  <button class="backbtn" onclick="go('home')">&larr; Back</button>
+  <h1 style="margin-top:8px">Study Guide</h1>
+  <p class="sub" style="color:var(--ink-2)">3 topics, four layers each. Read the narrative to understand it, the deep dive to outcompete, the quick reference to drill, and the study notes to stop losing points to traps.</p>
+  <div class="callout" style="border-left-color:var(--teal)">
+    <strong style="color:var(--teal)">How to use this.</strong> Don't read straight through. Open a topic, read the narrative once, then hit <em>Practice this topic</em> at the bottom of the section. Miss something? Come back to the deep dive. That loop beats re-reading every time.
+  </div>
+  <div id="guideList" style="margin-top:18px"></div>
+</section>
+
+<section id="resources" class="screen">
+  <button class="backbtn" onclick="go('home')">&larr; Back</button>
+  <h1 style="margin-top:8px">Official References</h1>
+  <p class="sub" style="color:var(--ink-2)">These are the sources listed in the 2026-2027 guideline. Test items are written from them and nowhere else.</p>
+
+  <div class="rcard" style="border-color:var(--orange)">
+    <h3>CDC &mdash; Morbidity and Mortality Weekly Report</h3>
+    <p class="meta">cdc.gov/mmwr &middot; free &middot; <strong style="color:var(--orange)">50 percent of the test</strong></p>
+    <p style="font-size:.91rem">Published every Thursday. Full reports, Notes from the Field, Surveillance Summaries and Recommendations and Reports. Subscribe to the email and read one report a week between now and your conference &mdash; that habit is worth more than any other preparation for this event.</p>
+    <div class="rlinks">
+      <a class="rlink" href="https://www.cdc.gov/mmwr/index.html" target="_blank" rel="noopener"><span class="b core">Core</span><span>MMWR &mdash; current issues and archive</span></a>
+      <a class="rlink" href="https://www.cdc.gov/mmwr/mmwrsubscribe.html" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>Subscribe to the weekly MMWR email</span></a>
+    </div>
+  </div>
+  <div class="rcard">
+    <h3>Public Health 101 Series</h3>
+    <p class="meta">CDC &middot; free online</p>
+    <p style="font-size:.91rem">The named source for foundational concepts &mdash; what public health is, how surveillance works, and the vocabulary the first 30 percent of the test uses.</p>
+    <div class="rlinks">
+      <a class="rlink" href="https://www.cdc.gov/training-publichealth101/php/index.html" target="_blank" rel="noopener"><span class="b core">Core</span><span>CDC Public Health 101 Series</span></a>
+    </div>
+  </div>
+  <div class="rcard">
+    <h3>ActivEpi</h3>
+    <p class="meta">free online course &middot; the quantitative source</p>
+    <p style="font-size:.91rem">Where the study-design and measures-of-association material comes from &mdash; incidence and prevalence, relative risk and odds ratio, bias and confounding. This is the one to work through if calculations are what cost you points.</p>
+    <div class="rlinks">
+      <a class="rlink" href="https://sites.google.com/view/activepi/home" target="_blank" rel="noopener"><span class="b core">Core</span><span>ActivEpi &mdash; free online epidemiology course</span></a>
+      <a class="rlink" href="https://www.atsdr.cdc.gov/emes/index.html" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>Environmental Medicine Education Resources &mdash; ATSDR</span></a>
+    </div>
+  </div>
+
+  <div class="rcard" style="border-color:var(--purple-lt)">
+    <h3>HOSA official guidelines</h3>
+    <p class="meta">hosa.org &middot; read the actual rules before your first conference</p>
+    <div class="rlinks">
+      <a class="rlink" href="https://hosa.org/guidelines/" target="_blank" rel="noopener"><span class="b core">Core</span><span>Competitive event guidelines &mdash; download the Epidemiology PDF</span></a>
+      <a class="rlink" href="https://hosa.org/competitive-events/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>Competitive events overview and appendices</span></a>
+      <a class="rlink" href="https://hosa.org/scholarships/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>HOSA scholarships &mdash; applications open January 1, 2027</span></a>
+    </div>
+    <p style="font-size:.88rem;margin-top:12px;color:var(--ink-2)"><strong>Bring to the testing room:</strong> photo ID, two #2 wooden pencils with erasers (not mechanical), and optional neon foam earplugs &mdash; not earbuds. Business attire or official HOSA uniform earns bonus points. There are no verbal time announcements at ILC; you watch your own clock.</p>
+  </div>
+</section>
+
+<section id="quiz" class="screen">
+  <button class="backbtn" onclick="quitQuiz()">&larr; End session</button>
+  <div class="qbar">
+    <span class="qcount" id="qCount">1 / 50</span>
+    <span class="qtrack"><span class="qfill" id="qFill" style="width:0%"></span></span>
+    <span class="qcount" id="qScore">0 &#10003;</span>
+  </div>
+  <div class="qtopic"><span class="eyebrow" id="qTopic">Topic</span></div>
+  <p class="qstem" id="qStem">Question</p>
+  <div class="choices" id="qChoices"></div>
+  <div class="expl" id="qExpl"><div class="v" id="qVerdict"></div><p id="qExplText"></p><div class="src" id="qSrc"></div></div>
+  <button class="btn" id="qNext" style="display:none" onclick="nextQ()">Next question</button>
+</section>
+
+<section id="results" class="screen">
+  <h1 style="margin-top:22px;text-align:center">Session complete</h1>
+  <svg class="ring" width="168" height="168" viewBox="0 0 168 168" role="img" aria-labelledby="ringLbl">
+    <title id="ringLbl">Score ring</title>
+    <circle cx="84" cy="84" r="70" fill="none" stroke="var(--line)" stroke-width="12"/>
+    <circle id="ringArc" cx="84" cy="84" r="70" fill="none" stroke="var(--orange)" stroke-width="12"
+            stroke-linecap="round" stroke-dasharray="439.8" stroke-dashoffset="439.8"
+            transform="rotate(-90 84 84)" style="transition:stroke-dashoffset .8s ease"/>
+    <text class="ring-n" id="ringPct" x="84" y="86" text-anchor="middle">0%</text>
+    <text class="ring-l" id="ringFrac" x="84" y="106" text-anchor="middle">0 of 0</text>
+  </svg>
+  <p class="res-msg" id="resMsg"></p>
+  <h3 style="margin-bottom:8px">Where you stand by topic</h3>
+  <div class="brk" id="resBrk"></div>
+  <button class="btn" onclick="repeatQuiz()">Run it again</button>
+  <button class="btn ghost" onclick="go('study')">Back to the study guide</button>
+  <button class="btn ghost" onclick="go('home')">Home</button>
+</section>
+
+</div>
+
+<script>
+/* ============================================================
+   DC HOSA — Epidemiology Study Tool
+   Test plan and references: official 2026-2027 HOSA guideline.
+   All practice questions are original.
+   ============================================================ */
+
+const TOPICS = [
+  {
+    "n": "Introduction to Epidemiology",
+    "w": 30,
+    "c": "var(--orange)"
+  },
+  {
+    "n": "World and Government Response to Infectious Diseases",
+    "w": 20,
+    "c": "var(--teal)"
+  },
+  {
+    "n": "CDC Morbidity and Mortality Weekly Report",
+    "w": 50,
+    "c": "var(--purple-lt)"
+  }
+];
+
+const GUIDE = [];
+
+// Epidemiology — Study Guide content
+// Test plan (2026-2027): Introduction to Epidemiology 30% |
+// World and Government Response to Infectious Diseases 20% |
+// CDC: Morbidity and Mortality Weekly Report 50%
+// Official references (all free online): PH 101 Series, ActivEpi,
+// Environmental Medicine Education Resources, CDC MMWR.
+
+GUIDE.push({t:0,
+narr:`<p><strong>Epidemiology</strong> is the study of the <strong>distribution</strong> and <strong>determinants</strong> of health-related states or events in <strong>specified populations</strong>, and the <strong>application</strong> of that study to the control of health problems. Every clause in that sentence is doing work. Distribution means pattern — the occurrence of health events by <strong>time, place, and person</strong>. Determinants means the causes and other factors that influence occurrence. Specified population means epidemiologists count groups, not patients; the unit that matters is a denominator, not an individual chart. And application is the reason the field exists: an epidemiologist who describes an outbreak beautifully but never changes anything has not finished the job.</p>
+
+<p>The discipline organizes itself around five questions, usually taught as the <strong>five W's</strong>. <em>What</em> is the diagnosis or health event — this is the <strong>case definition</strong>. <em>Who</em> is affected — person. <em>Where</em> — place. <em>When</em> — time. And <em>why/how</em> — causes, risk factors, and modes of transmission. The first four belong to <strong>descriptive epidemiology</strong>, which characterizes an outbreak or a health problem and generates hypotheses. The fifth belongs to <strong>analytic epidemiology</strong>, which tests hypotheses by <strong>quantifying the association between exposures and outcomes</strong>. Descriptive work has no comparison group. Analytic work always does. If you can remember only one structural fact about this event, make it that one.</p>
+
+<p>The founding demonstration is <strong>John Snow</strong>, who in 1854 traced a <strong>cholera</strong> outbreak in <strong>London</strong> to the Broad Street pump. Snow had no microscope image of <em>Vibrio cholerae</em> and no germ theory to lean on; he had a <strong>spot map</strong>, a list of addresses, and the discipline to compare households served by one water company against households served by another. That comparison — exposed versus unexposed, with counts on both sides — is still the whole machinery of the field. Later landmarks work the same way: the first epidemiologic studies of cancer linked lung cancer rates to <strong>tobacco use</strong>, iodine-deficiency findings led to iodized salt for <strong>endemic goiter</strong>, and one of the first recognized epidemics caused by environmental pollution was <strong>methyl mercury poisoning</strong>.</p>
+
+<p>Measuring disease means choosing the right fraction. <strong>Incidence</strong> counts <em>new</em> cases arising in a period; <strong>prevalence</strong> counts <em>all existing</em> cases at a point in time. Both divide by the <strong>population at risk</strong>. An <strong>attack rate</strong> is simply an incidence proportion used over the short, defined window of an outbreak — the ill divided by the exposed. A <strong>case fatality rate</strong> divides deaths by diagnosed cases and describes how severe the illness is once you have it, which is a different question from a <strong>mortality rate</strong>, which divides deaths by the whole population. Students lose more points on this event by grabbing the wrong denominator than by any other single mistake.</p>
+
+<p>Study designs are tools, and each is good at something and bad at something else. A <strong>cross-sectional</strong> study is a survey: it measures exposure and outcome at the same moment, so it is fast and cheap and it can never establish which came first. A <strong>case-control</strong> study starts with people who already have the disease, looks backward for exposure, needs relatively few subjects, and is the workhorse for <strong>rare diseases</strong> and for outbreaks where the population is not well defined and speed matters. A <strong>cohort</strong> study starts with exposure and follows people forward, which is what lets it establish the <strong>time relationship</strong> and calculate <strong>incidence</strong> and <strong>relative risk</strong>. An <strong>ecological</strong> study uses <strong>populations</strong> as its unit of observation. <strong>Experimental</strong> designs — randomized controlled trials, field trials, community trials — are the only ones in which the investigator assigns the exposure.</p>
+
+<p>Finally, an association is not a cause. Before you believe an exposure caused an outcome, you have to rule out <strong>chance</strong> (statistics), <strong>bias</strong> (systematic error you built into the study), <strong>confounding</strong> (a third variable doing the work), and reverse causation. The <strong>null hypothesis</strong> in epidemiology is that exposure and disease are unrelated, which is the same as saying the relative risk or odds ratio equals <strong>1</strong>. When you can rule out those alternatives, the <strong>Bradford Hill</strong> considerations — above all <strong>temporality</strong>, and then strength, consistency, biological gradient, and the rest — help you argue causation. All of this feeds <strong>surveillance</strong>: the ongoing, systematic collection, analysis, interpretation, and dissemination of health data used to guide public health action.</p>`,
+deep:`<h4>Frequency measures and the denominator problem</h4>
+<ul>
+<li><strong>Incidence proportion (cumulative incidence, risk)</strong> = new cases during a period divided by the population at risk at the start of the period.</li>
+<li><strong>Incidence rate</strong> uses person-time in the denominator, so people who are followed for different lengths of time contribute proportionally.</li>
+<li><strong>Prevalence</strong> = all existing cases (new plus old) divided by the total population at that moment. Point prevalence is at an instant; period prevalence spans an interval.</li>
+<li>Relationship: <strong>prevalence is approximately incidence multiplied by average duration</strong>. A disease that kills or cures fast stays low-prevalence even when incidence is high.</li>
+<li><strong>Attack rate</strong> = ill persons divided by the persons at risk (usually the exposed), expressed as a percentage, over the limited period of an outbreak. It is an incidence proportion wearing outbreak clothes.</li>
+<li><strong>Secondary attack rate</strong> = new cases among contacts of primary cases divided by the total susceptible contacts. It measures person-to-person spread, not the original exposure.</li>
+<li><strong>Case fatality rate</strong> = deaths from the disease divided by diagnosed cases. <strong>Mortality rate</strong> = deaths divided by the whole population over a period.</li>
+<li><strong>Crude</strong> rates use the whole population; <strong>specific</strong> rates are restricted (age-specific, sex-specific); <strong>adjusted</strong> rates are mathematically standardized so two populations with different age structures can be compared.</li>
+<li>Ratio, proportion, rate: a ratio does not require the numerator to be part of the denominator; a proportion does; a rate incorporates time.</li>
+<li>Morbidity data are usually richer than mortality data — the exception is a disease that is nearly always fatal, where deaths capture nearly every case.</li>
+</ul>
+
+<h4>The standard 2x2 table and measures of association</h4>
+<ul>
+<li>Rows are exposure, columns are disease. <strong>a</strong> = exposed with disease, <strong>b</strong> = exposed without disease, <strong>c</strong> = unexposed with disease, <strong>d</strong> = unexposed without disease.</li>
+<li><strong>a + b</strong> = everyone exposed. <strong>c + d</strong> = everyone unexposed. <strong>a + c</strong> = everyone with the disease, exposed or not. <strong>b + d</strong> = everyone without the disease, exposed or not. <strong>N</strong> = the total sample size.</li>
+<li>Risk in the exposed = a/(a+b). Risk in the unexposed = c/(c+d).</li>
+<li><strong>Relative risk (risk ratio)</strong> = [a/(a+b)] divided by [c/(c+d)]. It requires knowing who was at risk, so it belongs to cohort and experimental designs.</li>
+<li><strong>Odds ratio</strong> = (a x d) divided by (b x c), the cross-product. It works when sampling started from disease status, which is why the case-control study reports it.</li>
+<li>Interpretation: 1.0 means <strong>no association</strong>; greater than 1.0 means a positive association (risk factor); less than 1.0 means protective.</li>
+<li><strong>Risk difference (attributable risk)</strong> = risk in exposed minus risk in unexposed. It is the <strong>absolute</strong> comparison, reported in cases per population, not as a ratio.</li>
+<li><strong>Attributable risk percent</strong> = (risk in exposed minus risk in unexposed) divided by risk in exposed, times 100 — the proportion of disease among the exposed that can be credited to the exposure.</li>
+<li><strong>Population attributable risk</strong> extends that to the whole population and therefore depends on how common the exposure is, not only on how dangerous it is.</li>
+<li>When the outcome is rare, the odds ratio closely approximates the relative risk. When the outcome is common, the odds ratio exaggerates it.</li>
+</ul>
+
+<h4>Study designs, head to head</h4>
+<ul>
+<li><strong>Case report and case series</strong>: descriptive, no comparison group, valuable only for raising a hypothesis or flagging something new.</li>
+<li><strong>Cross-sectional</strong>: a survey. Measures prevalence at a point in time without regard to duration. Cannot establish temporality, therefore cannot establish cause and effect.</li>
+<li><strong>Ecological</strong>: the unit of study is the <strong>population or group</strong>, not the person. Cheap and fast using existing aggregate data; vulnerable to the <strong>ecological fallacy</strong>, where a group-level association is wrongly applied to individuals.</li>
+<li><strong>Case-control</strong>: starts with disease status and looks backward for exposure. Strengths — rare diseases, long latency, few subjects needed, inexpensive, fast when a population is poorly defined. Weaknesses — high risk of <strong>selection and recall bias</strong>, cannot compute incidence, poor for rare exposures.</li>
+<li><strong>Cohort</strong>: starts with exposure status and follows forward. Strengths — establishes the time relationship, handles rare exposures and multiple outcomes, yields incidence and relative risk. Weaknesses — expensive, long, loss to follow-up, poor for rare diseases.</li>
+<li>A <strong>retrospective (historical) cohort</strong> still reasons exposure to outcome; it simply uses records that were already collected. It is not a case-control study.</li>
+<li><strong>Experimental epidemiology</strong> covers randomized controlled trials, field trials, and community trials. The investigator assigns the exposure.</li>
+<li>Unit of study: the <strong>individual</strong> in a randomized controlled trial, the <strong>community</strong> in a community trial, the <strong>population</strong> in an ecological study.</li>
+<li>Field trials enroll people who do not yet have the disease and test prevention — vaccine efficacy trials are the classic example of an experimental study a public health agency would run.</li>
+<li>Molecular epidemiology measures exposure to specific substances and the early biological responses to them, using biomarkers rather than questionnaires.</li>
+</ul>
+
+<h4>Screening test validity and predictive value</h4>
+<ul>
+<li><strong>Sensitivity</strong> = true positives / (true positives + false negatives). Among people who truly have the disease, the proportion the test catches.</li>
+<li><strong>Specificity</strong> = true negatives / (true negatives + false positives). Among people who truly do not have it, the proportion the test clears.</li>
+<li><strong>Positive predictive value</strong> = true positives / all positives. Given a positive result, the probability the person really has the disease.</li>
+<li><strong>Negative predictive value</strong> = true negatives / all negatives.</li>
+<li>Sensitivity and specificity are properties of the test. <strong>Predictive values depend on prevalence.</strong> Screen a low-prevalence population and positive predictive value collapses even though the test has not changed.</li>
+<li>A highly <strong>sensitive</strong> test is best for ruling disease <em>out</em> when negative; a highly <strong>specific</strong> test is best for ruling it <em>in</em> when positive.</li>
+<li><strong>Reliability</strong> is reproducibility — the same answer on repeat testing. <strong>Validity</strong> is accuracy — the correct answer. A test can be perfectly reliable and consistently wrong.</li>
+<li>A screening test should be inexpensive, simple to apply, acceptable to the public, safe, and <strong>dependable</strong>. Screening is not diagnosis; a positive screen leads to a confirmatory test.</li>
+<li><strong>Lead-time bias</strong> makes screened patients appear to survive longer merely because diagnosis came earlier; <strong>length bias</strong> makes screening look better because slow-growing disease is more likely to be caught.</li>
+</ul>
+
+<h4>Bias, confounding, and testing the null hypothesis</h4>
+<ul>
+<li><strong>Bias</strong> is systematic error introduced by design or conduct. Adding more subjects does not fix it.</li>
+<li><strong>Selection bias</strong>: the way subjects entered the study is related to both exposure and outcome. Restricting a survey to institutions chosen on a characteristic tied to the outcome makes the result biased.</li>
+<li><strong>Recall bias</strong>: people with disease remember and report past exposures differently than healthy comparison subjects. It is the signature weakness of case-control studies.</li>
+<li><strong>Misclassification</strong>: non-differential misclassification usually pushes an estimate toward the null; differential misclassification can push it either way.</li>
+<li><strong>Confounding</strong>: a third variable that is associated with the exposure, is an independent risk factor for the outcome, and is not on the causal pathway between them.</li>
+<li>Confounding is controlled by <strong>randomization</strong> and <strong>restriction</strong> in the design stage, and by <strong>matching, stratification, and multivariable adjustment</strong> in the analysis stage.</li>
+<li><strong>Effect modification</strong> is not an error. The association genuinely differs across strata, and the honest report presents the strata separately rather than averaging them away.</li>
+<li>The <strong>null hypothesis</strong> states that exposure is not related to disease — relative risk or odds ratio equals 1. The <strong>alternative hypothesis</strong> states that exposure is associated with disease.</li>
+<li>A 95% confidence interval that excludes 1.0 corresponds to statistical significance at p less than 0.05. A wide interval signals an imprecise estimate, usually from a small sample.</li>
+<li><strong>Convenience sampling</strong> is non-probability sampling based on availability and opportunity. It is quick and it threatens external validity (generalizability).</li>
+</ul>
+
+<h4>Causation, disease models, and surveillance</h4>
+<ul>
+<li>The <strong>epidemiologic triad</strong> — agent, host, environment — with a vector or vehicle carrying the agent, models infectious disease occurrence well.</li>
+<li><strong>Rothman's causal pie</strong>, proposed in 1976, models non-infectious disease occurrence: a <strong>sufficient cause</strong> is a complete pie assembled from <strong>component causes</strong>; a <strong>necessary cause</strong> appears in every pie.</li>
+<li><strong>Bradford Hill considerations</strong>: strength, consistency, specificity, <strong>temporality</strong>, biological gradient (dose-response), plausibility, coherence, experiment, analogy. Only temporality is mandatory.</li>
+<li>Modes of transmission: <strong>direct contact</strong> (person to person), <strong>indirect</strong> — <strong>vehicle-borne</strong> (food, water, blood, fomites), <strong>vector-borne</strong> (an arthropod), and <strong>airborne</strong> (droplet nuclei suspended over distance).</li>
+<li><strong>Zoonoses</strong> are infectious diseases transmissible between animals and humans. An <strong>asymptomatic</strong> carrier harbors the agent without being ill. An <strong>opportunistic</strong> pathogen causes disease mainly in a compromised host.</li>
+<li>Disease occurrence vocabulary: <strong>endemic</strong> is the usual, expected level in a community; <strong>epidemic</strong> is occurrence clearly above what is expected; <strong>cluster</strong> is an aggregation of cases in time and place; <strong>pandemic</strong> crosses countries and continents; an <strong>outbreak</strong> in practice is two or more epidemiologically linked cases.</li>
+<li><strong>Levels of prevention</strong>: primary acts before disease occurs (vaccination, sanitation), secondary detects it early (screening), tertiary limits disability once disease exists (rehabilitation).</li>
+<li><strong>Surveillance</strong> is the ongoing, systematic collection, analysis, interpretation, and dissemination of health data to guide public health decision making.</li>
+<li><strong>Passive surveillance</strong> is the regular reporting of disease data by health institutions to health authorities — cheap, broad, and incomplete. <strong>Active surveillance</strong> means the health department reaches out to find cases — complete and expensive.</li>
+<li><strong>Sentinel surveillance</strong> uses a limited number of recruited sites or providers reporting specific events; <strong>syndromic surveillance</strong> uses symptom-based case definitions rather than laboratory confirmation for early detection.</li>
+<li><strong>Morbidity and mortality reports</strong> are the most common sources of surveillance data for local and state health departments; line graphs are the standard way to depict disease occurrence over time.</li>
+</ul>`,
+qref:[
+["Epidemiology","Study of distribution and determinants of health in populations"],
+["Distribution","Pattern of health events by time, place, and person"],
+["Determinants","Causes and factors influencing occurrence of health events"],
+["Descriptive epidemiology","What, who, where, when; no comparison group"],
+["Analytic epidemiology","Why and how; quantifies exposure-outcome association"],
+["Incidence","New cases divided by population at risk"],
+["Prevalence","Existing cases divided by population at a time"],
+["Attack rate","Ill divided by exposed during a defined outbreak"],
+["Secondary attack rate","New cases among contacts divided by susceptible contacts"],
+["Case fatality rate","Deaths divided by diagnosed cases of that disease"],
+["Relative risk","Risk in exposed divided by risk in unexposed"],
+["Odds ratio","Cross-product ad divided by bc"],
+["Risk difference","Absolute difference in risk between exposed and unexposed"],
+["Cohort study","Starts with exposure, follows forward, yields relative risk"],
+["Case-control study","Starts with disease, looks back, yields odds ratio"],
+["Cross-sectional study","Survey measuring exposure and outcome at one time"],
+["Ecological study","Unit of observation is the population, not individuals"],
+["Sensitivity","Proportion of true cases the test calls positive"],
+["Positive predictive value","Of positives, proportion who truly have disease"],
+["Confounding","Third variable linked to exposure and independently to outcome"],
+["Temporality","Exposure must precede outcome; the mandatory causal criterion"],
+["Causal pie","Rothman model: component causes assemble a sufficient cause"],
+["Passive surveillance","Institutions routinely report data to health authorities"],
+["Syndromic surveillance","Uses symptom-based case definitions, not laboratory confirmation"]
+],
+notes:`<p><strong>Incidence and prevalence are not interchangeable, and the giveaway word is "new."</strong> Incidence counts cases that appeared during a stated period; prevalence counts every case that exists right now, no matter how old. If a stem says new diagnoses of HIV among men aged 18 to 25 in a defined area and time period, the answer is incidence, and <span class="trap">prevalence</span> is the wrong choice even though it is the more familiar word. The reverse trap also runs: to calculate a prevalence rate you divide the <strong>number of existing cases</strong> by the population at risk, not the number of new cases. Both measures share the same denominator, the <strong>population at risk</strong>, which is why the denominator alone will not tell you which measure a question wants.</p>
+
+<p><strong>The attack rate denominator is the people at risk, not everyone in the room.</strong> If 40 of 160 guests who ate the potato salad became ill, the attack rate among that exposed group is 25 percent — 40 divided by 160. The tempting error is to divide by <span class="trap">the total number of people at the event</span>, including those who never touched the dish, which dilutes the number and destroys the comparison you are trying to make. Outbreak tables are built precisely so you can compute one attack rate for the exposed and one for the unexposed and then compare them. When a stem gives you a whole-town population and a count of illnesses, the whole town is the population at risk and you use it; when it gives you exposure categories, use the exposed count.</p>
+
+<p><strong>Case-control is for rare diseases; cohort is for rare exposures. These are mirror images, and they are constantly swapped.</strong> A case-control study recruits people who already have the outcome, so it can assemble enough cases of something vanishingly rare — thalidomide and congenital limb defects is the textbook example. It is terrible for a rare <em>exposure</em>, because almost nobody in either group will have had it. A cohort study has the opposite profile: recruit an exposed group deliberately and rare exposures become studiable, but a rare disease means following enormous numbers of people for years. Choosing <span class="trap">cohort</span> for a rare disease is the single most common design error on this event. Note also that <span class="trap">relational</span> is not a study design at all — it appears only as bait.</p>
+
+<p><strong>Relative risk belongs to cohort studies; odds ratio belongs to case-control studies; and a value of 1 means nothing is happening.</strong> Relative risk needs a real denominator of people at risk, which only a forward-looking design provides. A case-control study samples on disease status, so the proportion with disease is set by the investigator and a risk ratio would be meaningless — hence the odds ratio, the cross-product ad over bc. When a question says a study was quantified by calculating relative risk, the answer is cohort; when it says odds ratio, the answer is case-control, and <span class="trap">cohort</span> is the reflex wrong answer. Finally, a relative risk of exactly 1 means exposure and disease are <strong>not</strong> associated — it is the null result, not a positive one.</p>
+
+<p><strong>Sensitivity is a property of the test; predictive value is a property of the test plus the population.</strong> Sensitivity asks: of the people who truly have the disease, how many did we catch? Positive predictive value asks a different question from the other direction: of the people who tested positive, how many are truly sick? Because the second question depends on how many sick people exist to begin with, screening a low-prevalence population produces a flood of false positives and a poor positive predictive value even with an excellent test. Students who answer <span class="trap">sensitivity</span> when the stem describes a patient holding a positive result and asking whether they really have the disease have answered a question that was not asked.</p>
+
+<p><strong>Association is not causation, and biological plausibility is the weakest plank in the argument.</strong> Of the Bradford Hill considerations, only <strong>temporality</strong> is required — the exposure has to precede the outcome, which is exactly why a cross-sectional study can never demonstrate cause and effect. Strength, consistency across studies, and a dose-response gradient all add weight. But <span class="trap">biological plausibility</span> only says a mechanism is imaginable, and imagination tracks the science of the moment; Snow proved cholera was waterborne before anyone could offer a plausible mechanism. Before invoking any of the criteria, you still have to rule out chance, bias, confounding, and reverse causation.</p>`});
+
+GUIDE.push({t:1,
+narr:`<p>Infectious disease is the one health problem that genuinely cannot be managed inside a national border, and the whole architecture of global and government response follows from that fact. The <strong>World Health Organization</strong>, founded in 1948 as the United Nations specialized agency for health and headquartered in Geneva, is the coordinating authority — it sets norms and standards, publishes case definitions, certifies eradication, and declares emergencies. What it does not have is police power over sovereign states. WHO works by agreement, by technical assistance, and by making information move faster than the pathogen does.</p>
+
+<p>The legal instrument behind that is the <strong>International Health Regulations</strong>, revised in <strong>2005</strong> and entering into force in <strong>2007</strong>. The revision was the response to SARS: instead of listing a handful of diseases countries had to report, the IHR obliges each member state to detect, assess, and notify WHO of any event that may constitute a <strong>public health emergency of international concern</strong>, generally within 24 hours of assessment, and to build and maintain <strong>core capacities</strong> in surveillance and response. A <strong>PHEIC</strong> is declared by the WHO Director-General on the advice of an Emergency Committee, and it triggers temporary recommendations on travel, trade, and control measures. When outbreak response teams have to be assembled across institutions, WHO convenes them through the <strong>Global Outbreak Alert and Response Network (GOARN)</strong>.</p>
+
+<p>WHO also runs the long campaigns. <strong>Smallpox</strong> is the model: the last naturally occurring case was in 1977 and the disease was certified <strong>eradicated in 1980</strong>, the only human disease ever eliminated worldwide. <strong>Poliomyelitis</strong> and <strong>dracunculiasis (Guinea worm disease)</strong> are the active eradication efforts, and Guinea worm illustrates how much of eradication is social rather than clinical — the remaining obstacles are civil unrest, insecurity, infections in animal reservoirs such as dogs and baboons, and getting villagers to report cases, which is why cash rewards for reporting are part of the strategy. Keep the vocabulary straight: <strong>control</strong> reduces disease to an acceptable level, <strong>elimination</strong> removes it from a defined geographic area while the agent still exists elsewhere, and <strong>eradication</strong> is permanent worldwide reduction to zero.</p>
+
+<p>On the United States side, the <strong>Centers for Disease Control and Prevention</strong>, established in 1946 in Atlanta and now an agency of the <strong>Department of Health and Human Services</strong>, is the national public health agency. Its distinctive instrument is the <strong>Epidemic Intelligence Service</strong>, founded in <strong>1951</strong> — a two-year applied epidemiology training program whose officers deploy to outbreaks and whose graduates staff health departments nationwide. CDC runs the <strong>National Notifiable Diseases Surveillance System</strong>, operates <strong>quarantine stations</strong> at major ports of entry, issues urgent alerts to clinicians and public information officers through the <strong>Health Alert Network (HAN)</strong>, and publishes the <strong>Morbidity and Mortality Weekly Report</strong>. An important legal subtlety: the list of <strong>nationally notifiable</strong> conditions is agreed jointly by CDC and the <strong>Council of State and Territorial Epidemiologists</strong>, but the legal requirement to report rests on <strong>state law</strong>, which is why reportable disease lists differ from state to state.</p>
+
+<p>Preparedness for emergencies is a separate structure from routine disease control. Within HHS, the <strong>Administration for Strategic Preparedness and Response (ASPR)</strong> leads national preparedness, manages the <strong>Strategic National Stockpile</strong> of medicines and supplies, and operates the <strong>National Disaster Medical System</strong>. The <strong>Medical Reserve Corps</strong>, created in the aftermath of the September 11, 2001 attacks, organizes local volunteers who can be activated to staff shelters, evacuation centers, and support call lines. The <strong>HHS emPOWER Program</strong> identifies Medicare beneficiaries who depend on electricity-powered durable medical equipment so responders know which households lose life support when the grid goes down. <strong>BARDA</strong> funds late-stage development of countermeasures, and <strong>Project NextGen</strong> was created to accelerate the next generation of vaccines, including easier-to-administer formulations.</p>
+
+<p>Finally, disasters generate their own epidemiology. The <strong>disaster cycle</strong> runs <strong>preparedness, response, recovery, mitigation</strong>, and disasters are classified as <strong>natural</strong> or <strong>induced</strong> — accidental chemical spills and terrorist events belong to the induced category. <strong>CASPER</strong>, the Community Assessment for Public Health Emergency Response, is a rapid household-based needs assessment that gives leaders population-level information quickly; it assesses, it does not deliver services. Responders themselves are part of the picture: individual resilience is built across the <strong>pre-deployment, deployment, and post-deployment</strong> phases, and <strong>psychological first aid</strong> emphasizes safety, calm, connectedness, hope, and <strong>self-efficacy</strong> — engaging people in meeting their own needs rather than doing everything for them.</p>`,
+deep:`<h4>WHO: mandate, regulations, and emergencies</h4>
+<ul>
+<li>Founded <strong>1948</strong>; a specialized agency of the United Nations; headquarters in <strong>Geneva</strong>; governed by the World Health Assembly, which meets annually.</li>
+<li>Functions include setting norms and standards, providing technical support, monitoring health trends, coordinating outbreak response, and certifying eradication.</li>
+<li><strong>International Health Regulations (2005)</strong>, in force since <strong>2007</strong>: a binding legal agreement obliging states to develop core surveillance and response capacities and to notify WHO of potential emergencies of international concern.</li>
+<li>Four diseases are always immediately notifiable under the IHR regardless of context: <strong>smallpox, poliomyelitis due to wild-type virus, human influenza caused by a new subtype, and SARS</strong>.</li>
+<li>A <strong>public health emergency of international concern (PHEIC)</strong> is an extraordinary event that constitutes a public health risk to other states through international spread and potentially requires a coordinated international response. It is declared by the Director-General on the advice of an Emergency Committee.</li>
+<li><strong>GOARN</strong>, the Global Outbreak Alert and Response Network, pools institutions and experts so WHO can field a technical response team quickly.</li>
+<li>WHO's disability vocabulary, still tested: <strong>impairment</strong> is any loss or abnormality of psychological, physiological, or anatomical structure or function; <strong>disability</strong> is a restriction or lack of ability to perform an activity within the range considered normal; <strong>handicap</strong> is the resulting disadvantage that limits fulfilling a normal role.</li>
+</ul>
+
+<h4>Global eradication, elimination, and control programs</h4>
+<ul>
+<li><strong>Control</strong> reduces incidence, prevalence, or morbidity to a locally acceptable level; ongoing intervention is still required.</li>
+<li><strong>Elimination</strong> reduces incidence to zero in a defined geographic area; the agent still exists elsewhere, so importation remains possible. Measles is eliminated in the United States in this sense.</li>
+<li><strong>Eradication</strong> is permanent worldwide reduction to zero, after which intervention can stop. <strong>Extinction</strong> means the agent no longer exists even in laboratories.</li>
+<li><strong>Smallpox</strong>: last naturally acquired case 1977; certified eradicated <strong>1980</strong>. The strategy that finished it was surveillance plus <strong>ring vaccination</strong>, not mass vaccination alone.</li>
+<li><strong>Polio</strong>: the Global Polio Eradication Initiative launched in 1988; wild poliovirus types 2 and 3 have been declared eradicated; type 1 transmission persists in a small number of countries.</li>
+<li><strong>Dracunculiasis (Guinea worm)</strong>: caused by a <strong>parasite</strong>, <em>Dracunculus medinensis</em>, acquired by drinking water containing infected copepods; incubation is roughly <strong>10 to 14 months</strong>; there is no vaccine and no drug, so control is filtration, safe water, containment, and surveillance.</li>
+<li>Guinea worm's remaining obstacles are civil unrest and insecurity, infections in animals such as dogs and baboons, and underreporting — which is why programs pay <strong>cash rewards for reporting</strong> suspected cases.</li>
+<li>Other global priorities: malaria (children under 5 carry the great majority of African malaria deaths), tuberculosis, HIV, neglected tropical diseases including <strong>trachoma</strong>, the leading infectious cause of blindness worldwide, and <strong>rabies</strong>, where dog bites account for approximately 99% of human cases.</li>
+</ul>
+
+<h4>CDC: structure and core activities</h4>
+<ul>
+<li>Established <strong>1946</strong> in Atlanta as the Communicable Disease Center; now the national public health agency within the <strong>Department of Health and Human Services</strong>.</li>
+<li><strong>Epidemic Intelligence Service (EIS)</strong>, founded <strong>1951</strong>: a two-year applied epidemiology fellowship. EIS officers deploy on request of a state or country — CDC does not enter a state uninvited.</li>
+<li>An <strong>applied epidemiologist</strong> in the United States most often works for <strong>state and local government</strong>; health departments and universities are the two largest employers of public health workers overall.</li>
+<li>The <strong>Epi-Aid</strong> mechanism is the formal request through which a health department asks CDC for short-term field investigation assistance.</li>
+<li><strong>Health Alert Network (HAN)</strong> is CDC's primary method of sharing cleared information about urgent public health incidents with public information officers, clinicians, and health departments.</li>
+<li><strong>NNDSS</strong> collects case notifications from states; the <strong>nationally notifiable</strong> list is set jointly with the <strong>Council of State and Territorial Epidemiologists (CSTE)</strong>, but the <strong>legal duty to report is created by state law</strong>.</li>
+<li>CDC operates <strong>quarantine stations</strong> at major US ports of entry and can issue federal isolation and quarantine orders for a specified list of communicable diseases.</li>
+<li>Other CDC instruments: the <strong>Vessel Sanitation Program</strong> for cruise ships, <strong>PulseNet</strong> for molecular subtyping of foodborne pathogens, <strong>FoodNet</strong> for active foodborne disease surveillance, <strong>BioSense</strong> and the National Syndromic Surveillance Program, the <strong>Youth Risk Behavior Surveillance System</strong>, and the <strong>Advisory Committee on Immunization Practices (ACIP)</strong>, which recommends vaccine schedules.</li>
+<li><strong>Isolation</strong> separates people who are <em>ill</em>; <strong>quarantine</strong> restricts people who were <em>exposed</em> but are not yet known to be ill.</li>
+</ul>
+
+<h4>Federal preparedness architecture</h4>
+<ul>
+<li><strong>ASPR</strong>, the Administration for Strategic Preparedness and Response, sits within <strong>HHS</strong> and leads federal public health and medical emergency preparedness and response.</li>
+<li>The <strong>Strategic National Stockpile</strong>, now managed by ASPR, holds medicines, antidotes, vaccines, and medical supplies for deployment when local resources are overwhelmed.</li>
+<li>The <strong>National Disaster Medical System (NDMS)</strong> supplies deployable medical teams — including Disaster Medical Assistance Teams and mortuary teams — to supplement state and local systems.</li>
+<li>The <strong>Medical Reserve Corps</strong> is a network of local volunteer units created after the September 11, 2001 attacks; after a hurricane a unit may be activated to help staff support call centers and evacuation centers.</li>
+<li><strong>HHS emPOWER</strong> maps Medicare beneficiaries who rely on electricity-dependent durable medical equipment so responders can prioritize households during a power outage.</li>
+<li><strong>BARDA</strong> funds advanced development of vaccines, therapeutics, and diagnostics; <strong>Project NextGen</strong> targets the next generation of vaccines, including easier-to-administer products.</li>
+<li>Other federal partners: <strong>FDA</strong> regulates drugs, vaccines, devices, and most of the food supply; <strong>USDA</strong> regulates meat, poultry, and egg products and animal health; <strong>EPA</strong> regulates drinking water, pesticides, and air; <strong>OSHA</strong> regulates worker exposure; <strong>NIH/NIAID</strong> funds the underlying research; <strong>ATSDR</strong> handles hazardous waste site health assessment; <strong>FEMA</strong> coordinates overall federal disaster response.</li>
+<li>Community concerns about redevelopment of <strong>brownfields</strong> and land reuse sites center on contaminant exposure — most commonly increased cancers and lead poisoning.</li>
+</ul>
+
+<h4>Disaster epidemiology and rapid needs assessment</h4>
+<ul>
+<li>The <strong>disaster cycle</strong>: <strong>preparedness, response, recovery, mitigation</strong>. Mitigation is the work that reduces the impact of the next event, not this one.</li>
+<li>Disaster classification: <strong>natural</strong> (hurricane, earthquake, flood) versus <strong>induced</strong> or technological (accidental chemical spills, industrial releases, terrorist events).</li>
+<li>A goal of CDC's disaster epidemiology work is to <strong>conduct surveillance of deaths, injuries, and illnesses related to a disaster</strong> and to use that information to direct relief.</li>
+<li><strong>CASPER</strong> is a rapid needs assessment that provides household-based information about a community quickly, using two-stage cluster sampling to produce population-level estimates without a full census.</li>
+<li>CASPER's objectives are to assess needs, describe household characteristics, and guide planning. It is <strong>not</strong> a service delivery mechanism — it does not deliver food, medicine, or medical care.</li>
+<li>Post-disaster surveillance choices: <strong>mortality surveillance</strong> measures the impact of a disaster on a population and identifies leading causes and circumstances of death; <strong>sentinel surveillance</strong> at selected shelters or clinics detects outbreaks and targets relief; <strong>passive surveillance</strong> monitors vaccine-preventable disease occurrence through routine institutional reporting.</li>
+<li>For surveillance programs, <strong>health facility utilization rates</strong> and <strong>consultations per clinician per day</strong> are measures of <strong>program process</strong>, not of disease burden.</li>
+<li>Responder mental health: resilience is built during <strong>pre-deployment, deployment, and post-deployment</strong>. Healthy stress management is a continuous practice, not something reserved for crises.</li>
+<li><strong>Psychological first aid</strong> promotes safety, calming, connectedness, hope, and <strong>self-efficacy</strong>, which means engaging people in meeting their own needs. The listening acronym <strong>SOLER</strong> stands for Squarely face the person, Open posture, Lean toward, <strong>Eye contact</strong>, and Relaxed.</li>
+</ul>
+
+<h4>Infectious agents and immunity worth knowing cold</h4>
+<ul>
+<li><strong>Bacteria</strong> are prokaryotic and reproduce by binary fission; <strong>fungi</strong> are eukaryotic, heterotrophic, have rigid <strong>chitinous</strong> cell walls, and reproduce primarily by forming spores; <strong>viruses</strong> are obligate intracellular parasites that require a <strong>host</strong> cell to replicate; <strong>prions</strong> are misfolded proteins and cause Creutzfeldt-Jakob disease.</li>
+<li>The defining difference between infectious and non-infectious disease is <strong>transmissibility</strong>.</li>
+<li><strong>Virulence</strong> is the proportion of clinically apparent cases that are severe or fatal; <strong>infectivity</strong> is the ability to enter and multiply in a host; <strong>pathogenicity</strong> is the ability to cause disease among the infected.</li>
+<li><strong>Incubation period</strong> runs from infection to symptom onset; the <strong>latent period</strong> runs from infection to the start of infectiousness; the two are not the same and can overlap in either direction.</li>
+<li>The <strong>spectrum of disease</strong> is the range from subclinical infection through mild illness to severe illness and death.</li>
+<li><strong>Lysozyme</strong> in tears, saliva, and nasal secretions breaks down bacterial cell walls. <strong>Complement</strong> proteins, produced by the <strong>liver</strong>, kill bacteria by punching holes in their membranes. A <strong>granuloma</strong> is a mass of immune cells walling off a pathogen the body cannot clear.</li>
+<li><strong>Intracellular</strong> bacteria evade immune attack and nutrient depletion by hiding inside host cells. <em>Mycobacterium tuberculosis</em> has a thick waxy coat and a slow doubling time, on the order of <strong>15 to 20 hours</strong>.</li>
+<li>Bats are considered the likely reservoir host for <strong>Ebola</strong> viruses; rodents and livestock carry many other zoonoses; the reservoir question is always the first one asked in a spillover investigation.</li>
+</ul>`,
+qref:[
+["WHO","UN health agency, founded 1948, based in Geneva"],
+["IHR 2005","Binding rules requiring detection and notification of health emergencies"],
+["PHEIC","Extraordinary event risking international spread, declared by WHO Director-General"],
+["GOARN","WHO network that assembles outbreak response teams"],
+["Eradication","Permanent worldwide reduction of a disease to zero"],
+["Elimination","Incidence reduced to zero in one defined geographic area"],
+["Control","Disease reduced to a locally acceptable level"],
+["Smallpox","Only human disease eradicated; certified in 1980"],
+["Dracunculiasis","Guinea worm; parasite from contaminated drinking water"],
+["CDC","US national public health agency, Atlanta, founded 1946"],
+["EIS","CDC applied epidemiology fellowship established in 1951"],
+["Epi-Aid","State request for short-term CDC field investigation help"],
+["HAN","CDC channel for urgent cleared public health information"],
+["NNDSS","National system collecting notifiable disease case reports"],
+["CSTE","Sets nationally notifiable list jointly with CDC"],
+["Isolation","Separates people who are already ill"],
+["Quarantine","Restricts exposed people who are not yet ill"],
+["ASPR","HHS office leading preparedness and emergency medical response"],
+["Strategic National Stockpile","Federal reserve of medicines and supplies for emergencies"],
+["Medical Reserve Corps","Local volunteer units formed after September 11, 2001"],
+["emPOWER","Identifies Medicare users of electricity-dependent medical equipment"],
+["CASPER","Rapid household cluster-sample needs assessment after a disaster"],
+["Disaster cycle","Preparedness, response, recovery, mitigation"],
+["Induced disaster","Human-caused event such as chemical spill or terrorism"],
+["SOLER","Squarely, Open, Lean, Eye contact, Relaxed"]
+],
+notes:`<p><strong>Control, elimination, and eradication are three different achievements, and only one of them lets you stop working.</strong> Control means you have pushed a disease down to a level a society will tolerate, and the moment you stop the program the disease climbs back. Elimination means zero incidence in a defined geographic area — the United States has eliminated measles in that technical sense, which is exactly why every measles outbreak here begins with an importation. Eradication means zero worldwide and permission to stop intervening; smallpox is the only human disease that has reached it. Calling a national success story <span class="trap">eradication</span> is the standard error, and it matters because the word carries an operational promise the situation does not support.</p>
+
+<p><strong>Isolation is for the sick; quarantine is for the exposed.</strong> The distinction sounds pedantic until you have to write a control order. A confirmed measles case is <em>isolated</em> until four days after rash onset. A susceptible classmate who shared air with that case is <em>quarantined</em> for the incubation period — 21 days for measles — because they may or may not be incubating. Answering <span class="trap">quarantine</span> when a stem describes separating a laboratory-confirmed patient is the reflex mistake, and it also produces the wrong duration, because isolation is timed from symptom onset while quarantine is timed from exposure.</p>
+
+<p><strong>CDC does not legally require anyone to report a disease — states do.</strong> The list of nationally notifiable conditions is agreed by CDC together with the Council of State and Territorial Epidemiologists, and states voluntarily send those case notifications to NNDSS. The mandatory reporting requirement that a physician actually faces comes from <strong>state law</strong>, which is why reportable disease lists differ across state lines and why a condition can be nationally notifiable without being reportable everywhere. If a question asks who mandates reporting, <span class="trap">CDC</span> is the tempting answer and the wrong one. CDC also cannot deploy into a state uninvited; field investigations follow a request from the jurisdiction.</p>
+
+<p><strong>ASPR, not CDC, owns the national preparedness machinery.</strong> Students who know CDC well tend to assign every federal emergency function to it. But the Administration for Strategic Preparedness and Response is the HHS component that leads preparedness policy, manages the <strong>Strategic National Stockpile</strong>, and runs the National Disaster Medical System. CDC's role is surveillance, laboratory science, epidemiologic investigation, and guidance. Answering <span class="trap">CDC</span> when a stem asks who oversees the stockpile or the national medical response confuses the agency that tells you what is happening with the agency that ships the supplies.</p>
+
+<p><strong>CASPER assesses; it does not deliver.</strong> The Community Assessment for Public Health Emergency Response exists to give emergency managers fast, statistically defensible household-level information — what people need, what they have lost, whether they have power, water, and medications. Its objectives are assessment, description, and planning support. It has also been used outside disasters to measure community health status and preparedness. What it never does is <span class="trap">deliver food, medicine, or medical services</span>, and that option shows up in nearly every list of CASPER objectives precisely because it sounds like the humane answer.</p>
+
+<p><strong>The four surveillance types answer different questions, so read what the stem wants measured.</strong> If health institutions report routinely to health authorities, that is <strong>passive</strong> surveillance, and after a disaster it is what you use to keep watching vaccine-preventable disease. If a limited set of recruited clinics or providers reports on specific events — often stood up after an earthquake to detect outbreaks and target relief — that is <strong>sentinel</strong>. If the system runs on symptom-based case definitions rather than laboratory or diagnostic criteria for early warning, that is <strong>syndromic</strong>. If the health department is actively going out to find cases through record review and case searches, that is <strong>active</strong>. Choosing <span class="trap">active</span> for a routine institutional reporting stream is the most common slip, because "active" sounds like the more serious answer.</p>`});
+
+GUIDE.push({t:2,
+narr:`<p class="dateline"><strong>Current through 31 August 2026.</strong> This section tracks the MMWR reports published in the window the 26-27 guideline points to. Regenerate it before each conference.</p>
+
+<p>Half of this test comes from the <strong>Morbidity and Mortality Weekly Report</strong>, and that changes how you study. MMWR is CDC's primary vehicle for scientific publication of timely, reliable public health information. It comes out weekly, on Thursdays, and most of what it prints originates with state and local health departments, whose staff are usually listed as authors. It is in the public domain, free, and available at cdc.gov/mmwr. The test does not expect you to have memorized a year of reports. It expects you to be handed one — a passage, a table, an epidemic curve — and to read it like an epidemiologist. That skill is learnable, and it is worth far more than trivia.</p>
+
+<p>Every full MMWR report is built the same way, and knowing the skeleton tells you where each kind of answer lives. The <strong>title</strong> names the health event, the place, and the time period, in that order. A boxed <strong>Summary</strong> answers three fixed questions: what is already known on this topic, what is added by this report, and what are the implications for public health practice. The <strong>Introduction</strong> gives background and states why the investigation happened. The <strong>Methods</strong> section carries the two things questions most often hinge on — the <strong>case definition</strong> and the data source. <strong>Results</strong> holds the counts, rates, tables, and figures. The <strong>Discussion</strong> interprets them and always contains a <strong>Limitations</strong> paragraph. The closing <strong>Implications for Public Health Practice</strong> section states the recommendation. When a question asks what the most important recommendation was, that last section is the answer, and when it asks why the study cannot be generalized, the answer is in Limitations.</p>
+
+<p>MMWR is not one thing but a family of series, and questions often turn on telling them apart. The <strong>Weekly Report</strong> carries full-length reports, plus short pieces: <strong>Notes from the Field</strong> is a brief account, typically a few hundred words with no summary box, used to get early or limited findings out fast; <strong>QuickStats</strong> is a single figure with a caption; <strong>Errata</strong> correct earlier issues. <strong>Surveillance Summaries</strong> are separate, numbered SS reports that analyze a surveillance system over several years and describe patterns rather than a single incident. <strong>Recommendations and Reports</strong>, numbered RR, carry policy and clinical guidance, such as ACIP vaccine recommendations. A single-facility outbreak with eight cases is a weekly report; fifteen years of national brucellosis data is a Surveillance Summary; a new vaccine schedule is a Recommendations and Reports.</p>
+
+<p>The same epidemiologic machinery recurs across reports, which is what makes them predictable. Nearly every outbreak report states a tiered <strong>case definition</strong> — <strong>confirmed</strong> usually requires laboratory verification, <strong>probable</strong> requires a clinically compatible illness plus an epidemiologic link, and <strong>suspected</strong> requires only compatible symptoms with the right exposure history. Nearly every one reports an <strong>attack rate</strong>, a <strong>case fatality</strong>, an incidence per 100,000, or a hospitalization percentage, and expects you to be able to compute or interpret it. Epidemic curves are labeled by shape: a single sharp peak within one incubation period is a <strong>point source</strong>; a sustained plateau is a <strong>continuous common source</strong>; repeated separated peaks are an <strong>intermittent common source</strong>; and progressively taller waves spaced about one incubation period apart are <strong>propagated</strong>, meaning person to person.</p>
+
+<p>In the current window, measles dominates: a 997-case outbreak in South Carolina that CDC modeled in real time with <strong>nowcasting</strong>, a small child care facility outbreak in Lubbock, Texas, an analysis of who got hospitalized in the West Texas outbreak, and a Wisconsin report on genotype-specific detection of measles virus in wastewater. An <strong>Ebola disease outbreak caused by Bundibugyo virus</strong> in the Democratic Republic of the Congo and Uganda produced an early-release pair of reports — modeled scenario projections and a formal US risk assessment. Two Surveillance Summaries anchor the long-view material: fifteen years of <strong>brucellosis</strong> and five years of active surveillance for <strong>invasive mold disease</strong> in Atlanta hospitals. Around those sit tickborne emergence in New York and North Carolina, a county fair <em>Salmonella</em> outbreak traced to a beer cooler, Legionnaires disease from a vacation rental hot tub, national mpox surveillance, and a study of buprenorphine access in urban and rural counties. Read the summary box first, then the case definition, then the numbers. Almost every question you will face is answered by one of those three.</p>`,
+deep:`<h4>How to read an MMWR report</h4>
+<ul>
+<li><strong>Title</strong> = health event + place + time period. "Measles Outbreak in a Child Care Facility — Lubbock, Texas, March-April 2025" already tells you the setting, the jurisdiction, and the window.</li>
+<li><strong>Summary box</strong> (full reports only) answers three fixed questions: what is already known, what is added by this report, and what are the implications for public health practice.</li>
+<li><strong>Methods</strong> holds the <strong>case definition</strong> and the data source. If a stem describes a patient and asks how they would be classified, the answer is a mechanical match against the case definition in Methods.</li>
+<li><strong>Results</strong> holds counts, percentages, tables, and figures. Read table headers carefully: percentages may be of the total, of a subgroup, or of the cases with available data — reports frequently say "among the 703 cases with available data," and that phrase changes the denominator.</li>
+<li><strong>Discussion</strong> interprets, compares with prior literature, and contains a <strong>Limitations</strong> paragraph. Limitations is where small sample size, incomplete reporting, non-generalizability, and missing data are conceded.</li>
+<li><strong>Implications for Public Health Practice</strong> is the recommendation. Questions that ask for the most important public health recommendation are quoting this section.</li>
+<li>Author blocks list state and local health department staff first, because most investigations are theirs. CDC provides support, laboratory confirmation, and publication.</li>
+<li>MMWR material is in the <strong>public domain</strong> and citation format is volume, series, issue, and page — for example, MMWR Morb Mortal Wkly Rep 2026;75(33).</li>
+</ul>
+
+<h4>The MMWR series, and how to tell them apart</h4>
+<ul>
+<li><strong>Weekly Report (mm)</strong>: full-length reports on outbreaks, investigations, and analyses, published every Thursday.</li>
+<li><strong>Notes from the Field</strong>: a short item, roughly 400 to 500 words, no summary box, used for early, limited, or unusual findings. The Borrelia mayonii item from New York and the Bundibugyo outbreak note are examples in this window.</li>
+<li><strong>QuickStats</strong>: one figure and a caption drawn from national data, usually from the National Center for Health Statistics.</li>
+<li><strong>Surveillance Summaries (SS)</strong>: multi-year analyses of a surveillance system, describing the system, the case definition it uses, and the patterns it has detected. Brucellosis Surveillance, United States 2010-2024 and Active Surveillance for Invasive Mold Disease, Atlanta 2020-2024 are the two in this window.</li>
+<li><strong>Recommendations and Reports (RR)</strong>: policy and clinical guidance, including ACIP vaccine recommendations.</li>
+<li><strong>Early Release</strong>: posted ahead of the printed issue when findings are urgent. The two Bundibugyo virus reports were released on June 5, 2026 and carried in the June 11 issue.</li>
+<li><strong>Erratum</strong>: a correction to a previously published item, identified by the volume and number being corrected.</li>
+<li>Rule of thumb: one event, one place, short window equals a weekly report. Many years, national scope, a named system equals a Surveillance Summary. A recommendation for clinicians equals Recommendations and Reports.</li>
+</ul>
+
+<h4>Measles in this reporting window</h4>
+<ul>
+<li><strong>Nowcasting, South Carolina, October 2025-March 2026</strong> (published August 27, 2026): <strong>997 cases</strong> reported. CDC used the EpiNow2 model to correct provisional counts for reporting delay and to estimate the effective reproduction number, Rt, with credible intervals.</li>
+<li>Reporting delay from rash onset to notification had a median of <strong>2 to 3 days</strong>, and <strong>92.8%</strong> of cases were reported within 14 days of rash onset — the timeliness that makes nowcasting possible.</li>
+<li>Cumulative cases rose from <strong>185 to 424 between December 23, 2025 and January 6, 2026</strong>, with the peak on <strong>January 13-14</strong>. On January 6 the provisional data held only <strong>25.7%</strong> of what the final counts would show; from late January onward provisional data captured <strong>72.1% to 88.5%</strong> of final cases.</li>
+<li>Nowcasting improved estimates of cumulative outbreak size compared with provisional data by <strong>10.5% to 11.3%</strong>. Operationally, the estimates led the state health department to hold high staffing through the winter holidays and to hire additional staff members.</li>
+<li><strong>Child care facility, Lubbock, Texas, March-April 2025</strong> (June 4, 2026): a facility with <strong>287 enrolled children and 48 employees</strong> had <strong>8 confirmed cases</strong> — 7 children and one 41-year-old adult. The index patient was an unvaccinated 3-year-old; ages ranged from <strong>5 months to 41 years</strong>; three cases were in infants under 12 months, too young for routine MMR. Three of the seven pediatric patients had received no MMR and three had received one dose. All recovered; the index patient was hospitalized for one day.</li>
+<li>Lubbock control measures: unvaccinated exposed children excluded for <strong>21 days</strong>; infants under 6 months cohorted into a single classroom with dedicated staff; an early MMR dose recommended for infants aged 6-11 months in outbreak counties; immunoglobulin offered as postexposure prophylaxis; cases isolated and allowed to return four days after rash onset. The stated implication is that vaccination, collaboration, and rapid public health action prevent transmission in congregate settings.</li>
+<li><strong>Hospitalized patients, West Texas, January-March 2025</strong> (May 28, 2026): of <strong>325 confirmed cases</strong>, <strong>60 (18.5%)</strong> were hospitalized and records were reviewed for 54. <strong>90.7%</strong> were under 18 and <strong>55.6%</strong> were aged 0-4. <strong>All</strong> were unvaccinated or of unknown vaccination status. Pneumonia occurred in <strong>72.2%</strong>, hypoxia in 68.5%, supplemental oxygen was needed by 70.4%, dehydration in 46.3%. Four patients (7.4%) required intensive care, two were intubated, and one child died. Median stay was 2 days.</li>
+<li><strong>Wastewater genotyping, Wisconsin, February 2026</strong> (July 16, 2026): for patient A, genotype <strong>D8</strong> was detected in a February 2 sample and reported February 5, before clinical notification, in a sewershed of about 30,000 residents. For patient B the routine assay was <strong>negative in all eight samples</strong> despite confirmed infectiousness; metagenomic sequencing later found genotype <strong>B3</strong>. The cause was a single adenine-to-guanine mismatch in the nucleoprotein target, present in <strong>75% (169 of 226)</strong> of available B3 sequences by February 2026 but under 2% when the assay was designed in March 2025. A revised assay with an added probe was released March 2, 2026.</li>
+</ul>
+
+<h4>Ebola disease caused by Bundibugyo virus, 2026</h4>
+<ul>
+<li>The outbreak involves <strong>Bundibugyo virus</strong> (species <em>Orthoebolavirus bundibugyoense</em>) in <strong>Ituri province, Democratic Republic of the Congo</strong>, with spread into <strong>Uganda</strong>. A Notes from the Field described the initial DRC and Uganda outbreak in May 2026.</li>
+<li>As of <strong>June 2, 2026</strong>: <strong>378 confirmed cases</strong> (363 in DRC, 15 in Uganda) and <strong>63 confirmed deaths</strong> (62 in DRC, 1 in Uganda).</li>
+<li><strong>Modeled Scenario Projections</strong> used a <strong>branching process transmission model</strong> seeded with a single infected person representing animal-to-human spillover, tracking secondary infections; simulations ran until the outbreak ended or reached 5,000 deaths, projecting 90 days ahead through August 22, 2026.</li>
+<li>Four levels of case isolation were compared. With <strong>20% isolation</strong>, <strong>65%</strong> of simulations exceeded 20,000 cases. With <strong>50% isolation</strong>, <strong>17%</strong> exceeded 20,000 cases. With <strong>70% isolation</strong>, only about a <strong>one in 20</strong> chance of an outbreak reaching 10,000 or more cases was projected. The lesson is that isolation coverage, not the pathogen, determines the ceiling.</li>
+<li>The comparison point named in the report is the <strong>2014-2016 West Africa epidemic</strong>, with more than 28,000 cases and more than 11,000 deaths; the authors argue that avoiding a repeat requires large-scale, rapid public health action of similar magnitude.</li>
+<li>The <strong>Assessment of Risk to the U.S. Population</strong> used CDC's standardized <strong>qualitative</strong> method, rating two independent dimensions — the <strong>likelihood</strong> of infection and the <strong>impact</strong> of infection — and reporting a confidence level. Confidence was <strong>moderate</strong>.</li>
+<li>Overall risk to the US population over three months was judged <strong>low</strong>: an extremely low likelihood of transmission combined with high impact if infection did occur. Modeling put the relative risk of importation to the United States compared with other locations at approximately <strong>1.3%</strong>.</li>
+<li>Countermeasures: enhanced traveler screening and entry restrictions were established <strong>May 18, 2026</strong>; contact tracing runs up to <strong>21 days</strong> after a high-risk exposure; there are <strong>no approved vaccines or medications</strong> for Bundibugyo virus disease, so care is supportive and investigational products are under evaluation.</li>
+</ul>
+
+<h4>The two Surveillance Summaries in this window</h4>
+<ul>
+<li><strong>Brucellosis Surveillance, United States, 2010-2024</strong> (June 4, 2026): <strong>1,796</strong> confirmed and probable cases from 54 jurisdictions, with annual counts between <strong>71 and 165</strong>. <strong>1,377 (77%)</strong> were confirmed and <strong>419 (23%)</strong> probable; supplemental case reports were available for <strong>878 (49%)</strong>.</li>
+<li>Geography and demographics: California reported the most cases (<strong>371</strong>), then Texas (<strong>327</strong>) and Florida (<strong>128</strong>). Median age was <strong>49 years</strong> and <strong>60%</strong> were male.</li>
+<li>Exposures: among patients who had traveled internationally, <strong>73%</strong> consumed unpasteurized dairy products or undercooked meat, and <strong>Mexico</strong> was the most common destination (<strong>58%</strong>). Among non-travelers, <strong>62%</strong> reported animal contact, including hunting wild animals (40%), skinning or slaughtering them (41%), and feral swine contact (47%).</li>
+<li>Species among 542 isolates: <strong><em>Brucella melitensis</em> 57%</strong>, <em>B. suis</em> 28%, <em>B. canis</em> 3%, and <em>B. abortus</em> RB51 — the cattle <strong>vaccine strain</strong>, acquired from raw milk — 2%.</li>
+<li>Clinical picture beyond the required fever: fatigue <strong>69%</strong>, night sweats <strong>59%</strong>, headache <strong>48%</strong>. Hospitalization occurred in <strong>75%</strong> of confirmed cases and mortality was under 1%. Doxycycline was prescribed for 83% and rifampin for 62%, with 57% receiving both.</li>
+<li><strong>Active Surveillance for Invasive Mold Disease, Four Hospitals, Atlanta, 2020-2024</strong> (July 30, 2026): laboratory-based <strong>active</strong> surveillance through the Georgia Emerging Infections Program at three laboratories serving four hospitals — two academic, one federal, one community — triggered by a positive mold culture or an <em>Aspergillus</em> galactomannan test.</li>
+<li>Of <strong>968 potential cases</strong>, <strong>449 (46%)</strong> were classified as invasive mold disease: <strong>89 (20%) MSG-proven</strong>, <strong>142 (32%) MSG-probable</strong>, and <strong>218 (49%) surveillance cases</strong> — clinician-diagnosed and treated but not meeting research criteria. That third tier is the point of the study.</li>
+<li>Pathogens: <em>Aspergillus</em> species <strong>71%</strong> (<em>A. fumigatus</em> 21%), <em>Fusarium</em> 4%, Mucorales 4%, <em>Scedosporium</em> 3%. Host factors: <strong>65%</strong> had classic MSG host factors and <strong>35% did not</strong>; solid organ transplant 27%, hematologic malignancy 22%, immunosuppressive medication 59%.</li>
+<li>Incidence and outcomes: academic hospitals had <strong>4.8 inpatient cases per 100 beds</strong> per year and <strong>14.0 ICU cases per 100 ICU beds</strong>; the community hospital had 2.8 and 10.2. Fifty-eight patients (13%) had concurrent COVID-19. <strong>90-day all-cause mortality was 45%</strong> overall — <strong>66%</strong> with COVID-19 versus <strong>41%</strong> without.</li>
+</ul>
+
+<h4>Vectorborne, foodborne, and environmental investigations in this window</h4>
+<ul>
+<li><strong>Borrelia mayonii Lyme disease, New York, 2025</strong> (Notes from the Field, June 4, 2026): one confirmed human case in <strong>Herkimer County</strong>, identified by real-time PCR in July 2025 after late-June symptom onset, with co-infection by <em>Anaplasma phagocytophilum</em>; the patient recovered on doxycycline. Of <strong>1,518 ticks</strong> collected across 24 New York counties during 2021-2025, only ticks from the patient's property were positive — one nymph (0.7%) in July and nine adults (3.9%) in October. <em>B. mayonii</em> had previously been reported almost entirely from the upper Midwest.</li>
+<li><strong>Southward expansion of Ixodes scapularis pathogens, western North Carolina</strong> (August 13, 2026): community-based surveillance in Biltmore Forest, November 2024-August 2025, collected <strong>373 ticks</strong>, of which <strong>287 (76.9%)</strong> were blacklegged ticks. About <strong>40%</strong> of adult blacklegged ticks carried <em>Borrelia burgdorferi</em> sensu stricto; <em>Borrelia miyamotoi</em> and both human-active and non-human-active variants of <em>Anaplasma phagocytophilum</em> were also found. Nineteen residents in 17 households reported tickborne disease diagnoses, most of them Lyme disease.</li>
+<li><strong>Salmonella Agbeni linked to ice in a cooler at a county fair, Illinois, August 2024</strong> (February 26, 2026): <strong>13 cases</strong> — 7 confirmed (Salmonella isolated from a clinical specimen) and 6 probable (clinically compatible and epidemiologically linked, without culture). All 13 drank beer from the beer tent; only 9 ate vendor food and 4 ate nothing at the fair, which is how exposures were eliminated one by one. The cooler held ice and canned beer, was never cleaned, lacked drainage, accumulated standing water, and was handled bare-handed with no handwashing station nearby. Recommendations: routine bleach sanitization of ice coolers and written cooler sanitation requirements in vendor licensing agreements.</li>
+<li><strong>Legionnaires disease from a private-use hot tub in a vacation rental, New York, October 2024-April 2025</strong> (June 11, 2026): two family members aged 33 and 68 who stayed together and used the hot tub. Hot tub samples grew <em>Legionella pneumophila</em> at <strong>134 to 13,677 MPN per mL</strong> while the potable water system was negative, and whole genome sequencing matched the environmental isolate to the clinical isolate. The owner reopened the tub without approval, the health department invoked a public nuisance law, and the closure was lifted March 31, 2025 after two rounds of negative post-remediation samples. The identified gap: vacation rentals are exempt from the rules governing public pools and spas.</li>
+<li><strong>Monkeypox virus surveillance, United States, 2024-2025</strong> (August 20, 2026): <strong>5,322 cases</strong> — 2,803 in 2024 and 2,519 in 2025 — with a fall increase from <strong>423</strong> during September-October 2024 to <strong>873</strong> in the same months of 2025. Clade IIb accounted for <strong>97.5%</strong> of sequenced cases; <strong>11 clade Ib</strong> cases were mostly travel-associated with no sustained community spread. Unvaccinated patients had <strong>9.73 times</strong> the odds of hospitalization compared with fully vaccinated patients after adjusting for age and HIV status. Case fatality was 0.18% in 2024 and 0.04% in 2025.</li>
+<li><strong>Buprenorphine dispensed by pharmacies and administered in emergency departments, urban and rural areas, 2019-2025</strong> (August 27, 2026): pharmacy data from IQVIA covering about 94% of US retail prescriptions and emergency department data from roughly 1,400 hospitals. Dispensing rates were consistently higher in rural counties, peaked in 2021, and declined through 2025. Mean days supplied rose from <strong>17.6 to 22.6 days</strong> in urban counties and 17.4 to 22.2 in rural. Treatment initiation was higher in rural areas (<strong>14.2 per 100,000</strong>) than urban (11.8 per 100,000). Emergency department administration rose from <strong>6.7% to 31.4%</strong> in urban areas but only from <strong>2.3% to 10.3%</strong> in rural areas — the report's central equity finding.</li>
+<li>Also published in this window and worth recognizing by title: West Nile virus and other nationally notifiable arboviral diseases, United States 2024; acute flaccid myelitis surveillance 2020-2025; norovirus, COVID-19, and influenza outbreaks at the Eaton wildfire evacuation shelter in Pasadena; large tuberculosis outbreaks, United States 2017-2023; tetanus surveillance 2009-2023; measles outbreak, New Mexico 2025; human-to-human rabies transmission through solid organ transplantation; and a fatal human case of highly pathogenic avian influenza A(H5N5) in a backyard flock owner in Washington.</li>
+</ul>`,
+qref:[
+["MMWR","CDC weekly publication of timely public health information"],
+["Notes from the Field","Short MMWR item for early or limited findings"],
+["Surveillance Summaries","Multi-year MMWR analysis of a surveillance system"],
+["Recommendations and Reports","MMWR series carrying policy and clinical guidance"],
+["QuickStats","Single MMWR figure with a caption"],
+["Early Release","MMWR item posted before its printed issue"],
+["Summary box","Known, added by this report, implications for practice"],
+["Limitations","Discussion paragraph conceding what the study cannot show"],
+["Confirmed case","Clinically compatible illness with laboratory verification"],
+["Probable case","Compatible illness plus an epidemiologic link, no laboratory confirmation"],
+["Nowcasting","Adjusting provisional counts for reporting delay in real time"],
+["Rt","Effective reproduction number; secondary cases per current case"],
+["EpiNow2","Model CDC used to nowcast the South Carolina measles outbreak"],
+["Propagated outbreak","Successive peaks about one incubation period apart"],
+["Point source","Single sharp peak within one incubation period"],
+["Bundibugyo virus","Orthoebolavirus species causing the 2026 DRC and Uganda outbreak"],
+["Qualitative risk assessment","Rates likelihood and impact separately, with a confidence level"],
+["MSG-proven","Mold from a sterile site or histopathologic confirmation"],
+["Galactomannan","Aspergillus antigen test used to trigger case finding"],
+["Brucella melitensis","Most common Brucella species among US isolates"],
+["RB51","Cattle vaccine strain of Brucella abortus in raw milk"],
+["Borrelia mayonii","Lyme agent newly detected in Herkimer County, New York"],
+["Sewershed","Population served by a sampled wastewater collection system"],
+["Clade IIb","Monkeypox clade behind nearly all US cases in 2024-2025"],
+["Vessel Sanitation Program","CDC program preventing gastroenteritis spread on cruise ships"]
+],
+notes:`<p><strong>Nowcasting is not forecasting, and confusing them costs the whole South Carolina question set.</strong> A forecast predicts the future. A nowcast reconstructs the <em>present</em> from incomplete data, because cases that have already happened have not all been reported yet. The South Carolina work used EpiNow2 to correct provisional counts for a reporting delay whose median was two to three days, and it mattered most exactly when the delay was worst: on January 6, 2026 the provisional data contained only 25.7% of what the final count would show, so the raw curve looked like a plateau while the outbreak was still climbing. Answering that nowcasting <span class="trap">predicts how many cases will occur next month</span> misses the entire point — the method exists because the recent past is uncertain, not because the future is.</p>
+
+<p><strong>Case classification is mechanical, not clinical judgment — match the patient to the definition and stop.</strong> Across MMWR reports the tiers are consistent: <strong>confirmed</strong> almost always requires laboratory verification, <strong>probable</strong> requires a clinically compatible illness plus an epidemiologic link without laboratory confirmation, and <strong>suspected</strong> requires only compatible symptoms and the right exposure. In the Illinois county fair outbreak, 7 of the 13 were confirmed by isolating Salmonella from a clinical specimen and 6 were probable because they were epidemiologically linked and never cultured. If a stem gives you a patient with the right symptoms, the right exposure, and no test, the answer is probable, and <span class="trap">confirmed</span> is the tempting choice because the story sounds convincing. Convincing is not laboratory verification.</p>
+
+<p><strong>A negative surveillance test is not proof of absence, and the Wisconsin wastewater report is the cleanest illustration you will ever get.</strong> Patient B was confirmed infectious and confirmed to be shedding into a sampled sewershed, and the routine assay still came back negative on all eight samples. The reason was a single adenine-to-guanine change in the nucleoprotein region the probe targets — present in fewer than 2% of B3 sequences when the assay was designed in March 2025 and in 75% of them by February 2026. Reading that result as <span class="trap">evidence the patient was not shedding virus</span> inverts the finding. Molecular assays inherit the genomes they were built against, which is why the report's recommendation is periodic revalidation, and why a revised assay with an added probe went out on March 2, 2026.</p>
+
+<p><strong>Attack rates and case fatality rates answer different questions, and Ebola reporting punishes the mix-up.</strong> For the Bundibugyo virus outbreak, 63 confirmed deaths among 378 confirmed cases is a <strong>case fatality</strong> — deaths divided by diagnosed cases, describing how lethal the illness is once diagnosed. It says nothing about how likely you are to catch it. In the Lubbock child care outbreak, 7 pediatric cases among 287 enrolled children is an <strong>attack rate</strong> — roughly 2.4% — describing how much of an at-risk group became ill. Dividing deaths by the population, or dividing cases by the entire facility including the 48 employees when the question specified enrolled children, produces <span class="trap">a number that is arithmetically correct and answers a different question</span>. Read what the denominator is supposed to be before you divide.</p>
+
+<p><strong>Know which MMWR series you are looking at, because the series tells you what kind of claim the report can make.</strong> A Surveillance Summary such as Brucellosis Surveillance, United States 2010-2024 describes patterns across fifteen years and 1,796 cases; it can say who is at risk and what exposures dominate, but it is passive reporting and it cannot establish cause and effect in an individual. A Notes from the Field such as the Herkimer County <em>Borrelia mayonii</em> case reports a single confirmed patient and ten positive ticks; it is a flag, not a prevalence estimate. Treating a Notes from the Field as though it <span class="trap">established that the pathogen is now widespread in New York</span> overreads it — 1,518 ticks were tested across 24 counties and only the ticks from one property were positive. The series label is a claim limit.</p>
+
+<p><strong>The most important recommendation always lives in Implications for Public Health Practice, not in Results.</strong> Students hunting for the recommendation tend to grab the most striking number they saw — 45% ninety-day mortality in the Atlanta invasive mold surveillance, or 9.73 times the odds of hospitalization among unvaccinated mpox patients — and reason toward an answer. But MMWR states its recommendation explicitly in the closing section, and it is usually broader and blander than the headline statistic: be vigilant for invasive mold disease in immunocompromised and critically ill patients; complete the two-dose vaccine series; maintain community coverage above 95%. Choosing <span class="trap">the option that restates the most dramatic result</span> instead of the option that restates the recommendation is a reliable way to lose points on a report you actually read carefully.</p>`});
+
+
+// Epidemiology — practice questions
+// Per-topic targets from the official test plan (round(percentage x 1.4)):
+//   t0 Introduction to Epidemiology (30%) ......................... 42
+//   t1 World and Government Response to Infectious Diseases (20%) . 28
+//   t2 CDC: Morbidity and Mortality Weekly Report (50%) ........... 70
+//   TOTAL ......................................................... 140
+
+const Q = [
+{"t":0,"q":"A county health department publishes the number of new asthma diagnoses by month, ZIP code, and age group, but makes no comparison between exposed and unexposed groups. What type of epidemiology is this?","a":["Experimental epidemiology","Analytic epidemiology","Descriptive epidemiology","Molecular epidemiology"],"c":2,"e":"Describing a health event by time, place, and person with no comparison group is descriptive epidemiology. Analytic is tempting because the data look sophisticated, but analytic work requires a comparison group and quantifies an association between an exposure and an outcome."},
+{"t":0,"q":"Epidemiologists use the five W's. Which W corresponds to quantifying the association between an exposure and an outcome?","a":["Why/how","When","What","Where"],"c":0,"e":"Why/how is the analytic question: it asks about causes, risk factors, and the strength of the exposure-outcome relationship. What is tempting because it feels like the central question, but What refers to the diagnosis or health event, which is set by the case definition."},
+{"t":0,"q":"Which epidemiologic tool did John Snow use in 1854 to display the geographic clustering of cases around the Broad Street pump?","a":["Line graph","Two-by-two table","Epidemic curve","Spot map"],"c":3,"e":"A spot map plots each case at its address, which is how Snow made the clustering around one pump visible. An epidemic curve is tempting, but a curve displays cases over time, not over place, and Snow's key insight in this instance was spatial."},
+{"t":0,"q":"During the 1850s John Snow traced a major outbreak of which disease, in which city?","a":["Typhoid fever in Manchester","Cholera in London","Plague in Marseille","Yellow fever in Philadelphia"],"c":1,"e":"Snow traced cholera in London and linked it to contaminated water supply, years before the organism was identified. Typhoid is a tempting distractor because it is also a waterborne enteric disease of that era, but the Broad Street investigation is specifically cholera."},
+{"t":0,"q":"A researcher studies the number of new HIV diagnoses among men aged 18 to 25 in a defined city during one calendar year. Which measure of disease frequency is this?","a":["Prevalence","Incidence","Case fatality rate","Attributable risk"],"c":1,"e":"New cases arising in a defined population over a defined period is incidence. Prevalence is the reflex wrong answer because it is the more familiar word, but prevalence counts all existing cases at a point in time, both new and old."},
+{"t":0,"q":"To calculate a prevalence rate, what number is divided by the population at risk?","a":["Number of new cases","Number of exposed persons","Number of deaths","Number of existing cases"],"c":3,"e":"Prevalence uses all existing cases, new plus previously diagnosed, in the numerator. Number of new cases is the trap because it is the numerator for incidence, and both measures share the same denominator, so the denominator will not tell them apart for you."},
+{"t":0,"q":"When measuring disease frequency, what serves as the denominator for both incidence and prevalence?","a":["Population at risk","Total number of cases","Number of exposed persons","Total number of deaths"],"c":0,"e":"Both measures divide by the population at risk, which excludes people who cannot develop the condition. Number of exposed persons is tempting because it is the denominator specifically for an attack rate among the exposed, which is a special case rather than the general rule."},
+{"t":0,"q":"During one month, 216 of the 800 residents of a small town developed influenza. What was the attack rate?","a":["21.6%","37%","27%","2.7%"],"c":2,"e":"216 divided by 800 equals 0.27, or 27%. The 21.6% option is what you get by misplacing a decimal or dividing by 1,000, which is exactly the kind of slip that makes an attack rate item look harder than it is."},
+{"t":0,"q":"At a banquet, the attack rate among people who ate the shrimp was 60% and the attack rate among people who did not eat it was 15%. What is the ratio of these attack rates?","a":["4","0.25","45","75"],"c":0,"e":"Dividing 60% by 15% gives a ratio of 4, meaning the exposed group became ill four times as often. The value 45 is tempting because subtracting the rates gives 45 percentage points, but that is the risk difference, an absolute measure, not a ratio."},
+{"t":0,"q":"An outbreak produced 160 diagnosed cases and 8 deaths. What is the case fatality rate?","a":["0.5%","8%","5%","20%"],"c":2,"e":"Case fatality divides deaths by diagnosed cases: 8 divided by 160 equals 0.05, or 5%. The 20% choice comes from inverting the fraction, and 0.5% comes from a decimal error, both of which are easy to make under time pressure."},
+{"t":0,"q":"A disease has a high incidence but very low prevalence. Which explanation best accounts for this?","a":["The disease is being underdiagnosed","The disease has a very short duration because it resolves or kills quickly","The population at risk is very large","The disease is not reportable"],"c":1,"e":"Prevalence is roughly incidence multiplied by average duration, so a condition that ends quickly accumulates few existing cases even when new cases appear constantly. Underdiagnosis is tempting, but underdiagnosis would depress incidence and prevalence together rather than separating them."},
+{"t":0,"q":"An investigator divides the number of new cases occurring among household contacts of index patients by the total number of susceptible household contacts. What is being calculated?","a":["Primary attack rate","Point prevalence","Case fatality rate","Secondary attack rate"],"c":3,"e":"The secondary attack rate measures spread from primary cases to their contacts and is the standard way to quantify person-to-person transmission. Primary attack rate is tempting, but that measures illness from the original common exposure, not from contact with a case."},
+{"t":0,"q":"In a standard epidemiologic two-by-two table, what does the quantity a + c represent?","a":["All exposed individuals","The total sample size","All individuals without the disease","All individuals who have the disease, whether or not they were exposed"],"c":3,"e":"Column totals describe disease status: a + c is everyone with the disease, exposed and unexposed alike, while b + d is everyone without it. All exposed individuals is the trap because a + b, the row total, is the exposed group, and rows and columns are easy to reverse."},
+{"t":0,"q":"In a standard epidemiologic two-by-two table, what does N represent?","a":["The number of cases","The total size of the sample","The number of exposed persons","The number of controls"],"c":1,"e":"N is a + b + c + d, the total number of people in the table. The number of cases is tempting because cases are the focus of the analysis, but cases are only the a + c column, not the whole table."},
+{"t":0,"q":"In a cohort study, 30 of 100 exposed people developed disease and 10 of 200 unexposed people developed disease. What is the relative risk?","a":["0.17","3","6","20"],"c":2,"e":"Risk in the exposed is 30/100 = 0.30, risk in the unexposed is 10/200 = 0.05, and 0.30 divided by 0.05 equals 6. Choosing 3 comes from comparing the raw case counts, 30 versus 10, and ignoring that the two groups were different sizes."},
+{"t":0,"q":"A case-control study finds 40 exposed cases, 20 exposed controls, 10 unexposed cases, and 30 unexposed controls. What is the odds ratio?","a":["6","4","2","0.17"],"c":0,"e":"The odds ratio is the cross-product, (40 x 30) divided by (20 x 10), which is 1200/200 = 6. Getting 0.17 means the cross-product was inverted, which happens when the table is written with cases and controls in the rows instead of the columns."},
+{"t":0,"q":"In a cohort study, a relative risk of exactly 1.0 indicates that:","a":["Exposure and disease are strongly associated","The exposure is protective","Exposure and disease are not associated","The study lacked statistical power"],"c":2,"e":"A ratio of 1.0 means risk was identical in the exposed and unexposed groups, which is the null result. Students often read any non-zero number as evidence of an association, but for a ratio measure the null value is 1, not 0."},
+{"t":0,"q":"What is the term for the absolute comparison in rates of occurrence between exposed and unexposed groups?","a":["Risk difference","Relative risk","Odds ratio","Attack rate"],"c":0,"e":"Risk difference, also called attributable risk, subtracts the unexposed risk from the exposed risk and is reported in cases per population. Relative risk is the tempting answer because it is more familiar, but a ratio is a relative comparison, not an absolute one."},
+{"t":0,"q":"What is the term for the proportion of disease among exposed individuals that can be credited to the exposure?","a":["Prevalence ratio","Relative risk","Odds ratio","Attributable risk"],"c":3,"e":"Attributable risk isolates the excess disease in the exposed group that the exposure accounts for, which is what public health uses to estimate how much illness prevention would avert. Relative risk answers how many times more likely, which is a different and non-attributable question."},
+{"t":0,"q":"Which study design is quantified by calculating the relative risk for an exposure of interest?","a":["Case-control","Cohort","Cross-sectional","Ecological"],"c":1,"e":"A cohort study starts with exposure status and follows people forward, so it can measure incidence in both groups and form a true risk ratio. Case-control is the reflex wrong answer, but there the proportion with disease is fixed by the investigator, so a risk ratio would be meaningless."},
+{"t":0,"q":"An investigator wants to calculate an odds ratio to quantify the relationship between an exposure and a disease. Which design is most useful?","a":["Cohort","Case-control","Randomized controlled trial","Community trial"],"c":1,"e":"The case-control design samples on disease status, so the odds ratio is the appropriate measure of association. Cohort is tempting because odds can technically be computed from any table, but the design that requires an odds ratio rather than a risk ratio is case-control."},
+{"t":0,"q":"An epidemiologist needs to study a disease that affects roughly 3 people per million per year. Which design is most feasible?","a":["Cohort study","Community trial","Cross-sectional study","Case-control study"],"c":3,"e":"A case-control study recruits people who already have the outcome, so even an extremely rare disease can be assembled into a study group at reasonable cost. Cohort is the most common wrong answer here, but following enough people forward to accumulate a few cases per million would be prohibitive."},
+{"t":0,"q":"Which type of epidemiological study is NOT suitable for studying rare exposures?","a":["Case-control","Cohort","Field trial","Retrospective cohort"],"c":0,"e":"Case-control studies sample on disease, so a rare exposure will be nearly absent from both cases and controls and no stable estimate is possible. Cohort is the trap because students memorize case-control as the rare-disease design and then apply the same label to rare exposures, which reverses the rule."},
+{"t":0,"q":"Which type of epidemiological study is best characterized as a survey?","a":["Case-control","Cohort","Cross-sectional","Ecological"],"c":2,"e":"A cross-sectional study measures exposure and outcome in the same people at the same moment, which is exactly what a survey does. Ecological is tempting because both use existing population data, but an ecological study analyzes groups as its unit of observation rather than surveying individuals."},
+{"t":0,"q":"A study measures blood lead level and reading test score in the same children on the same day. Why can it not establish cause and effect?","a":["Exposure and outcome were measured simultaneously, so temporality cannot be established","The sample was too small","Lead is not a plausible cause of cognitive effects","Blood lead is an unreliable measurement"],"c":0,"e":"Without knowing which came first, the design cannot satisfy temporality, the one causal criterion that is mandatory. Sample size is tempting, but a cross-sectional study with a million children would still be unable to order the exposure and the outcome in time."},
+{"t":0,"q":"What is the unit of study for an ecological observational study?","a":["Individuals","Households","Populations","Cases and controls"],"c":2,"e":"Ecological studies compare aggregate measures across groups such as counties or countries, so the population is the unit of observation. Individuals is the trap, and applying a group-level association to an individual is the classic ecological fallacy."},
+{"t":0,"q":"What is the unit of study for a randomized controlled trial?","a":["The community","The individual","The population","The household"],"c":1,"e":"In a randomized controlled trial the investigator assigns exposure to individual participants, so the individual is the unit. The community is the unit in a community trial, which is the design most often confused with an RCT on this event."},
+{"t":0,"q":"Which type of epidemiological study carries the highest probability of selection or recall bias?","a":["Cohort","Randomized controlled trial","Field trial","Case-control"],"c":3,"e":"Case-control studies choose controls after the fact and ask people to remember past exposures, which invites both selection and recall bias. Cohort is tempting because cohorts lose participants over time, but loss to follow-up is a different threat and cohorts collect exposure before disease occurs."},
+{"t":0,"q":"Which type of epidemiological study has the highest suitability for determining the time relationship between an exposure and an outcome?","a":["Cross-sectional","Case-control","Ecological","Cohort"],"c":3,"e":"A cohort begins with exposure and watches the outcome develop, which is exactly what establishing temporality requires. Case-control is tempting because it also looks at both exposure and disease, but it reconstructs exposure after the outcome is already known."},
+{"t":0,"q":"A screening test is applied to 100 people who truly have the disease and correctly identifies 90 of them. What is the sensitivity?","a":["10%","90%","50%","99%"],"c":1,"e":"Sensitivity is true positives divided by all who truly have the disease, or 90/100 = 90%. The 50% option is what you would get by computing a predictive value instead, which uses a completely different denominator, all the people who tested positive."},
+{"t":0,"q":"A screening test produces 90 true positives and 90 false positives. What is the positive predictive value?","a":["10%","90%","50%","95%"],"c":2,"e":"PPV is true positives divided by all positive results, or 90 divided by 180, which is 50%. Choosing 90% means answering with sensitivity, which asks a different question from the opposite direction: of those who are sick, how many test positive."},
+{"t":0,"q":"The same screening test is moved from a high-prevalence clinic to a low-prevalence community screening program. What happens?","a":["Positive predictive value falls","Specificity falls","Sensitivity falls","Negative predictive value falls"],"c":0,"e":"Sensitivity and specificity are properties of the test and do not change with prevalence, but predictive values do. As prevalence falls, a larger share of positives are false positives, so PPV drops while NPV rises."},
+{"t":0,"q":"A screening test should be inexpensive, easy to apply, acceptable to the public, and:","a":["Diagnostic","Invasive","Dependable","Confirmatory"],"c":2,"e":"Dependability, meaning the test gives an accurate and reproducible result, completes the standard list of screening criteria. Diagnostic is the trap: screening is deliberately not diagnosis, and a positive screen must always be followed by a confirmatory test."},
+{"t":0,"q":"A variable is associated with the exposure, is an independent risk factor for the outcome, and does not lie on the causal pathway between them. What is it?","a":["A confounder","An effect modifier","A mediator","A selection bias"],"c":0,"e":"That three-part description is the definition of a confounder, which is why randomization, restriction, matching, stratification, and adjustment all exist. Effect modifier is tempting, but an effect modifier is a real difference in effect across strata, not a distortion to be removed."},
+{"t":0,"q":"In a case-control study of birth defects, mothers of affected infants search their memories far harder for possible exposures than mothers of healthy infants do. What is this?","a":["Selection bias","Effect modification","Confounding","Recall bias"],"c":3,"e":"Differential accuracy of remembered exposure between cases and controls is recall bias, the signature weakness of the case-control design. Confounding is tempting because both distort the estimate, but confounding involves a third variable, not a difference in how information was gathered."},
+{"t":0,"q":"A study of substance use among Chicago teenagers enrolls only schools that meet a threshold on a characteristic strongly linked to the outcome. The resulting estimate is best described as:","a":["Precise","Biased","Confounded","Statistically significant"],"c":1,"e":"Choosing participants in a way that is related to the outcome builds systematic error into the design, which is selection bias, and no amount of additional data will correct it. Confounded is tempting, but confounding is a third-variable problem, whereas this error was created by how subjects entered the study."},
+{"t":0,"q":"To test an association for statistical significance, an investigator begins with the null hypothesis. What does the null hypothesis assume when the relative risk equals one?","a":["Exposure is related to the disease","Exposure is not related to the disease","Exposure is protective against the disease","The sample size was inadequate"],"c":1,"e":"The null hypothesis states there is no association, and for a ratio measure that corresponds to a value of exactly 1.0. Students sometimes read 1.0 as a positive finding because it is a non-zero number, which is the single most common misreading of a ratio measure."},
+{"t":0,"q":"Of the Bradford Hill considerations for causation, which one must be satisfied in every case?","a":["Biological plausibility","Specificity","Analogy","Temporality"],"c":3,"e":"The exposure must precede the outcome; nothing can be a cause of something that already happened. Biological plausibility is the tempting answer because it feels scientific, but plausibility depends on what is currently known, and Snow proved cholera was waterborne before any mechanism was plausible."},
+{"t":0,"q":"Which model for non-infectious disease occurrence was proposed by Rothman in 1976?","a":["Causal pie","Epidemiologic triad","Web of causation","Natural history of disease"],"c":0,"e":"Rothman's causal pie treats a sufficient cause as a complete pie built from component causes, with a necessary cause appearing in every pie. The epidemiologic triad is tempting, but the triad of agent, host, and environment is the classical model for infectious disease."},
+{"t":0,"q":"An outbreak is traced to a single contaminated batch of food distributed to many households. What mode of transmission is this?","a":["Airborne","Vector borne","Vehicle borne","Direct contact"],"c":2,"e":"An inanimate intermediate such as food, water, or a fomite that carries the agent to the host is vehicle-borne transmission. Vector borne is the frequent wrong choice, but a vector is a living arthropod, not a contaminated product."},
+{"t":0,"q":"What is the ongoing, systematic collection, analysis, interpretation, and dissemination of health data to guide public health decision making?","a":["Surveillance","Screening","Field investigation","Program evaluation"],"c":0,"e":"That definition is surveillance, and the phrase ongoing and systematic is what separates it from a one-time study. Field investigation is tempting, but an investigation is triggered by a specific event, while surveillance runs continuously in the background."},
+{"t":0,"q":"Hospitals and laboratories routinely submit required disease reports to the state health department without being contacted. What type of surveillance is this?","a":["Active surveillance","Sentinel surveillance","Passive surveillance","Syndromic surveillance"],"c":2,"e":"Passive surveillance is the regular reporting of disease data by health institutions to health authorities; it is inexpensive, broad, and known to undercount. Active is the reflex wrong answer because it sounds more rigorous, but active surveillance means the health department goes out and searches for cases."},
+{"t":1,"q":"The World Health Organization was founded in which year, and where is it headquartered?","a":["1945 in New York","1948 in Geneva","1946 in Atlanta","1951 in Paris"],"c":1,"e":"WHO was established in 1948 as the United Nations specialized agency for health, with headquarters in Geneva. The 1946 option is tempting because 1946 is when CDC was founded in Atlanta, and the two dates are easy to swap."},
+{"t":1,"q":"Under the revised International Health Regulations that entered into force in 2007, what is each member state obligated to do?","a":["Report only the four diseases on a fixed list","Accept WHO inspection teams on demand","Submit all national health data to WHO annually","Detect, assess, and notify WHO of events that may constitute a public health emergency of international concern"],"c":3,"e":"The 2005 revision replaced a short fixed disease list with a general obligation to assess and notify any event of potential international concern, plus a duty to build core surveillance and response capacities. Reporting only a fixed list describes the older regulations the revision was written to replace."},
+{"t":1,"q":"Who formally declares a public health emergency of international concern?","a":["The United Nations Security Council","The CDC Director","The World Health Assembly by majority vote","The WHO Director-General, on the advice of an Emergency Committee"],"c":3,"e":"A PHEIC is declared by the WHO Director-General after convening and hearing an Emergency Committee. The World Health Assembly is tempting because it is WHO's governing body, but it meets annually and cannot act on the timescale an emergency requires."},
+{"t":1,"q":"Which WHO mechanism pools institutions and technical experts so that an outbreak response team can be deployed internationally?","a":["ACIP","GOARN","NNDSS","CSTE"],"c":1,"e":"The Global Outbreak Alert and Response Network exists so WHO can assemble a technical team from partner institutions quickly. NNDSS and CSTE are tempting only if the US and global systems blur together; both are United States notifiable disease structures, not WHO ones."},
+{"t":1,"q":"Measles has been reduced to zero endemic transmission within the United States, but importations still occur and the virus circulates elsewhere. What term describes this status?","a":["Eradication","Extinction","Elimination","Containment"],"c":2,"e":"Elimination means incidence reduced to zero in a defined geographic area while the agent persists elsewhere, which is exactly why every US measles outbreak begins with an importation. Eradication is the trap, because eradication is worldwide and permanent and would mean intervention could stop."},
+{"t":1,"q":"Which disease is the only human disease ever certified as eradicated worldwide, and in what year?","a":["Smallpox, 1980","Polio, 1994","Measles, 2000","Guinea worm disease, 2015"],"c":0,"e":"Smallpox was certified eradicated in 1980, following the last naturally acquired case in 1977. Polio is tempting because eradication has been the goal since 1988, but wild poliovirus type 1 transmission has never been fully interrupted."},
+{"t":1,"q":"What type of organism causes Guinea worm disease (dracunculiasis)?","a":["Bacterium","Virus","Parasite","Prion"],"c":2,"e":"Dracunculiasis is caused by the parasitic nematode Dracunculus medinensis, acquired by drinking water containing infected copepods. Bacterium is the common wrong answer because most eradication and control campaigns students hear about target bacteria or viruses, which are also the diseases with vaccines."},
+{"t":1,"q":"What is the approximate incubation period for Guinea worm disease?","a":["10 to 14 months","10 to 14 weeks","10 to 14 days","3 to 5 years"],"c":0,"e":"The worm takes roughly 10 to 14 months to mature and emerge, which is why surveillance for the disease has to run for more than a year after the last case before a country can be certified free. The days option is tempting because most enteric infections incubate in days, but this is a slow-developing helminth."},
+{"t":1,"q":"What has been identified as the greatest remaining challenge to global eradication of Guinea worm disease?","a":["Lack of an effective vaccine","Cost of the treatment drug","Antimicrobial resistance","Civil unrest, insecurity, and lingering infections in animal reservoirs"],"c":3,"e":"The remaining obstacles are political and ecological: insecurity prevents surveillance in the last endemic areas, and infections persist in dogs and other animals. Lack of a vaccine is tempting but misleading, because the program was always designed around water filtration and case containment rather than immunization."},
+{"t":1,"q":"Approximately what proportion of human rabies cases worldwide result from dog bites?","a":["50%","99%","75%","25%"],"c":1,"e":"Dog bites account for approximately 99% of human rabies cases globally, which is why mass canine vaccination is the primary control strategy. Lower estimates are tempting in the United States, where wildlife dominates domestic exposure, but the global picture is overwhelmingly canine."},
+{"t":1,"q":"In Africa, which age group accounts for approximately 76% of malaria deaths?","a":["5 to 14 years","Under 5 years","15 to 49 years","65 years and older"],"c":1,"e":"Children under five carry the great majority of African malaria mortality, which is why insecticide-treated nets and seasonal chemoprevention target them. Older adults are the intuitive answer from experience with most infectious diseases, but malaria mortality is concentrated in the youngest, least immune group."},
+{"t":1,"q":"CDC's Epidemic Intelligence Service, the applied epidemiology training program whose officers deploy to outbreaks, was founded in what year?","a":["1946","2001","1980","1951"],"c":3,"e":"EIS was established in 1951, five years after CDC itself was founded in 1946. The 1946 option is the natural trap, because that is the agency's founding date rather than the founding of its field epidemiology fellowship."},
+{"t":1,"q":"An applied epidemiologist in the United States will primarily work for which type of employer?","a":["State and local governments","Pharmaceutical companies","Private hospitals","International nongovernmental organizations"],"c":0,"e":"Most applied epidemiology in the United States happens in state and local health departments, which is where outbreak investigation and surveillance actually run. Federal agencies are tempting, but CDC is comparatively small and typically supports state investigations rather than leading them."},
+{"t":1,"q":"What is CDC's primary method of sharing cleared information about urgent public health incidents with public information officers and clinicians?","a":["MMWR","NNDSS","HAN","PulseNet"],"c":2,"e":"The Health Alert Network distributes cleared, urgent messages to health departments, clinicians, and public information officers. MMWR is the tempting answer because it is CDC's best-known publication, but MMWR is weekly scientific publication, not a same-day alerting channel."},
+{"t":1,"q":"A physician is legally required to report a case of meningococcal disease. What creates that legal requirement?","a":["State law","Federal law enforced by CDC","The International Health Regulations","Hospital accreditation standards"],"c":0,"e":"The legal duty to report a disease is created by state law, which is why reportable lists differ between states. CDC is the trap: CDC and the Council of State and Territorial Epidemiologists jointly decide which conditions are nationally notifiable, but that list is a voluntary reporting arrangement, not a mandate on clinicians."},
+{"t":1,"q":"A laboratory-confirmed measles patient is kept home until four days after rash onset, while an exposed but well classmate is kept home for 21 days. What are these two actions, in order?","a":["Quarantine, then isolation","Both isolation","Isolation, then quarantine","Both quarantine"],"c":2,"e":"Isolation separates people who are already ill, and quarantine restricts people who were exposed but are not yet known to be sick. The order is also a clue to duration: isolation is timed from symptom onset, while quarantine is timed from exposure and runs the length of the incubation period."},
+{"t":1,"q":"Which department oversees the Administration for Strategic Preparedness and Response?","a":["Department of Homeland Security","Department of Health and Human Services","Department of Defense","Federal Emergency Management Agency"],"c":1,"e":"ASPR is a component of the Department of Health and Human Services and leads federal public health and medical emergency preparedness. Homeland Security is tempting because FEMA sits there and coordinates overall disaster response, but the medical and public health lead is HHS."},
+{"t":1,"q":"Which federal resource holds medicines, antidotes, vaccines, and medical supplies for deployment when state and local resources are overwhelmed?","a":["The Health Alert Network","The National Notifiable Diseases Surveillance System","The Medical Reserve Corps","The Strategic National Stockpile"],"c":3,"e":"The Strategic National Stockpile, now managed by ASPR, is the national repository of medical countermeasures. The Medical Reserve Corps is tempting because it also activates in emergencies, but MRC supplies volunteer people, not stockpiled materiel."},
+{"t":1,"q":"After a hurricane, what task might a local Medical Reserve Corps unit be activated to perform?","a":["Declaring a public health emergency of international concern","Approving emergency use of vaccines","Setting the national notifiable disease list","Assisting in support call centers and evacuation centers"],"c":3,"e":"MRC units are local volunteer teams that supplement the workforce in shelters, evacuation centers, and support call lines. Declaring an emergency and approving vaccines are tempting because they are dramatic, but those are authorities held by WHO and FDA respectively, not by community volunteers."},
+{"t":1,"q":"Which HHS program identifies Medicare beneficiaries who depend on electricity-powered durable medical equipment in an area affected by a power outage?","a":["CASPER","emPOWER","NDMS","BARDA"],"c":1,"e":"The HHS emPOWER Program maps electricity-dependent Medicare beneficiaries so responders know which households lose life-sustaining equipment when the grid fails. CASPER is the frequent wrong answer because it also produces household-level information, but CASPER is a survey conducted after the event, not a pre-existing registry."},
+{"t":1,"q":"What are the four phases of the disaster cycle?","a":["Detection, notification, containment, recovery","Warning, evacuation, rescue, rebuilding","Preparedness, response, recovery, mitigation","Prevention, screening, treatment, rehabilitation"],"c":2,"e":"The disaster cycle runs preparedness, response, recovery, and mitigation, with mitigation being the work that reduces the impact of the next event. The prevention, screening, treatment sequence is tempting because it mirrors the three levels of disease prevention, which is a different framework entirely."},
+{"t":1,"q":"Accidental chemical spills and terrorist events are classified as what type of disaster?","a":["Induced","Natural","Complex","Endemic"],"c":0,"e":"Induced, sometimes called technological or human-caused, disasters are those produced by human activity or intent. Complex is tempting because these events certainly are complicated, but complex emergency has a specific meaning involving conflict and displacement, not chemical releases."},
+{"t":1,"q":"What is CASPER?","a":["A syndromic surveillance system for emergency departments","A federal stockpile of medical countermeasures","A rapid, household-based needs assessment that gives leaders population-level information after a disaster","A network for deploying international outbreak teams"],"c":2,"e":"The Community Assessment for Public Health Emergency Response uses two-stage cluster sampling of households to produce fast, statistically defensible community estimates. A syndromic surveillance system is tempting because both are used after emergencies, but CASPER is a one-time survey, not a continuous data stream."},
+{"t":1,"q":"Which of the following is NOT an objective of CASPER?","a":["Delivering food, medicine, or medical services","Describing household characteristics in the affected area","Assessing household needs after a disaster","Providing information to guide response planning"],"c":0,"e":"CASPER assesses and describes; it produces the information other agencies act on. Delivering food, medicine, or medical services is the option that appears in nearly every CASPER list precisely because it sounds like the humane answer, but distribution is a separate operational function."},
+{"t":1,"q":"After an earthquake, a health department recruits a limited number of clinics to report specific health events so it can detect outbreaks and target relief. What type of surveillance is this?","a":["Passive","Active","Syndromic","Sentinel"],"c":3,"e":"Sentinel surveillance uses a limited set of recruited sites or providers reporting on defined events, which gives good trend information quickly without attempting a complete count. Active is tempting because the department set the system up deliberately, but active surveillance means seeking out every case, not sampling selected sites."},
+{"t":1,"q":"Which surveillance system uses symptom-based case definitions rather than specific clinical, laboratory, or diagnostic criteria?","a":["Morbidity surveillance","Syndromic surveillance","Sentinel surveillance","Passive surveillance"],"c":1,"e":"Syndromic surveillance groups presentations by symptom pattern so an unusual signal can be detected days before laboratory confirmation exists. Morbidity surveillance is tempting because both track illness, but morbidity surveillance reports diagnosed conditions with incidence and prevalence rates."},
+{"t":1,"q":"Which type of surveillance data system best measures the impact of a disaster on a population and identifies the leading causes and circumstances of death?","a":["Sentinel surveillance","Mortality surveillance","Syndromic surveillance","Morbidity surveillance"],"c":1,"e":"Mortality surveillance counts and classifies deaths, which is how the human impact of a disaster and its direct and indirect causes are established. Morbidity surveillance is tempting and is generally the richer data source, but it cannot answer questions about who died and why."},
+{"t":1,"q":"To manage intense emotions when first approaching victims of a disaster, a responder can use the acronym SOLER. What does the E stand for?","a":["Empathy","Evaluation","Engagement","Eye contact"],"c":3,"e":"SOLER stands for Squarely face the person, Open posture, Lean toward them, Eye contact, and Relaxed, and it describes body language rather than internal attitude. Empathy is the tempting answer because the acronym is taught in a psychological first aid context, but every letter in SOLER names a physical behavior."},
+{"t":2,"q":"How often is the Morbidity and Mortality Weekly Report published, and who prepares it?","a":["Weekly, by CDC","Monthly, by the World Health Organization","Quarterly, by the Council of State and Territorial Epidemiologists","Daily, by state health departments"],"c":0,"e":"MMWR is CDC's weekly scientific publication and is issued every Thursday. WHO is a tempting distractor because WHO also publishes epidemiologic bulletins, but MMWR is specifically the CDC vehicle and most of its content originates with US state and local health departments."},
+{"t":2,"q":"The boxed Summary at the start of a full MMWR report answers three fixed questions. Which set is correct?","a":["Background, methods, results","Who, what, where","What is already known, what is added by this report, what are the implications for public health practice","Hypothesis, findings, conclusion"],"c":2,"e":"Those three questions appear in every full-length MMWR report and are the fastest way to orient yourself in an unfamiliar report. Background, methods, results is tempting because those are real section headings, but they are the body of the article, not the summary box."},
+{"t":2,"q":"You are given an MMWR report and asked how a particular patient would have been classified. Which section holds the answer?","a":["Methods","Introduction","Discussion","Implications for Public Health Practice"],"c":0,"e":"The case definition lives in Methods, and classification questions are answered by matching the patient mechanically against it. Discussion is tempting because that is where the authors interpret their cases, but interpretation is not the definition."},
+{"t":2,"q":"An item asks for the most important public health recommendation resulting from an MMWR investigation. Which section is being quoted?","a":["Results","Limitations","Implications for Public Health Practice","Author affiliations"],"c":2,"e":"MMWR states its recommendation explicitly in the closing Implications for Public Health Practice section. Results is the common wrong choice, because students grab the most dramatic statistic they saw and reason toward an answer instead of reading the stated recommendation."},
+{"t":2,"q":"An MMWR report notes that its findings cannot be generalized because the sample size was small. Where in the report does this statement appear?","a":["The Summary box","The Limitations paragraph of the Discussion","The Methods section","The Results tables"],"c":1,"e":"Every full MMWR report concedes what it cannot show in a Limitations paragraph within the Discussion. Methods is tempting because sample size is described there, but describing how many people were studied is not the same as conceding what that number prevents you from claiming."},
+{"t":2,"q":"Which MMWR format is a brief item, typically a few hundred words with no summary box, used to publish early or limited findings quickly?","a":["Surveillance Summaries","QuickStats","Recommendations and Reports","Notes from the Field"],"c":3,"e":"Notes from the Field exists so an unusual or emerging finding can reach the field before a full analysis is possible; the report on Borrelia mayonii in New York is an example. Surveillance Summaries is the opposite: a long, multi-year analysis of a surveillance system."},
+{"t":2,"q":"An MMWR item analyzes fifteen years of national brucellosis case reports and describes patterns by state, species, and exposure. Which MMWR series is this?","a":["Weekly Report","Notes from the Field","Recommendations and Reports","Surveillance Summaries"],"c":3,"e":"Multi-year analyses of a named surveillance system are published as Surveillance Summaries, numbered in the SS series. Weekly Report is tempting because that is where most outbreak articles appear, but a weekly report typically covers one event in one place over a short window."},
+{"t":2,"q":"Where would new Advisory Committee on Immunization Practices vaccine recommendations be published within MMWR?","a":["QuickStats","Recommendations and Reports","Notes from the Field","Surveillance Summaries"],"c":1,"e":"Policy and clinical guidance, including ACIP recommendations, appears in the Recommendations and Reports series. Surveillance Summaries is tempting because both are long-form numbered series, but a Surveillance Summary describes what has been observed rather than what should be done."},
+{"t":2,"q":"An MMWR item consists of a single figure with a caption drawn from national survey data. What is it called?","a":["Notes from the Field","Erratum","QuickStats","Early Release"],"c":2,"e":"QuickStats is the one-figure format that closes many weekly issues, usually built from National Center for Health Statistics data. Early Release is tempting because both are short, but an Early Release is a full report posted ahead of its printed issue because the findings are urgent."},
+{"t":2,"q":"The two reports on the Bundibugyo virus outbreak were posted on June 5, 2026, ahead of the June 11 issue. What is this publication mechanism called?","a":["Early Release","Erratum","Supplement","Notes from the Field"],"c":0,"e":"Early Release publication is used when findings are too urgent to wait for the printed issue. Supplement is tempting because supplements are also outside the normal weekly flow, but supplements collect thematic collections of papers rather than expediting a single urgent report."},
+{"t":2,"q":"In most MMWR outbreak investigations, what is usually required for a case to be classified as confirmed rather than probable?","a":["Hospitalization","An epidemiologic link to another case","Laboratory verification","Physician diagnosis"],"c":2,"e":"Confirmed almost always means laboratory verification, while probable means a clinically compatible illness plus an epidemiologic link without confirmatory testing. An epidemiologic link is the classic wrong answer because it is exactly what defines the probable tier."},
+{"t":2,"q":"An epidemic curve shows progressively taller waves of cases spaced roughly one incubation period apart. What pattern is this?","a":["Propagated","Continuous common source","Intermittent common source","Point source"],"c":0,"e":"Successive generations of cases separated by an incubation period indicate person-to-person spread, which is a propagated outbreak. Intermittent common source is tempting because it also produces multiple peaks, but those peaks are irregular and follow re-exposure to a shared vehicle rather than a fixed biological interval."},
+{"t":2,"q":"An epidemic curve rises sharply, peaks within a single incubation period, and falls just as quickly. What pattern is this?","a":["Mixed","Propagated","Continuous common source","Point source"],"c":3,"e":"A single tight peak contained within one incubation period means everyone was exposed at essentially the same moment, which is a point source. Continuous common source is tempting because both involve a shared vehicle, but continuous exposure produces a plateau rather than a narrow spike."},
+{"t":2,"q":"An epidemic curve shows a sustained plateau of cases over several weeks rather than a single peak. What does this suggest?","a":["Point source outbreak","Continuous common-source outbreak","Propagated outbreak","Two unrelated outbreaks"],"c":1,"e":"A plateau means people kept being exposed to the same source over an extended period, which is a continuous common-source pattern. Propagated is tempting because both last a long time, but a propagated curve shows distinguishable successive waves rather than a flat sustained level."},
+{"t":2,"q":"An MMWR report describes 8 cases among the 287 children enrolled at a child care facility, of which 7 were children. What is the attack rate among enrolled children?","a":["2.8%","2.4%","8%","0.24%"],"c":1,"e":"Seven pediatric cases divided by 287 enrolled children is 0.0244, or about 2.4%. The 2.8% option comes from using all 8 cases including the adult grandfather, who was never part of the enrolled child population and does not belong in that numerator."},
+{"t":2,"q":"An outbreak report describes 378 confirmed cases and 63 confirmed deaths. What is the case fatality, and what does it describe?","a":["About 17%, describing the attack rate","About 17%, describing how easily the disease spreads","About 6%, describing the death rate in the population","About 17%, describing how lethal the illness is once diagnosed"],"c":3,"e":"Sixty-three divided by 378 is roughly 0.167, and dividing deaths by diagnosed cases measures severity of illness among the diagnosed. Calling that number an attack rate or a spread measure is the common error: case fatality says nothing about how likely you are to become infected."},
+{"t":2,"q":"CDC reported 997 measles cases in a single outbreak spanning October 2025 through March 2026. Which state was affected?","a":["South Carolina","New Mexico","Texas","Colorado"],"c":0,"e":"The 997-case outbreak occurred in South Carolina and was the subject of the nowcasting report published in August 2026. Texas is tempting because West Texas measles reports also appeared in this window, but those describe a separate outbreak with its own case count."},
+{"t":2,"q":"What does nowcasting do in an outbreak response?","a":["Predicts how many cases will occur over the coming year","Replaces laboratory confirmation with a statistical estimate","Estimates current transmission and case counts by correcting for reporting delay","Calculates the case fatality rate from provisional data"],"c":2,"e":"A nowcast reconstructs the present from incomplete data, because cases that already happened have not all been reported yet. Predicting the coming year is the reflex wrong answer, but that is forecasting, and the value of nowcasting is precisely that the recent past is uncertain."},
+{"t":2,"q":"In the South Carolina measles nowcasting report, what was the median reporting delay between rash onset and notification of public health authorities?","a":["2 to 3 days","Less than 1 day","7 to 10 days","14 days"],"c":0,"e":"The median delay was 2 to 3 days, and 92.8% of cases were reported within 14 days of rash onset. Fourteen days is tempting because that number does appear in the report, but it is the outer bound within which nearly all cases arrived, not the typical delay."},
+{"t":2,"q":"On January 6, 2026, provisional South Carolina measles data contained only about what share of what the final counts would eventually show for that period?","a":["72.1%","50.0%","25.7%","92.8%"],"c":2,"e":"Only 25.7% of the eventual cases had been reported at that point, which is why the raw curve appeared to flatten while transmission was still climbing. The 72.1% figure is tempting but describes how well provisional data performed from late January onward, once the reporting backlog cleared."},
+{"t":2,"q":"Between December 23, 2025 and January 6, 2026, cumulative reported measles cases in South Carolina rose from 185 to what number?","a":["287","424","609","997"],"c":1,"e":"Cases more than doubled to 424 in that two-week span, which is the growth the nowcast was trying to capture in real time. The 997 option is tempting because that is the total for the entire outbreak through March 2026, not the count at the start of January."},
+{"t":2,"q":"What does the effective reproduction number, Rt, estimate?","a":["The total number of cases expected in an outbreak","The reporting delay in a surveillance system","The proportion of the population that is immune","The average number of secondary cases generated by each current case"],"c":3,"e":"Rt is the average number of people each currently infectious person infects, so a value above 1 means the outbreak is still growing. The proportion immune is tempting because immunity drives Rt down, but immunity is an input to Rt rather than the quantity itself."},
+{"t":2,"q":"What concrete operational decision did the South Carolina nowcasting estimates support?","a":["Closing schools statewide","Suspending the state notifiable disease list","Ordering a statewide quarantine","Maintaining high staffing through the winter holidays and hiring additional staff"],"c":3,"e":"Because the nowcast showed transmission continuing when provisional counts suggested a decline, the state health department kept staffing high over the holidays and hired more staff. School closure is the intuitive answer for a measles outbreak, but the report's stated operational impact was workforce planning."},
+{"t":2,"q":"The Lubbock, Texas child care facility described in MMWR had how many enrolled children and employees?","a":["325 children and 60 employees","287 children and 48 employees","185 children and 21 employees","997 children and 54 employees"],"c":1,"e":"The facility enrolled 287 children and employed 48 staff, and those denominators are what any attack rate from this report must use. The 325 and 60 option comes from the separate West Texas hospitalization report, where 60 of 325 confirmed cases were hospitalized."},
+{"t":2,"q":"How many confirmed measles cases occurred in the Lubbock child care facility outbreak, and how were they distributed?","a":["12 cases: 10 children and 2 adults","7 cases: all children","8 cases: 7 children and 1 adult","8 cases: 5 children and 3 adults"],"c":2,"e":"There were 8 confirmed cases, 7 in children and 1 in a 41-year-old adult. Answering 7 children only is tempting because the facility is a child care setting, but the adult case is what stretched the age range of the outbreak to 5 months through 41 years."},
+{"t":2,"q":"Who was the index patient in the Lubbock child care facility measles outbreak?","a":["An unvaccinated 3-year-old child","A partially vaccinated 5-month-old infant","A 41-year-old adult with unknown vaccination status","A fully vaccinated staff member"],"c":0,"e":"The index patient was an unvaccinated 3-year-old, who was also the only patient hospitalized, for one day. The 41-year-old adult is tempting because adults are often assumed to import infection into a child setting, but in this outbreak the adult was a later case, not the index."},
+{"t":2,"q":"Three of the Lubbock cases occurred in infants under 12 months of age. Why does that matter for outbreak control?","a":["MMR is contraindicated for life in that age group","Infants that young cannot transmit measles","Infants that young are too young for the routine first MMR dose and depend on community immunity","Infants that young are not counted in outbreak totals"],"c":2,"e":"The routine first MMR dose is not given before 12 months, so these infants had no vaccine-derived protection and relied on everyone around them. Saying MMR is contraindicated for life is a distortion: an early dose was in fact recommended for infants aged 6 to 11 months in the outbreak counties."},
+{"t":2,"q":"In the Lubbock outbreak response, how long were unvaccinated exposed children excluded from the facility?","a":["21 days","7 days","14 days","4 days"],"c":0,"e":"Exclusion ran 21 days, the length of the measles incubation period, which is how long an exposed susceptible person could still develop disease. Four days is the trap because that is the isolation rule for a case, who may return four days after rash onset."},
+{"t":2,"q":"During the Texas measles outbreak, what MMR recommendation was made for infants aged 6 through 11 months living in outbreak counties?","a":["Delay all doses until 15 months","Give a single dose and skip the routine two-dose series","Give immunoglobulin instead of any vaccine","Give an early dose in addition to the routine schedule"],"c":3,"e":"An early dose was recommended for infants 6 to 11 months in outbreak counties, and it does not replace the routine doses at 12 to 15 months and 4 to 6 years. Substituting immunoglobulin is tempting because IG was also offered, but IG is postexposure prophylaxis for specific exposed individuals, not a community vaccination strategy."},
+{"t":2,"q":"A confirmed measles case may return to a child care setting how long after rash onset, assuming recovery?","a":["24 hours after fever resolves","4 days after rash onset","10 days after rash onset","21 days after rash onset"],"c":1,"e":"Measles cases are considered no longer infectious four days after rash onset, which is the return threshold used in the Lubbock response. Twenty-one days is the trap because 21 days is the quarantine period for an exposed susceptible person, timed from exposure rather than from rash."},
+{"t":2,"q":"Among the 325 confirmed measles cases in the West Texas outbreak analysis, 60 patients were hospitalized. What is the hospitalization rate?","a":["6.0%","18.5%","54%","32.5%"],"c":1,"e":"Sixty divided by 325 is 0.185, or 18.5%. The 54 figure is tempting because 54 appears prominently in the report, but that is the number of hospitalized patients whose medical records were available for review, not a rate."},
+{"t":2,"q":"What was the most common complication among patients hospitalized in the West Texas measles outbreak?","a":["Encephalitis","Seizure","Otitis media","Pneumonia"],"c":3,"e":"Pneumonia occurred in 72.2% of the hospitalized patients reviewed, and 70.4% required supplemental oxygen. Encephalitis is the complication students most associate with measles severity, but it is far rarer than pneumonia, which is the leading cause of measles death in young children."},
+{"t":2,"q":"What was the vaccination status of patients hospitalized during the West Texas measles outbreak?","a":["All were unvaccinated or of unknown vaccination status","About half had received two MMR doses","Most had received one MMR dose","Vaccination status was not collected"],"c":0,"e":"Every hospitalized patient in the reviewed group was unvaccinated or had unknown status, which is the single most striking finding in the report. Saying vaccination status was not collected is tempting when a report seems too neat, but this analysis specifically documented it."},
+{"t":2,"q":"In the Wisconsin wastewater report, measles virus from patient A was detected in a February 2 sample and reported on February 5. Why was that notable?","a":["It identified the exact household of the patient","It replaced the need for laboratory confirmation","It came before the clinical case notification","It proved the outbreak had ended"],"c":2,"e":"Wastewater detection preceded clinical notification, showing that sewershed monitoring can flag circulation ahead of case reporting. Identifying the exact household is impossible, because a sewershed sample represents an entire collection area, in this instance about 30,000 residents."},
+{"t":2,"q":"In the Wisconsin report, the routine wastewater assay failed to detect measles virus from patient B. What was the cause?","a":["A single adenine-to-guanine mismatch in the nucleoprotein region the probe targets","The patient was not actually infectious","The samples were collected outside the infectious period","Chlorine in the wastewater destroyed the virus"],"c":0,"e":"A single-base change in the assay's target sequence made the probe unable to bind the circulating genotype B3 virus, and metagenomic sequencing later confirmed the virus was present. Concluding the patient was not infectious inverts the finding: infectiousness and isolation within the sewershed were both confirmed."},
+{"t":2,"q":"What is the correct interpretation of the Wisconsin wastewater findings for patient B?","a":["A negative wastewater result is proof the pathogen is absent","Wastewater surveillance should be abandoned for measles","Molecular assays must be revalidated against current genomic data","Metagenomic sequencing should replace all targeted assays"],"c":2,"e":"The report's stated lesson is that assays inherit the genomes they were designed against and need periodic revalidation; a revised version with an added probe was released March 2, 2026. Treating a negative as proof of absence is exactly the error the report was written to correct."},
+{"t":2,"q":"The 2026 Ebola disease outbreak covered in MMWR was caused by which virus?","a":["Zaire ebolavirus","Bundibugyo virus","Marburg virus","Sudan virus"],"c":1,"e":"The outbreak was caused by Bundibugyo virus, species Orthoebolavirus bundibugyoense. Zaire ebolavirus is the reflex answer because it caused the 2014-2016 West Africa epidemic and is the species the licensed Ebola vaccine targets, which is precisely why the species distinction matters here."},
+{"t":2,"q":"As of June 2, 2026, how many confirmed cases and confirmed deaths had the Bundibugyo virus outbreak produced?","a":["363 cases and 15 deaths","28,000 cases and 11,000 deaths","997 cases and 63 deaths","378 cases and 63 deaths"],"c":3,"e":"There were 378 confirmed cases, 363 in the DRC and 15 in Uganda, and 63 confirmed deaths. The 363 and 15 pairing is tempting because both numbers appear in the report, but those are the country-level case counts, not cases and deaths."},
+{"t":2,"q":"What modeling approach was used in the Bundibugyo virus scenario projections?","a":["A geographic information system spot-mapping analysis","A regression of past outbreak sizes","A susceptible-infectious-recovered model fitted to serosurvey data","A branching process transmission model seeded with a single spillover infection"],"c":3,"e":"The model began with one infected person representing animal-to-human spillover and simulated chains of secondary infection until the outbreak ended or reached 5,000 deaths. A spot map is tempting because mapping is closely associated with outbreak epidemiology, but a spot map displays observed cases rather than projecting future ones."},
+{"t":2,"q":"In the Bundibugyo virus projections, what happened when only 20% of cases were isolated?","a":["The outbreak ended within 90 days in most simulations","65% of simulations exceeded 20,000 cases","Fewer than 1,000 cases occurred in most simulations","The projections were indistinguishable from 70% isolation"],"c":1,"e":"At 20% isolation, 65% of simulations exceeded 20,000 cases, compared with 17% at 50% isolation. The point of running four isolation levels is that the ceiling on the outbreak is set by response capacity, not by the virus."},
+{"t":2,"q":"At 70% case isolation, what did the Bundibugyo virus model project?","a":["Certain containment within 30 days","A guaranteed outbreak larger than 20,000 cases","Only about a one in 20 chance of an outbreak reaching 10,000 or more cases","No measurable difference from 20% isolation"],"c":2,"e":"Seventy percent isolation reduced the chance of an outbreak of 10,000 or more cases to roughly one in 20. Certain containment is tempting, but a stochastic model produces probabilities, not guarantees, which is exactly why the projections are reported as percentages of simulations."},
+{"t":2,"q":"CDC's assessment of risk to the US population from the 2026 Bundibugyo virus outbreak rated two dimensions separately. What were they?","a":["Likelihood of infection and impact of infection","Incidence and prevalence","Sensitivity and specificity","Morbidity and mortality"],"c":0,"e":"CDC's standardized qualitative risk assessment rates likelihood and impact independently and reports a confidence level, which was moderate here. Morbidity and mortality is tempting because those are the outcome measures the outbreak generates, but they are not the axes of the risk framework."},
+{"t":2,"q":"What was CDC's overall assessment of the risk to the US population from the Bundibugyo virus outbreak over three months?","a":["High, because the case fatality is high","Moderate, because importation was considered likely","Low, because the likelihood of transmission was extremely low despite high potential impact","Not assessable due to insufficient data"],"c":2,"e":"Overall risk was rated low: high impact if an infection occurred, but an extremely low likelihood that it would. Rating it high because the disease is severe is the classic error, since severity is only the impact half of the assessment."},
+{"t":2,"q":"Modeling put the relative risk of Bundibugyo virus importation to the United States, compared with other locations, at approximately what value?","a":["1.3%","13%","30%","0.013%"],"c":0,"e":"The estimated relative risk of importation to the United States was about 1.3%, reflecting limited direct travel volume from the affected area. The 13% option is the decimal-shift trap and would imply a completely different level of concern."},
+{"t":2,"q":"What treatment or prevention was available for Bundibugyo virus disease at the time of the 2026 reports?","a":["A licensed vaccine and two approved monoclonal antibodies","An approved antiviral given within 48 hours of exposure","Doxycycline prophylaxis for close contacts","No approved vaccines or medications; supportive care only, with investigational products under evaluation"],"c":3,"e":"The reports state that no approved vaccines or medications exist for Bundibugyo virus disease, leaving supportive care and investigational agents. The licensed vaccine and monoclonal answer is tempting because those products do exist, but they were developed against Zaire ebolavirus."},
+{"t":2,"q":"For how long is contact tracing conducted after a high-risk exposure to Ebola disease?","a":["7 days","21 days","10 days","42 days"],"c":1,"e":"Contacts are monitored for up to 21 days, which covers the maximum incubation period for Ebola disease. Forty-two days is tempting because that interval, two incubation periods, is used to declare an outbreak over in a community, not to monitor an individual contact."},
+{"t":2,"q":"The Brucellosis Surveillance report covering 2010 through 2024 identified how many confirmed and probable cases in the United States?","a":["1,377","1,796","542","878"],"c":1,"e":"There were 1,796 confirmed and probable cases across 54 jurisdictions, with annual counts ranging from 71 to 165. The 1,377 option is tempting because it also appears prominently, but that is the number of confirmed cases, which is 77% of the total."},
+{"t":2,"q":"In the US brucellosis surveillance data for 2010 through 2024, which state reported the most cases?","a":["Texas","New York","Florida","California"],"c":3,"e":"California reported 371 cases, followed by Texas with 327 and Florida with 128. Texas is the tempting answer because Texas had the highest cumulative incidence per 100,000 population, and a rate and a raw count are different questions."},
+{"t":2,"q":"Which Brucella species accounted for the largest share of US isolates during 2010 through 2024?","a":["Brucella melitensis","Brucella suis","Brucella abortus","Brucella canis"],"c":0,"e":"Brucella melitensis accounted for 57% of the 542 isolates, consistent with the strong association between US brucellosis and unpasteurized dairy products from goats and sheep. B. suis, at 28%, is the tempting second answer and is linked to feral swine contact among domestically acquired cases."},
+{"t":2,"q":"RB51 accounted for about 2% of US Brucella isolates. What is RB51?","a":["A drug-resistant strain of B. melitensis","A laboratory contaminant","A cattle vaccine strain of Brucella abortus, acquired from raw milk","A strain found only in marine mammals"],"c":2,"e":"RB51 is the live vaccine strain used in cattle, and human infections occur through consumption of raw milk from recently vaccinated animals. Calling it drug-resistant is a partial truth turned into a wrong answer, since the clinically important feature is its origin in a vaccine, not the species it belongs to."},
+{"t":2,"q":"Among US brucellosis patients who had NOT traveled internationally, what exposure was most commonly reported?","a":["Animal contact, including hunting and handling feral swine","Laboratory work","Consumption of imported cheese","Blood transfusion"],"c":0,"e":"Sixty-two percent of non-travelers reported animal contact, with hunting, skinning or slaughtering wild animals, and feral swine contact all prominent. Imported cheese is tempting because unpasteurized dairy dominates travel-associated cases, which is exactly the group this question excludes."},
+{"t":2,"q":"What proportion of confirmed US brucellosis cases during 2010 through 2024 were hospitalized?","a":["25%","50%","75%","Under 1%"],"c":2,"e":"About 75% of confirmed cases were hospitalized, while mortality remained under 1%. Under 1% is the trap: that figure is the case fatality, and hospitalization and death are very different measures of severity."},
+{"t":2,"q":"The Atlanta invasive mold disease report described active, laboratory-based surveillance. What triggered case finding?","a":["A physician's clinical suspicion alone","A positive mold culture or an Aspergillus galactomannan test","An admission diagnosis code","Death within 48 hours of admission"],"c":1,"e":"Surveillance was triggered by laboratory signals, either a positive mold culture or a positive galactomannan antigen test, and cases were then classified by review. Clinician suspicion alone is tempting because clinicians did drive many diagnoses, but the surveillance system had to start from a laboratory event to be systematic."},
+{"t":2,"q":"Of 968 potential invasive mold disease cases identified in the Atlanta surveillance, how many were classified as invasive mold disease?","a":["142 (15%)","218 (23%)","89 (9%)","449 (46%)"],"c":3,"e":"Four hundred forty-nine of 968, or 46%, met a case classification. The 218 figure is tempting because it is the largest single tier, but 218 is the number of surveillance cases, which is one of three tiers making up the 449."},
+{"t":2,"q":"Which mold genus accounted for the largest share of invasive mold disease cases in the Atlanta surveillance?","a":["Fusarium","Mucorales","Scedosporium","Aspergillus"],"c":3,"e":"Aspergillus species accounted for 71% of cases, with A. fumigatus alone at 21%. Mucorales is the tempting choice because mucormycosis is dramatic and widely publicized, but it accounted for only about 4% of cases in this surveillance."},
+{"t":2,"q":"In the Atlanta invasive mold disease surveillance, 35% of patients lacked classic host risk factors. Why is that finding important?","a":["It shows the surveillance definition was too broad","It shows invasive mold disease occurs outside traditionally recognized immunocompromised groups","It shows the laboratory tests were unreliable","It shows most cases were misdiagnosed"],"c":1,"e":"Because 35% had no classic host factor, restricting suspicion to hematologic malignancy and transplant patients would have missed a third of cases, which is why the report urges vigilance in critically ill patients generally. Calling the definition too broad reverses the report's point, since the third surveillance tier existed specifically to capture real clinician-diagnosed disease."},
+{"t":2,"q":"What was the 90-day all-cause mortality among invasive mold disease cases in the Atlanta surveillance?","a":["13%","27%","45%","66%"],"c":2,"e":"Overall 90-day all-cause mortality was 45%. The 66% option is tempting and does appear in the report, but it applies specifically to the subgroup with concurrent COVID-19, compared with 41% among those without."},
+{"t":2,"q":"In the Atlanta surveillance, patients with invasive mold disease and concurrent COVID-19 had 66% mortality versus 41% without. What does this comparison establish?","a":["That the subgroup with COVID-19 had substantially worse outcomes","That COVID-19 directly causes mold infection","That the case definition failed for COVID-19 patients","That mold disease is only dangerous with a viral co-infection"],"c":0,"e":"The comparison establishes an association with worse outcomes in a defined subgroup, which is what a descriptive surveillance analysis can support. Direct causation is the overreach: a surveillance summary cannot separate the effect of COVID-19 from the severity of illness and immunosuppression that accompany it."},
+{"t":2,"q":"The Notes from the Field on Borrelia mayonii in New York reported how many confirmed human cases?","a":["Nineteen","Ten","One","Twenty-four"],"c":2,"e":"There was a single confirmed human case, in Herkimer County, alongside ten positive ticks. Ten is tempting because that is the tick count, and confusing entomologic findings with human cases is the standard misread of a vectorborne Notes from the Field."},
+{"t":2,"q":"In the New York tick surveillance supporting the Borrelia mayonii report, 1,518 ticks were collected across 24 counties. What was found?","a":["Only ticks from the patient's property tested positive for B. mayonii","B. mayonii was widespread across the state","No ticks tested positive for any pathogen","B. mayonii was found in every county sampled"],"c":0,"e":"Positives were confined to the patient's own property, one nymph in July and nine adults in October. Concluding the pathogen is widespread is exactly the overreach the Notes from the Field format invites, and it is why the report calls for continued surveillance rather than announcing a new endemic area."},
+{"t":2,"q":"In the western North Carolina tick surveillance, what share of the 373 collected ticks were blacklegged ticks?","a":["40%","17%","19%","76.9%"],"c":3,"e":"Blacklegged ticks made up 287 of 373 specimens, or 76.9%. The 40% option is tempting because it also appears in the report, but that is the proportion of adult blacklegged ticks carrying Borrelia burgdorferi, a different measurement entirely."},
+{"t":2,"q":"Why was the western North Carolina tick finding considered a public health concern?","a":["The ticks carried a pathogen never before seen in humans","Lyme disease had not previously been considered endemic there, so clinicians may be unfamiliar with it","Blacklegged ticks had never been found in the southeastern United States","The pathogen was resistant to all antibiotics"],"c":1,"e":"The report describes southward expansion into an area where providers may not routinely consider Lyme disease, which delays diagnosis. Saying the pathogen was never seen in humans is tempting for an emergence story, but Borrelia burgdorferi is the long-established cause of Lyme disease in the United States."},
+{"t":2,"q":"In the Illinois county fair Salmonella Agbeni outbreak, what exposure was shared by all 13 ill persons?","a":["Vendor food","Beer from the beer tent","Petting zoo contact","Well water at the campground"],"c":1,"e":"All 13 drank beer from the beer tent, while only 9 ate vendor food and 4 ate nothing at all, which is how investigators narrowed the vehicle to the ice in the beer cooler. Petting zoo contact is tempting because animal contact is the classic county fair Salmonella exposure, and this outbreak is a useful reminder that the classic answer is not always the right one."},
+{"t":2,"q":"What environmental conditions in the Illinois county fair cooler explain the contamination?","a":["The cooler was refrigerated below 4 degrees Celsius","The cooler was stored outdoors in direct sunlight","The cooler was filled with untreated well water","The cooler was never cleaned, lacked drainage, held standing water, and was handled bare-handed with no handwashing station"],"c":3,"e":"Standing water in an uncleaned, undrained cooler handled without hand hygiene created a persistent contaminated reservoir for ice that went directly into drinks. Untreated well water is tempting because water is the vehicle here, but the investigation implicated the cooler and its handling rather than the water source."},
+{"t":2,"q":"In the New York vacation rental Legionnaires disease investigation, what evidence tied the hot tub to the patients?","a":["Whole genome sequencing matched the environmental isolate to the clinical isolate, and the potable water system was negative","The patients reported using the hot tub daily","The hot tub had never been inspected","Both patients had underlying lung disease"],"c":0,"e":"Genomic matching between the hot tub isolate and the patient isolate, combined with a negative potable water system, established the source. Reported hot tub use is tempting because exposure history generated the hypothesis, but exposure history alone cannot exclude the building's water system."},
+{"t":2,"q":"What regulatory gap did the New York vacation rental Legionnaires investigation identify?","a":["Hot tubs cannot legally be tested for Legionella","Legionella is not a reportable disease","Vacation rental properties are exempt from the regulations governing public pools and spas","Whole genome sequencing is not accepted as evidence"],"c":2,"e":"Private-use hot tubs at vacation rentals fall outside the rules that cover commercial pools and spas, so guests have no assurance of maintenance. Saying Legionella is not reportable is false and would have prevented the investigation from starting, since the cases were identified through surveillance."},
+{"t":2,"q":"US monkeypox surveillance for 2024 through 2025 reported how many total cases, and which clade dominated?","a":["5,322 cases, dominated by clade IIb","2,803 cases, dominated by clade Ib","11 cases, dominated by clade I","873 cases, dominated by clade IIa"],"c":0,"e":"There were 5,322 cases across the two years, and clade IIb accounted for 97.5% of sequenced cases, representing continued transmission from the 2022 outbreak. The 2,803 option is tempting because that is the 2024 subtotal alone."},
+{"t":2,"q":"In US monkeypox surveillance, unvaccinated patients had 9.73 times the odds of hospitalization compared with fully vaccinated patients. What does that support?","a":["Treating vaccination status as unrelated to severity","Discontinuing vaccination in low-incidence years","Completing the two-dose vaccine series to reduce severe outcomes","Restricting vaccination to hospitalized patients"],"c":2,"e":"An adjusted odds ratio near ten for hospitalization is the report's core argument for completing the two-dose JYNNEOS series among people at risk. Note also that this is an odds ratio for a hospitalization outcome, not a relative risk of infection, so it speaks to severity rather than to susceptibility."},
+{"t":2,"q":"In the buprenorphine report covering 2019 through 2025, how did emergency department administration change in urban versus rural counties?","a":["It rose equally in both","It rose from 6.7% to 31.4% in urban areas but only from 2.3% to 10.3% in rural areas","It fell in urban areas and rose in rural areas","It remained unchanged in both"],"c":1,"e":"Emergency department administration expanded substantially in urban areas while remaining limited in rural ones, which is the report's central access finding. Assuming equal growth is tempting because rural counties actually had higher pharmacy dispensing rates, and the two settings moved in opposite directions."},
+{"t":2,"q":"What happened to buprenorphine pharmacy dispensing rates between 2019 and 2025?","a":["They were consistently higher in urban counties and rose throughout","They fell continuously from 2019 onward","They were identical in urban and rural counties","They were consistently higher in rural counties, peaked in 2021, and declined through 2025"],"c":3,"e":"Rural dispensing rates were consistently higher than urban rates, peaked in 2021, and then declined, even as the average days supplied per prescription rose from about 17.6 to 22.6 days in urban counties. Assuming urban dominance is the intuitive error, and it is exactly backwards for pharmacy dispensing."}
+];
+
+
+/* ============================================================
+   Rendering + quiz engine
+   ============================================================ */
+const $ = id => document.getElementById(id);
+const esc = s => String(s);
+
+/* ---------- theme ---------- */
+(function(){
+  let saved = null;
+  try { saved = localStorage.getItem('mt-theme'); } catch(e){}
+  if (saved === 'dark' || saved === 'light') document.documentElement.setAttribute('data-theme', saved);
+  $('themeBtn').addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const isDark = cur ? cur === 'dark'
+      : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const next = isDark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('mt-theme', next); } catch(e){}
+  });
+})();
+
+/* ---------- best score ---------- */
+function readBest(){ try { return parseInt(localStorage.getItem('mt-best') || '', 10); } catch(e){ return NaN; } }
+function writeBest(p){ try { localStorage.setItem('mt-best', String(p)); } catch(e){} }
+(function(){ const b = readBest(); if (!isNaN(b)) $('stBest').textContent = b + '%'; })();
+
+/* ---------- navigation ---------- */
+function go(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0, behavior:'instant' in window ? 'auto' : 'auto'});
+}
+
+/* ---------- test plan table ---------- */
+(function(){
+  const rows = ['<div class="plan-r hd"><span>Topic</span><span>Weight</span></div>'];
+  TOPICS.forEach(t => rows.push(
+    '<div class="plan-r"><span>' + t.n + '</span><span class="plan-w">' + t.w + '%</span></div>'
+  ));
+  $('planTable').innerHTML = rows.join('');
+  $('stQ').textContent = Q.length;
+  const q2 = $('stQ2'); if (q2) q2.textContent = Q.length;
+})();
+
+/* ---------- study guide ---------- */
+(function(){
+  const out = [];
+  GUIDE.forEach((g, i) => {
+    const T = TOPICS[g.t];
+    const qr = g.qref.map(p =>
+      '<div><span class="qr-term">' + p[0] + '</span><span class="qr-def">' + p[1] + '</span></div>'
+    ).join('');
+    out.push(
+      '<div class="sec" id="sec' + g.t + '">' +
+        '<button class="sec-h" onclick="toggleSec(' + g.t + ')" aria-expanded="false">' +
+          '<span class="sec-w">' + T.w + '%</span>' +
+          '<span class="sec-t">' + T.n + '</span>' +
+          '<span class="sec-c">+</span>' +
+        '</button>' +
+        '<div class="sec-body">' +
+          '<div class="layer narr"><div class="layer-h">Narrative — read to understand</div>' + g.narr + '</div>' +
+          '<div class="layer deep"><div class="layer-h">Deep Dive — expert level</div>' + g.deep + '</div>' +
+          '<div class="layer qref"><div class="layer-h">Quick Reference — key terms</div><div class="qr">' + qr + '</div></div>' +
+          '<div class="layer note"><div class="layer-h">Top Competitor Study Notes</div><div class="notes-block">' + g.notes + '</div></div>' +
+          '<button class="sec-practice" onclick="startQuiz(' + g.t + ')">Practice this topic →</button>' +
+        '</div>' +
+      '</div>'
+    );
+  });
+  $('guideList').innerHTML = out.join('');
+})();
+
+function toggleSec(t){
+  const el = $('sec' + t);
+  const open = el.classList.toggle('open');
+  el.querySelector('.sec-h').setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+/* ---------- quiz engine ---------- */
+let session = [], idx = 0, score = 0, answered = false, lastMode = 'weighted';
+let curOrder = [0,1,2,3];
+const perTopic = {};
+
+function shuffle(a){
+  const r = a.slice();
+  for (let i = r.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [r[i], r[j]] = [r[j], r[i]];
+  }
+  return r;
+}
+
+/* Weighted draw: 45 / 5 x 11, largest-remainder over 50 items */
+function weightedSet(n){
+  const raw = TOPICS.map(t => t.w * n / 100);
+  const base = raw.map(Math.floor);
+  let left = n - base.reduce((a,b) => a+b, 0);
+  const order = raw.map((v,i) => [v - Math.floor(v), i])
+                   .sort((a,b) => b[0] - a[0] || a[1] - b[1]);
+  for (let k = 0; k < order.length && left > 0; k++, left--) base[order[k][1]]++;
+  let out = [];
+  base.forEach((cnt, t) => {
+    const pool = shuffle(Q.filter(q => q.t === t));
+    out = out.concat(pool.slice(0, Math.min(cnt, pool.length)));
+  });
+  return shuffle(out);
+}
+
+function startQuiz(mode){
+  lastMode = mode;
+  if (mode === 'weighted')      session = weightedSet(50);
+  else if (mode === 'all')      session = shuffle(Q);
+  else                          session = shuffle(Q.filter(q => q.t === mode));
+  idx = 0; score = 0;
+  for (const k in perTopic) delete perTopic[k];
+  go('quiz');
+  renderQ();
+}
+
+function renderQ(){
+  answered = false;
+  const q = session[idx];
+  $('qCount').textContent = (idx + 1) + ' / ' + session.length;
+  $('qScore').textContent = score + ' ✓';
+  $('qFill').style.width = (idx / session.length * 100) + '%';
+  const T = TOPICS[q.t];
+  $('qTopic').textContent = T.n.replace('&amp;','&');
+  $('qTopic').style.color = T.c;
+  $('qStem').innerHTML = q.q;
+  curOrder = shuffle([0,1,2,3]);
+  const letters = ['A','B','C','D'];
+  $('qChoices').innerHTML = curOrder.map((orig, i) =>
+    '<button class="ch" onclick="answer(' + i + ')"><span class="k">' + letters[i] + '</span><span>' + q.a[orig] + '</span></button>'
+  ).join('');
+  const ex = $('qExpl');
+  ex.className = 'expl';
+  $('qNext').style.display = 'none';
+}
+
+function answer(i){
+  if (answered) return;
+  answered = true;
+  const q = session[idx];
+  const btns = $('qChoices').querySelectorAll('.ch');
+  btns.forEach((b, k) => {
+    b.disabled = true;
+    if (curOrder[k] === q.c) b.classList.add('right');
+    else if (k === i) b.classList.add('wrong');
+  });
+  const ok = curOrder[i] === q.c;
+  if (ok) score++;
+  if (!perTopic[q.t]) perTopic[q.t] = {c:0, n:0};
+  perTopic[q.t].n++;
+  if (ok) perTopic[q.t].c++;
+  const ex = $('qExpl');
+  ex.className = 'expl show ' + (ok ? 'ok' : 'no');
+  $('qVerdict').textContent = ok ? 'Correct' : 'Not quite';
+  $('qExplText').innerHTML = q.e;
+  $('qSrc').textContent = TOPICS[q.t].n.replace('&amp;','&') + ' · ' + TOPICS[q.t].w + '% of the test';
+  $('qScore').textContent = score + ' ✓';
+  $('qNext').style.display = 'block';
+  $('qNext').textContent = idx + 1 >= session.length ? 'See results' : 'Next question';
+  $('qNext').focus();
+}
+
+function nextQ(){
+  idx++;
+  if (idx >= session.length) return showResults();
+  renderQ();
+}
+
+function quitQuiz(){
+  if (idx > 0 || answered) return showResults();
+  go('home');
+}
+
+function showResults(){
+  const total = Math.max(1, Object.values(perTopic).reduce((a,b) => a + b.n, 0));
+  const pct = Math.round(score / total * 100);
+  go('results');
+  $('ringPct').textContent = pct + '%';
+  $('ringFrac').textContent = score + ' of ' + total;
+  const circ = 2 * Math.PI * 70;
+  requestAnimationFrame(() => {
+    $('ringArc').style.strokeDashoffset = circ * (1 - pct / 100);
+  });
+  $('ringArc').setAttribute('stroke', pct >= 80 ? 'var(--teal)' : pct >= 60 ? 'var(--orange)' : 'var(--red)');
+  const ranked = Object.keys(perTopic).filter(t => perTopic[t].n >= 2)
+    .sort((a,b) => (perTopic[a].c/perTopic[a].n) - (perTopic[b].c/perTopic[b].n));
+  const weakest = ranked.length ? TOPICS[ranked[0]].n.replace('&amp;','&') : null;
+  const second  = ranked.length > 1 ? TOPICS[ranked[1]].n.replace('&amp;','&') : null;
+  let msg;
+  if (pct >= 90)      msg = 'Medal range. Keep the full-length sessions coming and hold this line.' + (weakest ? ' Your softest spot is still ' + weakest + '.' : '');
+  else if (pct >= 80) msg = 'Strong.' + (weakest && second ? ' Read the Deep Dive for ' + weakest + ' and ' + second + ' tonight.' : ' Go find your two weakest topics below.');
+  else if (pct >= 65) msg = 'Solid base, real gaps.' + (weakest ? ' Work ' + weakest + ' before you take another full test.' : '');
+  else if (pct >= 45) msg = 'You know some of it.' + (weakest ? ' Open the study guide at ' + weakest + ' and read the narrative, then the deep dive.' : '');
+  else                msg = 'Start at the study guide, not the quiz.' + (weakest ? ' Begin with ' + weakest + '.' : ' Read the highest-weighted topic first.');
+  $('resMsg').textContent = msg;
+  const rows = Object.keys(perTopic).sort((a,b) => a - b).map(t => {
+    const d = perTopic[t], p = Math.round(d.c / d.n * 100);
+    const col = p >= 80 ? 'var(--teal)' : p >= 50 ? 'var(--orange)' : 'var(--red)';
+    return '<div class="brk-row"><span class="brk-t">' + TOPICS[t].n + '</span>' +
+           '<span class="brk-s" style="color:' + col + '">' + d.c + '/' + d.n + ' · ' + p + '%</span></div>';
+  });
+  $('resBrk').innerHTML = rows.join('') || '<div class="brk-row"><span class="brk-t">No questions answered</span><span class="brk-s">—</span></div>';
+  if (lastMode === 'weighted' && total >= 40){
+    const b = readBest();
+    if (isNaN(b) || pct > b){ writeBest(pct); $('stBest').textContent = pct + '%'; }
+  }
+}
+
+function repeatQuiz(){ startQuiz(lastMode); }
+</script>
+
+</body>
+</html>

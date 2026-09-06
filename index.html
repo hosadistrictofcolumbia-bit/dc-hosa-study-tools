@@ -1,0 +1,482 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="Study tools and prep guides for every DC HOSA competitive event, 2026-2027.">
+<title>DC HOSA Study Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#EEF1F4; --surface:#FFFFFF; --surface-2:#F6F8FA;
+  --ink:#0D1B2A; --ink-2:#40536A; --ink-3:#6B7C91;
+  --rule:#D2DAE2; --rule-2:#E3E9EF;
+  --accent:#C86A0A; --accent-ink:#FFFFFF;
+  --teal:#14757A; --orange:#B8650D; --crimson:#AE3128; --gold:#8F6A0B;
+  --plum:#6D3A96; --indigo:#33529B; --slate:#3F5A75; --green:#25714A;
+  --shadow:0 1px 2px rgba(13,27,42,.06), 0 6px 18px -12px rgba(13,27,42,.28);
+  --shadow-h:0 1px 2px rgba(13,27,42,.08), 0 14px 30px -16px rgba(13,27,42,.4);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0B1622; --surface:#131F2E; --surface-2:#182739;
+    --ink:#E7EDF4; --ink-2:#A3B4C6; --ink-3:#7B8DA1;
+    --rule:#26374B; --rule-2:#1E2E40;
+    --accent:#F0912E; --accent-ink:#101B27;
+    --teal:#43B3B3; --orange:#F0912E; --crimson:#EC7264; --gold:#D9AE3A;
+    --plum:#B686E4; --indigo:#7F9DEA; --slate:#93AECA; --green:#5FC48C;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px -12px rgba(0,0,0,.7);
+    --shadow-h:0 1px 2px rgba(0,0,0,.5), 0 14px 30px -16px rgba(0,0,0,.85);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0B1622; --surface:#131F2E; --surface-2:#182739;
+  --ink:#E7EDF4; --ink-2:#A3B4C6; --ink-3:#7B8DA1;
+  --rule:#26374B; --rule-2:#1E2E40;
+  --accent:#F0912E; --accent-ink:#101B27;
+  --teal:#43B3B3; --orange:#F0912E; --crimson:#EC7264; --gold:#D9AE3A;
+  --plum:#B686E4; --indigo:#7F9DEA; --slate:#93AECA; --green:#5FC48C;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 6px 18px -12px rgba(0,0,0,.7);
+  --shadow-h:0 1px 2px rgba(0,0,0,.5), 0 14px 30px -16px rgba(0,0,0,.85);
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+  font-size:15px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
+
+.wrap{max-width:1120px; margin:0 auto; padding:0 22px}
+
+/* ---------- masthead ---------- */
+.mast{
+  position:sticky; top:0; z-index:20; background:var(--surface);
+  border-bottom:1px solid var(--rule);
+}
+.mast-in{
+  display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+  padding:13px 0;
+}
+.brand{display:flex; align-items:baseline; gap:9px; margin-right:auto; text-decoration:none}
+.brand b{
+  font-family:"Barlow Condensed",Impact,"Arial Narrow",sans-serif;
+  font-weight:700; font-size:25px; letter-spacing:.045em;
+  text-transform:uppercase; line-height:1;
+}
+.brand span{
+  font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  font-size:10.5px; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--ink-3); white-space:nowrap;
+}
+.search{position:relative; flex:1 1 250px; max-width:340px; min-width:0}
+.search input{
+  width:100%; font:inherit; font-size:14px; color:var(--ink);
+  background:var(--surface-2); border:1px solid var(--rule);
+  border-radius:7px; padding:8px 34px 8px 12px;
+}
+.search input::placeholder{color:var(--ink-3)}
+.search input:focus{outline:none; border-color:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 20%,transparent)}
+.search kbd{
+  position:absolute; right:9px; top:50%; transform:translateY(-50%);
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px;
+  color:var(--ink-3); border:1px solid var(--rule); border-radius:4px;
+  padding:1px 5px; pointer-events:none; background:var(--surface);
+}
+.search input:not(:placeholder-shown) ~ kbd{opacity:0}
+.tog{
+  border:1px solid var(--rule); background:var(--surface-2); color:var(--ink-2);
+  border-radius:7px; width:34px; height:34px; cursor:pointer; flex:0 0 auto;
+  display:grid; place-items:center; padding:0;
+}
+.tog:hover{border-color:var(--accent); color:var(--accent)}
+.tog svg{width:16px; height:16px; display:block}
+
+/* ---------- hero ---------- */
+.hero{padding:52px 0 30px}
+.eyebrow{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--accent);
+  margin:0 0 16px;
+}
+h1{
+  font-family:"Barlow Condensed",Impact,"Arial Narrow",sans-serif;
+  font-weight:700; text-transform:uppercase; letter-spacing:.005em;
+  font-size:clamp(40px,8.2vw,78px); line-height:.93; margin:0 0 20px;
+  text-wrap:balance; max-width:15ch;
+}
+h1 em{font-style:normal; color:var(--accent); display:block}
+.lede{font-size:16.5px; color:var(--ink-2); max-width:60ch; margin:0}
+.lede strong{color:var(--ink); font-weight:600}
+
+.stats{
+  display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+  gap:1px; background:var(--rule); border:1px solid var(--rule);
+  border-radius:9px; overflow:hidden; margin:34px 0 4px;
+}
+.stat{background:var(--surface); padding:15px 16px 14px}
+.stat b{
+  display:block; font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-weight:600; font-size:26px; line-height:1.1; font-variant-numeric:tabular-nums;
+  letter-spacing:-.02em;
+}
+.stat span{
+  display:block; font-family:"IBM Plex Mono",ui-monospace,monospace;
+  font-size:10.5px; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--ink-3); margin-top:5px;
+}
+
+/* ---------- category nav ---------- */
+.jump{
+  display:flex; gap:7px; flex-wrap:wrap; padding:26px 0 4px;
+  border-top:1px solid var(--rule-2); margin-top:34px;
+}
+.jump a{
+  --cat:var(--ink-2);
+  font-family:"Barlow Condensed",Impact,sans-serif; font-weight:600;
+  font-size:14.5px; letter-spacing:.06em; text-transform:uppercase;
+  text-decoration:none; color:var(--ink-2); padding:5px 11px;
+  border:1px solid var(--rule); border-radius:999px; background:var(--surface);
+  transition:color .15s, border-color .15s;
+}
+.jump a:hover{color:var(--cat); border-color:var(--cat)}
+.jump a i{
+  font-style:normal; font-family:"IBM Plex Mono",monospace; font-size:10.5px;
+  color:var(--ink-3); margin-left:6px; font-variant-numeric:tabular-nums;
+}
+
+/* ---------- sections ---------- */
+main{padding-bottom:20px}
+.sec{padding-top:46px; scroll-margin-top:66px}
+.sec-head{border-top:3px solid var(--cat); padding-top:11px; margin-bottom:6px}
+.sec-title{
+  display:flex; align-items:baseline; gap:12px; flex-wrap:wrap;
+}
+.sec-title h2{
+  font-family:"Barlow Condensed",Impact,"Arial Narrow",sans-serif;
+  font-weight:700; text-transform:uppercase; letter-spacing:.045em;
+  font-size:clamp(23px,3.4vw,31px); line-height:1.05; margin:0; color:var(--cat);
+}
+.sec-count{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px;
+  letter-spacing:.11em; text-transform:uppercase; color:var(--ink-3);
+  font-variant-numeric:tabular-nums;
+}
+.sec-note{font-size:14px; color:var(--ink-2); max-width:72ch; margin:6px 0 0}
+
+.grid{
+  display:grid; gap:12px; margin-top:20px;
+  grid-template-columns:repeat(auto-fill,minmax(268px,1fr));
+}
+.card{
+  display:flex; flex-direction:column; gap:11px;
+  background:var(--surface); border:1px solid var(--rule);
+  border-left:3px solid color-mix(in srgb,var(--cat) 30%,transparent); border-radius:8px;
+  padding:15px 16px 14px; text-decoration:none; box-shadow:var(--shadow);
+  transition:border-left-color .16s, box-shadow .16s, transform .16s;
+}
+.card:hover{border-left-color:var(--cat); box-shadow:var(--shadow-h); transform:translateY(-1px)}
+.card:hover .card-n{color:var(--cat)}
+.card:focus-visible{border-left-color:var(--cat)}
+.card-n{
+  font-family:"Barlow Condensed",Impact,"Arial Narrow",sans-serif;
+  font-weight:600; font-size:22px; line-height:1.08; letter-spacing:.015em;
+  text-wrap:balance; transition:color .16s;
+}
+.card-foot{margin-top:auto; display:flex; flex-direction:column; gap:9px}
+.spec{
+  display:flex; flex-wrap:wrap; gap:0 14px;
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11.5px;
+  color:var(--ink-3); font-variant-numeric:tabular-nums;
+}
+.spec b{color:var(--ink-2); font-weight:600}
+.chips{display:flex; flex-wrap:wrap; gap:5px}
+.chip{
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:10px;
+  letter-spacing:.07em; text-transform:uppercase; color:var(--cat);
+  border:1px solid color-mix(in srgb,var(--cat) 42%,transparent);
+  background:color-mix(in srgb,var(--cat) 9%,transparent);
+  border-radius:4px; padding:2px 6px; white-space:nowrap;
+}
+
+.empty{
+  display:none; padding:52px 0 20px; text-align:center; color:var(--ink-3);
+  font-family:"IBM Plex Mono",monospace; font-size:13px;
+}
+body.filtering .sec-note{display:none}
+body.filtering .hero, body.filtering .jump{display:none}
+
+/* ---------- footer ---------- */
+footer{
+  margin-top:64px; border-top:1px solid var(--rule); background:var(--surface);
+}
+.foot-in{padding:34px 0 44px; display:grid; gap:26px; grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.foot h3{
+  font-family:"Barlow Condensed",Impact,sans-serif; font-weight:700;
+  text-transform:uppercase; letter-spacing:.06em; font-size:15px;
+  margin:0 0 9px; color:var(--ink);
+}
+.foot p{margin:0 0 9px; font-size:13.5px; color:var(--ink-2); max-width:46ch}
+.foot p:last-child{margin-bottom:0}
+.colophon{
+  border-top:1px solid var(--rule-2); padding:16px 0 30px;
+  font-family:"IBM Plex Mono",ui-monospace,monospace; font-size:11px;
+  color:var(--ink-3); letter-spacing:.04em; display:flex; gap:14px; flex-wrap:wrap;
+}
+
+@media (max-width:560px){
+  .hero{padding:36px 0 22px}
+  .grid{grid-template-columns:1fr}
+  .brand span{display:none}
+}
+@media (prefers-reduced-motion:no-preference){ html{scroll-behavior:smooth} }
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important; transition-duration:.001ms !important}
+}
+.sec{animation:rise .5s cubic-bezier(.2,.7,.3,1) both}
+@keyframes rise{from{opacity:0; transform:translateY(10px)} to{opacity:1; transform:none}}
+</style>
+</head>
+<body>
+<header class="mast">
+  <div class="wrap mast-in">
+    <a class="brand" href="#top"><b>DC&nbsp;HOSA</b><span>Study Tools &middot; 2026&ndash;2027</span></a>
+    <div class="search">
+      <input id="q" type="search" placeholder="Search 40 events…" autocomplete="off" aria-label="Search events">
+      <kbd>/</kbd>
+    </div>
+    <button class="tog" id="tog" type="button" aria-label="Switch colour theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.4 4.4l1.6 1.6M18 18l1.6 1.6M2.6 12h2.2M19.2 12h2.2M4.4 19.6L6 18M18 6l1.6-1.6"/></svg>
+    </button>
+  </div>
+</header>
+
+<div id="top"></div>
+<div class="wrap">
+  <section class="hero">
+    <p class="eyebrow">District of Columbia &middot; Competitive Events</p>
+    <h1>Study for the<em>event you entered.</em></h1>
+    <p class="lede">Forty study tools, one for every DC HOSA competitive event with a written test. Each one carries a full study guide, a weighted practice exam built to the official <strong>2026&ndash;2027 test plan</strong>, and&nbsp;&mdash;&nbsp;where the event has a second round&nbsp;&mdash;&nbsp;every rated step and point value from the official rating sheets.</p>
+
+    <div class="stats">
+      <div class="stat"><b>56</b><span>Events covered</span></div>
+      <div class="stat"><b>5,694</b><span>Practice questions</span></div>
+      <div class="stat"><b>308</b><span>Guide topics</span></div>
+      <div class="stat"><b>94</b><span>Rating sheets</span></div>
+    </div>
+
+    <nav class="jump" id="jump" aria-label="Jump to category"></nav>
+  </section>
+</div>
+
+<main class="wrap" id="main"></main>
+<p class="empty" id="empty">No event matches that.</p>
+
+<footer>
+  <div class="wrap foot-in">
+    <div class="foot">
+      <h3>How to use these</h3>
+      <p>Open your event. Read the guide once end to end, then take the practice exam. It draws in the same proportions as the real test plan, so the topics it asks about most are the topics worth the most points.</p>
+      <p>Everything works on a phone, and nothing needs an account.</p>
+    </div>
+    <div class="foot">
+      <h3>What is in each tool</h3>
+      <p>A four-layer guide for every topic on the official test plan &mdash; teaching narrative, deep dive, quick reference, and study notes on the distinctions that cost people points.</p>
+      <p>Then a timed simulator, the full question bank, and the event's official reference list.</p>
+    </div>
+    <div class="foot">
+      <h3>Advisors</h3>
+      <p>Middle school tests are <strong>35 questions</strong>, not 50. CPR&nbsp;/&nbsp;First Aid and EMT are built to the AHA guidelines released February 2026 &mdash; the choking sequence and infant compression technique both changed, so replace any pre-2026 coaching manual.</p>
+      <p>Two tools carry dated content and are refreshed before each conference.</p>
+    </div>
+  </div>
+  <div class="wrap colophon">
+    <span>Built for DC HOSA from the official 2026&ndash;2027 HOSA competitive event guidelines.</span>
+    <span>Every practice question is original.</span>
+  </div>
+</footer>
+
+<script>
+// 'artifact' -> hosted tool links. 'local' -> tools/<slug>.html next to this file.
+const LINK_MODE = "local";
+
+const CATS = [
+{k:"hs",n:"Health Science",d:"Written-test events. One 50-question exam, no second round."},
+{k:"hp",n:"Health Professions",d:"Two rounds \u2014 a written test, then a rated hands-on skills assessment. Every rated step and point value is in the tool."},
+{k:"ep",n:"Emergency Preparedness",d:"Built to the AHA guidelines released February 2026. If you are coaching from a pre-2026 manual, replace it."},
+{k:"he",n:"Health Education / Knowledge Test",d:"Broad current-issues exams. Both carry dated content that is refreshed before each conference."},
+{k:"ld",n:"Leadership",d:"Knowledge tests on HOSA governance, wellness policy and the organization itself."},
+{k:"tw",n:"Teamwork",d:"Team events scored across two rounds."},
+{k:"atc",n:"Academic Testing Center",d:"50 questions in 60 minutes, an essay tiebreaker in the same booklet, and no bonus points for dress. Each exam is written from one named textbook."},
+{k:"ms",n:"Middle School Division",d:"These tests are 35 questions, not 50. The simulator in each tool draws 35 to match, and the writing is pitched at grades 6 to 8."},
+{k:"pr",n:"Prep Guides \u2014 submission &amp; presentation events",d:"No written test, so no question bank. These carry what actually decides the score: every required component with its limit, the format rules that disqualify you, what judges rate, and a timeline built on the DC calendar \u2014 uploads close in early February, not May."}
+];
+const EV = [
+{c:"hs",n:"Behavioral Health",s:"behavioral-health",q:133,t:6,k:0,u:"3fd844e9-128e-4345-9734-a4cab3ca74db",f:[]},
+{c:"hs",n:"Dental Terminology",s:"dental-terminology",q:140,t:8,k:0,u:"dad18e21-cdfe-452a-a225-dd8a8c867d5c",f:[]},
+{c:"hs",n:"Medical Law &amp; Ethics",s:"medical-law-ethics",q:130,t:4,k:0,u:"00790585-2538-40f1-ba3f-2517bd127729",f:[]},
+{c:"hs",n:"Medical Terminology",s:"medical-terminology",q:147,t:12,k:0,u:"e4e85a73-4812-4738-b28d-80febed46bd0",f:[]},
+{c:"hs",n:"Nutrition",s:"nutrition",q:141,t:8,k:0,u:"16497cf6-49eb-4f75-a08a-690a6a6e1387",f:[]},
+{c:"hs",n:"Pathophysiology",s:"pathophysiology",q:139,t:11,k:0,u:"55a4892a-4446-4314-ac8d-3d79f7102706",f:[]},
+{c:"hs",n:"Pharmacology",s:"pharmacology",q:141,t:7,k:0,u:"4fcf069e-3a5e-479f-9d14-a6e0bc26cfb7",f:[]},
+{c:"hs",n:"Native Health Advocacy",s:"native-health-advocacy",q:140,t:9,k:0,u:"",f:["Team of 2\u20134", "Round Two rubric"]},
+{c:"hp",n:"Biomedical Equipment Technician",s:"biomedical-equipment-technician",q:141,t:6,k:0,u:"5bed3852-0c32-43c7-944b-f0afafd65897",f:[]},
+{c:"hp",n:"Biotechnology",s:"biotechnology",q:149,t:10,k:8,u:"bbf654c0-0aa2-4e1a-a77e-5f5a87b35461",f:[]},
+{c:"hp",n:"Medical Assisting",s:"medical-assisting",q:142,t:11,k:8,u:"6bfead7f-8854-4213-9e37-066da7172238",f:[]},
+{c:"hp",n:"Nursing Assisting",s:"nursing-assisting",q:140,t:6,k:8,u:"715fa5e9-df46-44da-b061-7bf068c4d860",f:[]},
+{c:"hp",n:"Occupational Therapy",s:"occupational-therapy",q:140,t:7,k:8,u:"ac923114-3652-4d05-8be3-d2cca80ccdbd",f:[]},
+{c:"hp",n:"Phlebotomy",s:"phlebotomy",q:144,t:8,k:9,u:"80100ab4-8cf2-4e33-ab19-223cfc39fce0",f:[]},
+{c:"hp",n:"Physical Therapy",s:"physical-therapy",q:140,t:7,k:8,u:"a9006546-3d22-4fd9-8f7b-0c6be6072949",f:[]},
+{c:"hp",n:"Sports Medicine",s:"sports-medicine",q:139,t:5,k:6,u:"91e572f3-7ead-41b3-a672-d94f752dad9f",f:[]},
+{c:"hp",n:"Veterinary Science",s:"veterinary-science",q:140,t:9,k:7,u:"4137c4af-012d-4600-b81a-53a0bc69a6da",f:[]},
+{c:"ep",n:"CERT Skills",s:"cert-skills",q:144,t:8,k:6,u:"afaeeabf-00f9-4d52-9ce1-8cd93523edfe",f:["Team of 2"]},
+{c:"ep",n:"CPR / First Aid",s:"cpr-first-aid",q:140,t:2,k:13,u:"eaffe84d-f3a0-4ab7-8dbb-31355e87fbba",f:["Team of 2"]},
+{c:"ep",n:"Emergency Medical Technician",s:"emergency-medical-technician",q:142,t:7,k:9,u:"585e5b71-8e56-440c-9dd9-5ed4f92fb40c",f:["Team of 2"]},
+{c:"ep",n:"Epidemiology",s:"epidemiology",q:140,t:3,k:0,u:"805bab9b-5969-4297-b1f4-fc0f0e36e902",f:["Refreshed each conference"]},
+{c:"he",n:"Healthcare Issues Exam",s:"healthcare-issues-exam",q:140,t:7,k:0,u:"7fda0c13-2eac-4724-a3c3-9bfbb72043a6",f:["Refreshed each conference"]},
+{c:"he",n:"World Health &amp; Disparities",s:"world-health-disparities",q:140,t:4,k:0,u:"1409d24e-db66-4053-a54f-b14f5dbadbee",f:[]},
+{c:"ld",n:"Healthy Living",s:"healthy-living",q:140,t:5,k:0,u:"080d0773-3bc0-4bf9-99cd-5c0079305ffe",f:[]},
+{c:"ld",n:"Organizational Leadership",s:"organizational-leadership",q:143,t:7,k:0,u:"e6e13574-443f-4142-b853-9f02ac6f86bc",f:[]},
+{c:"tw",n:"Forensic Science",s:"forensic-science",q:148,t:8,k:0,u:"59c527aa-1594-441f-8538-855e783bb939",f:["Team of 2", "Round Two section"]},
+{c:"atc",n:"AAFP Family Medicine",s:"atc-aafp-family-medicine",q:143,t:8,k:0,u:"1a3f02c8-9e70-4af6-a71f-2c28eecaa56b",f:[]},
+{c:"atc",n:"Anatomy &amp; Physiology",s:"atc-anatomy-physiology",q:140,t:3,k:0,u:"f178f4ed-0e14-4251-a171-5a2f255e875e",f:[]},
+{c:"atc",n:"Biochemistry",s:"atc-biochemistry",q:140,t:7,k:0,u:"03617b8d-7682-4b1b-b4ed-eae0e1b9983d",f:[]},
+{c:"atc",n:"Biology",s:"atc-biology",q:140,t:7,k:0,u:"873df215-d807-4b2f-865a-3eaee3b6277d",f:[]},
+{c:"atc",n:"CareerSafe Occupational Safety",s:"atc-careersafe",q:145,t:9,k:0,u:"e7617859-5e3d-4cc2-8cc9-29e86d196852",f:[]},
+{c:"atc",n:"CERI Leadership",s:"atc-ceri-leadership",q:140,t:2,k:0,u:"ed87c862-9de3-4d0b-b7a5-cfed0c1f4b77",f:[]},
+{c:"atc",n:"Environmental Health",s:"atc-environmental-health",q:140,t:10,k:0,u:"0b2f0df1-33db-4641-a789-78149e046441",f:[]},
+{c:"atc",n:"General Chemistry",s:"atc-general-chemistry",q:149,t:10,k:0,u:"ec2cbd05-7662-4d08-a70b-36eba91724ef",f:[]},
+{c:"atc",n:"Human Heredity",s:"atc-human-heredity",q:146,t:9,k:0,u:"618a8503-fe5e-4e46-8785-3590933aed2b",f:[]},
+{c:"atc",n:"Microbiology",s:"atc-microbiology",q:148,t:13,k:0,u:"6184ca16-d587-42c9-aa10-37e72f92c787",f:[]},
+{c:"ms",n:"Foundations of Healthy Living",s:"ms-foundations-healthy-living",q:120,t:5,k:0,u:"2aeb7e10-6134-40c4-a339-ab026d3e3ee9",f:[]},
+{c:"ms",n:"Foundations of Medical Terminology",s:"ms-foundations-medical-terminology",q:120,t:12,k:0,u:"1f436727-96a2-4ee7-a44d-f6a7d5b44c26",f:[]},
+{c:"ms",n:"Foundations of Nutrition",s:"ms-foundations-nutrition",q:120,t:8,k:0,u:"df279c43-d9d8-4235-84fd-959f13d3f9ba",f:[]},
+{c:"ms",n:"Health Career Exploration",s:"ms-health-career-exploration",q:120,t:10,k:0,u:"ba8b7e8d-5f93-430a-9b13-72a46f3b7ac9",f:[]},
+{c:"ms",n:"Life-Threatening Situations",s:"ms-life-threatening-situations",q:120,t:10,k:4,u:"a0116e0d-8cc3-4acf-970c-f630ed1f7e7d",f:[]},
+{c:"pr",n:"Community Awareness",s:"prep-community-awareness",q:6,t:29,k:19,u:"",f:["Team of 2-6"]},
+{c:"pr",n:"Emotional Well-Being Challenge",s:"prep-emotional-well-being-challenge",q:7,t:27,k:9,u:"",f:["Team of 2-6", "Middle School"]},
+{c:"pr",n:"Extemporaneous Health Poster",s:"prep-extemporaneous-health-poster",q:6,t:16,k:4,u:"",f:["Middle School"]},
+{c:"pr",n:"First Step Career Skills",s:"prep-first-step-career-skills",q:12,t:41,k:13,u:"",f:["Team of 2-6", "Middle School"]},
+{c:"pr",n:"Health Career Display",s:"prep-health-career-display",q:12,t:42,k:17,u:"",f:["Team of 2", "Middle School"]},
+{c:"pr",n:"Health Career Photography",s:"prep-health-career-photography",q:11,t:42,k:12,u:"",f:[]},
+{c:"pr",n:"Health Career Preparation",s:"prep-health-career-preparation",q:8,t:37,k:9,u:"",f:["Middle School"]},
+{c:"pr",n:"Health Education",s:"prep-health-education",q:6,t:25,k:16,u:"",f:["Team of 2-6", "Middle School"]},
+{c:"pr",n:"Job Seeking Skills",s:"prep-job-seeking-skills",q:3,t:24,k:9,u:"",f:[]},
+{c:"pr",n:"Mental Health Promotion",s:"prep-mental-health-promotion",q:9,t:25,k:10,u:"",f:["Team of 2-6"]},
+{c:"pr",n:"Prepared Speaking",s:"prep-prepared-speaking",q:5,t:15,k:4,u:"",f:["Middle School"]},
+{c:"pr",n:"Public Health",s:"prep-public-health",q:7,t:28,k:8,u:"",f:["Team Event: 2-6 competitors per team", "Middle School"]},
+{c:"pr",n:"Public Service Announcement",s:"prep-public-service-announcement",q:15,t:36,k:15,u:"",f:["Team of 2-6"]},
+{c:"pr",n:"Research Poster",s:"prep-research-poster",q:8,t:22,k:16,u:"",f:["Team of 2-4"]},
+{c:"pr",n:"Researched Persuasive Writing &amp; Speaking",s:"prep-researched-persuasive-writing",q:4,t:29,k:9,u:"",f:[]}
+];
+
+const href = e => LINK_MODE === "local"
+  ? "tools/" + e.s + ".html"
+  : "https://claude.ai/code/artifact/" + e.u;
+
+const esc = s => s.replace(/&(?!amp;|nbsp;|mdash;|ndash;|middot;)/g, "&amp;");
+
+const jump = document.getElementById("jump");
+const main = document.getElementById("main");
+
+CATS.forEach((c, i) => {
+  const rows = EV.filter(e => e.c === c.k);
+
+  const a = document.createElement("a");
+  a.href = "#" + c.k;
+  a.className = "cat-" + c.k;
+  a.innerHTML = esc(c.n) + "<i>" + rows.length + "</i>";
+  jump.appendChild(a);
+
+  const sec = document.createElement("section");
+  sec.className = "sec cat-" + c.k;
+  sec.id = c.k;
+  sec.style.animationDelay = Math.min(i * 45, 260) + "ms";
+  sec.innerHTML =
+    '<div class="sec-head"><div class="sec-title"><h2>' + esc(c.n) + "</h2>" +
+    '<span class="sec-count">' + rows.length + (rows.length === 1 ? " event" : " events") + "</span></div>" +
+    '<p class="sec-note">' + esc(c.d) + "</p></div>" +
+    '<div class="grid">' + rows.map(e =>
+      '<a class="card" href="' + href(e) + '"' +
+        (LINK_MODE === "local" ? "" : ' target="_blank" rel="noopener"') +
+        ' data-n="' + e.n.replace(/&amp;/g, "&").replace(/"/g, "") .toLowerCase() +
+        " " + c.n.toLowerCase() + '">' +
+        '<div class="card-n">' + e.n + "</div>" +
+        '<div class="card-foot">' +
+          '<div class="spec">' +
+            (c.k === "pr"
+              ? "<span><b>" + e.q + "</b> parts</span>" +
+                "<span><b>" + e.t + "</b> format rules</span>" +
+                "<span><b>" + e.k + "</b> criteria</span>"
+              : "<span><b>" + e.q + "</b> questions</span>" +
+                "<span><b>" + e.t + "</b> topics</span>" +
+                (e.k ? "<span><b>" + e.k + "</b> rating sheets</span>" : "")) +
+          "</div>" +
+          (e.f.length || c.k === "ms"
+            ? '<div class="chips">' +
+              (c.k === "ms" ? '<span class="chip">35-question exam</span>' : "") +
+              e.f.map(f => '<span class="chip">' + f + "</span>").join("") +
+              "</div>"
+            : "") +
+        "</div></a>").join("") +
+    "</div>";
+  main.appendChild(sec);
+});
+
+/* category hues */
+const HUE = {hs:"teal", hp:"orange", ep:"crimson", he:"gold",
+             ld:"plum", tw:"indigo", atc:"slate", ms:"green"};
+const st = document.createElement("style");
+st.textContent = Object.entries(HUE)
+  .map(([k, v]) => ".cat-" + k + "{--cat:var(--" + v + ")}").join("");
+document.head.appendChild(st);
+
+/* filter */
+const q = document.getElementById("q");
+const empty = document.getElementById("empty");
+q.addEventListener("input", () => {
+  const v = q.value.trim().toLowerCase();
+  document.body.classList.toggle("filtering", v.length > 0);
+  let hits = 0;
+  document.querySelectorAll(".sec").forEach(sec => {
+    let n = 0;
+    sec.querySelectorAll(".card").forEach(c => {
+      const on = !v || c.dataset.n.includes(v);
+      c.hidden = !on;
+      if (on) n++;
+    });
+    sec.hidden = n === 0;
+    const cnt = sec.querySelector(".sec-count");
+    if (cnt) cnt.textContent = n + (n === 1 ? " event" : " events");
+    hits += n;
+  });
+  empty.style.display = hits ? "none" : "block";
+});
+document.addEventListener("keydown", e => {
+  if (e.key === "/" && document.activeElement !== q) { e.preventDefault(); q.focus(); }
+  if (e.key === "Escape" && document.activeElement === q) { q.value = ""; q.dispatchEvent(new Event("input")); q.blur(); }
+});
+
+/* theme */
+const root = document.documentElement;
+const tog = document.getElementById("tog");
+try { const s = localStorage.getItem("dchosa-theme"); if (s) root.dataset.theme = s; } catch (_) {}
+tog.addEventListener("click", () => {
+  const dark = root.dataset.theme
+    ? root.dataset.theme === "dark"
+    : matchMedia("(prefers-color-scheme: dark)").matches;
+  root.dataset.theme = dark ? "light" : "dark";
+  try { localStorage.setItem("dchosa-theme", root.dataset.theme); } catch (_) {}
+});
+</script>
+</body>
+</html>

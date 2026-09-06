@@ -1,0 +1,1073 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>CERI Leadership Test Study Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --navy:#0D1B2A; --navy-mid:#162438; --navy-hi:#1E3350;
+  --orange:#E8821A; --orange-dim:#A85C10;
+  --teal:#1A8A8A; --teal-dim:#125F5F;
+  --gold:#C9991A; --purple:#8C50C8; --purple-lt:#C07EF0;
+  --red:#D9544D;
+  --ink:#0D1B2A; --ink-2:#3E5068; --ink-3:#63758C;
+  --bg:#EEF1F5; --surface:#FFFFFF; --surface-2:#F5F7FA;
+  --line:#D3DBE5; --line-soft:#E4EAF1;
+  --focus:#E8821A;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --cond:'Barlow Condensed','Inter Tight',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','SFMono-Regular',Menlo,Consolas,monospace;
+  --r:10px; --maxw:680px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ink:#F4F6F8; --ink-2:#B6C4D6; --ink-3:#8A9BB0;
+    --bg:#0D1B2A; --surface:#162438; --surface-2:#1B2C44;
+    --line:#2A3F5C; --line-soft:#22344E;
+    --orange:#F5941F; --teal:#25A5A5; --gold:#DCAB27; --purple-lt:#C994F5;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#F4F6F8; --ink-2:#B6C4D6; --ink-3:#8A9BB0;
+  --bg:#0D1B2A; --surface:#162438; --surface-2:#1B2C44;
+  --line:#2A3F5C; --line-soft:#22344E;
+  --orange:#F5941F; --teal:#25A5A5; --gold:#DCAB27; --purple-lt:#C994F5;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 18px 96px}
+h1,h2,h3,h4{font-family:var(--cond);text-wrap:balance;margin:0;letter-spacing:.01em}
+h1{font-size:2.35rem;line-height:1.05;font-weight:700}
+h2{font-size:1.65rem;line-height:1.12;font-weight:600}
+h3{font-size:1.2rem;font-weight:600}
+h4{font-size:1.02rem;font-weight:600;letter-spacing:.02em}
+p{margin:0 0 .9em}
+a{color:var(--orange)}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:2.5px solid var(--focus);outline-offset:2px;border-radius:4px}
+.eyebrow{font-family:var(--cond);text-transform:uppercase;letter-spacing:.14em;
+  font-size:.78rem;font-weight:600;color:var(--ink-3)}
+
+/* ---------- morpheme chips: the subject's atoms ---------- */
+.wp{font-family:var(--mono);font-size:.94em;font-weight:500;white-space:nowrap;
+  padding:.06em .34em;border-radius:4px;background:var(--surface-2);
+  border:1px solid var(--line-soft);color:var(--ink)}
+.wp.pre{border-left:3px solid var(--orange)}
+.wp.suf{border-right:3px solid var(--teal)}
+.wp.cf{border-bottom:3px solid var(--gold)}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:40;background:var(--bg);
+  border-bottom:1px solid var(--line);}
+.topbar-in{max-width:var(--maxw);margin:0 auto;padding:10px 18px;
+  display:flex;align-items:center;gap:12px}
+.brandmark{font-family:var(--cond);font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;font-size:.9rem;color:var(--ink-2);
+  display:flex;align-items:center;gap:7px}
+.brandmark .dot{width:9px;height:9px;border-radius:2px;background:var(--orange);flex:none}
+.topbar .sp{flex:1}
+.iconbtn{background:none;border:1px solid var(--line);color:var(--ink-2);
+  border-radius:8px;width:34px;height:34px;display:grid;place-items:center;line-height:0}
+.iconbtn:hover{border-color:var(--orange);color:var(--orange)}
+.backbtn{background:none;border:none;color:var(--ink-2);padding:6px 0;
+  font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.82rem;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.backbtn:hover{color:var(--orange)}
+
+/* ---------- screens ---------- */
+.screen{display:none}
+.screen.active{display:block;animation:fade .22s ease}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .screen.active{animation:none}
+  *{transition:none!important}
+}
+
+/* ---------- hero ---------- */
+.hero{padding:30px 0 22px;border-bottom:1px solid var(--line)}
+.hero .kicker{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.tag{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.74rem;font-weight:600;padding:3px 9px;border-radius:999px;
+  border:1px solid var(--line);color:var(--ink-2);background:var(--surface)}
+.tag.hot{border-color:var(--orange);color:var(--orange)}
+.hero h1{margin-bottom:8px}
+.hero .sub{color:var(--ink-2);font-size:1.02rem;margin:0}
+
+/* the term-construction display: pre | root | suf */
+.termbuild{display:flex;align-items:stretch;margin:22px 0 4px;
+  border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+  background:var(--surface);font-family:var(--mono)}
+.termbuild div{flex:1;padding:11px 8px;text-align:center;min-width:0}
+.termbuild .lbl{display:block;font-family:var(--cond);font-size:.66rem;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);margin-bottom:3px}
+.termbuild .val{font-size:.98rem;font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.termbuild .p1{border-bottom:3px solid var(--orange)}
+.termbuild .p2{border-bottom:3px solid var(--gold);border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.termbuild .p3{border-bottom:3px solid var(--teal)}
+.termbuild-cap{font-size:.85rem;color:var(--ink-3);margin:8px 0 0;text-align:center}
+
+/* ---------- stat strip ---------- */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 10px}
+.stat .n{font-family:var(--cond);font-size:1.75rem;font-weight:700;line-height:1;
+  font-variant-numeric:tabular-nums;color:var(--orange)}
+.stat .l{font-size:.74rem;color:var(--ink-3);margin-top:4px;line-height:1.3}
+
+/* ---------- action cards ---------- */
+.actions{display:grid;gap:11px;margin:22px 0}
+.act{display:flex;align-items:center;gap:14px;text-align:left;width:100%;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:15px 16px;color:var(--ink);transition:border-color .15s,transform .15s}
+.act:hover{border-color:var(--orange);transform:translateX(2px)}
+.act .ic{width:38px;height:38px;flex:none;border-radius:8px;display:grid;place-items:center;
+  font-family:var(--cond);font-weight:700;font-size:1.1rem;color:#0D1B2A}
+.act>span:not(.ic):not(.ar){display:flex;flex-direction:column;gap:3px;min-width:0}
+.act .t{display:block;font-family:var(--cond);font-size:1.22rem;font-weight:600;line-height:1.15}
+.act .d{display:block;font-size:.84rem;color:var(--ink-3);line-height:1.35}
+.act .ar{margin-left:auto;color:var(--ink-3);font-size:1.2rem;flex:none}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin:18px 0 0;
+  overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:none;border:none;border-bottom:2.5px solid transparent;
+  padding:9px 13px;color:var(--ink-3);font-family:var(--cond);font-weight:600;
+  font-size:1rem;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--orange);border-bottom-color:var(--orange)}
+.tabpanel{display:none;padding-top:20px}
+.tabpanel.active{display:block}
+
+/* ---------- study guide ---------- */
+.sec{border:1px solid var(--line);border-radius:var(--r);margin-bottom:11px;
+  background:var(--surface);overflow:hidden}
+.sec-h{width:100%;display:flex;align-items:center;gap:12px;padding:14px 15px;
+  background:none;border:none;text-align:left;color:var(--ink)}
+.sec-h:hover{background:var(--surface-2)}
+.sec-w{font-family:var(--cond);font-size:.9rem;font-weight:700;color:var(--orange);
+  font-variant-numeric:tabular-nums;flex:none;min-width:34px}
+.sec-t{font-family:var(--cond);font-size:1.16rem;font-weight:600;line-height:1.2;flex:1}
+.sec-c{color:var(--ink-3);font-size:1.1rem;flex:none;transition:transform .2s}
+.sec.open .sec-c{transform:rotate(45deg)}
+.sec-body{display:none;padding:0 15px 16px;border-top:1px solid var(--line-soft)}
+.sec.open .sec-body{display:block}
+
+.layer{margin-top:16px;border-left:3px solid var(--line);padding-left:14px}
+.layer-h{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.79rem;font-weight:700;margin-bottom:9px}
+.layer.narr{border-left-color:var(--teal)} .layer.narr .layer-h{color:var(--teal)}
+.layer.deep{border-left-color:var(--orange)} .layer.deep .layer-h{color:var(--orange)}
+.layer.qref{border-left-color:var(--gold)} .layer.qref .layer-h{color:var(--gold)}
+.layer.note{border-left-color:var(--purple-lt)} .layer.note .layer-h{color:var(--purple-lt)}
+.layer p{font-size:.95rem}
+.layer ul{margin:.4em 0 .9em;padding-left:1.15em}
+.layer li{font-size:.94rem;margin-bottom:.45em}
+.layer h4{margin:1.1em 0 .4em;color:var(--ink)}
+.qr{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft);
+  border:1px solid var(--line-soft);border-radius:8px;overflow:hidden}
+@media(max-width:520px){.qr{grid-template-columns:1fr}}
+.qr>div{background:var(--surface);padding:8px 10px}
+.qr-term{font-family:var(--mono);font-size:.87rem;font-weight:600;color:var(--gold);
+  display:block;margin-bottom:2px}
+.qr-def{font-size:.85rem;color:var(--ink-2);line-height:1.4}
+.notes-block{background:color-mix(in srgb,var(--purple-lt) 9%,var(--surface));
+  border-radius:8px;padding:12px 13px}
+.notes-block p:last-child{margin-bottom:0}
+.trap{color:var(--red);font-weight:600}
+.sec-practice{margin-top:16px;width:100%;background:var(--surface-2);
+  border:1px dashed var(--line);border-radius:8px;padding:10px;color:var(--orange);
+  font-family:var(--cond);text-transform:uppercase;letter-spacing:.09em;
+  font-weight:600;font-size:.87rem}
+.sec-practice:hover{border-color:var(--orange);border-style:solid}
+
+/* ---------- quiz ---------- */
+.qbar{display:flex;align-items:center;gap:12px;margin:16px 0 4px}
+.qcount{font-family:var(--cond);font-weight:600;font-size:.9rem;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.qtrack{flex:1;height:5px;background:var(--line-soft);border-radius:3px;overflow:hidden}
+.qfill{height:100%;background:var(--orange);border-radius:3px;transition:width .3s}
+.qtopic{margin:14px 0 0}
+.qstem{font-size:1.14rem;line-height:1.5;margin:9px 0 18px;font-weight:500}
+.choices{display:grid;gap:9px}
+.ch{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;
+  background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r);
+  padding:13px 14px;color:var(--ink);line-height:1.45;transition:border-color .14s}
+.ch:hover:not(:disabled){border-color:var(--orange)}
+.ch:disabled{cursor:default}
+.ch .k{font-family:var(--cond);font-weight:700;color:var(--ink-3);flex:none;
+  width:20px;font-size:1.02rem}
+.ch.right{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 12%,var(--surface))}
+.ch.right .k{color:var(--teal)}
+.ch.wrong{border-color:var(--red);background:color-mix(in srgb,var(--red) 10%,var(--surface))}
+.ch.wrong .k{color:var(--red)}
+.expl{margin-top:16px;border-radius:var(--r);padding:14px;
+  border:1px solid var(--line);background:var(--surface-2);display:none}
+.expl.show{display:block}
+.expl .v{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.8rem;font-weight:700;margin-bottom:6px}
+.expl.ok .v{color:var(--teal)} .expl.no .v{color:var(--red)}
+.expl p{font-size:.93rem;margin:0}
+.expl .src{margin-top:9px;font-size:.79rem;color:var(--ink-3);font-family:var(--mono)}
+.btn{display:block;width:100%;background:var(--orange);color:#0D1B2A;border:none;
+  border-radius:var(--r);padding:14px;font-family:var(--cond);font-weight:700;
+  font-size:1.1rem;letter-spacing:.06em;text-transform:uppercase;margin-top:16px}
+.btn:hover{background:var(--orange-dim);color:#fff}
+.btn.ghost{background:none;border:1.5px solid var(--line);color:var(--ink-2)}
+.btn.ghost:hover{border-color:var(--orange);color:var(--orange);background:none}
+
+/* ---------- results ---------- */
+.ring{display:block;margin:22px auto 6px}
+.ring-n{font-family:var(--cond);font-size:2.6rem;font-weight:700;
+  fill:var(--ink);font-variant-numeric:tabular-nums}
+.ring-l{font-family:var(--sans);font-size:.72rem;fill:var(--ink-3)}
+.res-msg{text-align:center;color:var(--ink-2);margin-bottom:22px}
+.brk{display:grid;gap:7px;margin:18px 0}
+.brk-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;
+  padding:9px 12px;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+.brk-t{font-size:.88rem;line-height:1.3}
+.brk-s{font-family:var(--cond);font-weight:700;font-variant-numeric:tabular-nums;
+  font-size:.95rem;white-space:nowrap}
+
+/* ---------- resources ---------- */
+.rcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:15px 16px;margin-bottom:11px}
+.rcard h3{margin-bottom:3px}
+.rcard .meta{font-size:.83rem;color:var(--ink-3);margin-bottom:10px}
+.rlinks{display:grid;gap:7px}
+.rlink{display:flex;gap:9px;align-items:baseline;font-size:.89rem;
+  padding:7px 9px;background:var(--surface-2);border-radius:7px;text-decoration:none;color:var(--ink)}
+.rlink:hover{background:color-mix(in srgb,var(--orange) 12%,var(--surface-2))}
+.rlink .b{font-family:var(--cond);font-size:.66rem;text-transform:uppercase;
+  letter-spacing:.1em;font-weight:700;padding:2px 6px;border-radius:4px;flex:none;
+  background:var(--line-soft);color:var(--ink-3)}
+.rlink .b.core{background:var(--orange);color:#0D1B2A}
+.rlink .b.book{background:var(--teal);color:#0D1B2A}
+.rlink .b.topic{background:var(--gold);color:#0D1B2A}
+.rlink span:last-child{flex:1}
+
+/* ---------- misc ---------- */
+.callout{border-left:3px solid var(--orange);background:var(--surface);
+  padding:12px 14px;border-radius:0 8px 8px 0;margin:16px 0;font-size:.92rem}
+.callout strong{color:var(--orange)}
+.plan{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);
+  border-radius:8px;overflow:hidden;margin:14px 0}
+.plan-r{display:grid;grid-template-columns:1fr auto;background:var(--surface);
+  padding:8px 12px;font-size:.89rem;align-items:center}
+.plan-r.hd{background:var(--surface-2);font-family:var(--cond);text-transform:uppercase;
+  letter-spacing:.09em;font-size:.75rem;font-weight:700;color:var(--ink-3)}
+.plan-w{font-family:var(--cond);font-weight:700;font-variant-numeric:tabular-nums;color:var(--orange)}
+.foot{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--ink-3)}
+.foot p{margin-bottom:.5em}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <span class="brandmark"><span class="dot"></span>DC HOSA</span>
+    <span class="sp"></span>
+    <button class="iconbtn" id="themeBtn" aria-label="Switch theme" title="Switch theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<section id="home" class="screen active">
+  <div class="hero">
+    <div class="kicker">
+      <span class="tag hot">2026&ndash;2027</span>
+      <span class="tag">Academic Testing Center</span>
+      <span class="tag">Individual</span>
+      <span class="tag">Secondary &amp; Postsecondary</span>
+    </div>
+    <h1>CERI Leadership Test</h1>
+    <p class="sub">A 50-question test in 60 minutes with an essay tiebreaker. Two books, fifty percent each — the only ATC test with no science in it.</p>
+
+    <div class="termbuild" aria-hidden="true">
+      <div class="p1"><span class="lbl">7 Habits</span><span class="val">Covey</span></div>
+      <div class="p2"><span class="lbl">21 Laws</span><span class="val">Maxwell</span></div>
+      <div class="p3"><span class="lbl">50/50</span><span class="val">exactly</span></div>
+    </div>
+    <p class="termbuild-cap">Two books, evenly split. Know all seven habits in order and all twenty-one laws by name, and you have the spine of the entire test.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="stQ">0</div><div class="l">practice questions</div></div>
+    <div class="stat"><div class="n">2</div><div class="l">test-plan topics</div></div>
+    <div class="stat"><div class="n" id="stBest">&mdash;</div><div class="l">your best score</div></div>
+  </div>
+
+  <div class="actions">
+    <button class="act" onclick="startQuiz('weighted')">
+      <span class="ic" style="background:var(--orange)">50</span>
+      <span><span class="t">Simulate the Test</span><span class="d">50 questions weighted exactly to the official 26-27 test plan</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="go('study')">
+      <span class="ic" style="background:var(--teal)">SG</span>
+      <span><span class="t">Study Guide</span><span class="d">All 2 topics, four layers deep &mdash; read to actually know it</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="startQuiz('all')">
+      <span class="ic" style="background:var(--gold)">&infin;</span>
+      <span><span class="t">Full Question Bank</span><span class="d">All <span id="stQ2">0</span> questions, shuffled &mdash; the long grind</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="go('resources')">
+      <span class="ic" style="background:var(--purple-lt)">R</span>
+      <span><span class="t">Official References</span><span class="d">The exact books HOSA writes the test from</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+  </div>
+
+  <div class="callout"><strong>Read this before anything else.</strong> Two topics, <strong>50 percent each</strong>. Twenty-five questions come from <em>The 7 Habits of Highly Effective People</em> and twenty-five from <em>The 21 Irrefutable Laws of Leadership</em>. That is unusually predictable &mdash; the names, numbers and order of the seven habits and the twenty-one laws are the most testable material in the ATC set. Learn the lists cold first, then learn what each one means.</div>
+
+  <h2 style="margin-top:26px">The official 26-27 test plan</h2>
+  <div class="plan" id="planTable"></div>
+  <p style="font-size:.85rem;color:var(--ink-3)">Simulate the Test draws twenty-five from each book, every time. There is no third topic hiding anywhere.</p>
+
+  <h2 style="margin-top:26px">Tiebreakers, dress, and how ATC entry works</h2>
+  <p>In the event of a tie, an essay or tiebreaker question is judged. It is administered <strong>with the original test, inside the same 60 minutes</strong> &mdash; there is no separate window and no verbal warning at ILC, so budget for it before you start. <strong>ATC events award no bonus points for dress</strong>, unlike every other HOSA event, though you are still expected to look professional. And there are <strong>no qualification rules between state and ILC</strong>: you may take this test at your state conference, at ILC, at both, or at neither. ILC registration covers one ATC test; each additional test is $20, with no maximum.</p>
+
+  <div class="foot">
+    <p><strong>CERI Leadership Test Study Tool</strong> &middot; DC HOSA &middot; 2026&ndash;2027 season &middot; "Redefine the Standard"</p>
+    <p>Built from the official 2026-2027 HOSA competitive event guideline. Practice questions are original and written for this tool. No actual exam question is reproduced here.</p>
+  </div>
+</section>
+
+<section id="study" class="screen">
+  <button class="backbtn" onclick="go('home')">&larr; Back</button>
+  <h1 style="margin-top:8px">Study Guide</h1>
+  <p class="sub" style="color:var(--ink-2)">2 topics, four layers each. Read the narrative to understand it, the deep dive to outcompete, the quick reference to drill, and the study notes to stop losing points to traps.</p>
+  <div class="callout" style="border-left-color:var(--teal)">
+    <strong style="color:var(--teal)">How to use this.</strong> Don't read straight through. Open a topic, read the narrative once, then hit <em>Practice this topic</em> at the bottom of the section. Miss something? Come back to the deep dive. That loop beats re-reading every time.
+  </div>
+  <div id="guideList" style="margin-top:18px"></div>
+</section>
+
+<section id="resources" class="screen">
+  <button class="backbtn" onclick="go('home')">&larr; Back</button>
+  <h1 style="margin-top:8px">Official References</h1>
+  <p class="sub" style="color:var(--ink-2)">These are the sources listed in the 2026-2027 guideline. Test items are written from them and nowhere else.</p>
+
+  <div class="rcard" style="border-color:var(--orange)">
+    <h3>Covey &mdash; The 7 Habits of Highly Effective People</h3>
+    <p class="meta">50 percent of the test &middot; <strong style="color:var(--orange)">read the book</strong></p>
+    <p style="font-size:.91rem">The habits in order, the maturity continuum, the time management matrix, the Emotional Bank Account, and the levels of listening. This tool teaches all of it, but the book is short and widely available in every library &mdash; read it once and the whole half becomes easy.</p>
+    <div class="rlinks">
+      <a class="rlink" href="https://www.franklincovey.com/the-7-habits/" target="_blank" rel="noopener"><span class="b core">Core</span><span>FranklinCovey &mdash; the 7 Habits</span></a>
+    </div>
+  </div>
+  <div class="rcard" style="border-color:var(--teal)">
+    <h3>Maxwell &mdash; The 21 Irrefutable Laws of Leadership</h3>
+    <p class="meta">50 percent of the test &middot; <strong style="color:var(--teal)">learn all twenty-one by name and number</strong></p>
+    <p style="font-size:.91rem">Twenty-one named laws is a memorization task before it is anything else. Group them &mdash; capacity, influence and followership, team, legacy &mdash; and they hold. This event is administered by Corporate Education Resources, Inc.</p>
+    <div class="rlinks">
+      <a class="rlink" href="https://www.maxwellleadership.com/" target="_blank" rel="noopener"><span class="b core">Core</span><span>Maxwell Leadership &mdash; the 21 Laws</span></a>
+    </div>
+  </div>
+
+  <div class="rcard" style="border-color:var(--purple-lt)">
+    <h3>HOSA official guidelines</h3>
+    <p class="meta">hosa.org &middot; read the actual rules before your first conference</p>
+    <div class="rlinks">
+      <a class="rlink" href="https://hosa.org/guidelines/" target="_blank" rel="noopener"><span class="b core">Core</span><span>Competitive event guidelines &mdash; download the CERI Leadership Test PDF</span></a>
+      <a class="rlink" href="https://hosa.org/competitive-events/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>Competitive events overview and appendices</span></a>
+      <a class="rlink" href="https://hosa.org/scholarships/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>HOSA scholarships &mdash; applications open January 1, 2027</span></a>
+    </div>
+    <p style="font-size:.88rem;margin-top:12px;color:var(--ink-2)"><strong>Bring to the testing room:</strong> photo ID, two #2 wooden pencils with erasers (not mechanical), and optional neon foam earplugs &mdash; not earbuds. Business attire or official HOSA uniform earns bonus points. There are no verbal time announcements at ILC; you watch your own clock.</p>
+  </div>
+</section>
+
+<section id="quiz" class="screen">
+  <button class="backbtn" onclick="quitQuiz()">&larr; End session</button>
+  <div class="qbar">
+    <span class="qcount" id="qCount">1 / 50</span>
+    <span class="qtrack"><span class="qfill" id="qFill" style="width:0%"></span></span>
+    <span class="qcount" id="qScore">0 &#10003;</span>
+  </div>
+  <div class="qtopic"><span class="eyebrow" id="qTopic">Topic</span></div>
+  <p class="qstem" id="qStem">Question</p>
+  <div class="choices" id="qChoices"></div>
+  <div class="expl" id="qExpl"><div class="v" id="qVerdict"></div><p id="qExplText"></p><div class="src" id="qSrc"></div></div>
+  <button class="btn" id="qNext" style="display:none" onclick="nextQ()">Next question</button>
+</section>
+
+<section id="results" class="screen">
+  <h1 style="margin-top:22px;text-align:center">Session complete</h1>
+  <svg class="ring" width="168" height="168" viewBox="0 0 168 168" role="img" aria-labelledby="ringLbl">
+    <title id="ringLbl">Score ring</title>
+    <circle cx="84" cy="84" r="70" fill="none" stroke="var(--line)" stroke-width="12"/>
+    <circle id="ringArc" cx="84" cy="84" r="70" fill="none" stroke="var(--orange)" stroke-width="12"
+            stroke-linecap="round" stroke-dasharray="439.8" stroke-dashoffset="439.8"
+            transform="rotate(-90 84 84)" style="transition:stroke-dashoffset .8s ease"/>
+    <text class="ring-n" id="ringPct" x="84" y="86" text-anchor="middle">0%</text>
+    <text class="ring-l" id="ringFrac" x="84" y="106" text-anchor="middle">0 of 0</text>
+  </svg>
+  <p class="res-msg" id="resMsg"></p>
+  <h3 style="margin-bottom:8px">Where you stand by topic</h3>
+  <div class="brk" id="resBrk"></div>
+  <button class="btn" onclick="repeatQuiz()">Run it again</button>
+  <button class="btn ghost" onclick="go('study')">Back to the study guide</button>
+  <button class="btn ghost" onclick="go('home')">Home</button>
+</section>
+
+</div>
+
+<script>
+/* ============================================================
+   DC HOSA — CERI Leadership Test Study Tool
+   Test plan and references: official 2026-2027 HOSA guideline.
+   All practice questions are original.
+   ============================================================ */
+
+const TOPICS = [
+  {
+    "n": "The 7 Habits of Highly Effective People",
+    "w": 50,
+    "c": "var(--orange)"
+  },
+  {
+    "n": "The 21 Irrefutable Laws of Leadership",
+    "w": 50,
+    "c": "var(--teal)"
+  }
+];
+
+const GUIDE = [];
+
+GUIDE.push({t:0,
+narr:`<p>This is the one HOSA test with no science in it, and that trips people up. There is nothing to calculate and no anatomy to label. What there is instead is a tightly organized system of ideas from Stephen Covey's <strong>The 7 Habits of Highly Effective People</strong>, and the test rewards students who know that system the way a phlebotomy competitor knows the order of draw: by number, by name, in order, cold. Half of your fifty questions come from this book. If you can name all seven habits in sequence, say which of the three big movements each one belongs to, and recognize the small vocabulary Covey attaches to each, you have already secured most of these points.</p>
+<p>Covey's central claim is that effectiveness is not a bag of tricks. He divides the last two centuries of success literature into two eras. The older tradition he calls the <strong>Character Ethic</strong>: success grows out of integrity, humility, fidelity, temperance, courage, justice, patience, industry, simplicity, modesty, and the Golden Rule. These are traits you build over years and they are grounded in principles that hold whether or not anyone is watching. The newer tradition, which he says came to dominate after World War I, he calls the <strong>Personality Ethic</strong>: success as public image, attitude, social technique, communication skill, and the projection of confidence. Covey does not say the Personality Ethic is worthless. He says it is secondary, and that using technique without character is a house with no foundation. Everything else in the book follows from that one judgment.</p>
+<p>To change behavior at that depth you have to change how you see. Covey borrows the Greek word <strong>paradigm</strong>, meaning a model, theory, perception, assumption, or frame of reference, and uses the image of a map: if you are holding a map of the wrong city, no amount of positive attitude or faster walking gets you where you want to go. A <strong>paradigm shift</strong> is the moment the map changes, and Covey argues that the significant problems we face cannot be solved at the same level of thinking that created them. His method for producing that shift is the <strong>inside-out approach</strong>: change yourself first, then your relationships, then your circumstances. The opposite, outside-in, waits for the world to improve before you do.</p>
+<p>He also insists that a habit is not just a behavior you repeat. Covey defines a <strong>habit</strong> as the intersection of three things: <strong>knowledge</strong>, which is what to do and why; <strong>skill</strong>, which is how to do it; and <strong>desire</strong>, which is the motivation, the wanting to do it. Take away any one and the habit does not form. A chapter officer who knows a meeting agenda should be published in advance, and knows how to write one, but does not really want the accountability that comes with it, will not do it twice. The three-part definition is exactly the kind of small structural fact this test loves.</p>
+<p>The seven habits are arranged along what Covey calls the <strong>maturity continuum</strong>, which moves from <strong>dependence</strong> (the paradigm of you: you take care of me, you did not come through for me) to <strong>independence</strong> (the paradigm of I: I can do it, I am responsible) to <strong>interdependence</strong> (the paradigm of we: we can cooperate, we can combine our talents). Habits 1, 2, and 3 are the <strong>Private Victory</strong> and they carry you from dependence to independence. Habits 4, 5, and 6 are the <strong>Public Victory</strong> and they carry you from independence to interdependence. Habit 7 surrounds all six and renews the person doing them. Covey is emphatic that the order matters: the Private Victory precedes the Public Victory, because you cannot have a genuine partnership with someone who has no self-command.</p>
+<p>Read the habits with a HOSA chapter in your head and they stop being abstract. Habit 1 is the officer who stops explaining why membership dropped and starts doing something about it. Habit 2 is the executive council writing a chapter mission statement in September instead of improvising in March. Habit 3 is the officer who protects two hours a week for planning so that the week before the state conference is not a crisis. Habit 4 is a fundraising split that both committees can live with. Habit 5 is the president who asks the frustrated member a question before delivering a defense. Habit 6 is a competitive events plan neither officer would have invented alone. Habit 7 is the member who still sleeps, still studies, still serves, and is therefore still standing in April.</p>`,
+deep:`<h4>The Character Ethic, the Personality Ethic, and the Paradigm Shift</h4>
+<ul>
+<li><strong>Character Ethic</strong> — the older tradition Covey traces in success literature before roughly World War I. Its qualities are integrity, humility, fidelity, temperance, courage, justice, patience, industry, simplicity, modesty, and the Golden Rule. It rests on <strong>principles</strong>: natural laws and fundamental truths that get internalized into habits.</li>
+<li><strong>Personality Ethic</strong> — the later tradition. Success as public image, personality, attitude and behavior, skills and techniques, positive mental attitude, and human and public relations technique. Covey calls it secondary, not fake: technique built on character works, technique substituted for character is manipulation.</li>
+<li><strong>Paradigm</strong> — Greek in origin, used by Covey to mean a model, theory, perception, assumption, or frame of reference. Paradigms are the maps in our heads; they are not the territory.</li>
+<li>Two sources of paradigms: the way we see ourselves, and the way we see the world. To take full responsibility for our perceptions as the source of our attitudes and behaviors, Covey says we must understand how <strong>conditioning</strong> has shaped our values.</li>
+<li><strong>Inside-out</strong> — the change sequence Covey argues for: start with self, then character, then motives. He reads the Old Testament account of Joseph, sold into slavery and yet effective inside Potiphar's household, as the picture of changing from the inside out when the outside cannot be changed at all.</li>
+<li><strong>Pygmalion effect</strong> — high expectations placed on a person lead to increased performance. The mirror we hold up to other people becomes a script they tend to live into, which is why negative scripting is so costly and why affirmation of a member's potential is a leadership act.</li>
+<li><strong>P/PC Balance</strong> — from Aesop's goose and the golden egg. <strong>P</strong> is production of desired results, the golden eggs. <strong>PC</strong> is production capability, the goose that lays them. Effectiveness is the balance of the two, and it applies to three kinds of assets: physical, financial, and human.</li>
+</ul>
+<h4>The Maturity Continuum and the Architecture of the Seven Habits</h4>
+<ul>
+<li><strong>Dependence</strong> is the paradigm of <em>you</em>: you take care of me, you did not deliver, I blame you. <strong>Independence</strong> is the paradigm of <em>I</em>: I can do it, I am responsible, I choose. <strong>Interdependence</strong> is the paradigm of <em>we</em>: we can do it together, we can combine our talents.</li>
+<li><strong>Habit 1 — Be Proactive.</strong> Principles of personal vision. Habits 1 through 3 are the <strong>Private Victory</strong> and move a person from dependence to independence. They deal with self-mastery.</li>
+<li><strong>Habit 2 — Begin with the End in Mind.</strong> Principles of personal leadership.</li>
+<li><strong>Habit 3 — Put First Things First.</strong> Principles of personal management.</li>
+<li><strong>Habit 4 — Think Win/Win.</strong> Principles of interpersonal leadership. Habits 4 through 6 are the <strong>Public Victory</strong> and move a person from independence to interdependence. They deal with teamwork, cooperation, and communication.</li>
+<li><strong>Habit 5 — Seek First to Understand, Then to Be Understood.</strong> Principles of empathic communication.</li>
+<li><strong>Habit 6 — Synergize.</strong> Principles of creative cooperation.</li>
+<li><strong>Habit 7 — Sharpen the Saw.</strong> Principles of balanced self-renewal. It encircles the other six and makes all of them possible; Covey calls it the habit that renews the other habits.</li>
+<li>The approach is described as incremental, sequential, and highly integrated. Interdependence is a choice only independent people can make, which is why the sequence cannot be reordered.</li>
+</ul>
+<h4>Habit 1 in Depth: Endowments, Language, and the Two Circles</h4>
+<ul>
+<li><strong>Three deterministic theories</strong> Covey uses to describe the social paradigm, all descended from stimulus-response thinking of the Pavlov type: <strong>genetic determinism</strong> (it is in the DNA, it came from grandparents), <strong>psychic determinism</strong> (it came from upbringing, parents, childhood scripting), and <strong>environmental determinism</strong> (it is the boss, the spouse, the teenager, the economy, the policy).</li>
+<li><strong>Between stimulus and response there is a space</strong>, and in that space is the freedom to choose. Covey draws this from Viktor Frankl's survival in the Nazi camps, where Frankl discovered what Covey calls the last of the human freedoms: to choose one's attitude.</li>
+<li><strong>Frankl's three central values</strong>: <em>experiential</em>, what happens to us; <em>creative</em>, what we bring into existence; and <em>attitudinal</em>, our response in difficult circumstances. Covey treats the attitudinal as the highest, because it is available even when the other two are stripped away.</li>
+<li><strong>Four human endowments</strong>: self-awareness, imagination, conscience, and independent will. <strong>Self-awareness</strong> is the ability to think about your own thought process. <strong>Imagination</strong> is the endowment that lets us create beyond present reality and is what expands proactivity into personal leadership.</li>
+<li><strong>Reactive language</strong>: I can't, I must, I have to, if only, there's nothing I can do, that's just the way I am, he makes me so mad. <strong>Proactive language</strong>: I can, I will, I choose, I prefer, let's look at our alternatives, I control my own feelings.</li>
+<li><strong>Initiative and resourcefulness</strong>: proactive people recognize the responsibility to make things happen and then seize the initiative to do whatever it takes. The key posture is resourcefulness — solving the problem with what is actually available rather than cataloguing what is missing.</li>
+<li><strong>Circle of Concern</strong> holds everything you care about, including much you cannot touch. <strong>Circle of Influence</strong> holds the subset you can actually do something about. Proactive people work inside the Circle of Influence, and it <strong>enlarges</strong>. Reactive people pour energy into the Circle of Concern, and their Circle of Influence <strong>shrinks</strong>.</li>
+<li><strong>Three kinds of problems</strong>: <em>direct control</em> problems involve our own behavior and are solved by working on Habits 1, 2, and 3 — the Private Victory. <em>Indirect control</em> problems involve other people's behavior and are solved by Habits 4, 5, and 6 — methods of influence, the Public Victory. <em>No control</em> problems are solved by changing our attitude toward them: accepting them genuinely and learning to live with them.</li>
+<li><strong>Making and keeping commitments</strong> is what Covey calls the essence of developing the basic habits of effectiveness — first to ourselves, then to others. Its companion is the willingness to <strong>admit and correct mistakes</strong> rather than defend them.</li>
+</ul>
+<h4>Habit 2 in Depth: Two Creations, Centers, and the Mission Statement</h4>
+<ul>
+<li><strong>All things are created twice.</strong> There is a mental or first creation and a physical or second creation. Habit 2 is the first creation; Habit 3 is the second.</li>
+<li><strong>Leadership versus management</strong>: leadership decides which wall the ladder leans against; management climbs it efficiently. Covey's maxim of personal effectiveness is <em>manage from the left; lead from the right</em>, meaning use left-brain analysis to execute and right-brain vision to set direction.</li>
+<li><strong>Right-brain functions</strong> important to writing a mission statement: imagination, conscience, visualization, intuition, creativity, holistic and simultaneous thinking. <strong>Left-brain functions</strong>: logical, verbal, analytical, and sequential thinking. Sequential thinking is the classic left-brain item and does not belong on a right-brain list.</li>
+<li><strong>Personal mission statement</strong> — Covey calls it a personal constitution. It focuses on what you want to be (character) and to do (contributions and achievements) and on the values and principles underneath them.</li>
+<li><strong>Alternative centers</strong> that people build a life around: spouse, family, money, work, possessions, pleasure, friend or enemy, church, and self. Each distorts security, guidance, wisdom, and power. Covey argues for being <strong>principle-centered</strong>, because principles do not react, do not die, do not quit, and do not depend on anyone's behavior.</li>
+<li><strong>Four interdependent life-support factors</strong> that create a noble personality, a balanced character, and an integrated individual: <strong>security</strong> (sense of worth, identity, emotional anchorage, self-esteem), <strong>guidance</strong> (your source of direction, your internal standards and criteria), <strong>wisdom</strong> (perspective, balance, judgment, discernment), and <strong>power</strong> (the capacity to act, the strength to accomplish).</li>
+<li><strong>Affirmations</strong> have five ingredients: personal, positive, present tense, visual, and emotional.</li>
+<li><strong>Visualization</strong> — Charles Garfield's research on peak performers found that they mentally rehearse. Covey applies this directly: officers who visualize the meeting going well, in specific detail, run better meetings.</li>
+<li><strong>Roots and wings</strong> — Covey quotes the idea that the only lasting bequests we give children are roots and wings. Wings means empowering them with the freedom to rise above negative scripting.</li>
+</ul>
+<h4>Habit 3 in Depth: Four Generations of Time Management and the Matrix</h4>
+<ul>
+<li><strong>First generation</strong>: notes and checklists. <strong>Second generation</strong>: calendars and appointment books, scheduling ahead. <strong>Third generation</strong>: prioritization, clarifying values, goal setting, daily planning. <strong>Fourth generation</strong>: self-management rather than time management, organizing weekly around roles and goals, centered on principles and on Quadrant II.</li>
+<li>Covey's critique of the third generation is not that it fails to plan but that daily planning and value clarification alone leave people unable to place activities in the context of principles, personal mission, and balanced roles.</li>
+<li><strong>Quadrant I — urgent and important</strong>: crises, pressing problems, deadline-driven projects. Living here produces stress, burnout, and constant firefighting.</li>
+<li><strong>Quadrant II — important, not urgent</strong>: prevention, production capability activities, relationship building, recognizing new opportunities, planning, recreation. This is the heart of effective personal management and the most effective quadrant in the fourth generation.</li>
+<li><strong>Quadrant III — urgent, not important</strong>: interruptions, some calls, some mail, some meetings, proximate and pressing matters, popular activities. It feels like Quadrant I because of the urgency, which is exactly its danger.</li>
+<li><strong>Quadrant IV — not urgent, not important</strong>: trivia, busy work, time wasters, pleasant but empty activity. Covey says Quadrant II time is taken primarily from Quadrants III and IV.</li>
+<li><strong>Weekly organizing</strong> beats daily organizing because a week has enough room to balance roles and goals, and because a plan set weekly leaves space for spontaneous activity rather than locking every hour.</li>
+<li><strong>Pareto principle</strong> — eighty percent of results flow out of twenty percent of activities. It is the arithmetic argument for Habit 3.</li>
+<li><strong>Delegation</strong>: <em>gofer delegation</em> is go-for-this, go-for-that, step-by-step control of methods. <strong>Stewardship delegation</strong> focuses on results and has five parts to agree on up front: desired results, guidelines, resources, accountability, and consequences.</li>
+</ul>
+<h4>Habit 4 in Depth: Six Paradigms, Five Dimensions, and the Emotional Bank Account</h4>
+<ul>
+<li><strong>Six paradigms of human interaction</strong>: Win/Win, Win/Lose, Lose/Win, Lose/Lose, Win, and Win/Win or No Deal. <strong>No Deal</strong> is the release valve: if we cannot find a solution that benefits us both, we agree to disagree agreeably and make no agreement at all.</li>
+<li><strong>Win/Lose</strong> is the authoritarian, competitive script — most of us are scripted into it by athletics, grading curves, and sibling comparison. <strong>Lose/Win</strong> is capitulation, which buries feelings that come back as disproportionate anger or illness. <strong>Lose/Lose</strong> is the paradigm of two stubborn people who would rather both go down.</li>
+<li><strong>Five interdependent dimensions</strong> of Win/Win, in order: <strong>character</strong>, then <strong>relationships</strong>, then <strong>agreements</strong>, then supporting <strong>systems</strong>, then <strong>processes</strong>. Character is the foundation.</li>
+<li><strong>Three character traits</strong> essential to Win/Win: <strong>integrity</strong>, <strong>maturity</strong> (the balance of courage and consideration — the ability to express your feelings and convictions with courage balanced by consideration for the feelings and convictions of others), and the <strong>Abundance Mentality</strong>.</li>
+<li><strong>Abundance Mentality</strong>: there is plenty out there for everybody; another person's success does not subtract from mine. <strong>Scarcity Mentality</strong>: life is a zero-sum pie, so praise, recognition, and credit given to someone else are taken from me. The scarcity voice sounds like <em>I am the winner</em>.</li>
+<li><strong>Emotional Bank Account</strong> — the metaphor for the amount of trust built up in a relationship. Deposits raise the balance; withdrawals lower it. A high balance buys you tolerance for mistakes and lets communication be instant and effective.</li>
+<li><strong>Six major deposits</strong>: understanding the individual; attending to little things; keeping commitments; clarifying expectations; showing personal integrity; and apologizing sincerely when you make a withdrawal. <strong>Understanding the individual</strong> is the deposit built on the Golden Rule — do unto others as you would have them do unto you means treating them according to what <em>they</em> value, not what you would want.</li>
+<li><strong>Win/Win agreements</strong> specify five elements, the same five as stewardship delegation: desired results, guidelines, resources, accountability, and consequences.</li>
+</ul>
+<h4>Habits 5 and 6 in Depth: Empathic Listening and Synergy</h4>
+<ul>
+<li><strong>Five levels of listening</strong>, lowest to highest: <em>ignoring</em>, <em>pretending</em>, <em>selective listening</em>, <em>attentive listening</em>, and <strong>empathic listening</strong>. Only the fifth is listening with intent to understand rather than intent to reply.</li>
+<li><strong>Four autobiographical responses</strong> that block empathy: we <em>evaluate</em> (agree or disagree), <em>probe</em> (ask questions from our own frame of reference), <em>advise</em> (give counsel from our own experience), and <em>interpret</em> (explain their motives by our own).</li>
+<li><strong>Four developmental stages of empathic listening</strong>: (1) mimic content, repeating words back; (2) rephrase the content in your own words; (3) reflect feeling; and (4) <strong>rephrase the content and reflect the feeling together</strong>, which is the most effective and the only stage that engages both the left and right brain.</li>
+<li><strong>Ethos, pathos, logos</strong> — the sequence for being understood. <em>Ethos</em> is your personal credibility and character. <em>Pathos</em> is empathic alignment with the other person's feeling. <em>Logos</em> is the logic of your presentation. The order matters: character, then relationship, then reasoning.</li>
+<li><strong>Synergy</strong> means the whole is greater than the sum of the parts. The relationship the parts have to each other is itself a part, and the most catalytic one.</li>
+<li><strong>The essence of synergy is valuing the differences</strong> — the mental, emotional, and psychological differences between people. The person who truly values differences responds to disagreement with curiosity, and Covey models the response as: good, you see it differently, help me see what you see.</li>
+<li><strong>Levels of communication</strong> plotted against trust and cooperation: <strong>defensive</strong> at the bottom (low trust, low cooperation, win/lose or lose/win language, careful legalistic wording), <strong>respectful</strong> in the middle (polite but not empathic, produces compromise where one plus one equals one and a half), and <strong>synergistic</strong> at the top (high trust, high cooperation, produces alternatives better than anything either party brought in).</li>
+<li><strong>Force Field Analysis</strong> — Kurt Lewin's model. Any current level of performance is an equilibrium between <em>driving forces</em> pushing upward and <em>restraining forces</em> pushing back. Adding driving force alone builds tension; synergy works by transforming restraining forces into driving forces, involving people in the problem so they become part of the solution.</li>
+</ul>
+<h4>Habit 7 in Depth: Four Dimensions of Renewal and the Upward Spiral</h4>
+<ul>
+<li><strong>Physical dimension</strong> — exercise, nutrition, stress management. Eating right, getting sufficient rest and relaxation, and building endurance, flexibility, and strength. It is the dimension you renew by taking care of the body itself.</li>
+<li><strong>Spiritual dimension</strong> — value clarification and commitment, study, and meditation. Drawing on the sources that inspire and uplift you and tie you to the timeless truths of humanity. Covey cites Anwar Sadat, who in prison learned that success is bound up with meditation and inward renewal. A chapter that opens every meeting with a reading or a motto is renewing this dimension.</li>
+<li><strong>Mental dimension</strong> — reading, visualizing, planning, and writing. Continuing education after formal education ends; Covey singles out reading good literature broadly as the single most powerful mental renewal.</li>
+<li><strong>Social/emotional dimension</strong> — service, empathy, synergy, and intrinsic security. This is the dimension tied to personal security, to inside-out congruence, and to living a life of integrity in which your daily habits reflect your deepest values. Unlike the other three, it requires no separate scheduled time because it is exercised in the ordinary interactions of daily life.</li>
+<li><strong>Balance</strong> is the point: neglecting any one dimension negatively impacts the rest. Habit 7 is a pure Quadrant II activity, which is exactly why it is the first thing dropped when the calendar gets tight.</li>
+<li><strong>Upward Spiral</strong> — growth and change happen through a repeating cycle of three actions: <strong>learn, commit, do</strong>. Then learn, commit, and do again at a higher level. Conscience is what steers the spiral upward.</li>
+<li><strong>Principles of change</strong> — the first step in the natural process of growth and development is the <strong>admission of ignorance</strong>. You cannot be taught until you have admitted you do not know, which is why the officer who says <em>I do not know the deadline, let me find out and send it to everyone</em> is further along than the one who bluffs.</li>
+<li><strong>Sharpening the saw in others</strong> — Covey's argument for scripting people affirmatively rather than reflecting back their weaknesses connects Habit 7 to the Pygmalion effect: what you mirror to a member becomes what they practice being.</li>
+</ul>`,
+qref:[
+["Paradigm","Greek: model, theory, perception, assumption, frame of reference"],
+["Character Ethic","Success from integrity, humility, courage, justice, the Golden Rule"],
+["Personality Ethic","Success from image, attitude, technique, public relations skill"],
+["Habit","Intersection of knowledge, skill, and desire"],
+["P/PC Balance","P is production of results; PC is production capability"],
+["Maturity continuum","Dependence to independence to interdependence"],
+["Private Victory","Habits 1 to 3; self-mastery; dependence to independence"],
+["Public Victory","Habits 4 to 6; teamwork; independence to interdependence"],
+["Genetic determinism","Blames DNA and grandparents for present behavior"],
+["Psychic determinism","Blames upbringing, parents, and childhood scripting"],
+["Environmental determinism","Blames boss, spouse, economy, or policy"],
+["Four endowments","Self-awareness, imagination, conscience, independent will"],
+["Circle of Influence","What you can actually act on; enlarges when you focus there"],
+["Circle of Concern","Everything you care about, much of it beyond your control"],
+["Attitudinal value","Frankl: our response in difficult circumstances"],
+["First creation","Mental creation; Habit 2 precedes physical creation in Habit 3"],
+["Four life-support factors","Security, guidance, wisdom, power"],
+["Quadrant II","Important but not urgent; the most effective quadrant"],
+["Pareto principle","Eighty percent of results flow from twenty percent of activities"],
+["Emotional Bank Account","Metaphor for trust built up in a relationship"],
+["Understanding the individual","Golden Rule deposit; treat people by what they value"],
+["Abundance Mentality","Plenty exists for everyone; another's success costs you nothing"],
+["Empathic listening","Listening with intent to understand, not to reply"],
+["Upward Spiral","Learn, commit, do, repeated at a higher level"]
+],
+notes:`<p><strong>Psychic determinism is the one tied to upbringing, and students lose this point constantly.</strong> Covey names three deterministic theories, and the distinctions are one word wide. Genetic determinism says it came from your grandparents and is in your DNA. Psychic determinism says it came from your parents and your childhood scripting. Environmental determinism says it is your boss, your spouse, the economy, or the policy. When the stem says upbringing, parents, or how you were raised, the answer is psychic determinism, not <span class="trap">genetic determinism</span>. Genetic is biology; psychic is the family script.</p>
+<p><strong>The Circle of Influence enlarges; the Circle of Concern does not.</strong> This is the single most reversed fact in Habit 1. When you spend your energy on things you can actually act on, your Circle of Influence grows and you gradually gain influence over things that used to be outside it. When you spend it on complaint and blame inside the Circle of Concern, your Circle of Influence <em>shrinks</em>. So the answer to what happens to your Circle of Influence when you focus on positive energy is that it enlarges, not that <span class="trap">the Circle of Concern enlarges</span> and not that influence stays constant. Also keep the three problem types straight: direct control is solved by Habits 1 to 3, indirect control by Habits 4 to 6, and no control by changing your own attitude.</p>
+<p><strong>Quadrant II is the effective quadrant, not Quadrant I.</strong> Quadrant I is urgent and important, and living there feels productive because everything is on fire. But the fourth generation of time management is built on Quadrant II — important, not urgent: planning, prevention, relationship building, and renewal. The tempting wrong answer is <span class="trap">Quadrant I</span>, chosen because crisis work looks like the real work. Watch the twin trap too: Quadrant III is urgent but not important, and it masquerades as Quadrant I precisely because urgency feels the same from the inside.</p>
+<p><strong>The renewal dimensions are the highest-yield vocabulary in this topic, and the wrong choices are all real dimensions.</strong> Physical is nutrition, rest, relaxation, and exercise. Mental is reading, visualizing, planning, and writing. Spiritual is meditation, value clarification, inspiration, and the timeless truths of humanity. Social/emotional is service, empathy, synergy, and intrinsic security — and it is the one tied to personal security, inside-out congruence, and integrity. That last stem pulls students toward <span class="trap">the spiritual dimension</span> because security sounds spiritual; it is social/emotional. Likewise, <span class="trap">the mental dimension</span> is a constant decoy for anything about inspiration or meditation, which belong to spiritual.</p>
+<p><strong>Private Victory ends at independence; Public Victory ends at interdependence.</strong> Three habits deal with self-mastery and carry you from dependence to independence: those are the Private Victories, Habits 1 through 3. Three habits deal with teamwork, cooperation, and communication and carry you from independence to interdependence: those are the Public Victories, Habits 4 through 6. If the stem says self-mastery, the destination is independence, and answering <span class="trap">interdependence</span> is the standard error. Habit 7 belongs to neither group; it renews all six.</p>
+<p><strong>Character is the foundation of Win/Win, and No Deal is a legitimate outcome.</strong> When asked what the Win/Win paradigm is founded on, the answer is character, not <span class="trap">relationships</span> — relationships are the second dimension, built on character, and then come agreements, systems, and processes in that order. Separately, the six paradigms of human interaction are Win/Win, Win/Lose, Lose/Win, Lose/Lose, Win, and Win/Win or No Deal; when no solution benefits both parties, the outcome named is No Deal, not <span class="trap">compromise</span>. Compromise belongs to the respectful level of communication in Habit 6, where one plus one equals one and a half, and it is not the same thing as agreeing to make no agreement.</p>`});
+
+GUIDE.push({t:1,
+narr:`<p>John Maxwell's <strong>The 21 Irrefutable Laws of Leadership</strong> supplies the other half of this test, and it is the half you can most reliably nail down, because the content is a numbered list. Twenty-one laws, each with a name, a number, a one-sentence claim, and a set of illustrations. Maxwell's argument for calling them irrefutable is that they can be learned, they stand alone, they carry consequences, and they are the foundation of leadership. Learn them and you build people; violate them and you pay, whether or not you know the law exists. That framing matters, because questions on this test often hand you a quotation or a story and ask which law it represents. You are not being asked to agree with Maxwell. You are being asked to match a scenario to a name.</p>
+<p>Start with his definition, because four of the laws depend on it: <strong>leadership is influence, nothing more, nothing less</strong>. Position is not leadership. Maxwell attacks five common myths people hold about leaders. The <strong>Management Myth</strong> confuses managing systems with leading people. The <strong>Entrepreneur Myth</strong> assumes anyone who can sell can lead. The <strong>Knowledge Myth</strong> assumes intelligence and expertise equal leadership. The <strong>Pioneer Myth</strong> assumes that being first, or being out front, makes you a leader — a HOSA member who reminds everyone that their chapter affiliated first is living in this myth. The <strong>Position Myth</strong> assumes the title on the ballot creates the following. Real influence rests instead on character, relationships, knowledge, intuition, experience, past success, and ability.</p>
+<p>The laws are easier to hold if you sort them into four families. The first family is about the <strong>leader's own capacity</strong>: the Lid, Process, Navigation, Intuition, and Priorities. These ask how much leadership you actually have and whether you are spending it on the right things. The second family is about <strong>influence and followership</strong>: Influence, Addition, Solid Ground, Respect, Magnetism, Connection, the Picture, and Buy-In. These ask why anyone would follow you at all. The third family is about the <strong>team</strong>: the Inner Circle, Empowerment, Victory, and the Big Mo. These ask what happens when a leader multiplies through other people. The fourth family is about <strong>cost and legacy</strong>: Sacrifice, Timing, Explosive Growth, and Legacy. These ask what leadership takes from you and what it leaves behind.</p>
+<p>Two of Maxwell's laws function as the pillars of the whole system and deserve extra attention. The <strong>Law of the Lid</strong> says leadership ability determines a person's level of effectiveness — your leadership is the ceiling on your organization, so a team with a seven-level lid never performs at nine no matter how hard it works. The <strong>Law of Process</strong> says leadership develops daily, not in a day; Maxwell compares it to compounding investment, where the dull daily deposit is the entire mechanism. Those two together explain why he thinks leadership can be taught and why he thinks it takes years.</p>
+<p>The laws also have a stubborn habit of showing up as scenarios about ordinary chapter life, and that is the framing you should practice in. An officer team that plans the fall service project in August rather than reacting in October is running the <strong>Law of Navigation</strong>, whose secret Maxwell names as preparation. A president whose members complete tasks because they trust her, before they have even heard the plan, is demonstrating the <strong>Law of Buy-In</strong>: people buy into the leader, then the vision. A treasurer who keeps sloppy records and then discovers that no one will follow the budget is learning the <strong>Law of Solid Ground</strong>, where trust is the currency. A chapter that finally wins something and suddenly finds volunteers appearing is experiencing the <strong>Law of the Big Mo</strong>, momentum, which Maxwell calls the great exaggerator.</p>
+<p>The last thing to internalize is that Maxwell writes about succession as the real scoreboard. The <strong>Law of Explosive Growth</strong> says leading followers adds, but leading leaders multiplies. The <strong>Law of Legacy</strong> says a leader's lasting value is measured by succession, and he uses the image of a relay race in which the most important part is the exchange of the baton, not the running. For a chapter officer this is not abstract. If you graduate and the chapter collapses, you led followers. If you graduate and three sophomores you trained run it better than you did, you led leaders.</p>`,
+deep:`<h4>All Twenty-One Laws in Order, With Their Claim</h4>
+<ul>
+<li><strong>1. The Law of the Lid</strong> — Leadership ability determines a person's level of effectiveness. Your leadership is the ceiling on your success.</li>
+<li><strong>2. The Law of Influence</strong> — The true measure of leadership is influence, nothing more, nothing less.</li>
+<li><strong>3. The Law of Process</strong> — Leadership develops daily, not in a day.</li>
+<li><strong>4. The Law of Navigation</strong> — Anyone can steer the ship, but it takes a leader to chart the course.</li>
+<li><strong>5. The Law of Addition</strong> — Leaders add value to others by serving them.</li>
+<li><strong>6. The Law of Solid Ground</strong> — Trust is the foundation of leadership.</li>
+<li><strong>7. The Law of Respect</strong> — People naturally follow leaders stronger than themselves.</li>
+<li><strong>8. The Law of Intuition</strong> — Leaders evaluate everything with a leadership bias.</li>
+<li><strong>9. The Law of Magnetism</strong> — Who you are is who you attract.</li>
+<li><strong>10. The Law of Connection</strong> — Leaders touch a heart before they ask for a hand.</li>
+<li><strong>11. The Law of the Inner Circle</strong> — A leader's potential is determined by those closest to the leader.</li>
+<li><strong>12. The Law of Empowerment</strong> — Only secure leaders give power to others.</li>
+<li><strong>13. The Law of the Picture</strong> — People do what people see.</li>
+<li><strong>14. The Law of Buy-In</strong> — People buy into the leader, then the vision.</li>
+<li><strong>15. The Law of Victory</strong> — Leaders find a way for the team to win.</li>
+<li><strong>16. The Law of the Big Mo</strong> — Momentum is a leader's best friend.</li>
+<li><strong>17. The Law of Priorities</strong> — Leaders understand that activity is not necessarily accomplishment.</li>
+<li><strong>18. The Law of Sacrifice</strong> — A leader must give up to go up.</li>
+<li><strong>19. The Law of Timing</strong> — When to lead is as important as what to do and where to go.</li>
+<li><strong>20. The Law of Explosive Growth</strong> — To add growth, lead followers; to multiply, lead leaders.</li>
+<li><strong>21. The Law of Legacy</strong> — A leader's lasting value is measured by succession.</li>
+</ul>
+<h4>The Frame: What Maxwell Claims and the Five Myths</h4>
+<ul>
+<li>Maxwell's four claims about the laws, which map onto the four subtopics of this half of the test: the laws <strong>can be learned</strong>; each law <strong>stands alone</strong>; each law <strong>carries consequences</strong>; and together they are <strong>the foundation of leadership</strong>.</li>
+<li>Leadership requires doing more than one thing well; Maxwell's own answer to the impossibility of one person mastering all twenty-one is to build a leadership team whose skills complement each other.</li>
+<li><strong>Five myths</strong>: the <em>Management Myth</em> (managing equals leading), the <em>Entrepreneur Myth</em> (selling equals leading), the <em>Knowledge Myth</em> (knowing equals leading), the <em>Pioneer Myth</em> (being first or out front equals leading), and the <em>Position Myth</em> (holding the title equals leading).</li>
+<li>Factors that create real influence: character, relationships, knowledge, intuition, experience, past success, and ability.</li>
+<li><strong>Mother Teresa</strong> is Maxwell's illustration of the Law of Influence — no position, no wealth, no army, and yet when she spoke, people listened and governments moved.</li>
+<li><strong>Abraham Lincoln</strong> serves two laws. As a young captain in the Black Hawk War he was demoted to private for his inability to influence his men, which illustrates that position without influence is nothing. Later, choosing political rivals for his cabinet and publicly accepting responsibility for their errors, he illustrates empowerment and character.</li>
+</ul>
+<h4>Family One — The Leader's Capacity: Lid, Process, Navigation, Intuition, Priorities</h4>
+<ul>
+<li><strong>Law of the Lid.</strong> Dick and Maurice McDonald built a brilliant single restaurant but failed to build a national franchise, because their leadership was the lid. Ray Kroc, with a higher lid, built the organization on their system. Apple is the parallel case: one partner had extraordinary technical brains but a low leadership lid, the other had the higher lid. To raise an organization, either raise the leader's lid or change the leader.</li>
+<li><strong>Law of Process.</strong> Anne Scheiber, an IRS auditor who invested patiently for decades and left twenty-two million dollars to Yeshiva University at age 101, is the image: becoming a leader is like investing successfully, which never happens in a day. Joe Frazier's career of daily preparation, training, stamina, and perseverance is the athletic version. Maxwell's <strong>five phases of leadership growth</strong>: I don't know what I don't know; I know that I need to know; I know what I don't know; I know and grow and it starts to show; I simply go because of what I know.</li>
+<li><strong>Law of Navigation.</strong> Roald Amundsen's South Pole expedition succeeded and Robert Falcon Scott's ended in death, and Maxwell reads the difference as navigation. Navigators <strong>draw on past experience</strong> through reflective thinking — success teaches you what you are capable of and gives confidence, failure teaches you what lessons you needed. They <strong>listen to what others have to say</strong>, precisely because a leader will never have all the answers. They <strong>examine conditions before making commitments</strong>. And they make sure their conclusions balance <strong>faith and fact</strong>. The secret of the Law of Navigation is <strong>preparation</strong>.</li>
+<li><strong>PLAN AHEAD</strong>, Maxwell's navigation acrostic: <em>P</em>redetermine a course of action; <em>L</em>ay out your goals; <em>A</em>djust your priorities; <em>N</em>otify key personnel; <em>A</em>llow time for acceptance; <em>H</em>ead into action; <em>E</em>xpect problems; <em>A</em>lways point to the successes; <em>D</em>aily review your plan.</li>
+<li><strong>Law of Intuition.</strong> Leaders evaluate everything with a leadership bias, reading situations, trends, resources, people, and themselves. Maxwell's three categories: those who naturally see it, those who are nurtured to see it, and those who will never see it — natural leaders get it instantly, learned leaders get it eventually, and non-leaders do not get it. Intuition is also the skill being exercised when a leader mobilizes people and harnesses resources for a current project.</li>
+<li><strong>Law of Priorities.</strong> Activity is not accomplishment; busyness is not productivity. Maxwell applies the <strong>Pareto principle</strong> and offers <strong>three R's</strong> for sorting work: what is <em>Required</em>, what gives the greatest <em>Return</em>, and what brings the greatest <em>Reward</em>. John Wooden's genius at UCLA was designing practice so that each activity satisfied multiple priorities at once. Max DePree's line that the first responsibility of a leader is to define reality is the priorities discipline in a sentence.</li>
+</ul>
+<h4>Family Two — Influence and Followership: Influence, Addition, Solid Ground, Respect</h4>
+<ul>
+<li><strong>Law of Influence.</strong> Title, ceremony, and seniority do not create followers. The test of leadership is whether anyone is actually following, and the myths above are the ways people fool themselves about it.</li>
+<li><strong>Law of Addition.</strong> Leaders add value by serving others. Jim Sinegal, cofounder and CEO of Costco, insisted it was improper for one person to take credit when so many built the organization, and famously signed the shortest CEO employment contract — a single page. Maxwell's guidelines: truly value others, make yourself more valuable to others, know and relate to what others value, and do what is genuinely of value.</li>
+<li><strong>Law of Solid Ground.</strong> Trust is the foundation of leadership, and it is built with connection to people. Maxwell's image is that leadership skills are like change in a leader's pocket: every good decision earns more change, every mistake spends some, and when you run out of change you are out of leadership. Character communicates <strong>consistency</strong>, <strong>potential</strong>, and <strong>respect</strong>. To develop character, Maxwell points at integrity, authenticity, and discipline — doing the right thing, being real, and doing it daily. Notice that offering encouragement to others, while good, is not one of the character-development areas he names.</li>
+<li><strong>Law of Respect.</strong> People naturally follow leaders stronger than themselves. <strong>Harriet Tubman</strong> is his leader of steel: a woman with no rank and no legal standing who made repeated trips into slave states and was followed absolutely. To measure your own level of respect, look at the caliber of the people who choose to follow you — Dean Smith at North Carolina attracted Michael Jordan. The six ways leaders earn respect: natural leadership ability, respect for others, <strong>courage</strong> (illustrated by Henry Kissinger's line that a leader does not deserve the name unless willing to stand alone), success, loyalty, and adding value to others. If the people you attract are unreliable and untrustworthy, Maxwell's counsel is blunt: examine your own character and become the person you want to attract.</li>
+</ul>
+<h4>Family Two Continued — Magnetism, Connection, the Picture, Buy-In</h4>
+<ul>
+<li><strong>Law of Magnetism.</strong> Who you are is who you attract. People are drawn to those who share their generation, attitude, background, values, life experience, and leadership ability. <strong>Attitude</strong> is one of the most contagious qualities a human being possesses, which is why a negative officer reshapes a chapter faster than a positive one.</li>
+<li><strong>Law of Connection.</strong> Leaders touch a heart before they ask for a hand. Connect with individuals before you try to connect with a group. <strong>Herb Kelleher</strong>, founder and CEO of Southwest Airlines, built strong relational bridges with employees, and the strength Maxwell singles out is that he was always the initiator — the leader takes the first step, always.</li>
+<li><strong>Law of the Picture.</strong> People do what people see. When the Opinion Research Corporation asked American workers for the single most important trait a leader must demonstrate, the answer was <strong>leading by example</strong>. Followers are always watching, it is easier to teach what is right than to do what is right, and the most valuable gift a leader gives is a good example.</li>
+<li><strong>Law of Buy-In.</strong> People buy into the leader, then the vision. <strong>Judith Estrin</strong>, a software entrepreneur, spent six months failing to raise money for a first company and had a later company funded almost at once — the vision was not what changed, her credibility was. Maxwell's four combinations: if followers reject both leader and vision they get another leader; if they reject the leader but like the vision they still get another leader; if they like the leader but not the vision they change the vision; if they like both they get behind the leader. Credibility comes from good relationships, honesty, authenticity, and delivering results.</li>
+<li><strong>Ned Barnholt</strong> of Agilent Technologies described three kinds of people in an organization when it comes to a leadership initiative: those who get it and are on board almost immediately, those who are skeptical and unsure, and those who resist. Maxwell's counsel is to invest in the first group.</li>
+</ul>
+<h4>Family Three — The Team: Inner Circle, Empowerment, Victory, Big Mo</h4>
+<ul>
+<li><strong>Law of the Inner Circle.</strong> A leader's potential is determined by those closest to the leader. Add people who have influence with others, bring a <strong>complementary set of skills</strong>, hold a strategic position, add value to you and the organization, and positively affect the rest of the inner circle. The shared element between the Law of Addition and the Law of the Inner Circle: the people in the inner circle must be <strong>adders, multipliers, or lifters</strong>.</li>
+<li><strong>Law of Empowerment.</strong> Only secure leaders give power to others. Three <strong>barriers to empowerment</strong>: desire for job security, resistance to change, and lack of self-worth. The number-one enemy is <strong>fear of losing what we have</strong>. Maxwell notes that great leaders embody two seemingly opposite qualities: they are both highly <strong>creative</strong> and highly <strong>pragmatic</strong>.</li>
+<li><strong>Law of Victory.</strong> Leaders find a way for the team to win. Three components: <strong>unity of vision</strong>, <strong>diversity of skills</strong>, and a <strong>leader dedicated to victory</strong> who raises players to their potential. The first step in implementing it is to take personal responsibility for the success of the team. <strong>Nelson Mandela</strong>, who spent decades curating a vision of a democratic South Africa and then governed it, is the example. Maxwell's victory creed: leadership is responsible, losing is unacceptable, passion is unquenchable, creativity is essential, quitting is unthinkable, commitment is unquestionable.</li>
+<li><strong>Law of the Big Mo.</strong> Momentum is a leader's best friend and the only thing that makes the difference between losing and winning. Truths about momentum: it is <strong>the great exaggerator</strong>; it makes leaders look better than they are; it helps followers perform better than they are; it is easier to steer than to start; and it is the most powerful change agent available. The first step in creating momentum is to <strong>remove demotivating elements</strong>; to maintain it, celebrate team members' accomplishments.</li>
+</ul>
+<h4>Family Four — Cost and Legacy: Sacrifice, Timing, Explosive Growth, Legacy</h4>
+<ul>
+<li><strong>Law of Sacrifice.</strong> A leader must give up to go up. Emerson's line that for everything you gain you also lose something is the Law of Sacrifice in one sentence. Its truths: there is no success without sacrifice; leaders are often asked to give up more than others; you must keep giving up to stay up; and the higher the level of leadership, the greater the sacrifice. <strong>Condoleezza Rice</strong> is Maxwell's example of giving up prestige and comfort to serve at a larger scale.</li>
+<li><strong>Law of Timing.</strong> When to lead is as important as what to do and where to go. Winston Churchill's description of the special moment for which a person was born is the timing quotation. <strong>Four possible outcomes</strong> of any leadership move: the wrong action at the wrong time leads to disaster; the <strong>right action at the wrong time brings resistance</strong>; the wrong action at the right time is a mistake; the right action at the right time results in success. Before acting, Maxwell asks about understanding, maturity, confidence, decisiveness, experience, intuition, and preparation. A fundraiser launched in December, in the busiest weeks of the year, fails on timing rather than on effort.</li>
+<li><strong>Law of Explosive Growth.</strong> To add growth, lead followers; to multiply, lead leaders. The math analogy is <strong>multiplication</strong>. Becoming a leader who develops leaders requires a different focus and attitude than attracting followers, and the payoff is that leadership development compounds.</li>
+<li><strong>Law of Legacy.</strong> A leader's lasting value is measured by succession. <strong>Max DePree</strong> argues that succession is a central responsibility of leadership. Coach <strong>Tom Mullins</strong> uses the relay race: the race is not won by the fastest runners but in the exchange zone, and the most important part is <strong>passing the baton</strong>. In the natural progression of how leaders develop, legacy is the stage where a leader positions others to do great things without needing to be involved.</li>
+<li><strong>Vision</strong> is what Maxwell names when he says everything in a successful organization depends on leadership and asks what determines its direction. Hans Frizel's observation that leaders are paid to be dreamers connects vision to innovation, which is what distinguishes a leader from a follower.</li>
+</ul>
+<h4>The Short Lists Inside the Laws That Are Worth Memorizing Verbatim</h4>
+<ul>
+<li><strong>Five myths of leadership</strong> (Law of Influence): Management, Entrepreneur, Knowledge, Pioneer, Position.</li>
+<li><strong>Five phases of leadership growth</strong> (Law of Process): I do not know what I do not know; I know that I need to know; I know what I do not know; I know and grow and it starts to show; I simply go because of what I know.</li>
+<li><strong>PLAN AHEAD</strong> (Law of Navigation): Predetermine a course of action, Lay out your goals, Adjust your priorities, Notify key personnel, Allow time for acceptance, Head into action, Expect problems, Always point to the successes, Daily review your plan.</li>
+<li><strong>Three things character communicates</strong> (Law of Solid Ground): consistency, potential, and respect.</li>
+<li><strong>Six ways leaders gain respect</strong> (Law of Respect): natural leadership ability, respect for others, courage, success, loyalty, and adding value to others.</li>
+<li><strong>Three barriers to empowerment</strong> (Law of Empowerment): desire for job security, resistance to change, and lack of self-worth. The first of these, the fear of losing what we have, is the number-one enemy.</li>
+<li><strong>Four follower responses</strong> (Law of Buy-In): reject the leader and the vision, get another leader; reject the leader but like the vision, get another leader; like the leader but not the vision, change the vision; like both, get behind the leader.</li>
+<li><strong>Three components of victory</strong> (Law of Victory): unity of vision, diversity of skills, and a leader dedicated to victory.</li>
+<li><strong>Five truths about momentum</strong> (Law of the Big Mo): momentum is the great exaggerator; it makes leaders look better than they are; it helps followers perform better than they are; it is easier to steer than to start; it is the most powerful change agent available.</li>
+<li><strong>Three R's</strong> (Law of Priorities): Required, Return, Reward.</li>
+<li><strong>Four outcomes of any leadership move</strong> (Law of Timing): wrong action at the wrong time is disaster; right action at the wrong time brings resistance; wrong action at the right time is a mistake; right action at the right time is success.</li>
+<li><strong>Four truths about sacrifice</strong> (Law of Sacrifice): there is no success without sacrifice; leaders are often asked to give up more than others; you must keep giving up to stay up; the higher the level of leadership, the greater the sacrifice.</li>
+</ul>`,
+qref:[
+["1. Law of the Lid","Leadership ability determines a person's level of effectiveness"],
+["2. Law of Influence","The true measure of leadership is influence, nothing more"],
+["3. Law of Process","Leadership develops daily, not in a day"],
+["4. Law of Navigation","Anyone can steer; it takes a leader to chart the course"],
+["5. Law of Addition","Leaders add value to others by serving them"],
+["6. Law of Solid Ground","Trust is the foundation of leadership"],
+["7. Law of Respect","People naturally follow leaders stronger than themselves"],
+["8. Law of Intuition","Leaders evaluate everything with a leadership bias"],
+["9. Law of Magnetism","Who you are is who you attract"],
+["10. Law of Connection","Leaders touch a heart before they ask for a hand"],
+["11. Law of the Inner Circle","Those closest to a leader determine the leader's potential"],
+["12. Law of Empowerment","Only secure leaders give power to others"],
+["13. Law of the Picture","People do what people see"],
+["14. Law of Buy-In","People buy into the leader, then the vision"],
+["15. Law of Victory","Leaders find a way for the team to win"],
+["16. Law of the Big Mo","Momentum is a leader's best friend"],
+["17. Law of Priorities","Activity is not necessarily accomplishment"],
+["18. Law of Sacrifice","A leader must give up to go up"],
+["19. Law of Timing","When to lead matters as much as what to do"],
+["20. Law of Explosive Growth","Lead followers to add; lead leaders to multiply"],
+["21. Law of Legacy","A leader's lasting value is measured by succession"],
+["Pioneer Myth","Believing that being first or out front makes you a leader"],
+["PLAN AHEAD","Maxwell's nine-step navigation acrostic beginning with Predetermine"],
+["Three R's","Required, Return, Reward: the priorities sorting test"]
+],
+notes:`<p><strong>Influence and the Lid are different laws, and influence is the most over-chosen wrong answer in this entire book.</strong> Because Maxwell defines leadership itself as influence, students reach for it whenever a stem sounds leadership-flavored. Keep the boundary sharp: the Law of the Lid is about <em>capacity</em> — how high your leadership ability lets your organization rise, as with the McDonald brothers who could run one restaurant but not a franchise. The Law of Influence is about <em>measurement</em> — whether anyone is actually following, as with Mother Teresa, who had no position at all. If the stem is about a ceiling on effectiveness or about a talented person whose organization cannot grow, the answer is the Lid, and picking <span class="trap">influence</span> costs you the point.</p>
+<p><strong>Navigation is charting the course; Priorities is deciding what deserves the course.</strong> Both involve thinking ahead, so they blur. Navigation is preparation and planning before departure — Amundsen versus Scott, the PLAN AHEAD acrostic, balancing faith and fact, and the recognition that a leader will never have all the answers. Priorities is the discipline that activity is not accomplishment: Pareto, the three R's, John Wooden making one drill satisfy several goals. A stem about a leader constantly thinking ahead and relating what is important to the overall vision is Priorities; answering <span class="trap">navigation</span> because the word sounds forward-looking is the standard miss.</p>
+<p><strong>Victory and the Big Mo are two different answers to the question of how teams win.</strong> The Law of Victory is about a leader who refuses to lose and builds unity of vision, diversity of skills, and personal responsibility for the team's success. The Law of the Big Mo is about momentum specifically — the great exaggerator, easier to steer than to start, created by first removing demotivating elements. When the stem names momentum, or asks what makes the difference between losing and winning, the answer is momentum and the Big Mo, not <span class="trap">victory</span>, which is a frequently chosen decoy precisely because winning is in both definitions.</p>
+<p><strong>Buy-In and Solid Ground both concern trust, but they answer different questions.</strong> Solid Ground says trust is the <em>foundation</em> of leadership and is built through connection with people; it is what you spend when you make a mistake, the change in the leader's pocket. Buy-In says followers accept the <em>leader before the vision</em> — Judith Estrin's second company was funded because her credibility had changed, not her idea. A stem about a leader who failed to enlist people in a vision before launching a project is testing Solid Ground, and answering <span class="trap">the Law of Buy-In</span> there is the standard miss, because the failure was in the trust that should have existed before the vision was ever presented. A stem about credibility determining whether people accept the plan is Buy-In. Read for whether the emphasis is on the foundation or on the sequence.</p>
+<p><strong>Explosive Growth multiplies; Legacy succeeds.</strong> These sit next to each other at the end of the list and both concern developing other leaders, so precision matters. Explosive Growth is the math law — leading followers adds, leading leaders multiplies, and leadership development compounds. Legacy is the succession law — the relay race, the baton exchange, Max DePree on succession as a chief responsibility, and the leader who positions others to do great things without being present. If the stem names a math analogy, it is Explosive Growth; if it names handing off, retiring, or what remains after you leave, it is <span class="trap">Legacy</span> that is correct and Explosive Growth that is the trap. Reverse the two and you lose both points.</p>
+<p><strong>The Picture and Magnetism sound alike and are not.</strong> The Law of the Picture is about <em>modeling</em>: people do what people see, and workers polled named leading by example as the trait that matters most. The Law of Magnetism is about <em>attraction</em>: who you are is who you attract, with attitude the most contagious quality. If a leader is frustrated that the people showing up are unreliable, the diagnosis is Magnetism and the prescription is to examine your own character — answering <span class="trap">the Law of the Picture</span> misses that the issue is who came, not what they watched. One more pairing to keep straight in the same family: the Law of Addition is about adding value by serving, while the Law of Empowerment is about handing over authority, whose number-one barrier is fear of losing what we have.</p>`});
+
+
+// ATC CERI Leadership Test — practice items
+// Test plan: The 7 Habits of Highly Effective People 50% | The 21 Irrefutable Laws of Leadership 50%
+// Per-topic targets: t0 = 70, t1 = 70. Total = 140.
+const Q = [
+  {"t":0,"q":"Covey borrows a Greek term to name a model, theory, perception, assumption, or frame of reference. What is it?","a":["Principle","Praxis","Paradigm","Pathos"],"c":2,"e":"Paradigm is the Greek-derived word Covey uses for the map in our heads. Principle is tempting because Covey talks about principles constantly, but a principle is a natural law that is true whether or not you perceive it; a paradigm is your perception of it. The map is the paradigm, the territory is governed by principles."},
+  {"t":0,"q":"A chapter advisor describes a leader as someone with integrity, humility, fidelity, temperance, courage, justice, and patience. Which tradition of success literature is being described?","a":["The Proactive Ethic","The Personality Ethic","The Abundance Ethic","The Character Ethic"],"c":3,"e":"Those are exactly the traits Covey assigns to the Character Ethic, the older tradition rooted in principles. The Personality Ethic is the tempting alternative because both are about people, but the Personality Ethic deals with image, attitude, and technique rather than internalized virtue."},
+  {"t":0,"q":"Which set of qualities belongs to the Personality Ethic rather than the Character Ethic?","a":["Reliability and fairness","Humility and temperance","Justice and industry","Public image and social technique"],"c":3,"e":"The Personality Ethic frames success as public image, attitude, and human and public relations technique. Reliability and fairness are classic Character Ethic virtues and are the most common wrong pick, because they sound like professional skills; Covey classifies them as character."},
+  {"t":0,"q":"Covey argues that Character Ethics are based on natural laws and fundamental truths that are internalized into habits. What does he call those truths?","a":["Principles","Values","Paradigms","Norms"],"c":0,"e":"Principles are the natural laws Covey says are external, objective, and unchanging. Values is the trap: values are what a person or group holds to be important, and Covey notes that values can be wrong. Principles govern consequences; values only govern behavior."},
+  {"t":0,"q":"An officer team keeps trying new meeting formats, new slogans, and new social media graphics but membership keeps falling. Covey would say the problem is that:","a":["they should delegate more of the work","they need a stronger positive mental attitude","they are working on techniques rather than on a change in paradigm","they are not spending enough money on promotion"],"c":2,"e":"Covey's core claim is that significant problems cannot be solved at the level of thinking that created them, so surface technique produces surface change. A stronger positive mental attitude is the tempting distractor precisely because it is the Personality Ethic answer, which Covey calls secondary to character and paradigm."},
+  {"t":0,"q":"Covey defines a habit as the intersection of three things. Which set is correct?","a":["Attitude, skill, and opportunity","Knowledge, discipline, and repetition","Knowledge, skill, and desire","Vision, planning, and follow-through"],"c":2,"e":"Knowledge is what to do and why, skill is how to do it, and desire is the motivation to do it. Repetition is the seductive wrong answer because habits obviously involve repetition, but Covey's definition is about the three ingredients that must converge before repetition can even begin."},
+  {"t":0,"q":"In the P/PC Balance drawn from Aesop's goose and the golden egg, what does P represent?","a":["Preparation for future work","Production of desired results","Personal capability","Principle-centered leadership"],"c":1,"e":"P is production of desired results, the golden eggs themselves. PC is production capability, the goose. Personal capability is the trap answer because it sounds like it should pair with production, but capability is the PC side of the balance, not the P side."},
+  {"t":0,"q":"An officer runs the same three members ragged all year because they always deliver. In P/PC terms, this officer is:","a":["maximizing PC at the expense of P","operating from an abundance mentality","achieving P/PC balance","maximizing P at the expense of PC"],"c":3,"e":"Squeezing output from a fixed set of people is pure golden-egg thinking; the goose is the members' willingness and capacity, and it is being spent down. Choosing the reverse is the standard error, so anchor it: P is the result you got, PC is the ability to get it again."},
+  {"t":0,"q":"What is the correct order of Covey's maturity continuum?","a":["Dependence, independence, interdependence","Dependence, interdependence, independence","Independence, dependence, interdependence","Interdependence, independence, dependence"],"c":0,"e":"You move from dependence, the paradigm of you, to independence, the paradigm of I, to interdependence, the paradigm of we. Placing interdependence in the middle is the common scramble; Covey insists interdependence is last because only an independent person can genuinely choose it."},
+  {"t":0,"q":"Three of Covey's habits deal with self-mastery and move a person from dependence to independence. What does Covey call these?","a":["Public Victories","Renewal habits","Private Victories","Interdependent habits"],"c":2,"e":"Habits 1 through 3 are the Private Victories, the work you do on yourself. Public Victories is the standard wrong answer, and the way to keep them apart is the destination: private ends at independence, public ends at interdependence."},
+  {"t":0,"q":"Habits 4, 5, and 6 deal with teamwork, cooperation, and communication. They move a person from independence to which state?","a":["Dependence","Interdependence","Independence","Self-reliance"],"c":1,"e":"The Public Victory carries you from independence to interdependence, the paradigm of we. Answering independence repeats the starting point rather than the destination, which is exactly the trap in these stems: read for where the movement ends, not where it begins."},
+  {"t":0,"q":"Which habit is described as renewing the other six and is represented as surrounding them?","a":["Habit 1: Be Proactive","Habit 3: Put First Things First","Habit 6: Synergize","Habit 7: Sharpen the Saw"],"c":3,"e":"Habit 7 is balanced self-renewal and Covey draws it encircling the other six because it makes all of them sustainable. Be Proactive is chosen by students who remember that Habit 1 is foundational, but foundational and encircling are different roles: Habit 1 starts the sequence, Habit 7 renews it."},
+  {"t":0,"q":"Which of Covey's habits is illustrated by Eleanor Roosevelt's remark that no one can hurt you without your consent?","a":["Be Proactive","Think Win/Win","Seek First to Understand","Synergize"],"c":0,"e":"The quotation is about the space between stimulus and response, where the freedom to choose your reaction lives, and that is Habit 1. Think Win/Win draws students because the sentence involves another person, but the other person is incidental; the subject of the sentence is your own consent."},
+  {"t":0,"q":"Covey names three deterministic theories descended from stimulus-response thinking. Which one explains present behavior by a person's upbringing and parents?","a":["Genetic determinism","Environmental determinism","Psychic determinism","Social determinism"],"c":2,"e":"Psychic determinism traces behavior to childhood scripting by parents. Genetic determinism is the most-chosen wrong answer because both sound biological and familial, but genetic points at DNA and grandparents while psychic points at how you were raised."},
+  {"t":0,"q":"A member insists she is disorganized because it runs in her family and it is simply in her DNA. Which determinism is she expressing?","a":["Environmental determinism","Genetic determinism","Psychic determinism","Attitudinal determinism"],"c":1,"e":"DNA and inherited traits are genetic determinism. Psychic determinism is the tempting neighbor, but it would sound like blaming how her parents raised her rather than what they passed down biologically. Environmental determinism blames current surroundings instead."},
+  {"t":0,"q":"An officer says the chapter cannot grow because the school schedule, the principal, and the economy are all against him. This is an example of:","a":["genetic determinism","psychic determinism","the scarcity mentality","environmental determinism"],"c":3,"e":"Blaming the boss, the schedule, the policy, or the economy is environmental determinism. Scarcity mentality is a plausible-sounding distractor, but that concept belongs to Habit 4 and is about resenting others' success, not about assigning blame to circumstances."},
+  {"t":0,"q":"Viktor Frankl describes three central values: what happens to us, what we bring into existence, and our response in difficult circumstances. What is the third called?","a":["Attitudinal","Creative","Experiential","Existential"],"c":0,"e":"The attitudinal value is our response to suffering, and Covey treats it as the highest because it remains available when the other two are gone. Experiential is the trap here, since a difficult circumstance is technically an experience, but experiential refers to what happens to us, not to how we answer it."},
+  {"t":0,"q":"Which set names Covey's four unique human endowments?","a":["Knowledge, skill, desire, character","Vision, discipline, passion, conscience","Self-awareness, imagination, conscience, independent will","Security, guidance, wisdom, power"],"c":2,"e":"Self-awareness, imagination, conscience, and independent will are the endowments that separate humans from animal stimulus-response. Security, guidance, wisdom, and power is the strongest distractor because it is also a Covey list of four, but that set is the life-support factors from Habit 2."},
+  {"t":0,"q":"According to Covey, which human endowment enables us to increase our proactivity and expand our personal leadership?","a":["Conscience","Imagination","Independent will","Self-awareness"],"c":1,"e":"Imagination lets us create in our minds beyond present reality, which is what widens the range of choices and makes personal leadership possible. Self-awareness is the frequent wrong pick because it is listed first and feels foundational, but self-awareness lets you examine your programming while imagination lets you rewrite it."},
+  {"t":0,"q":"Which of these is a marker of reactive rather than proactive language?","a":["I choose","I prefer","I will","I must"],"c":3,"e":"I must signals that the speaker sees no alternative, which is the essence of reactive language. I choose, I prefer, and I will all preserve agency. Students who read I must as commitment rather than compulsion select it as proactive and lose the point."},
+  {"t":0,"q":"When we focus our time and energy on things we can actually act on rather than on troubles beyond our reach, what happens to the Circle of Influence?","a":["It enlarges","It shrinks","It stays fixed","It merges with the Circle of Concern"],"c":0,"e":"Proactive focus enlarges the Circle of Influence, gradually pulling in matters that used to lie outside it. Shrinks is the reversed answer and is what actually happens when energy is poured into the Circle of Concern instead, so the direction of the change is the whole point of the question."},
+  {"t":0,"q":"A member spends every meeting complaining about state policies she cannot change. Covey would predict that her:","a":["Circle of Concern will shrink","Circle of Influence will enlarge","Circle of Influence will shrink","Circle of Concern will disappear"],"c":2,"e":"Reactive energy spent in the Circle of Concern causes the Circle of Influence to contract, because neglect of the things she could act on erodes her actual reach. Saying the Circle of Concern shrinks is the mirror-image error; concern is not the circle that responds to your focus."},
+  {"t":0,"q":"Covey sorts problems into direct control, indirect control, and no control. Direct control problems are solved by working on which habits?","a":["Habits 4, 5, and 6","Habits 1, 2, and 3","Habit 7 alone","Habits 2 and 7"],"c":1,"e":"Direct control problems involve our own behavior, so they are solved by the Private Victory habits. Habits 4, 5, and 6 is the classic swap, but that set solves indirect control problems, meaning problems involving other people's behavior."},
+  {"t":0,"q":"A president cannot make an advisor approve a fundraiser. In Covey's classification, this is which type of problem, and how is it addressed?","a":["Direct control, addressed by improving personal habits","Direct control, addressed by delegation","No control, addressed by changing attitude","Indirect control, addressed by improving methods of influence"],"c":3,"e":"The behavior belongs to another person, which makes it an indirect control problem, solved through Habits 4, 5, and 6 as methods of influence. Calling it a no-control problem is tempting because she cannot force the outcome, but no-control problems are ones no influence can touch, like the past or a fixed rule."},
+  {"t":0,"q":"Proactive people recognize the responsibility to make things happen and then seize the initiative to do whatever it takes. What key quality does Covey attach to that posture?","a":["Resourcefulness","Assertiveness","Ambition","Optimism"],"c":0,"e":"Resourcefulness is solving the problem with what is actually available rather than cataloguing what is missing. Optimism is the softest and most tempting distractor because proactive people sound positive, but Covey's emphasis is on action and invention, not mood."},
+  {"t":0,"q":"What does Covey identify as the essence of developing the basic habits of effectiveness?","a":["Setting measurable goals","Managing time efficiently","Making and keeping commitments","Building a support network"],"c":2,"e":"Making and keeping commitments, first to ourselves and then to others, is where the strength to act on principle comes from. Setting measurable goals is the trap because it sounds like the same activity, but a goal is a target while a commitment is a promise, and it is the promise-keeping that builds the character."},
+  {"t":0,"q":"Covey says we are free to choose our actions but our behavior is governed by principles. He therefore recommends that when we choose wrongly we should:","a":["defend the decision to preserve credibility","admit and correct mistakes","wait for the situation to resolve itself","reassign the task to someone else"],"c":1,"e":"Admitting and correcting mistakes keeps the Circle of Influence intact, because the cover-up costs more trust than the error did. Defending the decision to preserve credibility is exactly the reactive move Covey warns against; credibility is spent, not saved, by the defense."},
+  {"t":0,"q":"Covey says all things are created twice. What is the first creation?","a":["The physical creation","The financial creation","The social creation","The mental creation"],"c":3,"e":"The mental or first creation is the blueprint, and the physical or second creation is the construction. Habit 2 is the first creation and Habit 3 is the second, so students who reverse them also tend to reverse which habit is leadership and which is management."},
+  {"t":0,"q":"Covey distinguishes leadership from management using the image of a ladder against a wall. Leadership is:","a":["deciding which wall the ladder leans against","climbing the ladder efficiently","holding the ladder steady for others","measuring the height of the ladder"],"c":0,"e":"Leadership determines the wall; management climbs efficiently. Climbing efficiently is the answer that feels productive, and Covey's point is that efficiency on the wrong wall just gets you to the wrong place faster."},
+  {"t":0,"q":"What is Stephen Covey's maxim of personal effectiveness?","a":["Begin small; finish strong","Plan the work; work the plan","Manage from the left; lead from the right","Trust the process; measure the result"],"c":2,"e":"Manage from the left, lead from the right refers to left-brain execution and right-brain vision. The other options sound like leadership slogans, which is what makes them attractive, but Covey's maxim is specifically about brain-hemisphere functions applied to management and leadership."},
+  {"t":0,"q":"Covey identifies four interdependent life-support factors. Which one is the sense of worth, identity, emotional anchorage, and basic personal strength?","a":["Guidance","Security","Wisdom","Power"],"c":1,"e":"Security is your sense of worth and identity. Power is the tempting choice because personal strength appears in the description, but in Covey's list power specifically means the capacity to act and accomplish, while security is the internal anchorage that makes acting possible."},
+  {"t":0,"q":"In Covey's four life-support factors, which one is your source of direction and internal frame of reference for decisions?","a":["Power","Security","Wisdom","Guidance"],"c":3,"e":"Guidance is the internal standard that interprets what is happening and tells you where to go. Wisdom is the near-miss answer, but wisdom is perspective, balance, and judgment about life as a whole, while guidance is the compass that governs a particular decision."},
+  {"t":0,"q":"Imagination, conscience, and visualization are right-brain functions important to writing a mission statement. Which of these is NOT a right-brain function?","a":["Sequential thinking","Intuition","Creativity","Holistic perception"],"c":0,"e":"Sequential thinking is the signature left-brain function, along with logical, verbal, and analytical processing. It is chosen incorrectly by students who assume that anything cognitive belongs on a mission-statement list, but Covey's point is that mission writing draws on the right hemisphere."},
+  {"t":0,"q":"Covey says a good affirmation has five ingredients: it is personal, positive, present tense, visual, and:","a":["measurable","public","emotional","repeatable"],"c":2,"e":"Emotional is the fifth ingredient, because an affirmation without feeling does not reach the subconscious. Measurable is the trap answer imported from goal-setting language, and it is exactly what Covey does not require of an affirmation."},
+  {"t":0,"q":"Dr. Charles Garfield's research on peak performers found that they consistently use which mental technique?","a":["Verbal repetition","Visualization","Outlining","Delegation"],"c":1,"e":"Peak performers mentally rehearse the performance in detail before it happens, which is visualization, a right-brain application of Habit 2. Verbal repetition is the near answer that fits affirmations rather than visualization, and Covey treats the two as related but distinct tools."},
+  {"t":0,"q":"Covey quotes the idea that the two lasting bequests we give children are roots and wings. Giving wings means:","a":["providing financial independence","allowing them to make their own mistakes without guidance","teaching them technical skills for a career","empowering them with the freedom to rise above negative scripting"],"c":3,"e":"Wings means freeing a person from the scripts that were written for them by others. Allowing mistakes without guidance is the tempting near-answer because it sounds like freedom, but Covey's wings are about rewriting a script, not about withdrawing support."},
+  {"t":0,"q":"Goethe wrote that things which matter most must never be at the mercy of things which matter least. Which habit does this reflect?","a":["Put First Things First","Begin with the End in Mind","Be Proactive","Sharpen the Saw"],"c":0,"e":"Habit 3 is the execution of priorities, which is precisely the subordination of the trivial to the important. Begin with the End in Mind is the near miss: Habit 2 decides what matters most, and Habit 3 defends it in the calendar."},
+  {"t":0,"q":"Which generation of time management is characterized by notes and checklists?","a":["First","Second","Third","Fourth"],"c":0,"e":"The first generation is notes and checklists, the second adds calendars and appointment books, the third adds prioritization and goal setting, and the fourth reorganizes around principles and roles. Second is the common miss because scheduling feels more primitive than it is."},
+  {"t":0,"q":"Third-generation managers clarify values, set goals, and plan each day. What does Covey say they still lack?","a":["The discipline to follow through on plans","Access to reliable planning tools","The ability to place activities in the context of principles, mission, and balanced roles","Any awareness of urgency"],"c":2,"e":"Their weakness is context, not effort: efficient daily scheduling with no principle-centered frame produces a full calendar with no balance. Lack of discipline is the intuitive wrong answer, but Covey explicitly credits third-generation managers with discipline and criticizes their frame of reference."},
+  {"t":0,"q":"Which quadrant of the time management matrix does the fourth generation identify as the most effective place to work?","a":["Quadrant I","Quadrant II","Quadrant III","Quadrant IV"],"c":1,"e":"Quadrant II is important but not urgent, and it holds planning, prevention, relationship building, and renewal. Quadrant I is the seductive answer because crisis work feels like the real work, but a life lived in Quadrant I is a life of stress and burnout, not effectiveness."},
+  {"t":0,"q":"An officer spends her week answering constant text interruptions, attending optional meetings, and handling matters that feel pressing but do not advance the chapter's goals. Which quadrant is she living in?","a":["Quadrant I","Quadrant II","Quadrant III","Quadrant IV"],"c":2,"e":"Quadrant III is urgent but not important, and it feels identical to Quadrant I from the inside because urgency produces the same adrenaline. Choosing Quadrant I is the standard error; the test is whether the activity actually serves a goal, not whether it demands an immediate response."},
+  {"t":0,"q":"What advantage does Covey identify in organizing weekly rather than daily?","a":["It eliminates the need for goals","It allows balance across roles and leaves room for spontaneous activities","It removes the need for a calendar","It guarantees every hour is scheduled"],"c":1,"e":"A week is a large enough unit to balance roles and to absorb the unexpected, so weekly planning actually protects spontaneity. Guaranteeing every hour is scheduled is the opposite of Covey's point and is chosen by students who assume more planning means tighter control."},
+  {"t":0,"q":"What management term describes the phenomenon that eighty percent of results flow out of twenty percent of activities?","a":["The Hawthorne effect","The Peter principle","The Pygmalion effect","The Pareto principle"],"c":3,"e":"The Pareto principle is the eighty-twenty rule and it is the arithmetic case for Habit 3. The Peter principle is the sound-alike trap and means something entirely different, namely that people rise to their level of incompetence."},
+  {"t":0,"q":"Covey's stewardship delegation requires clear mutual understanding of five things. Which set is correct?","a":["Desired results, guidelines, resources, accountability, consequences","Tasks, deadlines, supervisors, budgets, reports","Vision, mission, values, goals, roles","Knowledge, skill, desire, effort, feedback"],"c":0,"e":"Those five elements are the same ones that define a Win/Win agreement, which is why Covey treats stewardship delegation as a Habit 4 practice appearing in Habit 3. Tasks and deadlines describe gofer delegation, which controls methods rather than agreeing on results."},
+  {"t":0,"q":"Covey describes six paradigms of human interaction. What outcome does he name when no solution can be found that benefits both parties?","a":["Compromise","Lose/Lose","No Deal","Win"],"c":2,"e":"Win/Win or No Deal means the parties agree to disagree agreeably and make no agreement at all, which preserves the relationship. Compromise is the classic wrong answer because it is the usual real-world outcome, but Covey places compromise at the respectful level of communication, not among the six paradigms."},
+  {"t":0,"q":"A committee chair pushes through her plan over objections so she can claim the credit at the state conference. Which paradigm of human interaction is this?","a":["Win/Win","Win/Lose","Lose/Win","Win/Win or No Deal"],"c":1,"e":"Win/Lose is the authoritarian, competitive script in which my success requires your defeat. Win is the near answer, but the Win paradigm means simply securing what you want without caring about the other party at all, whereas here the other party is actively overridden."},
+  {"t":0,"q":"What is the foundation of the Win/Win paradigm?","a":["Systems","Relationships","Agreements","Character"],"c":3,"e":"Character is the first of the five interdependent dimensions and everything else rests on it. Relationships is the most-chosen wrong answer because Win/Win is obviously interpersonal, but relationships are the second dimension and are only trustworthy when built on character."},
+  {"t":0,"q":"Which trait does Covey define as the balance between courage and consideration?","a":["Maturity","Integrity","Abundance mentality","Empathy"],"c":0,"e":"Maturity is the ability to express your own feelings and convictions with courage while balancing that against consideration for the feelings of others. Integrity is the tempting choice because it is also on the Win/Win character list, but integrity is the value you place on yourself and the consistency of your commitments."},
+  {"t":0,"q":"Covey explains five interdependent dimensions of Win/Win. In the foundation of character, which quality results from a deep sense that there is plenty out there for everybody?","a":["Scarcity Mentality","Maturity","Abundance Mentality","Personal integrity"],"c":2,"e":"The Abundance Mentality flows from a sense of personal worth and security, and it makes sharing recognition and profit possible. Maturity appears on the same list, which makes it the frequent wrong pick, but maturity is about balancing courage with consideration rather than about how much you believe exists."},
+  {"t":0,"q":"Which statement reflects a person operating from the Scarcity Mentality?","a":["There is enough success for all of us","I am the winner","Let us find a third alternative","Your success helps the whole chapter"],"c":1,"e":"I am the winner treats recognition as a fixed pie that someone else's success would consume. The third-alternative statement is a synergy phrase and the enough-for-all statement is the abundance phrase, so both are deliberate opposites planted to test whether you can hear the zero-sum assumption."},
+  {"t":0,"q":"What does Covey's Emotional Bank Account metaphor represent?","a":["The financial reserves of an organization","A record of formal commitments and contracts","The number of favors owed between colleagues","The amount of trust built up in a relationship"],"c":3,"e":"It is the metaphor for accumulated trust, where deposits raise the balance and withdrawals spend it. A record of favors owed is the near answer, but Covey's account is not transactional bookkeeping; a high balance is what allows communication to be instant and mistakes to be forgiven."},
+  {"t":0,"q":"Covey describes six major deposits into the Emotional Bank Account. Which one is grounded in the Golden Rule, understood as treating people according to what they value?","a":["Understanding the individual","Clarifying expectations","Keeping commitments","Apologizing sincerely"],"c":0,"e":"Understanding the individual is the deposit that applies the Golden Rule properly: doing unto others as they would have done unto them, not as you would want. Keeping commitments is the more familiar-sounding option, but it is a separate deposit about promises rather than about knowing what matters to the person."},
+  {"t":0,"q":"Which sequence correctly ranks Covey's levels of listening from lowest to highest?","a":["Selective, ignoring, pretending, empathic, attentive","Pretending, ignoring, attentive, selective, empathic","Ignoring, pretending, selective, attentive, empathic","Attentive, selective, pretending, ignoring, empathic"],"c":2,"e":"Ignoring, pretending, selective, attentive, and empathic is the ladder, and only the last listens with intent to understand. The most common error is swapping attentive and selective; attentive listening tracks the whole message while selective listening picks out fragments."},
+  {"t":0,"q":"Covey describes four developmental stages of empathic listening. Which is the most effective?","a":["Mimicking the content","Rephrasing the content","Reflecting the feeling","Rephrasing the content and reflecting the feeling"],"c":3,"e":"The fourth stage combines the two, which engages both the left brain for content and the right brain for emotion. Reflecting feeling alone is the strongest distractor because empathy sounds purely emotional, but without the content the speaker does not feel accurately heard."},
+  {"t":0,"q":"A president listens to a frustrated member and immediately explains why the member's own choices caused the problem. Which autobiographical response is this?","a":["Probing","Interpreting","Advising","Evaluating"],"c":1,"e":"Explaining the other person's motives and behavior through your own frame of reference is interpreting. Advising is the close call, but advising offers a recommendation for what to do next, while interpreting supplies an explanation of why they are the way they are."},
+  {"t":0,"q":"Covey applies the Greek terms ethos, pathos, and logos to Habit 5. What is the correct order for being understood?","a":["Logos, pathos, ethos","Pathos, logos, ethos","Ethos, logos, pathos","Ethos, pathos, logos"],"c":3,"e":"Character first, then empathic alignment, then logic. Leading with logos is the instinct of most students because a good argument feels persuasive, and Covey's whole point is that logic presented before credibility and empathy simply does not land."},
+  {"t":0,"q":"A chapter president asks a quiet member to stay after the meeting, asks whether everything is all right, and then listens without defending herself. Which habit is she practicing?","a":["Seek First to Understand, Then to Be Understood","Think Win/Win","Be Proactive","Synergize"],"c":0,"e":"Listening with intent to understand before making her own case is Habit 5. Think Win/Win is the tempting answer because the scenario is interpersonal and cooperative, but Habit 4 is about the outcome sought, while Habit 5 is about the communication that precedes it."},
+  {"t":0,"q":"According to Covey, what is the essence of synergy?","a":["Compromise between competing positions","Achieving consensus quickly","Valuing the differences","Assigning tasks by strength"],"c":2,"e":"Valuing the mental, emotional, and psychological differences between people is what makes a third alternative possible. Compromise is the seductive wrong answer and is precisely what synergy is not: compromise is one plus one equals one and a half, while synergy exceeds the sum."},
+  {"t":0,"q":"Covey says a truly effective person values differences. Which statement would that person reject?","a":["Two people can disagree and both be right","Although two people can disagree, only one can be right","Differences are strengths, not threats","Seeing something differently is worth exploring"],"c":1,"e":"Insisting that only one party can be right assumes a single valid paradigm and is the position Covey argues against. It is a hard item because the sentence sounds logically reasonable, which is exactly why it is the classic wrong-thinking statement in this topic."},
+  {"t":0,"q":"In Covey's model of communication based on trust and cooperation, what does the highest level produce?","a":["Defensive communication","Respectful communication","Positional communication","Synergistic communication"],"c":3,"e":"High trust plus high cooperation yields synergistic communication and solutions better than anything either party brought in. Respectful communication is the middle level and is the frequent wrong pick, because being respectful sounds like the ideal; it produces compromise, not synergy."},
+  {"t":0,"q":"Jade, a chapter president, has low trust in her members and words every message carefully to avoid being blamed later. What level of communication is this?","a":["Defensive","Respectful","Synergistic","Empathic"],"c":0,"e":"Low trust and low cooperation produce defensive, legalistic communication that protects against future accusation. Respectful is the near answer, but respectful communication is genuinely polite and cooperative, while defensive communication is careful because it expects attack."},
+  {"t":0,"q":"Sociologist Kurt Lewin's Force Field Analysis describes performance as an equilibrium of driving and restraining forces. How does synergy change that equilibrium?","a":["By adding driving forces until they overwhelm restraint","By removing all restraining forces from the system","By transforming restraining forces into driving forces","By lowering the level of desired performance"],"c":2,"e":"Involving people in the problem turns their resistance into motive power, which is why synergy produces durable change. Adding driving forces is the intuitive answer and the one Covey warns about: pushing harder against unchanged restraint just builds tension that snaps back."},
+  {"t":0,"q":"When someone disagrees with a proposal, Covey models the synergistic reply as:","a":["Let us just split the difference","Good, you see it differently, help me see what you see","Let us take a vote and move on","We can revisit that later"],"c":1,"e":"Inviting the other view treats the difference as information rather than obstruction. Splitting the difference is the compromise response, which lands at the respectful level and forecloses the third alternative that synergy is looking for."},
+  {"t":0,"q":"Which habit is based on renewing the physical, spiritual, mental, and social/emotional dimensions of your nature?","a":["Be Proactive","Put First Things First","Synergize","Sharpen the Saw"],"c":3,"e":"Habit 7, Sharpen the Saw, is balanced self-renewal across those four dimensions. Put First Things First is the tempting alternative because scheduling renewal is a Habit 3 skill, but the four dimensions themselves are the substance of Habit 7."},
+  {"t":0,"q":"Which of Covey's dimensions of renewal includes eating right and getting sufficient rest and relaxation?","a":["Physical Dimension","Mental Dimension","Spiritual Dimension","Social/Emotional Dimension"],"c":0,"e":"Nutrition, rest, relaxation, and exercise are the physical dimension. The mental dimension is a persistent decoy on renewal questions, but mental renewal means reading, writing, planning, and visualizing, not caring for the body."},
+  {"t":0,"q":"A chapter opens every meeting with an inspirational reading tied to enduring values. Which dimension of renewal is being exercised?","a":["Mental Dimension","Physical Dimension","Spiritual Dimension","Social/Emotional Dimension"],"c":2,"e":"Drawing on sources that inspire and uplift and connect to timeless truths is spiritual renewal. The mental dimension is the standard wrong answer because reading is involved, but the mental dimension is about intellectual development, while the purpose here is value clarification and inspiration."},
+  {"t":0,"q":"Which of Covey's dimensions of renewal is most closely related to personal security, inside-out congruence, and living with integrity?","a":["Physical Dimension","Social/Emotional Dimension","Mental Dimension","Spiritual Dimension"],"c":1,"e":"Intrinsic security comes from service, empathy, synergy, and congruence between your daily habits and your deepest values, all of which Covey places in the social/emotional dimension. The spiritual dimension is the tempting answer because security sounds inward, but spiritual renewal is about inspiration and commitment to values rather than about the security produced by living them with others."},
+  {"t":0,"q":"Covey's concept of the Upward Spiral is composed of which three actions?","a":["Plan, execute, review","Listen, reflect, respond","Observe, decide, act","Learn, commit, do"],"c":3,"e":"Learn, commit, and do, repeated at successively higher levels, is the Upward Spiral, and conscience is what keeps it pointed upward. Plan, execute, review is the trap because it is a familiar management cycle, but it lacks the commitment step Covey treats as the hinge."},
+  {"t":0,"q":"According to Covey's principles of change, what is the first step in the natural process of growth and development?","a":["Admission of ignorance","Setting a measurable goal","Finding a mentor","Building a support system"],"c":0,"e":"You cannot be taught until you admit you do not know, which is why the officer who says she does not know a deadline and will find out is ahead of the one who bluffs. Finding a mentor is the appealing wrong answer, but a mentor is useless to someone who has not yet conceded there is something to learn."},
+  {"t":0,"q":"Covey discusses the Pygmalion effect in connection with expectations. Which statement best describes it?","a":["A person's high expectations of self will diminish the probability of failure","Low expectations of others reduce the chance of conflict","High expectations of a person lead to increased performance","Expectations have little measurable effect on performance"],"c":2,"e":"The Pygmalion effect is about the expectations others hold: treat people as they can and should be, and they move toward it. The self-expectation option is the trap, because it shifts the effect from the mirror held up by others to the person's own confidence, which is a different phenomenon."},
+  {"t":1,"q":"How does Maxwell define leadership?","a":["The ability to manage complex systems","Influence, nothing more, nothing less","The authority granted by a position","The capacity to generate original ideas"],"c":1,"e":"Influence is the whole definition, and four of the twenty-one laws depend on it. Authority granted by a position is the Position Myth, one of the five misconceptions Maxwell explicitly attacks, which is exactly why it is offered here."},
+  {"t":1,"q":"A new HOSA member repeatedly reminds everyone that their chapter was the first in the region to affiliate, and therefore they should be in charge. Which of Maxwell's myths is this?","a":["The Position Myth","The Management Myth","The Knowledge Myth","The Pioneer Myth"],"c":3,"e":"The Pioneer Myth is believing that being first, or being out front, makes you a leader. The Position Myth is the nearest neighbor and is chosen often, but the Position Myth is about holding a title, while this member holds no title and is claiming priority in time."},
+  {"t":1,"q":"An advisor argues that the smartest student in the chapter should automatically be president. Which myth is at work?","a":["The Knowledge Myth","The Entrepreneur Myth","The Pioneer Myth","The Position Myth"],"c":0,"e":"The Knowledge Myth equates intelligence and expertise with leadership. The Entrepreneur Myth is the tempting alternative, but that one confuses the ability to sell or to start something with the ability to lead people."},
+  {"t":1,"q":"Maxwell says leadership requires doing many things well, and that no single person masters all twenty-one laws. What does he recommend instead?","a":["Focus only on the laws that match your personality","Delegate the difficult laws to a manager","Develop a leadership team whose skills complement each other","Master the first ten laws and ignore the rest"],"c":2,"e":"Building a complementary team is Maxwell's answer, and it is the same logic that runs through the Law of the Inner Circle. Focusing only on laws that match your personality is the appealing wrong answer, since Maxwell insists the laws apply whether you like them or not."},
+  {"t":1,"q":"Dick and Maurice McDonald ran a superb single restaurant but could not build a national franchise. Ray Kroc did. Which law explains the difference?","a":["The Law of Influence","The Law of the Lid","The Law of Process","The Law of Navigation"],"c":1,"e":"Their leadership ability was the ceiling on what the business could become, which is the Law of the Lid. Influence is the reflexive wrong answer on almost any Maxwell stem, but the story is not about whether anyone followed them; it is about how high they could take the organization."},
+  {"t":1,"q":"According to the Law of the Lid, if an organization needs to reach a higher level of effectiveness, what are the two options?","a":["Add more staff or increase the budget","Extend the timeline or reduce the goals","Improve the product or lower the price","Raise the leader's lid or change the leader"],"c":3,"e":"You either develop the existing leader or you replace the leader, because effectiveness is capped by leadership ability. Adding staff or budget is the practical-sounding trap, and Maxwell's argument is that resources poured under a low lid simply pile up beneath the ceiling."},
+  {"t":1,"q":"In the founding of Apple, one partner had extraordinary technical brains but a low leadership lid while the other had a much higher one. What does Maxwell say this demonstrates?","a":["Leadership ability, not technical talent, determines organizational height","Technical skill and leadership ability are the same thing","Partnerships always fail without equal skills","The first employee sets the culture"],"c":0,"e":"The pairing shows that brilliance under a low lid does not scale, while leadership raises the ceiling for everyone. Equating technical skill with leadership is the Knowledge Myth restated, which is why Maxwell chooses this example."},
+  {"t":1,"q":"Mother Teresa held no office, commanded no army, and controlled no wealth, yet when she spoke, world leaders responded. Which law is illustrated?","a":["The Law of Respect","The Law of the Picture","The Law of Influence","The Law of Solid Ground"],"c":2,"e":"She is Maxwell's proof that leadership is influence rather than position. The Law of Respect is the closest competitor because people clearly respected her, but Respect is about people following leaders stronger than themselves, while this example is about influence existing with no positional support at all."},
+  {"t":1,"q":"Which U.S. leader began as a young captain in the Black Hawk War and was demoted to private because he could not influence his men?","a":["Ulysses S. Grant","Abraham Lincoln","Theodore Roosevelt","Andrew Jackson"],"c":1,"e":"Lincoln's demotion is Maxwell's illustration that a title does not create followers, and his later cabinet of rivals shows the same man having developed real influence. Grant is the plausible alternative because of his military career, but Maxwell's point requires a leader who started with rank and no influence."},
+  {"t":1,"q":"Anne Scheiber, an IRS auditor, invested patiently for decades and left twenty-two million dollars to Yeshiva University at age 101. Which law does Maxwell attach to her?","a":["The Law of Legacy","The Law of Sacrifice","The Law of Priorities","The Law of Process"],"c":3,"e":"Leadership develops daily, not in a day, exactly as an investment compounds. The Law of Legacy is the tempting answer because she left a bequest, but Maxwell uses the bequest only to show the result of decades of small deposits, which is the Process argument."},
+  {"t":1,"q":"Boxing legend Joe Frazier's career rested on daily preparation, training, stamina, and perseverance. Which law is this?","a":["The Law of Process","The Law of Victory","The Law of Sacrifice","The Law of the Big Mo"],"c":0,"e":"Daily development over years is the Law of Process. The Law of Victory is the reflexive pick for any athlete example, but Victory is about a leader finding a way for the whole team to win, not about an individual's training discipline."},
+  {"t":1,"q":"Maxwell writes that becoming a leader is much like investing in the stock market, and that hoping to make a fortune in a day will not work. Which law is he stating?","a":["The Law of Priorities","The Law of Timing","The Law of Process","The Law of Explosive Growth"],"c":2,"e":"The investing analogy is the signature image of the Law of Process. The Law of Timing is the distractor that catches students who see the word day and think about when to act; Process is about accumulation over time, Timing is about choosing the right moment."},
+  {"t":1,"q":"In Maxwell's five phases of leadership growth, which phase comes first?","a":["I know that I need to know","I do not know what I do not know","I know what I do not know","I know and grow and it starts to show"],"c":1,"e":"The first phase is unconscious incompetence: not knowing what you do not know. I know that I need to know is the second phase and the common wrong answer, because it sounds like the beginning of learning; Maxwell puts an earlier stage before it in which the person has not yet realized anything is missing."},
+  {"t":1,"q":"Roald Amundsen's South Pole expedition succeeded while Robert Falcon Scott's ended in death. Which law does Maxwell draw from the comparison?","a":["The Law of Victory","The Law of Navigation","The Law of Sacrifice","The Law of Timing"],"c":1,"e":"Amundsen charted the course and prepared for what he would face; Scott improvised. That is the Law of Navigation. The Law of Timing is tempting because both expeditions faced weather, but Maxwell's emphasis is on the planning done long before departure."},
+  {"t":1,"q":"According to Maxwell, what is the secret of the Law of Navigation?","a":["Delegation","Motivation","Communication","Preparation"],"c":3,"e":"Preparation is the secret: the size of the leader's dream matters less than the size of the planning behind it. Communication is the strongest distractor because navigators do notify key personnel, but that is one step of PLAN AHEAD rather than the secret of the law."},
+  {"t":1,"q":"Maxwell says navigators draw on past experience, where success teaches what you are capable of and failure teaches necessary lessons. What does he call this practice?","a":["Reflective thinking","Strategic planning","Critical analysis","Situational awareness"],"c":0,"e":"Reflective thinking converts experience into usable navigation data. Strategic planning is the near answer, but planning looks forward while reflective thinking mines what already happened; Maxwell requires both, in that order."},
+  {"t":1,"q":"To be effective, Maxwell says navigators must ensure their conclusions and decisions balance which two conditions?","a":["Risk and reward","Speed and caution","Faith and fact","Cost and benefit"],"c":2,"e":"Faith and fact is Maxwell's pairing: enough faith to believe the course is possible and enough fact to know it is real. Risk and reward is the business-school-sounding trap, and it is not the phrasing Maxwell uses."},
+  {"t":1,"q":"Why do effective navigators hold intentional conversations with experts and examine conditions before committing?","a":["Because committees make better decisions than individuals","Because a leader will never have all the answers","Because consensus is required for any major change","Because experts are legally responsible for outcomes"],"c":1,"e":"Maxwell's reason is humility about the limits of any one leader's knowledge. Committees make better decisions is the tempting generalization, but Maxwell is not arguing for group decision-making; the leader still charts the course, informed by others."},
+  {"t":1,"q":"In Maxwell's PLAN AHEAD acrostic, what does the first P represent?","a":["Prioritize your resources","Publicize the vision","Prepare your key personnel","Predetermine a course of action"],"c":3,"e":"Predetermine a course of action opens the acrostic; laying out goals and adjusting priorities come next. Prepare your key personnel is the trap because notifying key personnel is genuinely in the list, just later, under the letter N."},
+  {"t":1,"q":"Jim Sinegal of Costco insisted it was improper for one person to take credit when so many built the organization. Which law does Maxwell illustrate with him?","a":["The Law of Addition","The Law of Empowerment","The Law of Legacy","The Law of Connection"],"c":0,"e":"Leaders add value by serving others, which is the Law of Addition. The Law of Empowerment is the near miss, but empowerment is about handing authority to others, while addition is about the leader's posture of service and credit-sharing."},
+  {"t":1,"q":"What distinction did Jim Sinegal hold as CEO of Costco, in Maxwell's telling?","a":["The lowest salary in retail","The longest tenure of any grocery CEO","The shortest CEO employment contract","The largest charitable foundation"],"c":2,"e":"His employment contract was famously brief, a single page, which Maxwell reads as a servant's posture toward the company. Lowest salary in retail is the invented-sounding distractor that appeals because his pay was modest, but the specific detail Maxwell cites is the contract."},
+  {"t":1,"q":"What leadership element do the Law of Addition and the Law of the Inner Circle have in common?","a":["Both require a formal organizational chart","People in the inner circle must be adders, multipliers, or lifters","Both depend on the leader's technical expertise","Both apply only to large organizations"],"c":1,"e":"The shared idea is that the people around a leader must increase value rather than consume it. Requiring a formal chart is the bureaucratic distractor; Maxwell's inner circle is defined by contribution, not by reporting lines."},
+  {"t":1,"q":"According to Maxwell, trust is the foundation of leadership. Which law states this?","a":["The Law of Buy-In","The Law of Magnetism","The Law of Respect","The Law of Solid Ground"],"c":3,"e":"The Law of Solid Ground is the trust law. Buy-In is the closest competitor and is confused constantly: Solid Ground says trust is the foundation, while Buy-In says followers accept the leader before they accept the vision."},
+  {"t":1,"q":"Maxwell compares leadership skills to change in a leader's pocket. What does this image mean?","a":["Good decisions earn more change and mistakes spend it, and running out means losing leadership","Leadership is inexpensive to acquire","Leaders should keep their plans hidden until final","Small decisions matter less than large ones"],"c":0,"e":"Trust is spendable currency: every good decision adds to the pocket and every error withdraws from it. Small decisions matter less is the opposite of Maxwell's point, since the image works precisely because it accounts for the accumulation of small moves."},
+  {"t":1,"q":"According to Maxwell, trust is built with:","a":["contracts","credentials","connections","committees"],"c":2,"e":"Trust grows out of connection with the people you lead, which is why the Law of Connection sits so close to the Law of Solid Ground. Credentials is the tempting answer because qualifications feel like grounds for trust, but Maxwell locates trust in relationship and character rather than in resume."},
+  {"t":1,"q":"Maxwell recommends focusing on three main areas to develop character. Which of the following is NOT one of them?","a":["Integrity, doing what you said you would do","Support, doing all you can to encourage others","Discipline, doing the right thing daily","Authenticity, being real with people"],"c":1,"e":"Encouraging others is a good practice but it is not one of Maxwell's three character-development areas, which center on integrity, authenticity, and discipline. Support is chosen often because it sounds like something a good leader obviously does, and that plausibility is exactly why it is the wrong answer here."},
+  {"t":1,"q":"Which leader does Maxwell describe as the leader of steel who exemplifies the Law of Respect?","a":["Eleanor Roosevelt","Florence Nightingale","Clara Barton","Harriet Tubman"],"c":3,"e":"Harriet Tubman had no rank and no legal standing, and people followed her into extreme danger because of who she was. Florence Nightingale is the attractive wrong choice for a health-science audience, but Maxwell's chosen figure for the Law of Respect is Tubman."},
+  {"t":1,"q":"Maxwell says to measure your level of respect, look at the caliber of people who choose to follow you. Which player did he cite as choosing to play for Dean Smith at North Carolina?","a":["Michael Jordan","Magic Johnson","Larry Bird","Kareem Abdul-Jabbar"],"c":0,"e":"Jordan chose Smith, and the caliber of that recruit measures the respect Smith commanded. The other names are all elite players who played elsewhere, planted to check whether you remember the specific pairing rather than a general sense that a great coach attracts great players."},
+  {"t":1,"q":"Henry Kissinger said a leader does not deserve the name unless willing to stand alone. Which of the ways leaders gain respect does Maxwell illustrate with this?","a":["Loyalty","Success","Courage","Adding value to others"],"c":2,"e":"Standing alone against pressure is courage, one of the six ways leaders earn respect. Loyalty is on the same list and is the frequent wrong pick, but loyalty is about sticking with the team through hard times rather than about facing opposition alone."},
+  {"t":1,"q":"If the people a leader attracts are unreliable and untrustworthy, what does Maxwell suggest?","a":["Recruit from a different population","Examine your own character and become the person you want to attract","Impose stricter accountability rules","Reduce the size of the team"],"c":1,"e":"Because who you are is who you attract, the diagnosis points back at the leader. Imposing stricter rules is the managerial reflex and the most common wrong answer, but rules do not change the magnetism that selected these people in the first place."},
+  {"t":1,"q":"Maxwell writes that natural leaders get it instantly, learned leaders get it eventually, and non-leaders never get it. Which law is he describing?","a":["The Law of Process","The Law of the Lid","The Law of Magnetism","The Law of Intuition"],"c":3,"e":"The three categories describe how people see with a leadership bias, which is the Law of Intuition. The Law of Process is the tempting alternative because of the word eventually, but Process is about daily development while Intuition is about perception."},
+  {"t":1,"q":"Which leadership skill is being exercised when a leader reads a situation and mobilizes people and resources to accomplish a current project?","a":["Intuition","Navigation","Empowerment","Priorities"],"c":0,"e":"Reading the situation and the available resources and acting on that read is the Law of Intuition, since leaders evaluate everything with a leadership bias. Navigation is the strong decoy, but navigation is about charting a long course in advance rather than reading present conditions."},
+  {"t":1,"q":"In the Law of Magnetism, which characteristic does Maxwell call one of the most contagious qualities a human being possesses?","a":["Intelligence","Ambition","Attitude","Discipline"],"c":2,"e":"Attitude spreads faster than any other quality, which is why one negative officer reshapes a chapter quickly. Discipline is the appealing alternative because it visibly influences a team, but Maxwell singles out attitude for its contagiousness."},
+  {"t":1,"q":"Herb Kelleher of Southwest Airlines built strong relational bridges with employees. What strength does Maxwell credit for this?","a":["He was a gifted public speaker","He was always the initiator","He offered the highest wages in the industry","He avoided all conflict"],"c":1,"e":"Kelleher took the first step every time, which is the leader's responsibility under the Law of Connection. Being a gifted speaker is the intuitive wrong answer, but Maxwell's point is about who moves first toward the relationship, not about eloquence."},
+  {"t":1,"q":"Which law does Maxwell summarize as touching a heart before asking for a hand?","a":["The Law of Buy-In","The Law of the Picture","The Law of Addition","The Law of Connection"],"c":3,"e":"That sentence is the Law of Connection, and it applies to individuals before groups. Buy-In is the near neighbor, but Buy-In concerns whether followers accept the leader and then the vision, while Connection concerns the emotional bridge built before any request."},
+  {"t":1,"q":"When adding someone to the inner circle, Maxwell advises leaders to look for a person with:","a":["a set of complementary skills","identical strengths to the leader's own","the longest tenure in the organization","the most agreeable personality"],"c":0,"e":"Complementary skills close the leader's gaps, which is what raises the leader's potential. The most agreeable personality is the trap that appeals to anyone who has run a difficult meeting, but agreeableness adds comfort rather than capability."},
+  {"t":1,"q":"What does Maxwell identify as the number one enemy among the barriers to empowerment?","a":["Resistance to change","Lack of self-worth","Fear of losing what we have","Poor communication skills"],"c":2,"e":"Job-security fear, the fear of losing what we have, is the chief barrier, because insecure leaders will not hand over authority. Lack of self-worth is on the same list and is the usual wrong pick; it is a real barrier, but not the one Maxwell ranks first."},
+  {"t":1,"q":"Maxwell writes that great leaders embody two seemingly opposite qualities. Which pair?","a":["Highly patient and highly aggressive","Highly creative and highly pragmatic","Highly private and highly public","Highly analytical and highly emotional"],"c":1,"e":"Creative and pragmatic is the pairing: they imagine what does not exist and still ship something that works. Analytical and emotional is the tempting modern-sounding pair, but it is not Maxwell's phrasing."},
+  {"t":1,"q":"Abraham Lincoln appointed political rivals to his cabinet and publicly took responsibility for their errors. Which law does this best demonstrate?","a":["The Law of Timing","The Law of the Big Mo","The Law of Priorities","The Law of Empowerment"],"c":3,"e":"Only a secure leader hands power to people who might outshine or oppose him, which is the Law of Empowerment. The Law of Respect is often chosen for Lincoln stems, but respect concerns who follows him; this scenario is about what he gave away."},
+  {"t":1,"q":"When the Opinion Research Corporation asked American workers to name the single most important trait for a person in a leadership position, what did they choose?","a":["Leading by example","Technical competence","Financial acumen","Public speaking ability"],"c":0,"e":"Leading by example won the poll, and Maxwell uses it as the empirical support for the Law of the Picture. Technical competence is the plausible alternative for a workplace survey, and the fact that workers ranked example above expertise is the finding Maxwell is highlighting."},
+  {"t":1,"q":"Which statement is the Law of the Picture?","a":["Who you are is who you attract","Momentum is a leader's best friend","People do what people see","A leader must give up to go up"],"c":2,"e":"People do what people see is the Law of the Picture, the modeling law. Who you are is who you attract is the Law of Magnetism, and swapping these two is the single most common error in this section of the book."},
+  {"t":1,"q":"Judith Estrin failed for six months to secure funding for one company, then found a later company funded almost immediately with a comparable idea. Which law explains the change?","a":["The Law of Timing","The Law of Buy-In","The Law of the Big Mo","The Law of Navigation"],"c":1,"e":"Investors bought into her before they bought into the vision, and by the second company her credibility was established. The Law of Timing is the tempting alternative because the two attempts happened at different moments, but what changed was the leader's credibility, not the market window."},
+  {"t":1,"q":"Under the Law of Buy-In, what happens when followers like the leader but do not like the vision?","a":["They get a new leader","They wait for the leader to fail","They abandon the organization","They change the vision"],"c":3,"e":"When people trust the leader, they will change the vision rather than the leadership. Getting a new leader is what happens in the two combinations where the leader is not accepted, which is why that option is planted here."},
+  {"t":1,"q":"Maxwell says a leader's credibility with individuals is earned through good relationships, honesty, authenticity, and delivering results. Which law does this credibility serve?","a":["The Law of Buy-In","The Law of Intuition","The Law of Sacrifice","The Law of Explosive Growth"],"c":0,"e":"Credibility is the mechanism of Buy-In, since people accept the messenger before the message. The Law of Solid Ground is the adjacent idea that catches many students; Solid Ground names trust as the foundation, while Buy-In describes the order in which acceptance happens."},
+  {"t":1,"q":"Nelson Mandela spent decades shaping a vision of a democratic South Africa and then led the country as its president. Which law does Maxwell attach to him?","a":["The Law of Legacy","The Law of Sacrifice","The Law of Victory","The Law of Process"],"c":2,"e":"Maxwell uses Mandela for the Law of Victory: a leader who refuses to accept defeat and finds a way for the whole nation to win. The Law of Sacrifice is a reasonable-sounding alternative given his imprisonment, but the emphasis in this example is on unifying a team around a winning outcome."},
+  {"t":1,"q":"According to Maxwell, what is the first step in implementing the Law of Victory?","a":["Recruit the most talented people available","Take responsibility for the success of the team","Set a measurable win condition","Remove underperforming members"],"c":1,"e":"The leader owning the team's success personally is where victory begins. Recruiting talent is the obvious-sounding first move, but Maxwell's sequence starts with the leader's own accountability, without which no amount of talent produces a win."},
+  {"t":1,"q":"Which three components does Maxwell say produce victory in a team?","a":["Talent, experience, and seniority","Funding, facilities, and favorable scheduling","Discipline, obedience, and clear rules","Unity of vision, diversity of skills, and a leader dedicated to victory"],"c":3,"e":"Shared vision, complementary skills, and a leader committed to raising players to their potential are the three components. Talent, experience, and seniority is the trap because it lists things that seem to predict winning, and Maxwell's argument is that unity and leadership matter more than raw ability."},
+  {"t":1,"q":"According to Maxwell, what is the only thing that makes the difference between losing and winning?","a":["Momentum","Talent","Funding","Timing"],"c":0,"e":"Momentum, which he calls the Big Mo. Timing is the tempting alternative because both concern when things happen, but timing is about choosing the moment to act, while momentum is the accumulated force that makes action easier once you are moving."},
+  {"t":1,"q":"Which statement best reflects Maxwell's truths about momentum?","a":["Momentum is easier to start than to steer","Momentum only matters in large organizations","Momentum is the great exaggerator","Momentum is created by adding new members"],"c":2,"e":"Momentum is the great exaggerator: it makes leaders look better than they are and helps followers perform better than they are. The reversed statement about starting versus steering is the deliberate trap, since Maxwell says momentum is much harder to start than to steer."},
+  {"t":1,"q":"For the Law of the Big Mo, what does Maxwell say is the first step in creating momentum?","a":["Announce an ambitious goal","Remove demotivating elements","Recruit more members","Reorganize the leadership team"],"c":1,"e":"You clear the drag before you add power, so removing demotivating elements comes first. Announcing an ambitious goal is the energetic-sounding wrong answer, and Maxwell's caution is that a big announcement into a demoralized group produces nothing."},
+  {"t":1,"q":"What does Maxwell suggest to encourage and maintain momentum once it exists?","a":["Rotate leadership frequently","Increase the pace of new initiatives","Tighten reporting requirements","Celebrate team members' accomplishments"],"c":3,"e":"Celebrating accomplishments keeps the flywheel turning by reinforcing what produced the gain. Increasing the pace of new initiatives is the plausible alternative, but piling on new work is how leaders spend momentum rather than maintain it."},
+  {"t":1,"q":"An officer's motto is that activity is not necessarily accomplishment and that busyness does not equal productivity. Which law is this?","a":["The Law of Priorities","The Law of Navigation","The Law of Process","The Law of Timing"],"c":0,"e":"That sentence is the Law of Priorities almost verbatim. Navigation is the persistent decoy on any planning-flavored stem, but navigation is about charting a course while priorities is about deciding which activities deserve the effort at all."},
+  {"t":1,"q":"Maxwell's three R's for sorting a leader's work are:","a":["Review, Refine, Repeat","Results, Reputation, Resources","Required, Return, Reward","Recruit, Retain, Reward"],"c":2,"e":"Ask what is required of you, what gives the greatest return, and what brings the greatest reward. Results, Reputation, Resources is the invented alternative that sounds businesslike, which is why it is offered; the actual triad is about obligation, efficiency, and fulfillment."},
+  {"t":1,"q":"John Wooden designed UCLA practices so that each drill accomplished several goals at once. Which law does Maxwell say this illustrates?","a":["The Law of Victory","The Law of Priorities","The Law of Process","The Law of Explosive Growth"],"c":1,"e":"Satisfying multiple priorities with each activity is the Law of Priorities applied to a schedule. The Law of Process is the tempting choice because practice is daily, but the specific insight here is about the design of the activity rather than about accumulation over time."},
+  {"t":1,"q":"Max DePree said the first responsibility of a leader is to define reality. Which law does Maxwell say this requires?","a":["The Law of Navigation","The Law of Intuition","The Law of Solid Ground","The Law of Priorities"],"c":3,"e":"Defining reality means naming what actually matters and relating it to the overall vision, which is the priorities discipline. Navigation is the frequent wrong answer, and the distinction is that navigation charts the route while priorities decide what is worth routing toward."},
+  {"t":1,"q":"Ralph Waldo Emerson wrote that for everything you gain, you lose something. Which law does this represent?","a":["Sacrifice","Priorities","Legacy","Respect"],"c":0,"e":"Trading something away for what you gain is the Law of Sacrifice: a leader must give up to go up. Priorities is the near miss, because both involve giving something up, but priorities is about choosing among activities while sacrifice is about surrendering something of real personal value."},
+  {"t":1,"q":"Which leader does Maxwell use as an example of leadership sacrifice, giving up prestige and comfort to serve at a larger scale?","a":["Golda Meir","Margaret Thatcher","Condoleezza Rice","Madeleine Albright"],"c":2,"e":"Condoleezza Rice is Maxwell's example for the Law of Sacrifice. The other names are prominent women in government offered to test whether you recall the specific figure rather than a general category, which is exactly how these items are usually built."},
+  {"t":1,"q":"Which statement is one of Maxwell's truths about the Law of Sacrifice?","a":["Sacrifice is required only at the start of a leader's career","You must keep giving up to stay up","Leaders sacrifice less than their followers do","Sacrifice can be replaced by hard work"],"c":1,"e":"Sacrifice is continuous, not a one-time entry fee, and the cost rises with the level of leadership. Believing sacrifice is only required early is the comfortable misreading Maxwell explicitly rejects."},
+  {"t":1,"q":"Winston Churchill described a special moment for which a person was born, when a distinctive opportunity is offered. Which law does this represent?","a":["Victory","Navigation","Legacy","Timing"],"c":3,"e":"The special moment is the Law of Timing: when to lead is as important as what to do and where to go. Victory is the frequent wrong pick because the quotation is stirring and success-flavored, but the subject of the sentence is the moment, not the win."},
+  {"t":1,"q":"Maxwell says every leadership move has four possible outcomes. Which one brings resistance among followers?","a":["The wrong action at the wrong time","The right action at the wrong time","The wrong action at the right time","The right action at the right time"],"c":1,"e":"The right action at the wrong time produces resistance, because people cannot see why the move is being made now. The wrong action at the wrong time is the trap for students who assume resistance is the worst outcome; that combination produces disaster, which is worse."},
+  {"t":1,"q":"A committee launched a fundraiser in December and it failed despite good planning and willing volunteers. Which law was most likely violated?","a":["The Law of Timing","The Law of Priorities","The Law of Buy-In","The Law of Solid Ground"],"c":0,"e":"A sound project scheduled into the busiest weeks of the year fails on timing rather than on effort. The Law of Priorities is the near answer, but priorities would explain a team working on the wrong thing, while here the project itself was right and the moment was wrong."},
+  {"t":1,"q":"According to the Law of Explosive Growth, what math analogy does Maxwell use for leading leaders rather than followers?","a":["Addition","Subtraction","Multiplication","Division"],"c":2,"e":"To add growth you lead followers; to multiply, you lead leaders. Addition is the deliberately planted wrong answer because it is also the name of Law 5, and because leading followers really does add; the multiplication is what distinguishes Law 20."},
+  {"t":1,"q":"Maxwell says leading leaders takes more time, energy, and resources. What is the positive result he names?","a":["Meetings become shorter","Leadership development compounds","The leader can step back entirely","Turnover disappears"],"c":1,"e":"Compounding is the payoff: every leader you develop develops others. The leader can step back entirely is the appealing overstatement, and Maxwell's argument is not that the leader disappears but that capacity multiplies while the leader keeps investing."},
+  {"t":1,"q":"In the Law of Legacy chapter, what does Max DePree advocate as a central responsibility of leadership?","a":["Innovation","Communication","Profitability","Succession"],"c":3,"e":"Succession is the responsibility DePree names and the standard by which the Law of Legacy measures a leader. Innovation is the tempting answer because Maxwell quotes leaders on vision and dreaming elsewhere, but the legacy scoreboard is who carries on."},
+  {"t":1,"q":"Coach Tom Mullins compares leadership legacy to a relay race. What did he identify as the most important part?","a":["Passing the baton","The anchor leg","The first leg","Setting the pace"],"c":0,"e":"Relays are won and lost in the exchange, which is Maxwell's image for succession. The anchor leg is the intuitive answer because it finishes the race, and that instinct is exactly what the analogy is designed to correct."},
+  {"t":1,"q":"An officer identifies younger members, mentors them deliberately, and positions them to run the chapter after she graduates. Which law is she practicing?","a":["The Law of Addition","The Law of the Inner Circle","The Law of Legacy","The Law of Magnetism"],"c":2,"e":"Preparing successors so the work continues without her is the Law of Legacy. The Law of Explosive Growth is the close relative, and the distinction is emphasis: explosive growth is about multiplying capacity now, legacy is about what remains after the leader leaves."},
+  {"t":1,"q":"Ned Barnholt described three kinds of people in an organization when a leadership initiative begins. Which group does Maxwell say a leader should invest in?","a":["Those who get it almost immediately and get on board","Those who are skeptical and not sure what to do","Those who resist and are negative","All three groups equally"],"c":0,"e":"Invest in the people who already see it, because they create the momentum that eventually moves the skeptics. Investing equally in all three is the fair-sounding answer, and Maxwell's argument is that equal investment wastes the leader's scarcest resource on the least responsive group."},
+  {"t":1,"q":"Maxwell states that in building a successful organization everything depends on leadership. Which factor does he say determines the organization's direction?","a":["Funding","Vision","Structure","Reputation"],"c":1,"e":"Vision sets direction, and Maxwell ties it to the idea that leaders are paid to be dreamers. Structure is the tempting managerial answer, but structure supports a direction that has already been chosen; it does not choose one."},
+  {"t":1,"q":"Which grouping correctly reflects the order of Maxwell's first five laws?","a":["Process, Lid, Influence, Navigation, Addition","Influence, Lid, Navigation, Process, Addition","Lid, Process, Influence, Addition, Navigation","Lid, Influence, Process, Navigation, Addition"],"c":3,"e":"Laws one through five are the Lid, Influence, Process, Navigation, and Addition. Swapping the Lid and Influence is the most common scramble, since both are foundational; the Lid comes first because it sets the ceiling that everything else operates under."},
+  {"t":1,"q":"Which grouping correctly reflects the order of Maxwell's final four laws?","a":["Sacrifice, Timing, Explosive Growth, Legacy","Timing, Sacrifice, Legacy, Explosive Growth","Explosive Growth, Legacy, Sacrifice, Timing","Legacy, Sacrifice, Timing, Explosive Growth"],"c":0,"e":"Laws eighteen through twenty-one are Sacrifice, Timing, Explosive Growth, and Legacy, in that order. Placing Legacy anywhere but last is the giveaway error, since Maxwell closes the book with succession as the final measure of a leader."}
+];
+
+
+/* ============================================================
+   Rendering + quiz engine
+   ============================================================ */
+const $ = id => document.getElementById(id);
+const esc = s => String(s);
+
+/* ---------- theme ---------- */
+(function(){
+  let saved = null;
+  try { saved = localStorage.getItem('mt-theme'); } catch(e){}
+  if (saved === 'dark' || saved === 'light') document.documentElement.setAttribute('data-theme', saved);
+  $('themeBtn').addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const isDark = cur ? cur === 'dark'
+      : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const next = isDark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('mt-theme', next); } catch(e){}
+  });
+})();
+
+/* ---------- best score ---------- */
+function readBest(){ try { return parseInt(localStorage.getItem('mt-best') || '', 10); } catch(e){ return NaN; } }
+function writeBest(p){ try { localStorage.setItem('mt-best', String(p)); } catch(e){} }
+(function(){ const b = readBest(); if (!isNaN(b)) $('stBest').textContent = b + '%'; })();
+
+/* ---------- navigation ---------- */
+function go(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0, behavior:'instant' in window ? 'auto' : 'auto'});
+}
+
+/* ---------- test plan table ---------- */
+(function(){
+  const rows = ['<div class="plan-r hd"><span>Topic</span><span>Weight</span></div>'];
+  TOPICS.forEach(t => rows.push(
+    '<div class="plan-r"><span>' + t.n + '</span><span class="plan-w">' +
+    (t.w > 0 ? t.w + '%' : 'Round 2') + '</span></div>'
+  ));
+  $('planTable').innerHTML = rows.join('');
+  $('stQ').textContent = Q.length;
+  const q2 = $('stQ2'); if (q2) q2.textContent = Q.length;
+})();
+
+/* ---------- study guide ---------- */
+(function(){
+  const out = [];
+  GUIDE.forEach((g, i) => {
+    const T = TOPICS[g.t];
+    const qr = g.qref.map(p =>
+      '<div><span class="qr-term">' + p[0] + '</span><span class="qr-def">' + p[1] + '</span></div>'
+    ).join('');
+    out.push(
+      '<div class="sec" id="sec' + g.t + '">' +
+        '<button class="sec-h" onclick="toggleSec(' + g.t + ')" aria-expanded="false">' +
+          '<span class="sec-w">' + T.w + '%</span>' +
+          '<span class="sec-t">' + T.n + '</span>' +
+          '<span class="sec-c">+</span>' +
+        '</button>' +
+        '<div class="sec-body">' +
+          '<div class="layer narr"><div class="layer-h">Narrative — read to understand</div>' + g.narr + '</div>' +
+          '<div class="layer deep"><div class="layer-h">Deep Dive — expert level</div>' + g.deep + '</div>' +
+          '<div class="layer qref"><div class="layer-h">Quick Reference — key terms</div><div class="qr">' + qr + '</div></div>' +
+          '<div class="layer note"><div class="layer-h">Top Competitor Study Notes</div><div class="notes-block">' + g.notes + '</div></div>' +
+          '<button class="sec-practice" onclick="startQuiz(' + g.t + ')">Practice this topic →</button>' +
+        '</div>' +
+      '</div>'
+    );
+  });
+  $('guideList').innerHTML = out.join('');
+})();
+
+function toggleSec(t){
+  const el = $('sec' + t);
+  const open = el.classList.toggle('open');
+  el.querySelector('.sec-h').setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+/* ---------- quiz engine ---------- */
+let session = [], idx = 0, score = 0, answered = false, lastMode = 'weighted';
+let curOrder = [0,1,2,3];
+const perTopic = {};
+
+function shuffle(a){
+  const r = a.slice();
+  for (let i = r.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [r[i], r[j]] = [r[j], r[i]];
+  }
+  return r;
+}
+
+/* Weighted draw: 45 / 5 x 11, largest-remainder over 50 items */
+function weightedSet(n){
+  const raw = TOPICS.map(t => t.w * n / 100);
+  const base = raw.map(Math.floor);
+  let left = n - base.reduce((a,b) => a+b, 0);
+  const order = raw.map((v,i) => [v - Math.floor(v), i])
+                   .sort((a,b) => b[0] - a[0] || a[1] - b[1]);
+  for (let k = 0; k < order.length && left > 0; k++, left--) base[order[k][1]]++;
+  let out = [];
+  base.forEach((cnt, t) => {
+    const pool = shuffle(Q.filter(q => q.t === t));
+    out = out.concat(pool.slice(0, Math.min(cnt, pool.length)));
+  });
+  return shuffle(out);
+}
+
+function startQuiz(mode){
+  lastMode = mode;
+  if (mode === 'weighted')      session = weightedSet(50);
+  else if (mode === 'all')      session = shuffle(Q);
+  else                          session = shuffle(Q.filter(q => q.t === mode));
+  idx = 0; score = 0;
+  for (const k in perTopic) delete perTopic[k];
+  go('quiz');
+  renderQ();
+}
+
+function renderQ(){
+  answered = false;
+  const q = session[idx];
+  $('qCount').textContent = (idx + 1) + ' / ' + session.length;
+  $('qScore').textContent = score + ' ✓';
+  $('qFill').style.width = (idx / session.length * 100) + '%';
+  const T = TOPICS[q.t];
+  $('qTopic').textContent = T.n.replace('&amp;','&');
+  $('qTopic').style.color = T.c;
+  $('qStem').innerHTML = q.q;
+  curOrder = shuffle([0,1,2,3]);
+  const letters = ['A','B','C','D'];
+  $('qChoices').innerHTML = curOrder.map((orig, i) =>
+    '<button class="ch" onclick="answer(' + i + ')"><span class="k">' + letters[i] + '</span><span>' + q.a[orig] + '</span></button>'
+  ).join('');
+  const ex = $('qExpl');
+  ex.className = 'expl';
+  $('qNext').style.display = 'none';
+}
+
+function answer(i){
+  if (answered) return;
+  answered = true;
+  const q = session[idx];
+  const btns = $('qChoices').querySelectorAll('.ch');
+  btns.forEach((b, k) => {
+    b.disabled = true;
+    if (curOrder[k] === q.c) b.classList.add('right');
+    else if (k === i) b.classList.add('wrong');
+  });
+  const ok = curOrder[i] === q.c;
+  if (ok) score++;
+  if (!perTopic[q.t]) perTopic[q.t] = {c:0, n:0};
+  perTopic[q.t].n++;
+  if (ok) perTopic[q.t].c++;
+  const ex = $('qExpl');
+  ex.className = 'expl show ' + (ok ? 'ok' : 'no');
+  $('qVerdict').textContent = ok ? 'Correct' : 'Not quite';
+  $('qExplText').innerHTML = q.e;
+  $('qSrc').textContent = TOPICS[q.t].n.replace('&amp;','&') + (TOPICS[q.t].w > 0 ? ' · ' + TOPICS[q.t].w + '% of the test' : ' · Round Two material');
+  $('qScore').textContent = score + ' ✓';
+  $('qNext').style.display = 'block';
+  $('qNext').textContent = idx + 1 >= session.length ? 'See results' : 'Next question';
+  $('qNext').focus();
+}
+
+function nextQ(){
+  idx++;
+  if (idx >= session.length) return showResults();
+  renderQ();
+}
+
+function quitQuiz(){
+  if (idx > 0 || answered) return showResults();
+  go('home');
+}
+
+function showResults(){
+  const total = Math.max(1, Object.values(perTopic).reduce((a,b) => a + b.n, 0));
+  const pct = Math.round(score / total * 100);
+  go('results');
+  $('ringPct').textContent = pct + '%';
+  $('ringFrac').textContent = score + ' of ' + total;
+  const circ = 2 * Math.PI * 70;
+  requestAnimationFrame(() => {
+    $('ringArc').style.strokeDashoffset = circ * (1 - pct / 100);
+  });
+  $('ringArc').setAttribute('stroke', pct >= 80 ? 'var(--teal)' : pct >= 60 ? 'var(--orange)' : 'var(--red)');
+  const ranked = Object.keys(perTopic).filter(t => perTopic[t].n >= 2)
+    .sort((a,b) => (perTopic[a].c/perTopic[a].n) - (perTopic[b].c/perTopic[b].n));
+  const weakest = ranked.length ? TOPICS[ranked[0]].n.replace('&amp;','&') : null;
+  const second  = ranked.length > 1 ? TOPICS[ranked[1]].n.replace('&amp;','&') : null;
+  let msg;
+  if (pct >= 90)      msg = 'Medal range. Keep the full-length sessions coming and hold this line.' + (weakest ? ' Your softest spot is still ' + weakest + '.' : '');
+  else if (pct >= 80) msg = 'Strong.' + (weakest && second ? ' Read the Deep Dive for ' + weakest + ' and ' + second + ' tonight.' : ' Go find your two weakest topics below.');
+  else if (pct >= 65) msg = 'Solid base, real gaps.' + (weakest ? ' Work ' + weakest + ' before you take another full test.' : '');
+  else if (pct >= 45) msg = 'You know some of it.' + (weakest ? ' Open the study guide at ' + weakest + ' and read the narrative, then the deep dive.' : '');
+  else                msg = 'Start at the study guide, not the quiz.' + (weakest ? ' Begin with ' + weakest + '.' : ' Read the highest-weighted topic first.');
+  $('resMsg').textContent = msg;
+  const rows = Object.keys(perTopic).sort((a,b) => a - b).map(t => {
+    const d = perTopic[t], p = Math.round(d.c / d.n * 100);
+    const col = p >= 80 ? 'var(--teal)' : p >= 50 ? 'var(--orange)' : 'var(--red)';
+    return '<div class="brk-row"><span class="brk-t">' + TOPICS[t].n + '</span>' +
+           '<span class="brk-s" style="color:' + col + '">' + d.c + '/' + d.n + ' · ' + p + '%</span></div>';
+  });
+  $('resBrk').innerHTML = rows.join('') || '<div class="brk-row"><span class="brk-t">No questions answered</span><span class="brk-s">—</span></div>';
+  if (lastMode === 'weighted' && total >= 40){
+    const b = readBest();
+    if (isNaN(b) || pct > b){ writeBest(pct); $('stBest').textContent = pct + '%'; }
+  }
+}
+
+function repeatQuiz(){ startQuiz(lastMode); }
+</script>
+
+</body>
+</html>

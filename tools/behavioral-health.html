@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Behavioral Health Study Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --navy:#0D1B2A; --navy-mid:#162438; --navy-hi:#1E3350;
+  --orange:#E8821A; --orange-dim:#A85C10;
+  --teal:#1A8A8A; --teal-dim:#125F5F;
+  --gold:#C9991A; --purple:#8C50C8; --purple-lt:#C07EF0;
+  --red:#D9544D;
+  --ink:#0D1B2A; --ink-2:#3E5068; --ink-3:#63758C;
+  --bg:#EEF1F5; --surface:#FFFFFF; --surface-2:#F5F7FA;
+  --line:#D3DBE5; --line-soft:#E4EAF1;
+  --focus:#E8821A;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --cond:'Barlow Condensed','Inter Tight',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','SFMono-Regular',Menlo,Consolas,monospace;
+  --r:10px; --maxw:680px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ink:#F4F6F8; --ink-2:#B6C4D6; --ink-3:#8A9BB0;
+    --bg:#0D1B2A; --surface:#162438; --surface-2:#1B2C44;
+    --line:#2A3F5C; --line-soft:#22344E;
+    --orange:#F5941F; --teal:#25A5A5; --gold:#DCAB27; --purple-lt:#C994F5;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#F4F6F8; --ink-2:#B6C4D6; --ink-3:#8A9BB0;
+  --bg:#0D1B2A; --surface:#162438; --surface-2:#1B2C44;
+  --line:#2A3F5C; --line-soft:#22344E;
+  --orange:#F5941F; --teal:#25A5A5; --gold:#DCAB27; --purple-lt:#C994F5;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 18px 96px}
+h1,h2,h3,h4{font-family:var(--cond);text-wrap:balance;margin:0;letter-spacing:.01em}
+h1{font-size:2.35rem;line-height:1.05;font-weight:700}
+h2{font-size:1.65rem;line-height:1.12;font-weight:600}
+h3{font-size:1.2rem;font-weight:600}
+h4{font-size:1.02rem;font-weight:600;letter-spacing:.02em}
+p{margin:0 0 .9em}
+a{color:var(--orange)}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:2.5px solid var(--focus);outline-offset:2px;border-radius:4px}
+.eyebrow{font-family:var(--cond);text-transform:uppercase;letter-spacing:.14em;
+  font-size:.78rem;font-weight:600;color:var(--ink-3)}
+
+/* ---------- morpheme chips: the subject's atoms ---------- */
+.wp{font-family:var(--mono);font-size:.94em;font-weight:500;white-space:nowrap;
+  padding:.06em .34em;border-radius:4px;background:var(--surface-2);
+  border:1px solid var(--line-soft);color:var(--ink)}
+.wp.pre{border-left:3px solid var(--orange)}
+.wp.suf{border-right:3px solid var(--teal)}
+.wp.cf{border-bottom:3px solid var(--gold)}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:40;background:var(--bg);
+  border-bottom:1px solid var(--line);}
+.topbar-in{max-width:var(--maxw);margin:0 auto;padding:10px 18px;
+  display:flex;align-items:center;gap:12px}
+.brandmark{font-family:var(--cond);font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;font-size:.9rem;color:var(--ink-2);
+  display:flex;align-items:center;gap:7px}
+.brandmark .dot{width:9px;height:9px;border-radius:2px;background:var(--orange);flex:none}
+.topbar .sp{flex:1}
+.iconbtn{background:none;border:1px solid var(--line);color:var(--ink-2);
+  border-radius:8px;width:34px;height:34px;display:grid;place-items:center;line-height:0}
+.iconbtn:hover{border-color:var(--orange);color:var(--orange)}
+.backbtn{background:none;border:none;color:var(--ink-2);padding:6px 0;
+  font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.82rem;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.backbtn:hover{color:var(--orange)}
+
+/* ---------- screens ---------- */
+.screen{display:none}
+.screen.active{display:block;animation:fade .22s ease}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .screen.active{animation:none}
+  *{transition:none!important}
+}
+
+/* ---------- hero ---------- */
+.hero{padding:30px 0 22px;border-bottom:1px solid var(--line)}
+.hero .kicker{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.tag{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.74rem;font-weight:600;padding:3px 9px;border-radius:999px;
+  border:1px solid var(--line);color:var(--ink-2);background:var(--surface)}
+.tag.hot{border-color:var(--orange);color:var(--orange)}
+.hero h1{margin-bottom:8px}
+.hero .sub{color:var(--ink-2);font-size:1.02rem;margin:0}
+
+/* the term-construction display: pre | root | suf */
+.termbuild{display:flex;align-items:stretch;margin:22px 0 4px;
+  border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+  background:var(--surface);font-family:var(--mono)}
+.termbuild div{flex:1;padding:11px 8px;text-align:center;min-width:0}
+.termbuild .lbl{display:block;font-family:var(--cond);font-size:.66rem;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);margin-bottom:3px}
+.termbuild .val{font-size:.98rem;font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.termbuild .p1{border-bottom:3px solid var(--orange)}
+.termbuild .p2{border-bottom:3px solid var(--gold);border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.termbuild .p3{border-bottom:3px solid var(--teal)}
+.termbuild-cap{font-size:.85rem;color:var(--ink-3);margin:8px 0 0;text-align:center}
+
+/* ---------- stat strip ---------- */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 10px}
+.stat .n{font-family:var(--cond);font-size:1.75rem;font-weight:700;line-height:1;
+  font-variant-numeric:tabular-nums;color:var(--orange)}
+.stat .l{font-size:.74rem;color:var(--ink-3);margin-top:4px;line-height:1.3}
+
+/* ---------- action cards ---------- */
+.actions{display:grid;gap:11px;margin:22px 0}
+.act{display:flex;align-items:center;gap:14px;text-align:left;width:100%;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:15px 16px;color:var(--ink);transition:border-color .15s,transform .15s}
+.act:hover{border-color:var(--orange);transform:translateX(2px)}
+.act .ic{width:38px;height:38px;flex:none;border-radius:8px;display:grid;place-items:center;
+  font-family:var(--cond);font-weight:700;font-size:1.1rem;color:#0D1B2A}
+.act>span:not(.ic):not(.ar){display:flex;flex-direction:column;gap:3px;min-width:0}
+.act .t{display:block;font-family:var(--cond);font-size:1.22rem;font-weight:600;line-height:1.15}
+.act .d{display:block;font-size:.84rem;color:var(--ink-3);line-height:1.35}
+.act .ar{margin-left:auto;color:var(--ink-3);font-size:1.2rem;flex:none}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin:18px 0 0;
+  overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:none;border:none;border-bottom:2.5px solid transparent;
+  padding:9px 13px;color:var(--ink-3);font-family:var(--cond);font-weight:600;
+  font-size:1rem;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--orange);border-bottom-color:var(--orange)}
+.tabpanel{display:none;padding-top:20px}
+.tabpanel.active{display:block}
+
+/* ---------- study guide ---------- */
+.sec{border:1px solid var(--line);border-radius:var(--r);margin-bottom:11px;
+  background:var(--surface);overflow:hidden}
+.sec-h{width:100%;display:flex;align-items:center;gap:12px;padding:14px 15px;
+  background:none;border:none;text-align:left;color:var(--ink)}
+.sec-h:hover{background:var(--surface-2)}
+.sec-w{font-family:var(--cond);font-size:.9rem;font-weight:700;color:var(--orange);
+  font-variant-numeric:tabular-nums;flex:none;min-width:34px}
+.sec-t{font-family:var(--cond);font-size:1.16rem;font-weight:600;line-height:1.2;flex:1}
+.sec-c{color:var(--ink-3);font-size:1.1rem;flex:none;transition:transform .2s}
+.sec.open .sec-c{transform:rotate(45deg)}
+.sec-body{display:none;padding:0 15px 16px;border-top:1px solid var(--line-soft)}
+.sec.open .sec-body{display:block}
+
+.layer{margin-top:16px;border-left:3px solid var(--line);padding-left:14px}
+.layer-h{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.79rem;font-weight:700;margin-bottom:9px}
+.layer.narr{border-left-color:var(--teal)} .layer.narr .layer-h{color:var(--teal)}
+.layer.deep{border-left-color:var(--orange)} .layer.deep .layer-h{color:var(--orange)}
+.layer.qref{border-left-color:var(--gold)} .layer.qref .layer-h{color:var(--gold)}
+.layer.note{border-left-color:var(--purple-lt)} .layer.note .layer-h{color:var(--purple-lt)}
+.layer p{font-size:.95rem}
+.layer ul{margin:.4em 0 .9em;padding-left:1.15em}
+.layer li{font-size:.94rem;margin-bottom:.45em}
+.layer h4{margin:1.1em 0 .4em;color:var(--ink)}
+.qr{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft);
+  border:1px solid var(--line-soft);border-radius:8px;overflow:hidden}
+@media(max-width:520px){.qr{grid-template-columns:1fr}}
+.qr>div{background:var(--surface);padding:8px 10px}
+.qr-term{font-family:var(--mono);font-size:.87rem;font-weight:600;color:var(--gold);
+  display:block;margin-bottom:2px}
+.qr-def{font-size:.85rem;color:var(--ink-2);line-height:1.4}
+.notes-block{background:color-mix(in srgb,var(--purple-lt) 9%,var(--surface));
+  border-radius:8px;padding:12px 13px}
+.notes-block p:last-child{margin-bottom:0}
+.trap{color:var(--red);font-weight:600}
+.sec-practice{margin-top:16px;width:100%;background:var(--surface-2);
+  border:1px dashed var(--line);border-radius:8px;padding:10px;color:var(--orange);
+  font-family:var(--cond);text-transform:uppercase;letter-spacing:.09em;
+  font-weight:600;font-size:.87rem}
+.sec-practice:hover{border-color:var(--orange);border-style:solid}
+
+/* ---------- quiz ---------- */
+.qbar{display:flex;align-items:center;gap:12px;margin:16px 0 4px}
+.qcount{font-family:var(--cond);font-weight:600;font-size:.9rem;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.qtrack{flex:1;height:5px;background:var(--line-soft);border-radius:3px;overflow:hidden}
+.qfill{height:100%;background:var(--orange);border-radius:3px;transition:width .3s}
+.qtopic{margin:14px 0 0}
+.qstem{font-size:1.14rem;line-height:1.5;margin:9px 0 18px;font-weight:500}
+.choices{display:grid;gap:9px}
+.ch{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;
+  background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r);
+  padding:13px 14px;color:var(--ink);line-height:1.45;transition:border-color .14s}
+.ch:hover:not(:disabled){border-color:var(--orange)}
+.ch:disabled{cursor:default}
+.ch .k{font-family:var(--cond);font-weight:700;color:var(--ink-3);flex:none;
+  width:20px;font-size:1.02rem}
+.ch.right{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 12%,var(--surface))}
+.ch.right .k{color:var(--teal)}
+.ch.wrong{border-color:var(--red);background:color-mix(in srgb,var(--red) 10%,var(--surface))}
+.ch.wrong .k{color:var(--red)}
+.expl{margin-top:16px;border-radius:var(--r);padding:14px;
+  border:1px solid var(--line);background:var(--surface-2);display:none}
+.expl.show{display:block}
+.expl .v{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.8rem;font-weight:700;margin-bottom:6px}
+.expl.ok .v{color:var(--teal)} .expl.no .v{color:var(--red)}
+.expl p{font-size:.93rem;margin:0}
+.expl .src{margin-top:9px;font-size:.79rem;color:var(--ink-3);font-family:var(--mono)}
+.btn{display:block;width:100%;background:var(--orange);color:#0D1B2A;border:none;
+  border-radius:var(--r);padding:14px;font-family:var(--cond);font-weight:700;
+  font-size:1.1rem;letter-spacing:.06em;text-transform:uppercase;margin-top:16px}
+.btn:hover{background:var(--orange-dim);color:#fff}
+.btn.ghost{background:none;border:1.5px solid var(--line);color:var(--ink-2)}
+.btn.ghost:hover{border-color:var(--orange);color:var(--orange);background:none}
+
+/* ---------- results ---------- */
+.ring{display:block;margin:22px auto 6px}
+.ring-n{font-family:var(--cond);font-size:2.6rem;font-weight:700;
+  fill:var(--ink);font-variant-numeric:tabular-nums}
+.ring-l{font-family:var(--sans);font-size:.72rem;fill:var(--ink-3)}
+.res-msg{text-align:center;color:var(--ink-2);margin-bottom:22px}
+.brk{display:grid;gap:7px;margin:18px 0}
+.brk-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;
+  padding:9px 12px;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+.brk-t{font-size:.88rem;line-height:1.3}
+.brk-s{font-family:var(--cond);font-weight:700;font-variant-numeric:tabular-nums;
+  font-size:.95rem;white-space:nowrap}
+
+/* ---------- resources ---------- */
+.rcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:15px 16px;margin-bottom:11px}
+.rcard h3{margin-bottom:3px}
+.rcard .meta{font-size:.83rem;color:var(--ink-3);margin-bottom:10px}
+.rlinks{display:grid;gap:7px}
+.rlink{display:flex;gap:9px;align-items:baseline;font-size:.89rem;
+  padding:7px 9px;background:var(--surface-2);border-radius:7px;text-decoration:none;color:var(--ink)}
+.rlink:hover{background:color-mix(in srgb,var(--orange) 12%,var(--surface-2))}
+.rlink .b{font-family:var(--cond);font-size:.66rem;text-transform:uppercase;
+  letter-spacing:.1em;font-weight:700;padding:2px 6px;border-radius:4px;flex:none;
+  background:var(--line-soft);color:var(--ink-3)}
+.rlink .b.core{background:var(--orange);color:#0D1B2A}
+.rlink .b.book{background:var(--teal);color:#0D1B2A}
+.rlink .b.topic{background:var(--gold);color:#0D1B2A}
+.rlink span:last-child{flex:1}
+
+/* ---------- misc ---------- */
+.callout{border-left:3px solid var(--orange);background:var(--surface);
+  padding:12px 14px;border-radius:0 8px 8px 0;margin:16px 0;font-size:.92rem}
+.callout strong{color:var(--orange)}
+.plan{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);
+  border-radius:8px;overflow:hidden;margin:14px 0}
+.plan-r{display:grid;grid-template-columns:1fr auto;background:var(--surface);
+  padding:8px 12px;font-size:.89rem;align-items:center}
+.plan-r.hd{background:var(--surface-2);font-family:var(--cond);text-transform:uppercase;
+  letter-spacing:.09em;font-size:.75rem;font-weight:700;color:var(--ink-3)}
+.plan-w{font-family:var(--cond);font-weight:700;font-variant-numeric:tabular-nums;color:var(--orange)}
+.foot{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--ink-3)}
+.foot p{margin-bottom:.5em}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <span class="brandmark"><span class="dot"></span>DC HOSA</span>
+    <span class="sp"></span>
+    <button class="iconbtn" id="themeBtn" aria-label="Switch theme" title="Switch theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<section id="home" class="screen active">
+  <div class="hero">
+    <div class="kicker">
+      <span class="tag hot">2026&ndash;2027</span>
+      <span class="tag">Health Science</span>
+      <span class="tag">Individual</span>
+      <span class="tag">Secondary &amp; Postsecondary</span>
+    </div>
+    <h1>Behavioral Health</h1>
+    <p class="sub">Round One is a 50-question test in 60 minutes, with an essay tiebreaker on the back of your answer sheet. Psychology, the mind, mental health, and substance use disorders.</p>
+
+    <div class="termbuild" aria-hidden="true">
+      <div class="p1"><span class="lbl">Typical</span><span class="val">variation</span></div>
+      <div class="p2"><span class="lbl">Distress</span><span class="val">impairment</span></div>
+      <div class="p3"><span class="lbl">Diagnosis</span><span class="val">disorder</span></div>
+    </div>
+    <p class="termbuild-cap">Behavior sits on a <strong>continuum</strong>, not in boxes. Where a person falls depends on distress, impairment, and diagnostic criteria — and that continuum is one of the most reliably tested ideas in the event.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="stQ">0</div><div class="l">practice questions</div></div>
+    <div class="stat"><div class="n">6</div><div class="l">test-plan topics</div></div>
+    <div class="stat"><div class="n" id="stBest">&mdash;</div><div class="l">your best score</div></div>
+  </div>
+
+  <div class="actions">
+    <button class="act" onclick="startQuiz('weighted')">
+      <span class="ic" style="background:var(--orange)">50</span>
+      <span><span class="t">Simulate the Test</span><span class="d">50 questions weighted exactly to the official 26-27 test plan</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="go('study')">
+      <span class="ic" style="background:var(--teal)">SG</span>
+      <span><span class="t">Study Guide</span><span class="d">All 6 topics, four layers deep &mdash; read to actually know it</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="startQuiz('all')">
+      <span class="ic" style="background:var(--gold)">&infin;</span>
+      <span><span class="t">Full Question Bank</span><span class="d">All <span id="stQ2">0</span> questions, shuffled &mdash; the long grind</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="go('resources')">
+      <span class="ic" style="background:var(--purple-lt)">R</span>
+      <span><span class="t">Official References</span><span class="d">The exact books HOSA writes the test from</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+  </div>
+
+  <div class="callout"><strong>Read this before anything else.</strong> Three quarters of this test is Cacioppo and Freberg's <em>Discovering Psychology</em>. The other quarter comes from SAMHSA and NAMI — and those questions are mostly <em>statistics</em>, which means they are memorizable in an afternoon. Half the test is the first two topics: the mind and the disorders. Start there.</div>
+
+  <h2 style="margin-top:26px">The official 26-27 test plan</h2>
+  <div class="plan" id="planTable"></div>
+  <p style="font-size:.85rem;color:var(--ink-3)">Simulate the Test draws questions in exactly these proportions. Note that the first three topics are 25% each — three quarters of the test before you reach wellness, careers, or history.</p>
+
+  <h2 style="margin-top:26px">How ties are broken</h2>
+  <p>An essay tiebreaker is administered <em>with</em> the original test and written on the back of your answer sheet. You will not be given extra time for it and there is no separate announcement. Budget five minutes at the end of the hour. Ties are broken on that essay, so a blank back page can cost you a medal you already earned on the multiple choice.</p>
+
+  <div class="foot">
+    <p><strong>Behavioral Health Study Tool</strong> &middot; DC HOSA &middot; 2026&ndash;2027 season &middot; "Redefine the Standard"</p>
+    <p>Built from the official 2026-2027 HOSA competitive event guideline. Practice questions are original and written for this tool. No actual exam question is reproduced here.</p>
+  </div>
+</section>
+
+<section id="study" class="screen">
+  <button class="backbtn" onclick="go('home')">&larr; Back</button>
+  <h1 style="margin-top:8px">Study Guide</h1>
+  <p class="sub" style="color:var(--ink-2)">6 topics, four layers each. Read the narrative to understand it, the deep dive to outcompete, the quick reference to drill, and the study notes to stop losing points to traps.</p>
+  <div class="callout" style="border-left-color:var(--teal)">
+    <strong style="color:var(--teal)">How to use this.</strong> Don't read straight through. Open a topic, read the narrative once, then hit <em>Practice this topic</em> at the bottom of the section. Miss something? Come back to the deep dive. That loop beats re-reading every time.
+  </div>
+  <div id="guideList" style="margin-top:18px"></div>
+</section>
+
+<section id="resources" class="screen">
+  <button class="backbtn" onclick="go('home')">&larr; Back</button>
+  <h1 style="margin-top:8px">Official References</h1>
+  <p class="sub" style="color:var(--ink-2)">These are the sources listed in the 2026-2027 guideline. Test items are written from them and nowhere else.</p>
+<div class="rcard" style="border-color:var(--orange)"> <h3>Cacioppo &amp; Freberg — Discovering Psychology</h3> <p class="meta">Cengage Learning · latest edition · <strong style="color:var(--orange)">the primary source</strong></p> <p style="font-size:.91rem">The large majority of test items cite this book by page. Chapters on biological psychology, sensation and perception, consciousness, learning, memory, emotion, disorders, and therapies map almost one-to-one onto the first two topics of the test plan — which together are half your score.</p> <div class="rlinks"> <a class="rlink" href="https://www.cengage.com/c/discovering-psychology-the-science-of-mind-4e-cacioppo/" target="_blank" rel="noopener"><span class="b core">Book</span><span>Publisher page — confirm the current edition</span></a> <a class="rlink" href="https://www.cengage.com/mindtap/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>MindTap companion — chapter quizzes and flashcards</span></a></div></div> <div class="rcard"> <h3>SAMHSA — Substance Abuse and Mental Health Services Administration</h3> <p class="meta">samhsa.gov · free · the source for the prevention and recovery topic</p> <p style="font-size:.91rem">SAMHSA supplies the statistics, the treatment-system rules, and the prevention framework. These questions are highly memorizable — they are numbers and definitions, not reasoning. Learn the national survey figures and the medication rules and you bank most of a topic.</p> <div class="rlinks"> <a class="rlink" href="https://www.samhsa.gov/substance-use/treatment" target="_blank" rel="noopener"><span class="b core">Core</span><span>Treatment for substance use — OTP rules, medications</span></a> <a class="rlink" href="https://www.samhsa.gov/data/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>SAMHSA Data — the national survey statistics HOSA quotes</span></a> <a class="rlink" href="https://www.samhsa.gov/substance-use/prevention" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>Prevention — risk and protective factors, program components</span></a> <a class="rlink" href="https://www.cdc.gov/aces/about/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>The ACE Study — adverse childhood experiences</span></a></div></div> <div class="rcard"> <h3>NAMI — National Alliance on Mental Illness</h3> <p class="meta">nami.org · free · advocacy, peer support, and condition basics</p> <p style="font-size:.91rem">NAMI supplies the advocacy and support-structure questions — what a peer support group is, what NAMI Connection does, and the condition overviews written for the public rather than for clinicians.</p> <div class="rlinks"> <a class="rlink" href="https://www.nami.org/about-mental-illness/mental-health-conditions/" target="_blank" rel="noopener"><span class="b core">Core</span><span>Mental Health Conditions — symptoms and treatment basics</span></a> <a class="rlink" href="https://www.nami.org/Support-Education/Support-Groups/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>Support groups — NAMI Connection and family programs</span></a></div></div> <div class="rcard" style="border-color:var(--teal)"> <h3>HOSA Webinar — SAMHSA Behavioral Health Pathways</h3> <p class="meta">Listed in the 26-27 guideline as an additional resource</p> <p style="font-size:.91rem">Named directly in the guideline. Worth an hour, especially for the careers and workforce topic, which is otherwise thinly covered by the textbook.</p> <div class="rlinks"> <a class="rlink" href="https://hosa.org/webinars/" target="_blank" rel="noopener"><span class="b core">Core</span><span>HOSA Webinars — find the SAMHSA Behavioral Health Pathways session</span></a></div></div> <div class="rcard" style="border-color:var(--purple-lt)"> <h3>HOSA official guidelines</h3> <p class="meta">hosa.org · read the actual rules before your first conference</p> <div class="rlinks"> <a class="rlink" href="https://hosa.org/guidelines/" target="_blank" rel="noopener"><span class="b core">Core</span><span>Competitive event guidelines — download the Behavioral Health PDF</span></a> <a class="rlink" href="https://hosa.org/competitive-events/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>Competitive events overview and appendices</span></a> <a class="rlink" href="https://hosa.org/scholarships/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>HOSA scholarships — applications open January 1, 2027</span></a></div> <p style="font-size:.88rem;margin-top:12px;color:var(--ink-2)"><strong>Bring to the testing room:</strong> photo ID, two #2 wooden pencils with erasers (not mechanical), and optional neon foam earplugs — not earbuds. Business attire or official HOSA uniform earns bonus points. There are no verbal time announcements at ILC; you watch your own clock.</p></div>
+  <div class="rcard" style="border-color:var(--purple-lt)">
+    <h3>HOSA official guidelines</h3>
+    <p class="meta">hosa.org &middot; read the actual rules before your first conference</p>
+    <div class="rlinks">
+      <a class="rlink" href="https://hosa.org/guidelines/" target="_blank" rel="noopener"><span class="b core">Core</span><span>Competitive event guidelines &mdash; download the Behavioral Health PDF</span></a>
+      <a class="rlink" href="https://hosa.org/competitive-events/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>Competitive events overview and appendices</span></a>
+      <a class="rlink" href="https://hosa.org/scholarships/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>HOSA scholarships &mdash; applications open January 1, 2027</span></a>
+    </div>
+    <p style="font-size:.88rem;margin-top:12px;color:var(--ink-2)"><strong>Bring to the testing room:</strong> photo ID, two #2 wooden pencils with erasers (not mechanical), and optional neon foam earplugs &mdash; not earbuds. Business attire or official HOSA uniform earns bonus points. There are no verbal time announcements at ILC; you watch your own clock.</p>
+  </div>
+</section>
+
+<section id="quiz" class="screen">
+  <button class="backbtn" onclick="quitQuiz()">&larr; End session</button>
+  <div class="qbar">
+    <span class="qcount" id="qCount">1 / 50</span>
+    <span class="qtrack"><span class="qfill" id="qFill" style="width:0%"></span></span>
+    <span class="qcount" id="qScore">0 &#10003;</span>
+  </div>
+  <div class="qtopic"><span class="eyebrow" id="qTopic">Topic</span></div>
+  <p class="qstem" id="qStem">Question</p>
+  <div class="choices" id="qChoices"></div>
+  <div class="expl" id="qExpl"><div class="v" id="qVerdict"></div><p id="qExplText"></p><div class="src" id="qSrc"></div></div>
+  <button class="btn" id="qNext" style="display:none" onclick="nextQ()">Next question</button>
+</section>
+
+<section id="results" class="screen">
+  <h1 style="margin-top:22px;text-align:center">Session complete</h1>
+  <svg class="ring" width="168" height="168" viewBox="0 0 168 168" role="img" aria-labelledby="ringLbl">
+    <title id="ringLbl">Score ring</title>
+    <circle cx="84" cy="84" r="70" fill="none" stroke="var(--line)" stroke-width="12"/>
+    <circle id="ringArc" cx="84" cy="84" r="70" fill="none" stroke="var(--orange)" stroke-width="12"
+            stroke-linecap="round" stroke-dasharray="439.8" stroke-dashoffset="439.8"
+            transform="rotate(-90 84 84)" style="transition:stroke-dashoffset .8s ease"/>
+    <text class="ring-n" id="ringPct" x="84" y="86" text-anchor="middle">0%</text>
+    <text class="ring-l" id="ringFrac" x="84" y="106" text-anchor="middle">0 of 0</text>
+  </svg>
+  <p class="res-msg" id="resMsg"></p>
+  <h3 style="margin-bottom:8px">Where you stand by topic</h3>
+  <div class="brk" id="resBrk"></div>
+  <button class="btn" onclick="repeatQuiz()">Run it again</button>
+  <button class="btn ghost" onclick="go('study')">Back to the study guide</button>
+  <button class="btn ghost" onclick="go('home')">Home</button>
+</section>
+
+</div>
+
+<script>
+/* ============================================================
+   DC HOSA — Behavioral Health Study Tool
+   Test plan and references: official 2026-2027 HOSA guideline.
+   All practice questions are original.
+   ============================================================ */
+
+const TOPICS = [
+  {
+    "n": "The Mind",
+    "w": 25,
+    "c": "var(--teal)"
+  },
+  {
+    "n": "Disorders, Treatments, Therapies &amp; Services",
+    "w": 25,
+    "c": "var(--orange)"
+  },
+  {
+    "n": "Prevention, Recovery &amp; Substance Use",
+    "w": 25,
+    "c": "var(--purple-lt)"
+  },
+  {
+    "n": "Wellness, Stress &amp; Coping",
+    "w": 15,
+    "c": "var(--teal)"
+  },
+  {
+    "n": "Workforce, Careers &amp; Laws",
+    "w": 5,
+    "c": "var(--gold)"
+  },
+  {
+    "n": "History &amp; Health Systems Integration",
+    "w": 5,
+    "c": "var(--purple-lt)"
+  }
+];
+const TEST_N = 50;
+
+const GUIDE = [];
+
+GUIDE.push({t:0,
+narr:`<p>The brain weighs about 3 pounds, uses roughly <strong>20% of your body's energy</strong> despite being only 2% of body weight, and contains approximately <strong>100 billion neurons</strong>. The dominant philosophical view is <strong>monism</strong> — "the mind is what the brain does" — contrasting with Descartes' <strong>dualism</strong> (mind and body are separate). <strong>Glial cells</strong> support neurons, form myelin, create the blood-brain barrier, and outnumber neurons.</p> <p>The brain has a hierarchy. The <strong>medulla</strong> controls heart rate, breathing, and blood pressure — and is the first structure affected by opiates. The <strong>pons</strong> manages sleep, arousal, and facial expressions. Above those, the limbic system handles emotion and memory: the <strong>amygdala</strong> (fear, personal space, emotional intensity) and the <strong>hippocampus</strong> (memory storage and retrieval, named for its seahorse shape). The <strong>hypothalamus</strong> is the body's master clock — regulating sleep/wake cycles, hunger, body temperature, and responding to zeitgebers (external time cues). The <strong>thalamus</strong> acts as a consciousness relay station; a thalamic lesion can produce profound unconsciousness. The <strong>nucleus accumbens</strong> mediates reward, social inclusion, and addiction. The <strong>insula</strong> processes internal bodily sensations like breathlessness. The <strong>lateral hypothalamus</strong> triggers hunger when leptin is low.</p> <p>Sensation begins with <strong>transduction</strong> — converting physical stimuli into neural signals. Two perception pathways operate: <strong>bottom-up processing</strong> (raw sensory data builds perception) and <strong>top-down processing</strong> (prior knowledge shapes what you perceive). The <strong>absolute threshold</strong> is the faintest stimulus detected 50% of the time; the <strong>difference threshold</strong> is the smallest detectable difference between two stimuli. <strong>Sensory adaptation</strong> is the reduced response to unchanging stimulation.</p> <p>Sleep follows cycles: NREM Stages 3–4 feature <strong>delta waves</strong> and physical restoration. REM sleep features vivid dreams and cognitive restoration. <strong>Maintenance insomnia</strong> = interrupted or early-waking sleep. <strong>Sleep terror</strong> occurs in NREM (no dream memory); nightmares occur in REM. After sleep deprivation, the brain compensates with <strong>REM rebound</strong>.</p> <p>Emotion theories: <strong>James-Lange</strong> = physical sensations cause emotion. <strong>Cannon-Bard</strong> = simultaneous and independent. <strong>Schachter-Singer (Two-Factor)</strong> = arousal + cognitive appraisal = emotion. In Russell's circumplex, <strong>Astonished</strong> = high arousal + high pleasure.</p> <p>Learning: <strong>Classical conditioning</strong> (Pavlov) pairs stimuli. <strong>Operant conditioning</strong> (Skinner) uses consequences. <strong>Habituation</strong> = decreased response to harmless, repeated stimuli. <strong>Sensitization</strong> = increased reaction after a strong stimulus. Punishment requires: significance + immediacy + consistency (motivation is NOT required). Fixed interval = studying before exams. Variable ratio = slot machines.</p> <p>Memory: <strong>Encoding → Storage → Retrieval</strong>. Atkinson-Shiffrin: Sensory → Short-term (30 sec) → Long-term. <strong>Baddeley's working memory</strong>: phonological loop, visuospatial sketchpad, episodic buffer, central executive (NO "random capacity buffer"). <strong>Proactive interference</strong> = old blocks new. <strong>Retroactive interference</strong> = new blocks old. <strong>Levels of processing</strong>: deeper processing = stronger memories.</p>`,
+deep:`<div class="deep-section"> <h4>🔹 Brain Structures Worth Memorizing Cold</h4> <ul> <li><strong>Basal ganglia degeneration:</strong> Parkinson's disease (dopamine loss) or Huntington's chorea — both produce severe involuntary movement problems.</li> <li><strong>Prosopagnosia (face blindness):</strong> Temporal lobe damage — can't recognize familiar faces but can identify by voice or context.</li> <li><strong>Parietal lobe:</strong> ~11% of cortex processes touch/pain/body position — somatosensory cortex.</li> <li><strong>Default mode network:</strong> Active during mind-wandering; prepares brain for directed conscious thought.</li> <li><strong>Autonomic NS:</strong> Sympathetic = fight-or-flight (energy use). Parasympathetic = rest-and-digest (energy storage).</li> <li><strong>Ramon y Cajal</strong> won the 1906 Nobel Prize (shared with Golgi) for proving the Neuron Doctrine using silver staining.</li></ul></div> <div class="deep-section"> <h4>🔹 Memory Distinctions That Appear on Tests</h4> <ul> <li><strong>Echoic memory</strong> (auditory) lasts longer (3–4 sec) than <strong>iconic memory</strong> (visual, &lt;1 sec).</li> <li><strong>Chunking:</strong> Organizing information into meaningful units increases working memory capacity.</li> <li><strong>Encoding specificity:</strong> Recall is best when retrieval context matches encoding context.</li> <li><strong>Priming:</strong> Prior stimulus exposure changes response to related stimuli — usually implicit/unconscious.</li> <li><strong>Decay:</strong> Memory fades over time from disuse (Ebbinghaus forgetting curve).</li> <li>Stress causes retrieval failure — the most common reason exam-ready knowledge disappears under pressure.</li></ul></div></div> <div class="divider"></div>`,
+qref:[["Monism", "\"Mind is what the brain does\""], ["Transduction", "Sensory stimuli → neural signals"], ["Absolute Threshold", "Faintest stimulus detected 50% of time"], ["Difference Threshold", "Smallest detectable difference between stimuli"], ["Top-down Processing", "Prior knowledge shapes perception"], ["Sensory Adaptation", "Reduced response to unchanging stimulus"], ["Hippocampus", "Memory storage/retrieval (seahorse shape)"], ["Amygdala", "Fear, personal space, emotional intensity"], ["Hypothalamus", "Biological clock, hunger, temperature, zeitgebers"], ["Thalamus", "Consciousness relay — lesion = brain death"], ["Nucleus Accumbens", "Reward, social inclusion, addiction"], ["Insula", "Internal bodily sensations, interoception"], ["Maintenance Insomnia", "Interrupted sleep / early waking"], ["REM Rebound", "Extra REM sleep after deprivation"], ["Proactive Interference", "Old memories block new learning"], ["Retroactive Interference", "New learning blocks old memories"]],
+notes:`<p><strong>Brain hierarchy to memorize:</strong> Medulla (survival + first affected by opiates) → Pons (sleep/arousal/facial expressions) → Hypothalamus (hunger/clock/zeitgebers) → Thalamus (consciousness relay) → Cortex (thinking).</p> <p><strong>Emotion theories are high-yield:</strong> James-Lange (body first → emotion), Cannon-Bard (simultaneous), Schachter-Singer (arousal + appraisal), LEAD model (range of physical sensations + varying cognitive processing). Know all four cold.</p> <p><strong>Sleep terror vs nightmare:</strong> Terror = NREM (no memory, no images). Nightmare = REM (full memory). This distinction appears consistently.</p> <p><strong>Baddeley's working memory has NO "random capacity buffer."</strong> The four components are: phonological loop, visuospatial sketchpad, episodic buffer, central executive. That specific wrong answer is a common trap.</p> <p><strong>Punishment conditions:</strong> Significance + Immediacy + Consistency. Motivation is NOT a required condition — this "except" question appears repeatedly.</p>`}); GUIDE.push({t:1,
+narr:`<p>Mental disorders are medical conditions involving disruptions to brain function, emotion, thought, or behavior causing significant distress or impairment. They exist on a <strong>continuum</strong> — from temporary sadness (normal) to mild difficulty to full disorder. The <strong>DSM-5-TR</strong> (American Psychiatric Association, 2022) is the U.S. diagnostic standard; the <strong>ICD-11</strong> (World Health Organization) is the global system covering all health conditions. <strong>Comorbidity</strong> — two or more disorders in the same person — is extremely common.</p> <p><strong>ASD</strong> involves social communication differences and repetitive behaviors (linked to sensory network dysfunction). Early intensive <strong>ABA</strong> (25+ hours/week) produces the strongest gains in <strong>verbal IQ and language acquisition</strong>. FDA-approved medications for ASD are <strong>antipsychotics</strong> (risperidone, aripiprazole). Risk factors are genetic, interacting with environmental factors during sensitive brain development periods. ADHD brains show a <strong>delay in cortical maturity</strong> (~3 years) — especially prefrontal regions. Stimulants (Ritalin, Adderall) were discovered accidentally by <strong>Charles Bradley</strong> treating children with <strong>learning and behavior problems</strong>. ADHD links genetically to RLS via <strong>dopamine</strong> differences.</p> <p><strong>Schizophrenia</strong> affects ~1% worldwide, peaks in <strong>young adult males</strong>. Negative symptoms include <strong>avolition</strong> (no goal-directed behavior) and <strong>catatonia</strong> (unusual body positions for hours). Long-term antipsychotics cause <strong>tardive dyskinesia</strong> (involuntary movements). <strong>Clozapine</strong> is the only FDA-approved second-generation antipsychotic for treatment-resistant schizophrenia — uniquely reduces suicidal thoughts. <strong>Bipolar disorder</strong> averages onset at 25; <strong>lithium carbonate</strong> is the primary medication. <strong>Cyclothymia</strong> = chronic mild bipolar (hypomanic + mild depressive, 2+ years). Omega-3 fatty acids (seafood) appear protective.</p> <p><strong>Depression</strong> involves <strong>anhedonia</strong> (loss of pleasure) and reduced frontal lobe activity. Serotonin-related genes contribute. <strong>Rumination</strong> worsens and prolongs depression. <strong>SSRIs</strong> are the most-prescribed treatment class. ~75% of suicide attempters show prior warning signs; adults over 45 have the highest completion rates. Anxiety disorders are characterized by fear disproportionate to actual circumstances. OCD: serotonin regulation is abnormal; compulsions reduce anxiety temporarily. PTSD: lower benzodiazepine activity explains alcohol self-medication; smaller hippocampal volume. <strong>CBT</strong> is the gold standard for anxiety disorders. <strong>DBT</strong> (Dialectical Behavior Therapy) was designed specifically for borderline personality disorder. Personality disorders cannot be diagnosed before age 18.</p> <p>Treatment: <strong>Psychotherapy</strong> = any treatment improving symptoms through changing thoughts, behaviors, and emotions. <strong>EBP (Evidence-Based Practice)</strong> integrates scientific research + clinical expertise + patient values — first step = construct an answerable clinical question. Group therapy's primary benefit = offers hope and decreases isolation. <strong>Resistance</strong> (psychoanalytic): patient's reluctance to accept interpretations is itself meaningful. <strong>ECT</strong>: effective for treatment-resistant depression (exact mechanism unknown). <strong>Neurofeedback</strong>: trains patients to keep brain activity within target ranges. <strong>DBS</strong>: reversible advantage over psychosurgery. <strong>rTMS</strong>: non-surgical alternative to DBS. <strong>Trepanation</strong>: earliest psychosurgery (drilling holes in skull). <strong>Carl Rogers</strong>: humanistic approach (unconditional positive regard).</p>`,
+deep:`<div class="deep-section"> <h4>🔹 Eating Disorders — High Exam Frequency</h4> <ul> <li><strong>Anorexia nervosa:</strong> Unusually low body weight + intense fear of gaining weight + distorted body image. Highest mortality rate of any psychiatric disorder.</li> <li><strong>Bulimia nervosa:</strong> Binge + purge cycles. Patients typically normal weight.</li> <li><strong>Binge-eating disorder (BED):</strong> Binge eating without purging — most common eating disorder. Causes distress, guilt, shame.</li> <li><strong>Fiji study (Anne Becker):</strong> Introduction of American television → 74% of adolescent girls reporting being "too fat." Media shapes body norms rapidly.</li> <li><strong>Drunkorexia:</strong> Eliminating food before alcohol consumption to "save calories" — dangerous pattern.</li></ul></div> <div class="deep-section"> <h4>🔹 Numbers That Appear on Tests</h4> <ul> <li>Schizophrenia: <strong>~1%</strong> of world population. Average onset: <strong>young adult males</strong>.</li> <li>Bipolar: average onset <strong>age 25</strong>. Cyclothymia = <strong>2+ years</strong> chronic mild symptoms.</li> <li>Suicide: <strong>~75%</strong> show prior warning signs. Highest completion: <strong>adults over 45</strong> (white men).</li> <li>PTSD after large-scale traumatic events: ~<strong>10%</strong> of exposed population develops PTSD.</li> <li>Personality disorders: cannot diagnose under <strong>age 18</strong>.</li></ul></div></div> <div class="divider"></div>`,
+qref:[["Comorbidity", "Two or more disorders in same person"], ["Anhedonia", "Loss of pleasure — core depression symptom"], ["Avolition", "Lack of goal-directed behavior (schizophrenia)"], ["Catatonia", "Unusual body positions for hours (schizophrenia)"], ["Tardive Dyskinesia", "Involuntary movements from long-term antipsychotics"], ["Clozapine", "Only FDA-approved drug for refractory schizophrenia"], ["Cyclothymia", "Chronic mild bipolar — 2+ years"], ["Rumination", "Obsessively focusing on depression symptoms"], ["Compulsion", "Repetitive ritual to reduce OCD anxiety"], ["DBT", "Dialectical Behavior Therapy — for borderline PD"], ["DSM-5-TR", "APA's current U.S. diagnostic manual"], ["ICD-11", "WHO's global classification — all health conditions"], ["rTMS", "Non-surgical alternative to deep brain stimulation"], ["Neurofeedback", "Training brain to stay within target EEG ranges"], ["EBP First Step", "Construct an answerable clinical question"], ["Group Therapy Benefit", "Offers hope + decreases isolation"]],
+notes:`<p><strong>Treatment-disorder matching is the highest-frequency question type:</strong> CBT = anxiety/depression. DBT = borderline PD. ABA = ASD (FDA approved medications = antipsychotics). Lithium = bipolar. SSRIs = depression/OCD. Clozapine = treatment-resistant schizophrenia only.</p> <p><strong>Charles Bradley discovered ADHD stimulant treatment accidentally</strong> while treating children with learning and behavior problems — not depression, not sleep disorders, not somatic disorders. This exact distractor set appears.</p> <p><strong>Schizophrenia facts to know cold:</strong> 1% worldwide. Young adult males first. Catatonia = unusual postures. Avolition = no goal-directed behavior. Tardive dyskinesia = long-term antipsychotic side effect. Clozapine = only FDA drug for refractory + suicide reduction.</p> <p><strong>ECT:</strong> Exact mechanism unknown. 70-90% response rate for treatment-resistant depression. Short-term memory loss is a common side effect.</p> <p><strong>DBS advantage over psychosurgery:</strong> Effects are REVERSIBLE and adjustable — unlike ablative procedures which permanently destroy tissue.</p>`}); GUIDE.push({t:2,
+narr:`<p>Substance use disorders are chronic brain diseases — not moral failures. Drugs of abuse flood the <strong>nucleus accumbens</strong> with dopamine, hijacking the reward system. Over time, <strong>tolerance</strong> develops (needing more for the same effect) and <strong>withdrawal</strong> occurs when the drug is removed. With addiction, the <strong>frontal cerebral cortex</strong> is disrupted — impairing impulse control and creating the vicious cycle of compulsive use despite consequences.</p> <p>Different substances carry different risks. <strong>Opiates</strong> affect the medulla first — overdose suppresses breathing. <strong>Cocaine</strong> does NOT produce significant physical withdrawal (unlike opioids, heroin, or nicotine). <strong>THC</strong> (cannabis) is the most commonly used federally illegal substance in the U.S., interacting with receptors for pain, appetite, learning, and movement. <strong>Nicotine</strong> mimics <strong>acetylcholine</strong>, triggering dopamine release. <strong>Cocaine and amphetamines</strong> are among the most addictive substances due to direct dopamine system action. <strong>Caffeine withdrawal</strong> causes headaches and fatigue (recognized in DSM-5). <strong>Alcohol</strong> is implicated in 31% of driving fatalities and 32-63% of violent crimes — by silencing the frontal lobe's impulse control.</p> <p>Effective prevention focuses on: life skills, social skills, peer support, social commitment to not using drugs. <strong>NOT physical skills</strong> — this is the classic wrong answer. The <strong>Stages of Change</strong> model: Precontemplation → <strong>Contemplation</strong> (considering change in the next 6 months) → Preparation → Action → Maintenance. The <strong>ACE Study</strong> proved adverse childhood experiences — abuse, neglect, household dysfunction — have dose-response relationships with adult health outcomes across multiple domains.</p> <p>Key statistics: <strong>27% of adults with mental illness</strong> also have a substance use disorder. <strong>84%</strong> of people with SUD receive NO treatment. <strong>11-year average delay</strong> between symptom onset and first treatment. <strong>20.1%</strong> of people experiencing homelessness have a serious mental health condition. Methadone for OUD can only be dispensed through <strong>SAMHSA-certified OTPs</strong>. Alcohol use disorder medications: Disulfiram (aversion), Naltrexone (blocks reward), Acamprosate (reduces cravings). <strong>Ayahuasca</strong> = hallucinogenic DMT-containing tea used in some religious ceremonies. A <strong>coalition</strong> = diverse organizations forming an alliance for a common goal. <strong>NAMI Connection</strong> = peer support for people with mental illness. <strong>NAMI Homefront</strong> = for military families.</p>`,
+deep:`<h4>How a drug becomes an addiction</h4>
+<ul>
+<li><strong>Reward pathway:</strong> drugs of abuse flood the <strong>nucleus accumbens</strong> with dopamine far beyond what natural rewards produce. Repetition trains the brain to treat the drug as survival-critical.</li>
+<li><strong>Craving lives in the insula.</strong> When a person craves their drug of choice, the <strong>insula</strong> activates. This exact item It is high-yield and worth knowing cold.</li>
+<li><strong>Loss of control lives in the frontal cortex.</strong> Chronic use disrupts the frontal cerebral cortex, degrading impulse control — which is why the behavior continues despite consequences.</li>
+<li><strong>Tolerance</strong> is needing more for the same effect. <strong>Withdrawal</strong> is the physical response to removal. <strong>Dependence</strong> is abuse plus tolerance plus withdrawal plus a compulsive urge — that four-part definition is itself.</li></ul>
+<h4>Substance-specific facts that get tested</h4>
+<ul>
+<li><strong>Opiates</strong> depress the <strong>medulla</strong> first, which is why overdose kills by stopping breathing.</li>
+<li><strong>Cocaine produces no significant physical withdrawal</strong> — highly addictive, but the withdrawal syndrome is psychological. Opioids, alcohol, and nicotine do produce physical withdrawal.</li>
+<li><strong>Nicotine</strong> mimics <strong>acetylcholine</strong> at its receptors, which triggers dopamine release downstream.</li>
+<li><strong>Ayahuasca</strong> is the hallucinogenic tea used in religious ceremonies; its active compound is <strong>DMT</strong>, not mescaline.</li>
+<li><strong>PTSD</strong> correlates with lower natural benzodiazepine activity, which helps explain the elevated risk of <strong>alcohol</strong> misuse in that population —</li></ul>
+<h4>Medications, and which disorder each belongs to</h4>
+<ul>
+<li><strong>Alcohol use disorder:</strong> <strong>Disulfiram</strong> (aversion — makes drinking physically unpleasant), <strong>Naltrexone</strong> (blocks the reward), <strong>Acamprosate</strong> (reduces craving). Seeing any of those three names in a stem means alcohol, not opioids. high-yield.</li>
+<li><strong>Opioid use disorder:</strong> <strong>methadone</strong> may be dispensed only through a <strong>SAMHSA-certified Opioid Treatment Program</strong>; <strong>buprenorphine</strong> can be prescribed in an office setting; <strong>naltrexone</strong> carries no such restriction.</li>
+<li><strong>Detoxification</strong> is the first major hurdle for someone with co-occurring disorders — before any therapy can begin.</li></ul>
+<h4>Prevention and the ACE framework</h4>
+<ul>
+<li>Effective prevention programs contain <strong>life skills, social skills, peer support,</strong> and <strong>social commitment</strong> to not using. They do <em>not</em> contain "physical skills."</li>
+<li><strong>Stages of Change:</strong> Precontemplation → <strong>Contemplation</strong> (considering change within six months) → Preparation → Action → Maintenance. The definition of contemplation is the one usually tested.</li>
+<li>The <strong>ACE Study</strong> established a dose-response relationship between adverse childhood experiences — abuse, neglect, household dysfunction — and adult health outcomes. high-yield, always phrased around "abuse and neglect."</li>
+<li><strong>Resilience</strong> is the key to overcoming setbacks during recovery, and post-traumatic growth most often shows up as <strong>increased compassion for others</strong>. Both high-yield.</li></ul>`,
+qref:[["Tolerance", "Need more drug for same effect"], ["Withdrawal", "Physical response to removing a drug"], ["Dependence", "Alcohol abuse + tolerance + withdrawal + compulsion"], ["THC", "Active cannabinoid — pain, appetite, learning, movement"], ["Nicotine", "Mimics acetylcholine → dopamine release"], ["Contemplation", "Stages of Change: considering change in next 6 months"], ["Methadone / OTP", "OUD treatment — ONLY via SAMHSA-certified OTP"], ["ACE Study", "Adverse childhood experiences → adult health outcomes"], ["27% / 84% / 11 yrs", "MH+SUD comorbidity / untreated / delay to treatment"], ["Precontemplation", "Stages of Change: no intention to change yet"], ["Relapse", "Return to use after a period of abstinence"], ["Naloxone", "Opioid antagonist that reverses an overdose"], ["Harm reduction", "Cutting the harms of use without requiring abstinence"], ["Protective factor", "Condition that lowers the likelihood of substance use"], ["Four dimensions", "SAMHSA recovery: health, home, purpose, community"], ["Ayahuasca", "Hallucinogenic DMT tea used in religious ceremonies"], ["Coalition", "Alliance of diverse orgs for a common goal"], ["NAMI Connection", "Peer support group for people with mental illness"]],
+notes:`<p><strong>Prevention "except" question:</strong> Physical skills is ALWAYS the wrong answer — it's the distractor. Correct components: social skills, life skills, peer support, social commitment.</p> <p><strong>Cocaine does NOT produce significant physical withdrawal.</strong> Heroin, opioids, nicotine DO. The other three do produce physical withdrawal, which is what makes the set work.</p> <p><strong>Methadone vs buprenorphine:</strong> Methadone = SAMHSA-certified OTP only. Buprenorphine = office-based prescribing. Naltrexone = no restrictions. Disulfiram/Naltrexone/Acamprosate = alcohol, NOT opioids.</p> <p><strong>Statistics you must memorize exactly:</strong> 27% of MH adults also have SUD. 84% with SUD receive no treatment. 11-year delay. 20.1% of homeless have a serious MH condition. 31% of driving fatalities = alcohol. Learn them as a block.</p> <p><strong>Ayahuasca = DMT tea for religious ceremonies</strong> — NOT mescaline, NOT hyoscyamus, NOT kratom. Those three wrong options are all plausible-sounding psychoactive substances, which is the whole point of the set.</p>`}); GUIDE.push({t:3,
+narr:`<p>When you perceive a threat, two stress systems activate. The <strong>SAM system</strong> (Sympatho-Adreno-Medullary) provides the immediate fight-or-flight response — releasing <strong>epinephrine and norepinephrine</strong> in seconds. The <strong>HPA axis</strong> (Hypothalamic-Pituitary-Adrenal) produces a slower, sustained response — releasing <strong>cortisol</strong>. Chronic cortisol elevation is damaging to the immune system, cardiovascular system, and hippocampus. The most powerful predictor of your stress response is your <strong>sense of control</strong> — even partial perceived control dramatically reduces stress. Women under stress more often exhibit a <strong>"tend or befriend"</strong> response driven by <strong>oxytocin</strong>, rather than fight-or-flight.</p> <p>Coping strategies: <strong>Problem-focused coping</strong> addresses changeable stressors directly. <strong>Emotion-focused coping</strong> manages negative feelings from unchangeable stressors (illness, loss). <strong>Relationship-focused coping</strong> uses social support. Neither is universally superior — the best match depends on whether the stressor can be changed.</p> <p>Happiness research consistently finds that <strong>relationships</strong> — not wealth, education, or health — are the strongest predictor of life satisfaction. Two types of wellbeing: <strong>hedonic</strong> (pleasure/pain avoidance) and <strong>eudaimonic</strong> (meaning, virtue, full engagement). <strong>Flow</strong> (Csikszentmihalyi) — complete absorption in a challenging, meaningful activity — is associated with the "good life" (eudaimonic wellbeing). <strong>Post-traumatic growth</strong> after trauma often includes <strong>increased compassion for others</strong>. Caffeine is associated with lower risk of Parkinson's and Alzheimer's disease. The frontal lobe becomes <strong>less active</strong> in depression. Lucid dreaming training may help reduce recurring nightmares.</p>`,
+deep:`<h4>Two stress systems, two speeds, two chemicals</h4>
+<ul>
+<li><strong>SAM axis</strong> (sympatho-adreno-medullary): the immediate response, seconds. Releases <strong>epinephrine and norepinephrine</strong>.</li>
+<li><strong>HPA axis</strong> (hypothalamic-pituitary-adrenal): the sustained response, minutes to hours. Releases <strong>cortisol</strong> from the adrenal glands —</li>
+<li>Chronic cortisol damages the immune system, the cardiovascular system, and the <strong>hippocampus</strong>, which is part of why prolonged stress impairs memory.</li>
+<li><strong>Tend-and-befriend</strong> is the stress response more often seen in women, mediated by <strong>oxytocin</strong> rather than by adrenaline.</li></ul>
+<h4>What actually predicts how badly stress hurts you</h4>
+<ul>
+<li><strong>Sense of control</strong> is the single most significant predictor of the stress response. Even partial perceived control substantially reduces physiological damage.</li>
+<li><strong>Problem-focused coping</strong> fits stressors you can change. <strong>Emotion-focused coping</strong> fits stressors you cannot — terminal illness, bereavement. <strong>Relationship-focused coping</strong> draws on social support. Neither of the first two is universally better; the match to the stressor is what matters.</li>
+<li><strong>Mindfulness</strong> — trained awareness of current thoughts, emotions, and actions — has demonstrated benefit for stress and is.</li></ul>
+<h4>Happiness has two definitions, and HOSA tests both</h4>
+<ul>
+<li><strong>Hedonic</strong> wellbeing is the pursuit of pleasure and the avoidance of pain.</li>
+<li><strong>Eudaimonic</strong> wellbeing is meaning, virtue, and full engagement. Csikszentmihalyi's <strong>flow</strong> — total absorption in a challenging activity — belongs to the <em>good life</em>, which is eudaimonic, not the pleasant life.</li>
+<li><strong>Relationships</strong>, not income, education, or physical health, are the strongest predictor of life satisfaction across the research literature.</li>
+<li><strong>Post-traumatic growth</strong> is real and measurable; its most commonly cited form is increased compassion for others.</li></ul>
+<h4>Sleep, which lives here as often as it lives in The Mind</h4>
+<ul>
+<li><strong>REM rebound</strong> — sleep-deprived people who are finally allowed to sleep normally spend disproportionate time in REM.</li>
+<li><strong>Maintenance insomnia</strong> is frequent interruption or early waking, and is the type typically associated with depression. <strong>Onset insomnia</strong> is trouble falling asleep.</li>
+<li><strong>Lucid dreaming</strong> training shows promise for recurring, upsetting nightmares —</li>
+<li><strong>Sleep terror</strong> is NREM, with no imagery and no memory. A <strong>nightmare</strong> is REM, with vivid imagery and recall. That contrast is asked repeatedly.</li></ul>`,
+qref:[["SAM System", "Fast stress response — releases epinephrine/NE"], ["HPA Axis", "Slow sustained response — releases cortisol"], ["Sense of Control", "Most significant predictor of stress response"], ["Oxytocin", "\"Tend or befriend\" hormone"], ["Emotion-focused Coping", "Manages feelings from an unchangeable stressor"], ["Flow", "Absorption in challenging activity = \"good life\""], ["Hedonic Wellbeing", "Pleasure/pain-avoidance approach to happiness"], ["Eudaimonic Wellbeing", "Meaning, virtue, full engagement"], ["Relationships", "#1 predictor of life satisfaction"], ["Post-traumatic Growth", "Includes increased compassion after trauma"], ["REM Rebound", "Extra REM after sleep deprivation is relieved"], ["Maintenance Insomnia", "Frequent waking / early waking; linked to depression"], ["Mindfulness", "Trained awareness of current thoughts and actions"], ["Problem-focused Coping", "Directly addresses a changeable stressor"], ["Cortisol", "Adrenal hormone released under sustained stress"], ["Lucid Dreaming", "Training studied for recurring nightmares"]],
+notes:`<p><strong>SAM vs HPA:</strong> SAM = immediate (epinephrine/norepinephrine). HPA = sustained (cortisol). Know which chemicals each releases — this is a common exam distinction.</p> <p><strong>"Tend or befriend" = oxytocin</strong> — not cortisol, not serotonin, not norepinephrine. This specific association appears on exams.</p> <p><strong>Flow = "good life" (eudaimonic)</strong>, NOT the "pleasant life" (hedonic). Csikszentmihalyi's three lives: pleasant (pleasure), good (engagement/flow), meaningful (purpose).</p> <p><strong>Post-traumatic growth:</strong> Increased compassion for others — not decreased reliance on others, not increased materialism, not decreased self-efficacy.</p> <p><strong>Frontal lobe becomes LESS active in depression</strong> — not hippocampus, not occipital lobe, not parietal lobe. This is a straightforward factual question that appears on exams.</p>`}); GUIDE.push({t:4,
+narr:`<p><strong>Psychiatrists</strong> (MD/DO) are the only mental health professionals who can prescribe medication in most states — they completed medical school and residency. <strong>Psychologists</strong> (PhD/PsyD) conduct therapy and research but generally cannot prescribe. <strong>Licensed clinical social workers, counselors, and MFTs</strong> provide therapy but not medication. Two classification systems organize diagnoses: the <strong>DSM-5-TR</strong> (APA, U.S.-focused) and the <strong>ICD-11</strong> (WHO, global, covers all health conditions). <strong>SAMHSA</strong> is the federal agency within HHS leading behavioral health policy, certifying OTPs, funding prevention programs, and publishing national statistics. <strong>NAMI</strong> is the largest U.S. grassroots mental health advocacy organization. Mental health parity laws require insurance to cover mental health conditions equivalently to physical conditions. <strong>EBP's three pillars:</strong> scientific research + clinical expertise + patient values. First step = construct an answerable clinical question.</p>
+<p>The workforce topic is small — five percent, so two or three questions — but it is the most memorizable block on the test. There is no reasoning to do. You either know which provider prescribes and which organization publishes which manual, or you do not. An hour spent here converts almost directly into points.</p>
+<p>Think of the provider landscape as a ladder defined by training length and prescribing authority. At the top, the <strong>psychiatrist</strong> holds an MD or DO and can prescribe. Beside them, the <strong>psychiatric nurse practitioner</strong> can also prescribe in most states. Below that, doctoral <strong>psychologists</strong> assess, treat, and research but generally do not prescribe. Master's-level <strong>counselors, clinical social workers, and marriage and family therapists</strong> deliver most of the therapy in the country. And at the margin sit <strong>hypnotherapists</strong> — genuinely providers of counseling and psychotherapy, and the least frequently used of the group, which is precisely why HOSA likes asking about them.</p>
+<p>The policy layer is short. <strong>SAMHSA</strong> sits inside Health and Human Services and does four things this test cares about: sets behavioral health policy, certifies opioid treatment programs, funds prevention, and publishes the national statistics. <strong>NAMI</strong> is the advocacy counterpart — a grassroots organization, not a federal one, best known for peer support programs like NAMI Connection. <strong>Mental health parity</strong> is the legal requirement that insurance treat behavioral health like physical health.</p>
+<p>Finally, know <strong>evidence-based practice</strong> as a process rather than a slogan. It rests on three pillars — research evidence, clinical expertise, and patient values — and it runs in a fixed order that begins with framing an answerable question. That sequence is asked directly, and the wrong answers are simply the later steps presented first.</p>`,
+deep:`<h4>Who can do what — the licensing ladder</h4>
+<ul>
+<li><strong>Psychiatrist</strong> — MD or DO, completed medical school and residency. In most states the only one of these providers who can <strong>prescribe medication</strong>.</li>
+<li><strong>Psychologist</strong> — PhD or PsyD. Conducts assessment, therapy, and research. Prescribing authority exists in only a small number of states and requires additional training.</li>
+<li><strong>Licensed clinical social worker, licensed professional counselor, marriage and family therapist</strong> — master's-level clinicians who provide therapy but not medication.</li>
+<li><strong>Psychiatric nurse practitioner</strong> — can prescribe in most states, an increasingly common access point given psychiatrist shortages.</li>
+<li><strong>Hypnotherapists</strong> provide counseling and psychotherapy and are the <em>least frequently used</em> of the practitioner categories. That precise framing has been.</li></ul>
+<h4>Training trends and evidence-based practice</h4>
+<ul>
+<li>The tested trend in psychology graduate programs is that <strong>students are trained in combined specialties</strong> rather than in a single narrow specialization. high-yield; the distractor is always the opposite statement.</li>
+<li><strong>Evidence-based practice rests on three pillars:</strong> the best available scientific research, clinical expertise, and patient values and preferences. All three, not just the research.</li>
+<li>The <strong>first step</strong> of evidence-based practice is to <strong>construct an answerable question</strong> — before searching literature, before evaluating it, before measuring outcomes. The other three steps are offered as distractors in the wrong order.</li></ul>
+<h4>The systems and rules that govern care</h4>
+<ul>
+<li><strong>DSM-5-TR</strong> — published by the American Psychiatric Association, used primarily in the United States, covers mental disorders only. <strong>ICD-11</strong> — published by the World Health Organization, used globally, covers all health conditions including mental disorders.</li>
+<li><strong>SAMHSA</strong> is the agency within the U.S. Department of Health and Human Services that leads behavioral health policy, certifies opioid treatment programs, funds prevention, and publishes the national survey data that this test quotes.</li>
+<li><strong>NAMI</strong> is the largest grassroots mental health advocacy organization in the United States; <strong>NAMI Connection</strong> is its peer-led support group for people living with mental illness.</li>
+<li><strong>Mental health parity</strong> requires insurers to cover mental health and substance use conditions on terms comparable to physical health conditions — comparable copays, limits, and authorization rules.</li>
+<li>A <strong>coalition</strong> is an alliance of diverse organizations working toward a common goal — the standard prevention-infrastructure term.</li></ul>`,
+qref:[["Psychiatrist", "MD/DO — only MH provider who prescribes"], ["DSM-5-TR", "APA — U.S. psychiatric diagnostic manual"], ["ICD-11", "WHO — global classification, all conditions"], ["SAMHSA", "Federal agency — behavioral health policy + stats"], ["NAMI", "Largest U.S. MH advocacy organization"], ["EBP 3 Pillars", "Research + clinical expertise + patient values"], ["Psychologist", "PhD/PsyD — therapy and research, rarely prescribes"], ["Hypnotherapist", "Provides psychotherapy; least frequently used"], ["Psychiatric NP", "Advanced practice nurse; can prescribe in most states"], ["LCSW / LPC / MFT", "Master's-level clinicians — therapy, no medication"], ["Combined Specialties", "The trend in psychology graduate training"], ["EBP First Step", "Construct an answerable question"], ["Mental Health Parity", "Insurance must cover MH like physical health"], ["Coalition", "Alliance of diverse organizations, one common goal"], ["NAMI Connection", "NAMI's peer-led support group"], ["OTP Certification", "SAMHSA certifies opioid treatment programs"]],
+notes:`<p><strong>Hypnotherapists are "least frequently used."</strong> The stem asks which practitioners provide counseling and psychotherapy and are used least often. The answer is hypnotherapists, and it has been. The other options are all mainstream provider types, which makes the outlier the answer.</p>
+<p><strong>Graduate training trend: combined specialties.</strong>" Programs are broadening, not narrowing. If you remember the direction, you cannot miss it.</p>
+<p><strong>Evidence-based practice starts with a question.</strong> Construct an answerable question first, <em>then</em> search the literature, <em>then</em> critically evaluate it, <em>then</em> evaluate performance against outcomes. All four steps appear as the option set, so knowing the sequence rather than the vocabulary is what scores.</p>
+<p><strong>Only the psychiatrist prescribes.</strong> Among the standard four provider types, the MD or DO is the prescriber. Psychologists, counselors, and social workers do therapy. If a question describes years of medical school and residency, it is describing a psychiatrist regardless of what else the stem says.</p>
+<p><strong>DSM versus ICD is publisher and scope.</strong> DSM-5-TR is APA, American, mental disorders only. ICD-11 is WHO, global, all health conditions. Questions test which organization publishes which — get the publisher right and the rest follows.</p>`}); GUIDE.push({t:5,
+narr:`<p>The earliest "treatment" was <strong>trepanation</strong> — drilling holes in the skull (7,000+ years ago). <strong>Phrenology</strong> (19th century) claimed personality could be read from <strong>bumps on the skull</strong> — pseudoscience later discredited. <strong>Ramón y Cajal</strong> won the 1906 Nobel Prize for proving the <strong>Neuron Doctrine</strong> (neurons are separate cells) using Golgi silver staining. In 1937, <strong>Charles Bradley</strong> accidentally discovered stimulant treatment for ADHD while treating children with <strong>learning and behavior problems</strong>. ECT was developed in the 1930s for severe depression. Lobotomy was briefly used and abandoned. <strong>Deep Brain Stimulation (DBS)</strong> — key advantage over psychosurgery: effects are <strong>reversible and adjustable</strong>. The mental health system shifted from large institutions to community-based care (deinstitutionalization) — but without adequate community support, roughly 20.1% of people experiencing homelessness now have a serious mental health condition. Integrated care links behavioral health with primary care. Telehealth has expanded access dramatically.</p>
+<p>History is the other five-percent block, and like workforce it is pure recall. What makes it worth real study time is that the same handful of items keep returning: trepanation, phrenology, Cajal, Bradley, deep brain stimulation, and the deinstitutionalization statistics. Six facts, asked over and over.</p>
+<p>The through-line worth understanding is that treatment has moved steadily from <strong>irreversible and imprecise</strong> toward <strong>reversible and targeted</strong>. Trepanation was permanent and indiscriminate. Lobotomy was permanent and poorly aimed. Deep brain stimulation is precisely targeted and can be turned off, and repetitive transcranial magnetic stimulation achieves something similar without opening the skull at all. When a question asks what makes a newer treatment better, reversibility and precision are almost always the answer.</p>
+<p>The second through-line is the shift in <em>where</em> care happens. For a century, serious mental illness meant institutionalization. <strong>Deinstitutionalization</strong> emptied the asylums beginning in the 1950s on the promise of community-based care — a promise that was never adequately funded. The consequences are what this test measures: roughly one in five people experiencing homelessness has a serious mental health condition, most people with substance use disorders never receive treatment, and those who do wait an average of eleven years from first symptom.</p>
+<p>The current direction is integration. Placing behavioral health inside primary care catches conditions earlier and removes the stigma of walking into a separate building, and telehealth has widened access further, especially for rural and adolescent populations. Expect systems questions to reward the idea that <em>access</em>, not treatment efficacy, is the binding constraint in American behavioral health.</p>`,
+deep:`<h4>The long, mostly dark history of physical treatment</h4>
+<ul>
+<li><strong>Trepanation</strong> — drilling holes in the skull, practiced more than seven thousand years ago, and the earliest known attempt at psychosurgery.</li>
+<li><strong>Phrenology</strong> — the nineteenth-century claim that character could be read from <strong>bumps</strong> on the skull. Discredited pseudoscience, but historically important because it advanced the idea that mental functions are localized in the brain.</li>
+<li><strong>Electroconvulsive therapy</strong> arrived in the 1930s and, in modern anesthetized form, remains an effective treatment for severe treatment-resistant depression.</li>
+<li><strong>Lobotomy</strong> was performed widely in the mid-twentieth century and abandoned as irreversible, poorly targeted, and frequently devastating.</li>
+<li><strong>Deep brain stimulation</strong> is the modern successor. Its decisive advantage over ablative psychosurgery is that its <strong>effects are usually reversible</strong> — the stimulation can be adjusted or switched off, whereas "effects are permanent" describes the ablative surgery it replaced.</li>
+<li><strong>Repetitive transcranial magnetic stimulation (rTMS)</strong> is the <em>non-surgical</em> alternative to deep brain stimulation. That distinction — surgical versus non-surgical — It is high-yield and worth knowing cold.</li></ul>
+<h4>The people whose names get tested</h4>
+<ul>
+<li><strong>Santiago Ramón y Cajal</strong> proved the <strong>Neuron Doctrine</strong> — that neurons are discrete cells rather than a continuous web — using Golgi's silver staining, and shared the 1906 Nobel Prize with Golgi.</li>
+<li><strong>Charles Bradley</strong> discovered in 1937 that stimulants improved children being treated for <strong>learning and behavior problems</strong> — the accidental origin of stimulant treatment for ADHD. The exact phrase "learning and behavior problems" is what the key wants.</li>
+<li>Watch for <strong>Ivan Pavlov</strong>, <strong>John Watson</strong>, and <strong>Ulric Neisser</strong> in the answer set. Each as a tempting wrong answer.</li></ul>
+<h4>From institutions to communities — and the gap left behind</h4>
+<ul>
+<li><strong>Deinstitutionalization</strong> moved care out of large state asylums and toward community-based services, beginning in the 1950s and accelerating through the 1960s and 70s.</li>
+<li>The community infrastructure was never funded to match. One consequence HOSA tests directly: roughly <strong>20.1%</strong> of people experiencing homelessness in the United States have a serious mental health condition.</li>
+<li><strong>Integrated care</strong> places behavioral health inside primary care, which raises detection rates and lowers the barrier to a first appointment.</li>
+<li><strong>Telehealth</strong> has substantially widened access, particularly in rural areas and for adolescents, and is now a permanent part of the delivery system rather than a pandemic stopgap.</li>
+<li>Access remains the central systems problem: about <strong>84%</strong> of people with a substance use disorder receive no treatment, and there is an average <strong>11-year delay</strong> between symptom onset and first treatment.</li></ul>`,
+qref:[["Trepanation", "Earliest psychosurgery — drilling skull holes"], ["Phrenology", "Reading skull bumps = character (pseudoscience)"], ["Ramon y Cajal", "Neuron Doctrine — 1906 Nobel Prize"], ["Charles Bradley", "Accidentally discovered ADHD stimulant treatment"], ["DBS Advantage", "Reversible effects — unlike ablative psychosurgery"], ["Deinstitutionalization", "Shift from asylums to community care"], ["rTMS", "Non-surgical alternative to deep brain stimulation"], ["ECT", "1930s origin; still used for severe depression"], ["Lobotomy", "Mid-century psychosurgery; irreversible, abandoned"], ["Neuron Doctrine", "Neurons are discrete cells, not a continuous web"], ["Golgi Staining", "Silver stain Cajal used to prove the Neuron Doctrine"], ["20.1%", "Homeless population with a serious mental health condition"], ["84%", "People with SUD who receive no treatment"], ["11 years", "Average delay from symptom onset to first treatment"], ["Integrated Care", "Behavioral health delivered inside primary care"], ["Telehealth", "Major post-2020 expansion of behavioral health access"]],
+notes:`<p><strong>Deep brain stimulation: reversible.</strong>, and the trap sitting next to it is "effects are permanent" — which is true of the ablative psychosurgery DBS replaced, not of DBS. Reversibility <em>is</em> the advantage. Do not let the plausible-sounding "always results in improvement" pull you either; nothing in psychiatry always works.</p>
+<p><strong>Surgical or non-surgical decides the answer.</strong> A closely related item asks for the <em>non-surgical</em> alternative to DBS, and the answer is repetitive transcranial magnetic stimulation. It is high-yield and worth knowing cold. The three distractors — ionic pulse, cerebral current, neurolaser stimulation — are invented terms.</p>
+<p><strong>Charles Bradley treated "learning and behavior problems."</strong> Not depression, not sleep disorders, not hyperactivity as it would later be named. The exact phrasing matters — learn it in those words.</p>
+<p><strong>Phrenologists read bumps.</strong> Not suture lines, not hair patterns, not the fontanel. This appeared.</p>
+<p><strong>The homelessness statistic is 20.1%.</strong> This one matters because the wrong number is memorable.1%</strong> of people experiencing homelessness having a serious mental health condition; <strong>37.9%</strong> is one of the offered distractors, along with 14.2% and 70.4%. If you learned 37.9% somewhere, unlearn it now.</p>
+<p><strong>Know the names that are not the answer.</strong> Ivan Pavlov, John Watson, and Ulric Neisser are major figures in psychology and are constantly offered on history items where the answer is someone else. Pavlov is classical conditioning, Watson is behaviorism, Neisser is cognitive psychology — none of them is Bradley, Cajal, or a phrenologist.</p>`});
+
+
+const Q = [ {"t": 0, "q": "The human brain contains approximately how many neurons?", "a": ["100 thousand", "100 million", "100 billion", "100 trillion"], "c": 2, "e": "The brain contains ~100 billion neurons, each forming thousands of synaptic connections — the most complex information-processing system known."}, {"t": 0, "q": "What term describes the view that 'the mind is what the brain does'?", "a": ["Mysticism", "Dualism", "Pluralism", "Monism"], "c": 3, "e": "Monism holds that mind and brain are one — mental processes are entirely physical brain processes. Contrasts with Descartes' dualism (mind and body are separate)."}, {"t": 0, "q": "Although the brain is only 2% of body weight, it uses approximately what percent of the body's energy?", "a": ["15%", "20%", "25%", "35%"], "c": 1, "e": "The brain consumes about 20% of the body's energy — it is metabolically extraordinarily active relative to its size."}, {"t": 0, "q": "Which scientist proved the Neuron Doctrine using microscopic silver staining?", "a": ["Ramon y Cajal", "Charles Darwin", "Camillo Golgi", "Gregor Mendel"], "c": 0, "e": "Santiago Ramón y Cajal used Golgi's silver staining to prove neurons are separate discrete cells — winning the 1906 Nobel Prize (shared with Golgi)."}, {"t": 0, "q": "What cells provide structural support, form the blood-brain barrier, and produce myelin?", "a": ["Axons", "Dendrites", "Glia", "Synaptic vesicles"], "c": 2, "e": "Glial cells support neurons structurally and metabolically. Astrocytes form the blood-brain barrier; oligodendrocytes produce myelin in the CNS; microglia clean up debris."}, {"t": 0, "q": "What is the clear, plasma-like fluid that cushions the brain and spinal cord?", "a": ["Astrocyte fluid", "Cerebrospinal fluid", "Lymphatic fluid", "Synovial fluid"], "c": 1, "e": "Cerebrospinal fluid (CSF) circulates through ventricles and around the brain and spinal cord, providing cushioning, nutrients, and waste removal."}, {"t": 0, "q": "Which part of the brain manages heart rate, breathing, and blood pressure?", "a": ["Parietal lobe", "Pons", "Medulla", "Cerebellum"], "c": 2, "e": "The medulla oblongata controls vital autonomic functions. Opiates affect it first — which is why overdose causes life-threatening respiratory failure."}, {"t": 0, "q": "What part of the brain is involved with sleep, arousal, and facial expressions?", "a": ["Cerebellum", "Pons", "Medulla", "Frontal lobe"], "c": 1, "e": "The pons ('bridge') connects the brainstem to the cerebellum and regulates sleep-wake transitions, arousal, REM sleep, and motor control of facial muscles."}, {"t": 0, "q": "Which condition results from degeneration of dopamine-producing neurons in the basal ganglia?", "a": ["Multiple sclerosis", "Cystic fibrosis", "Huntington's chorea", "Parkinson's disease"], "c": 3, "e": "Parkinson's disease results from loss of dopamine-producing neurons in the substantia nigra (basal ganglia), causing tremors, rigidity, and movement difficulties."}, {"t": 0, "q": "What is the primary function of the hippocampus?", "a": ["Voluntary movements", "Visual image processing", "Storage and retrieval of memories", "Facial expression recognition"], "c": 2, "e": "The hippocampus is critical for forming new declarative memories and retrieving them. Damage causes anterograde amnesia — inability to form new long-term memories."}, {"t": 0, "q": "Which subcortical structure is related to social inclusion, reward, and addiction?", "a": ["Corpus callosum", "Hypothalamus", "Hippocampus", "Nucleus accumbens"], "c": 3, "e": "The nucleus accumbens is the brain's primary reward center — flooding with dopamine during pleasurable experiences. It is the key target hijacked by addictive substances."}, {"t": 0, "q": "A patient exhibiting deficits related to inappropriate personal space likely has damage to which structure?", "a": ["Cingulate cortex", "Thalamus", "Amygdala", "Hippocampus"], "c": 2, "e": "The amygdala regulates personal space, fear responses, and emotional intensity. Bilateral amygdala damage causes people to approach strangers uncomfortably close with no sense of threat."}, {"t": 0, "q": "Which cerebral lobe helps localize touch, pain, skin temperature, and body position?", "a": ["Frontal", "Occipital", "Parietal", "Temporal"], "c": 2, "e": "The parietal lobe contains the somatosensory cortex — processing touch, pain, temperature, and proprioception (body position awareness)."}, {"t": 0, "q": "A patient who cannot recognize familiar faces by sight likely has damage to which lobe?", "a": ["Temporal", "Parietal", "Occipital", "Frontal"], "c": 0, "e": "Prosopagnosia (face blindness) results from damage to the fusiform face area in the temporal lobe — patients can recognize people by voice or context, but not face alone."}, {"t": 0, "q": "Which portion of the brain provides the body's internal biological clock and responds to zeitgebers?", "a": ["Cingulate cortex", "Hypothalamus", "Hippocampus", "Amygdala"], "c": 1, "e": "The hypothalamus's suprachiasmatic nucleus (SCN) is the master circadian clock — it responds to zeitgebers (external time cues like light) to synchronize biological rhythms."}, {"t": 0, "q": "Which brain area interacts with the cerebral cortex to produce variations in consciousness?", "a": ["Amygdala", "Hippocampus", "Midbrain", "Thalamus"], "c": 3, "e": "The thalamus is the consciousness gateway — it relays sensory information to the cortex and regulates sleep/wake states. A thalamic lesion produces profound unconsciousness."}, {"t": 0, "q": "What region of the brain plays an important role in internal sensations like breathlessness and butterflies in the stomach?", "a": ["Insula", "Hypothalamus", "Amygdala", "Basal ganglia"], "c": 0, "e": "The insula mediates interoception — awareness of internal bodily states. It contributes to feelings of disgust, empathy, and risk evaluation."}, {"t": 0, "q": "When fat stores and leptin levels are low, which part of the brain triggers eating?", "a": ["Pons", "Ventromedial hypothalamus", "Medulla oblongata", "Lateral hypothalamus"], "c": 3, "e": "The lateral hypothalamus is the 'hunger center' — low leptin stimulates it to initiate eating. The ventromedial hypothalamus is the 'satiety center' — damage causes dramatic overeating."}, {"t": 0, "q": "Which part of the autonomic nervous system is associated with energy storage — rest-and-digest?", "a": ["Sympathetic", "Parasympathetic", "Somatic", "Enteric"], "c": 1, "e": "The parasympathetic nervous system governs rest-and-digest: slowing heart rate, stimulating digestion, conserving energy. The sympathetic system activates fight-or-flight."}, {"t": 0, "q": "What is the process of translating incoming sensory information into neural signals?", "a": ["Adaptation", "Processing", "Threshold", "Transduction"], "c": 3, "e": "Transduction converts physical stimuli (light, sound, pressure) into electrical signals the nervous system can interpret — performed by specialized receptor cells."}, {"t": 0, "q": "What is the term for the smallest stimulus detectable at least 50% of the time?", "a": ["Absolute threshold", "Fixed threshold", "Difference threshold", "Distinct threshold"], "c": 0, "e": "The absolute threshold is defined statistically — the minimum stimulus intensity needed for detection across repeated trials. Below it, detection is at chance level."}, {"t": 0, "q": "What is the smallest detectable difference between two stimuli?", "a": ["Absolute threshold", "Fixed threshold", "Difference threshold", "Distinct threshold"], "c": 2, "e": "The difference threshold (just noticeable difference or JND) follows Weber's Law: the change required for detection is a constant proportion of the original stimulus intensity."}, {"t": 0, "q": "What is the term for reduced response to an unchanging stimulus over time?", "a": ["Attention fixation", "Sensory processing", "Interpretation shift", "Sensory adaptation"], "c": 3, "e": "Sensory adaptation occurs when sensory receptors become less responsive to constant, unchanging stimulation — why you stop noticing the smell of your own home or the feel of clothing."}, {"t": 0, "q": "What is top-down processing?", "a": ["Raw sensory data building into complex perception", "Memory and cognition shaping interpretation of sensory data", "Signal detection analysis", "Unconscious stimulus registration"], "c": 1, "e": "Top-down processing uses existing knowledge, expectations, and context to shape perception — your brain 'fills in' ambiguous information based on what it expects."}, {"t": 0, "q": "Which type of insomnia involves frequent interruptions or early waking?", "a": ["Initiation insomnia", "Maintenance insomnia", "Intrusion insomnia", "Onset insomnia"], "c": 1, "e": "Maintenance insomnia = difficulty staying asleep — awakening frequently or waking too early. Often linked to stress, depression, substance use, or sleep apnea."}, {"t": 0, "q": "What characterizes NREM Stages 3–4 sleep?", "a": ["Rapid eye movements and vivid dreams", "Theta waves and drowsiness", "Delta waves and physical restoration", "Alpha waves and relaxed wakefulness"], "c": 2, "e": "NREM slow-wave sleep (Stages 3–4) features delta waves and is physically restorative — growth hormone is released, tissue repair occurs, and immune function consolidates."}, {"t": 0, "q": "When sleep-deprived individuals finally sleep normally, what phenomenon occurs?", "a": ["N-REM rebound", "REM suppression", "N-REM suppression", "REM rebound"], "c": 3, "e": "REM rebound: the brain compensates for lost REM by increasing its proportion in subsequent sleep. People deprived of REM enter it faster and spend more time in it."}, {"t": 0, "q": "A person wakes suddenly screaming with no nightmare imagery. What sleep disorder is this?", "a": ["Narcolepsy", "Sleep terror", "Cataplexy", "Insomnia"], "c": 1, "e": "Sleep terror occurs in NREM deep sleep — no dream imagery, no memory of the episode. Contrasts with nightmares (REM, full memory). Most common in children ages 3–8."}, {"t": 0, "q": "Which theory of emotion proposes that physical sensations lead to subjective feelings?", "a": ["Cannon-Bard", "Schachter-Singer", "James-Lange", "LEAD model"], "c": 2, "e": "James-Lange theory: perception of a stimulus causes physiological response, which then causes the emotion. 'I'm shaking therefore I'm afraid' — body comes first."}, {"t": 0, "q": "Which emotion theory adds a cognitive appraisal step between arousal and subjective feelings?", "a": ["James-Lange", "Kagan-Gottman", "Schachter-Singer", "Cannon-Bard"], "c": 2, "e": "Schachter-Singer Two-Factor Theory: arousal + cognitive label = emotion. Context determines which emotion you assign to physiological arousal."}, {"t": 0, "q": "In Russell's circumplex model, which emotion occupies high arousal + high pleasure?", "a": ["Aroused", "Serene", "Happy", "Astonished"], "c": 3, "e": "Russell's model plots emotions on two axes: arousal (high/low) and valence (pleasant/unpleasant). Astonished = high arousal + positive valence. Serene = low arousal + positive."}, {"t": 0, "q": "What type of conditioning pairs two stimuli so that one predicts the other?", "a": ["Classical", "Habitual", "Operant", "Nonassociative"], "c": 0, "e": "Classical (Pavlovian) conditioning pairs a neutral conditioned stimulus with an unconditioned stimulus until the CS alone elicits a conditioned response."}, {"t": 0, "q": "What is the term for a simple form of learning where reactions to harmless, unchanging stimuli decrease?", "a": ["Accommodation", "Modeling", "Habituation", "Sensitization"], "c": 2, "e": "Habituation is among the simplest forms of learning — the organism learns to ignore irrelevant, non-threatening, unchanging stimuli, freeing attention for new information."}, {"t": 0, "q": "What is the correct order for the three stages of memory processing?", "a": ["Encoding, retrieval, storage", "Retrieval, storage, encoding", "Encoding, storage, retrieval", "Storage, encoding, retrieval"], "c": 2, "e": "Memory always flows: Encoding (getting information in) → Storage (maintaining it) → Retrieval (getting it back out). This sequence cannot be reversed."}, {"t": 0, "q": "Which of the following is NOT a component of Baddeley's working memory model?", "a": ["Random capacity buffer", "Episodic buffer", "Phonological loop", "Visuospatial sketchpad"], "c": 0, "e": "Baddeley's model has four components: phonological loop, visuospatial sketchpad, episodic buffer, and central executive. 'Random capacity buffer' does not exist — this is a specific exam distractor."}, {"t": 0, "q": "What is the term for change in response to a stimulus due to prior exposure to a related stimulus?", "a": ["Retrieval", "Priming", "Processing", "Reconstruction"], "c": 1, "e": "Priming is implicit memory — prior exposure to a stimulus influences responses to subsequent related stimuli, usually without conscious awareness."}, {"t": 0, "q": "What term refers to reduced memory for target information because of EARLIER learning?", "a": ["Proactive interference", "Storage deficiency", "Retroactive interference", "Motivated forgetting"], "c": 0, "e": "Proactive interference: old memories interfere with forming new ones. Think: Pro = forward — old stuff pushes forward and blocks new learning."}, {"t": 0, "q": "Of the sensory memory codes, which lasts longer — iconic or echoic?", "a": ["Iconic", "Visual", "Echoic", "Haptic"], "c": 2, "e": "Echoic (auditory) sensory memory persists for 3–4 seconds — longer than iconic (visual) memory which fades in less than a second."}, {"t": 0, "q": "What is the process of grouping similar or meaningful information together to improve memory?", "a": ["Chunking", "Producing", "Staging", "Positioning"], "c": 0, "e": "Chunking increases working memory capacity by organizing information into meaningful units — a phone number (10 digits) becomes 3 chunks."}, {"t": 0, "q": "Punishment is an effective behavior modification tool when it has significance, immediacy, and what third component?", "a": ["Motivation", "Authority", "Consistency", "Frequency"], "c": 2, "e": "Punishment requires: significance (matters to the person), immediacy (right after the behavior), and consistency (every time). Motivation is NOT required — this 'except' question appears."}, {"t": 1, "q": "What is the term for the presence of two or more disorders in the same individual?", "a": ["Bifunctional", "Comorbid", "Cofunctional", "Bimodal"], "c": 1, "e": "Comorbidity is extremely common in mental health — anxiety and depression co-occur frequently, as do ADHD with learning disabilities, and substance use with virtually any mental disorder."}, {"t": 1, "q": "What is the most current WHO classification system for all health conditions worldwide?", "a": ["DSM-5", "ICD-11", "AGPD-2", "DCF-7"], "c": 1, "e": "The ICD-11 (International Classification of Diseases, 11th edition) is the WHO's global diagnostic system covering physical AND mental health conditions. The DSM-5-TR is the U.S.-focused psychiatric manual."}, {"t": 1, "q": "What is the most commonly used psychological treatment for ASD?", "a": ["Mind mapping", "Psychotherapy", "Applied behavioral analysis", "Electroshock therapy"], "c": 2, "e": "ABA (Applied Behavior Analysis) is the most evidence-supported psychological treatment for ASD — particularly early intensive intervention (25+ hrs/week), which shows the strongest gains in language and IQ."}, {"t": 1, "q": "For ASD treatment, what is the medication classification of the two FDA-approved drugs?", "a": ["Antipsychotics", "Stimulants", "Anticonvulsants", "Antidepressants"], "c": 0, "e": "Risperidone and aripiprazole — both atypical antipsychotics — are FDA-approved for managing irritability and aggression in ASD. They do not treat core social communication differences."}, {"t": 1, "q": "Children with ASD treated early with high-intensity ABA show strongest gains in which areas?", "a": ["Daily self-control", "Social behavior", "Verbal IQ and language acquisition", "Emotional regulation"], "c": 2, "e": "Meta-analyses consistently show early intensive ABA produces the strongest effects on verbal IQ and language acquisition — these are the highest-frequency outcome measures in the research."}, {"t": 1, "q": "A child with ASD rocks back and forth repetitively. What is the most likely source of this behavior?", "a": ["Failure to develop theory of mind", "General dysfunction in sensory networks", "Slow language development", "Low metabolic rate"], "c": 1, "e": "Repetitive behaviors in ASD are linked to sensory processing differences — they often serve as self-regulatory responses to sensory over- or under-stimulation."}, {"t": 1, "q": "ADHD and Restless Leg Syndrome share a genetic link involving differences in which neurotransmitter?", "a": ["ADHD and narcolepsy", "ADHD and restless leg syndrome", "ADHD and bipolar disorder", "ADHD and OCD"], "c": 1, "e": "ADHD and Restless Leg Syndrome (RLS) share a genetic basis involving dopamine system differences — both conditions respond to dopamine-enhancing treatments."}, {"t": 1, "q": "Schizophrenia affects approximately what percent of the human population worldwide?", "a": ["0.1%", "1%", "5%", "10%"], "c": 1, "e": "Schizophrenia affects approximately 1% of people worldwide — remarkably consistent across cultures, suggesting a strong biological (genetic) component."}, {"t": 1, "q": "Which of these individuals is most likely to be FIRST diagnosed with schizophrenia?", "a": ["Twenty-year-old male", "Forty-five-year-old male", "Twelve-year-old female", "Fifty-two-year-old female"], "c": 0, "e": "Schizophrenia peaks in young adult males (late teens to mid-20s), earlier than in females (mid-20s to early 30s). Earlier onset in males is associated with more severe presentations."}, {"t": 1, "q": "What term describes schizophrenia patients who maintain awkward body positions for hours?", "a": ["Avolition", "Restricted affect", "Loose association", "Catatonia"], "c": 3, "e": "Catatonia is a negative symptom involving motor abnormalities — including maintaining unusual postures (waxy flexibility), stupor, or sometimes excessive purposeless movement."}, {"t": 1, "q": "Patients on long-term antipsychotics may develop which involuntary movement condition?", "a": ["Memory loss", "Severe insomnia", "Cataplexy", "Tardive dyskinesia"], "c": 3, "e": "Tardive dyskinesia (TD) develops after prolonged antipsychotic exposure — characterized by repetitive involuntary movements, especially facial (lip smacking, tongue movements). Can be permanent."}, {"t": 1, "q": "What is the only FDA-approved second-generation antipsychotic for treatment-resistant schizophrenia that also reduces suicidal thoughts?", "a": ["Clozapine", "Risperidone", "Olanzapine", "Quetiapine"], "c": 0, "e": "Clozapine is reserved for treatment-resistant schizophrenia due to serious side effects requiring blood monitoring. It is uniquely FDA-approved for reducing suicidal ideation in schizophrenia."}, {"t": 1, "q": "What is the average age of onset for bipolar disorder?", "a": ["9", "16", "25", "39"], "c": 2, "e": "Bipolar disorder most commonly begins around age 25. Earlier onset (teens) is associated with more manic episodes and more severe course."}, {"t": 1, "q": "What is the most commonly prescribed medication for treating bipolar disorder?", "a": ["Potassium phosphate", "Lithium carbonate", "Sodium bicarbonate", "Manganese chloride"], "c": 1, "e": "Lithium carbonate has been the gold-standard mood stabilizer since the 1960s — reducing both manic and depressive episodes. Requires careful blood level monitoring."}, {"t": 1, "q": "What type of bipolar disorder involves chronic hypomanic and mild depressive symptoms lasting at least 2 years?", "a": ["Psychosis", "Cyclothymia", "Bipolar I", "Bipolar II"], "c": 1, "e": "Cyclothymia is a milder, chronic variant — mood swings never reach full manic or major depressive episode criteria but persist for 2+ years. It often progresses to full bipolar disorder."}, {"t": 1, "q": "Rates of bipolar disorder are negatively correlated with seafood consumption, suggesting which nutrient is protective?", "a": ["Magnesium", "Niacin", "Omega-3 fatty acids", "Vitamin D"], "c": 2, "e": "Omega-3 fatty acids (EPA and DHA from fish) support membrane fluidity and neurotransmitter function. Higher seafood/omega-3 consumption is linked to lower bipolar disorder rates."}, {"t": 1, "q": "What is the term for loss of pleasure in activities that previously provided enjoyment?", "a": ["Anhedonia", "Moodiness", "Helplessness", "Rumination"], "c": 0, "e": "Anhedonia ('without pleasure') is one of the two core diagnostic criteria for major depression (along with depressed mood). It reflects dysregulation in the brain's dopamine reward circuits."}, {"t": 1, "q": "What term describes repetitively focusing on symptoms of depression and their causes?", "a": ["Rumination", "Anhedonia", "Avolition", "Dysthymia"], "c": 0, "e": "Rumination — replaying negative thoughts, feelings, and events — both predicts onset of depression and prolongs depressive episodes once they begin."}, {"t": 1, "q": "Which accurately describes an anxiety disorder?", "a": ["Anxiety is due entirely to genetic factors", "Anxiety affects 65% of the population", "Anxiety temporarily increases performance", "Anxiety is not proportional to a person's circumstances"], "c": 3, "e": "Anxiety disorders involve fear/worry disproportionate to actual circumstances — this distinguishes disorder from normal adaptive anxiety, which is proportional and motivating."}, {"t": 1, "q": "PTSD is correlated with smaller volume of which brain structure?", "a": ["Hippocampus", "Amygdala", "Hypothalamus", "Prefrontal cortex"], "c": 0, "e": "Chronic stress in PTSD elevates cortisol, which is neurotoxic to hippocampal neurons. Smaller hippocampal volume explains memory disturbances and difficulty contextualizing traumatic memories."}, {"t": 1, "q": "PTSD is correlated with lower benzodiazepine activity — explaining patients' tendency to self-medicate with what?", "a": ["Antihistamines", "Stimulants", "Alcohol", "Opioids"], "c": 2, "e": "Benzodiazepines and alcohol both enhance GABA activity. Reduced natural benzodiazepine activity in PTSD creates chronic anxiety — alcohol provides temporary relief, driving elevated rates of AUD in PTSD."}, {"t": 1, "q": "What term describes a repetitive ritualistic behavior performed to reduce anxiety in OCD?", "a": ["Fixation", "Compulsion", "Behaviorism", "Obsession"], "c": 1, "e": "Compulsions are repetitive behaviors (handwashing, checking, counting) performed to neutralize the anxiety caused by obsessions. They provide temporary relief but maintain the OCD cycle."}, {"t": 1, "q": "In the U.S., what is the most commonly prescribed medication class for depression?", "a": ["SNRIs", "NDRIs", "SSRIs", "MAOIs"], "c": 2, "e": "SSRIs (Selective Serotonin Reuptake Inhibitors) — fluoxetine, sertraline, escitalopram — are first-line treatment for depression and many anxiety disorders due to their effectiveness and tolerability."}, {"t": 1, "q": "Which therapy type is generally most effective for treating anxiety disorders?", "a": ["Cognitive behavioral therapy", "Applied behavioral analysis", "Cognitive remediation", "Electroconvulsive therapy"], "c": 0, "e": "CBT — especially exposure-based techniques — is the gold-standard psychotherapy for anxiety disorders. It addresses both cognitive distortions and avoidance behaviors that maintain anxiety."}, {"t": 1, "q": "What eating disorder is characterized by unusually low body weight, intense fear of gaining weight, and distorted body image?", "a": ["Binge-eating disorder", "Bulimia nervosa", "Abusive eating", "Anorexia nervosa"], "c": 3, "e": "Anorexia nervosa has the highest mortality rate of any psychiatric disorder — combining physical complications of starvation (cardiac arrest, electrolyte imbalances) with elevated suicide risk."}, {"t": 1, "q": "What eating disorder involves binge eating followed by feelings of embarrassment, depression, or guilt — without purging?", "a": ["Bulimia nervosa", "Starvation disorder", "Anorexia nervosa", "Binge-eating disorder"], "c": 3, "e": "Binge-eating disorder (BED) is the most common eating disorder — characterized by recurrent binge episodes without compensatory purging, leading to significant distress."}, {"t": 1, "q": "What is a major benefit of group therapy?", "a": ["Provides faster progress", "Offers hope and decreases isolation", "Lets others observe individual therapy", "Has longer-lasting effects than individual therapy"], "c": 1, "e": "Yalom's therapeutic factors of group therapy include universality (others share your struggles), instillation of hope, and decreased isolation — a primary evidence-based benefit."}, {"t": 1, "q": "Which therapy is specifically designed for borderline personality disorder?", "a": ["Action-based therapy", "Actualization therapy", "Dialectical behavior therapy", "Mood stabilization therapy"], "c": 2, "e": "DBT, developed by Marsha Linehan, combines CBT with acceptance strategies and mindfulness. It teaches four skill sets: mindfulness, distress tolerance, emotion regulation, and interpersonal effectiveness."}, {"t": 1, "q": "Personality disorders generally cannot be diagnosed before what age?", "a": ["5", "12", "18", "25"], "c": 2, "e": "Personality disorders require a stable, pervasive pattern of inner experience and behavior. Because personality is still forming in adolescence, diagnosis requires age 18+ (except Antisocial PD has juvenile precursors)."}, {"t": 1, "q": "What is the first step of Evidence-Based Practice?", "a": ["Evaluate outcomes", "Search the literature", "Construct an answerable clinical question", "Apply findings to the patient"], "c": 2, "e": "EBP begins with a structured clinical question — often using the PICO format (Patient/Problem, Intervention, Comparison, Outcome). This guides targeted literature searching."}, {"t": 1, "q": "What is the goal of neurofeedback therapy?", "a": ["Train brain to react to external cues", "Match emotional states with physical cues", "Keep measures of brain activity within a certain range", "Increase delta waves during waking"], "c": 2, "e": "Neurofeedback uses real-time EEG displays to teach patients to voluntarily regulate their brain wave patterns — keeping activity within target ranges for conditions like ADHD, anxiety, and epilepsy."}, {"t": 1, "q": "What is the primary advantage of deep brain stimulation over traditional psychosurgery?", "a": ["Always results in improvement", "Effects are permanent", "Effects are reversible and adjustable", "More cost-effective"], "c": 2, "e": "DBS uses implanted electrodes to electrically stimulate target brain regions — crucially, stimulation can be adjusted or the device turned off, unlike ablative surgery which permanently destroys tissue."}, {"t": 2, "q": "Which is NOT a core component of an effective behavioral health prevention program?", "a": ["Focusing on life and social skills", "Peer support services", "Focusing on physical skills", "Social commitment to not using drugs"], "c": 2, "e": "Effective prevention focuses on social/life skills, peer support, and social commitment. Physical skills training is not a recognized component — this specific distractor has appeared."}, {"t": 2, "q": "What is one of the first brain structures affected by opiates?", "a": ["Pons", "Midbrain", "Cerebellum", "Medulla"], "c": 3, "e": "Opiates rapidly bind to receptors in the medulla — which controls breathing and heart rate. This is why opiate overdose is life-threatening: it suppresses the brainstem's vital functions."}, {"t": 2, "q": "Which drug does NOT produce significant physical withdrawal?", "a": ["Heroin", "Opioids", "Nicotine", "Cocaine"], "c": 3, "e": "Cocaine produces intense psychological craving but not dangerous physical withdrawal. Opioids, heroin, and nicotine all produce significant physical withdrawal. This distinction appears."}, {"t": 2, "q": "With addiction, which part of the brain is disrupted, leading to poor impulse control?", "a": ["Frontal cerebral cortex", "Basal ganglia", "Midbrain", "Insula"], "c": 0, "e": "Chronic drug use disrupts prefrontal cortex function — the brain region governing impulse control, decision-making, and inhibiting unwanted behaviors. This creates the hallmark inability to stop."}, {"t": 2, "q": "What percent of adults with mental illness also experienced a substance use disorder?", "a": ["15%", "27%", "35%", "42%"], "c": 1, "e": "SAMHSA data: 27% of adults with mental illness co-occurred with substance use disorder — one of the strongest arguments for integrated dual-diagnosis treatment."}, {"t": 2, "q": "What percent of people with a substance use disorder do NOT receive treatment?", "a": ["80%", "84%", "91%", "96%"], "c": 1, "e": "84% — the vast majority of people with substance use disorders receive no treatment. Barriers include stigma, cost, lack of access, and not recognizing the problem as treatable."}, {"t": 2, "q": "What is the average delay between onset of mental illness symptoms and first treatment?", "a": ["2 years", "5 years", "11 years", "20 years"], "c": 2, "e": "11 years — the staggering gap between when symptoms begin and when someone first receives treatment. This delay, driven by stigma, misdiagnosis, and access barriers, allows conditions to worsen significantly."}, {"t": 2, "q": "What is the most commonly used federally illegal substance in the United States?", "a": ["Heroin", "Nicotine", "Cocaine", "Marijuana"], "c": 3, "e": "Marijuana (cannabis) is the most widely used federally illegal substance — over 49 million Americans used it in 2022. Despite federal illegality, most states have legalized medical and/or recreational use."}, {"t": 2, "q": "What cannabinoid interacts with receptors for pain, appetite, learning, and movement?", "a": ["Cannabidivarin (CBDV)", "Anandamide", "2-AG", "Tetrahydrocannabinol (THC)"], "c": 3, "e": "THC mimics the endocannabinoid anandamide at CB1 receptors in the brain, affecting pain, appetite ('the munchies'), memory, motor control, and mood."}, {"t": 2, "q": "As a stimulant, nicotine mimics the action of which neurotransmitter?", "a": ["Norepinephrine", "Dopamine", "Serotonin", "Acetylcholine"], "c": 3, "e": "Nicotine binds to nicotinic acetylcholine receptors (nAChRs) — mimicking acetylcholine. This triggers dopamine release in the nucleus accumbens, creating the reinforcing pleasure driving addiction."}, {"t": 2, "q": "What term describes needing larger quantities of a drug to produce the same effect?", "a": ["Dependence", "Addiction", "Tolerance", "Withdrawal"], "c": 2, "e": "Tolerance develops as the brain adapts — downregulating receptors or increasing metabolic clearance. It is a hallmark of physical dependence and explains dose escalation over time."}, {"t": 2, "q": "What hallucinogenic tea is used to produce altered consciousness in some religious ceremonies?", "a": ["Mescaline", "Hyoscyamus", "Ayahuasca", "Kratom"], "c": 2, "e": "Ayahuasca is a DMT-containing Amazonian brew used in shamanic and some religious contexts. Not mescaline, not hyoscyamus — this specific distractor set appears across exam years."}, {"t": 2, "q": "Which drugs are among the most addictive due to direct action on the dopamine reward system?", "a": ["Alcohol and LSD", "Caffeine and nicotine", "Cannabis and cocaine", "Cocaine and amphetamines"], "c": 3, "e": "Cocaine and amphetamines directly flood the nucleus accumbens with dopamine — bypassing the brain's natural reward system to produce intense euphoria. This direct mechanism creates the highest addiction potential."}, {"t": 2, "q": "What psychoactive drug withdrawal causes headaches and fatigue?", "a": ["Marijuana", "Caffeine", "Nicotine", "Cocaine"], "c": 1, "e": "Caffeine withdrawal is officially recognized in the DSM-5 — symptoms include headache, fatigue, difficulty concentrating, and irritability, beginning 12–24 hours after last intake."}, {"t": 2, "q": "What psychoactive drug use is associated with lower risk of Parkinson's and Alzheimer's disease?", "a": ["Caffeine", "Nicotine", "Cocaine", "Marijuana"], "c": 0, "e": "Multiple epidemiological studies associate caffeine consumption with reduced risk of Parkinson's (via adenosine receptor effects on dopamine pathways) and some protection against Alzheimer's disease."}, {"t": 2, "q": "What study found that adverse childhood experiences have dose-response relationships with adult health outcomes?", "a": ["NAMI Longitudinal Study", "SAMHSA Cohort Study", "ACE Study", "National Comorbidity Survey"], "c": 2, "e": "The ACE Study (Kaiser Permanente, 1990s) found childhood trauma has dose-response relationships with adult mental health, physical health, social functioning, and substance use across multiple domains."}, {"t": 2, "q": "Which drug used to treat opioid use disorder can ONLY be dispensed through SAMHSA-certified Opioid Treatment Programs?", "a": ["Naltrexone", "Buprenorphine", "Methadone", "Naloxone"], "c": 2, "e": "Methadone for OUD is strictly regulated — dispensed only through federally certified OTPs. Buprenorphine can be prescribed in office settings; naltrexone has no special restrictions."}, {"t": 2, "q": "In the Stages of Change model, what is the term for beginning to consider making a change in the next 6 months?", "a": ["Precontemplation", "Contemplation", "Preparation", "Action"], "c": 1, "e": "The Transtheoretical Model stages: Precontemplation (not considering), Contemplation (considering change in next 6 months), Preparation (planning), Action (actively changing), Maintenance (sustaining)."}, {"t": 2, "q": "What is the term for diverse organizations forming an alliance to pursue a shared goal such as emerging health issues?", "a": ["Task force", "Coalition", "Consortium", "Workgroup"], "c": 1, "e": "A coalition brings together different types of organizations — health systems, schools, government agencies, community groups — united around a common goal such as reducing substance use in a community."}, {"t": 2, "q": "What is the U.S. national peer support group for people living with mental health conditions?", "a": ["NAMI Basics", "NAMI Homefront", "NAMI Connection", "NAMI Family Support Group"], "c": 2, "e": "NAMI Connection is a free, peer-led recovery support group for adults with mental illness — led by people with lived experience. Different from NAMI's facilitator-led education programs."}, {"t": 2, "q": "What NAMI program supports families of military service personnel with mental health conditions?", "a": ["NAMI Basics", "NAMI Back to Home", "NAMI Homefront", "NAMI Welcome Home"], "c": 2, "e": "NAMI Homefront addresses the unique culture and challenges of military families — including deployment stress, stigma in military culture, and navigating VA resources. Free and peer-taught."}, {"t": 2, "q": "What percent of people experiencing homelessness have a serious mental health condition?", "a": ["14.2%", "20.1%", "37.9%", "52%"], "c": 1, "e": "The correct figure is 20.1%. Be careful here — 37.9% is a persistent distractor and a widely repeated error. The statistic is used to illustrate what happened when deinstitutionalization moved people out of state hospitals without funding community mental health care and housing to receive them."}, {"t": 2, "q": "Alcohol-impaired driving accounts for approximately what percent of all U.S. driving fatalities?", "a": ["31%", "24%", "17%", "9%"], "c": 0, "e": "Alcohol is involved in approximately 31% of all U.S. traffic fatalities — roughly 10,000 deaths per year. It remains one of the most preventable causes of death."}, {"t": 2, "q": "A patient taking Acamprosate, Naltrexone, or Disulfiram is most likely being treated for which disorder?", "a": ["Tobacco use disorder", "Opioid use disorder", "Alcohol use disorder", "Cannabis use disorder"], "c": 2, "e": "All three are FDA-approved specifically for alcohol use disorder: Disulfiram = aversion (causes nausea with alcohol), Naltrexone = blocks reward, Acamprosate = reduces protracted craving."}, {"t": 2, "q": "What group has the highest suicide COMPLETION rate?", "a": ["Adolescents", "Adults over 45", "Black/African Americans", "Hispanic/Latinx Americans"], "c": 1, "e": "Adults over 45 — particularly white middle-aged men — have the highest suicide completion rates. While adolescents have higher ideation and attempt rates, older adults use more lethal methods."}, {"t": 2, "q": "The human brain responds to feelings of isolation by priming the immune system to fight what?", "a": ["Bacteria", "Viruses", "Algae", "Parasites"], "c": 0, "e": "Evolutionary theory: social conflict risked wounds and bacterial infection. So the brain primes the immune system for bacteria when lonely — when chronically activated, this contributes to inflammation-related disease."}, {"t": 3, "q": "What circuit responds to stressors by releasing epinephrine and norepinephrine into the bloodstream?", "a": ["FFA axis", "MAST system", "HPA axis", "SAM system"], "c": 3, "e": "The SAM (Sympatho-Adreno-Medullary) system provides the immediate fight-or-flight response — activating in seconds via epinephrine and norepinephrine."}, {"t": 3, "q": "What does the HPA axis release during a sustained stress response?", "a": ["Epinephrine", "Oxytocin", "Cortisol", "Norepinephrine"], "c": 2, "e": "The HPA (Hypothalamic-Pituitary-Adrenal) axis produces cortisol — a glucocorticoid that mobilizes energy but is immunosuppressive and neurotoxic when chronically elevated."}, {"t": 3, "q": "The 'tend or befriend' stress response is driven by which hormone?", "a": ["Cortisol", "Oxytocin", "Norepinephrine", "Serotonin"], "c": 1, "e": "Oxytocin drives the tend-or-befriend response, particularly in women — promoting nurturing behavior and social bonding as an alternative to fight-or-flight under stress."}, {"t": 3, "q": "What is the most significant variable predicting a person's stress response?", "a": ["Learned adaptation to challenges", "The body's reaction to stressors", "Focus on the future", "Sense of control"], "c": 3, "e": "Perceived control is the strongest predictor of stress response — when people feel they have even partial control, physiological and psychological stress is significantly reduced."}, {"t": 3, "q": "Which coping style manages negative feelings associated with an unchangeable stressor?", "a": ["Positive-focused", "Relationship-focused", "Emotion-focused", "Problem-focused"], "c": 2, "e": "Emotion-focused coping is appropriate when a stressor cannot be changed (loss, illness) — strategies include reframing, acceptance, distraction, and emotional expression."}, {"t": 3, "q": "What is the most important predictor of life satisfaction in happiness research?", "a": ["Relationships", "Health", "Education", "Wealth"], "c": 0, "e": "Decades of research — including the Harvard Study of Adult Development — consistently show quality of relationships is the strongest predictor of happiness, health, and longevity."}, {"t": 3, "q": "When do people experience 'flow' according to Csikszentmihalyi?", "a": ["During activities contributing to the pleasant life", "Following activities contributing to a meaningful life", "During activities contributing to the good life", "Following activities contributing to the good life"], "c": 2, "e": "Flow = complete absorption in a challenging, meaningful activity — associated with the 'engaged life' or 'good life' (eudaimonic wellbeing). Distinct from hedonic pleasure."}, {"t": 3, "q": "Resilience can lead to post-traumatic growth. Which is a positive change from such growth?", "a": ["Increased appreciation for material things", "Decreased sense of self-efficacy", "Decreased reliance on others", "Increased compassion for others"], "c": 3, "e": "Post-traumatic growth commonly includes increased compassion, deeper relationships, greater appreciation for life, enhanced personal strength, and sometimes spiritual development."}, {"t": 3, "q": "What term describes the approach to happiness focused on obtaining pleasure and avoiding pain?", "a": ["Eudaimonic", "Hedonic", "Flow", "Authentic"], "c": 1, "e": "Hedonic wellbeing focuses on maximizing pleasure and minimizing pain — the 'pleasant life.' Research shows hedonic happiness is less stable and less correlated with long-term life satisfaction than eudaimonic wellbeing."}, {"t": 3, "q": "What part of the brain becomes LESS active when a person is depressed?", "a": ["Hippocampus", "Occipital lobe", "Parietal lobe", "Frontal lobe"], "c": 3, "e": "The prefrontal/frontal cortex shows decreased metabolic activity in depression — explaining cognitive slowing, difficulty concentrating, impaired executive function, and diminished motivation."}, {"t": 3, "q": "Maslow's Hierarchy of Needs places which type of need at the base?", "a": ["Safety needs", "Esteem needs", "Physiological needs", "Self-actualization"], "c": 2, "e": "Maslow's hierarchy (1943): Physiological (food, water, shelter) → Safety → Love/Belonging → Esteem → Self-actualization. Lower needs must be substantially met before higher ones become motivating."}, {"t": 3, "q": "What does 'eudaimonic' wellbeing focus on?", "a": ["Pleasure and positive emotions", "Pain avoidance", "Meaning, virtue, and living fully", "Financial security"], "c": 2, "e": "Eudaimonic wellbeing (from Aristotle's 'eudaimonia') focuses on meaning, purpose, virtue, and full engagement with life — more strongly linked to longevity and deep life satisfaction than hedonic wellbeing."}, {"t": 3, "q": "Some researchers report effective treatment for recurring nightmares involves training in which technique?", "a": ["Vestibular imagery", "Lucid dreaming", "Light stimulation", "Purposeful daydreaming"], "c": 1, "e": "Image Rehearsal Therapy (IRT) teaches patients to consciously rewrite nightmare scripts while awake and rehearse the new narrative — reducing nightmare frequency and distress. Lucid dreaming training is a related technique."}, {"t": 3, "q": "Chronic elevation of which stress hormone causes damage to the hippocampus over time?", "a": ["Epinephrine", "Oxytocin", "Cortisol", "Norepinephrine"], "c": 2, "e": "Chronically elevated cortisol (from the HPA axis) is neurotoxic to hippocampal neurons — contributing to memory problems in PTSD and major depression. This is why chronic stress literally shrinks the hippocampus."}, {"t": 3, "q": "What type of coping directly addresses the stressor when it can be changed?", "a": ["Emotion-focused", "Relationship-focused", "Problem-focused", "Avoidance-focused"], "c": 2, "e": "Problem-focused coping involves taking direct action to address or eliminate the stressor — best used when the situation can realistically be changed or controlled."}, {"t": 4, "q": "The key difference between a psychologist doctoral student and a psychiatry resident in most states is that the latter can do what?", "a": ["Prescribe medication", "Conduct research", "Conduct psychotherapy", "Peer review"], "c": 0, "e": "Psychiatrists (MD/DO) completed medical school and can prescribe medication. Psychologists (PhD/PsyD) cannot prescribe in most states. Both can conduct therapy and research."}, {"t": 4, "q": "Which is the federal agency leading public health efforts in mental health and substance use?", "a": ["CDC", "NAMI", "SAMHSA", "NIH"], "c": 2, "e": "SAMHSA (Substance Abuse and Mental Health Services Administration) is the HHS agency setting federal behavioral health policy, funding prevention programs, and publishing national statistics."}, {"t": 4, "q": "What classification system does the World Health Organization publish for all health conditions?", "a": ["DSM-5", "ICD-11", "PDM-2", "RDoC"], "c": 1, "e": "The ICD-11 (International Classification of Diseases) covers all health conditions — mental, physical, and developmental. It is used globally for epidemiology, clinical care, and health statistics."}, {"t": 4, "q": "What are the three pillars of Evidence-Based Practice?", "a": ["Research, cost, and patient history", "Research, clinical expertise, and patient values", "Guidelines, protocols, and outcomes", "Theory, practice, and evaluation"], "c": 1, "e": "EBP's three equal pillars: (1) best available scientific research, (2) clinical expertise and judgment, and (3) patient values and preferences. All three must be integrated for patient-centered care."}, {"t": 4, "q": "Mental health parity laws require that insurance do what?", "a": ["Cover mental health at 50% of physical health rates", "Cover mental health conditions equivalently to physical conditions", "Prioritize mental health over physical conditions", "Provide unlimited mental health visits"], "c": 1, "e": "Mental health parity laws (including the Mental Health Parity and Addiction Equity Act) require insurance plans to cover mental health and substance use conditions at the same level as physical conditions."}, {"t": 5, "q": "What was the earliest form of psychosurgery, involving drilling holes in the skull?", "a": ["Lobotomies", "Trepanation", "Canalization", "Cauterization"], "c": 1, "e": "Trepanation is among humanity's oldest surgical procedures — evidence from over 7,000 years ago. Done to release evil spirits; some patients survived, as shown by bone regrowth around drill holes."}, {"t": 5, "q": "What 19th-century pseudoscience involved reading bumps on the skull to predict character?", "a": ["Magnetism", "Phrenology", "Physiognomy", "Neurology"], "c": 1, "e": "Phrenology (Gall, early 1800s) claimed skull bumps mapped brain regions controlling specific traits. Though completely discredited, it popularized the idea that brain areas serve different functions — a valid concept."}, {"t": 5, "q": "Which scientist used microscopic staining to prove the Neuron Doctrine?", "a": ["Ramon y Cajal", "Charles Darwin", "Camillo Golgi", "Gregor Mendel"], "c": 0, "e": "Ramón y Cajal used Golgi's silver staining to demonstrate neurons are discrete cells connected at synapses — earning the 1906 Nobel Prize and founding modern neuroscience."}, {"t": 5, "q": "Charles Bradley accidentally discovered stimulant treatment for ADHD while treating children for what?", "a": ["Major depressive disorder", "Learning and behavior problems", "Sleep disturbances", "Somatic symptom disorders"], "c": 1, "e": "In 1937, Bradley gave Benzedrine to children with learning and behavior problems to treat headaches from spinal taps. He noticed dramatic behavioral and academic improvement — accidentally discovering stimulant treatment for ADHD."}, {"t": 5, "q": "What is the major advantage of deep brain stimulation (DBS) over traditional psychosurgery?", "a": ["Always results in improvement", "Effects are permanent", "Effects are reversible and adjustable", "More cost-effective"], "c": 2, "e": "DBS uses implanted electrodes with adjustable, reversible stimulation — a critical advantage over ablative surgeries (lobotomy, cingulotomy) which permanently destroy brain tissue."}, {"t": 4, "q": "Which practitioners provide counseling and psychotherapy but are the least frequently used of the mental health provider categories?", "a": ["Hypnotherapists", "Clinical psychologists", "Licensed clinical social workers", "Psychiatric nurse practitioners"], "c": 0, "e": "Hypnotherapists do deliver counseling and psychotherapy, but they are the least commonly used of the recognized provider categories. The other three are mainstream, high-volume providers. When one option is the clear outlier in a list of standard professions, that outlier is usually the answer."}, {"t": 4, "q": "What trend is currently occurring in many psychology graduate school programs?", "a": ["Students are trained in combined specialties", "Students are trained in increasingly specific specializations", "There is a movement away from animal research", "There is a movement away from using human subjects"], "c": 0, "e": "Programs are broadening rather than narrowing — training students across combined specialties instead of a single track. The tempting wrong answer is the exact opposite statement, so if you remember the direction of the trend the question answers itself."}, {"t": 4, "q": "What is the FIRST step of evidence-based practice?", "a": ["Construct an answerable question", "Conduct a search of the most current scientific literature", "Conduct a critical evaluation of relevant literature", "Evaluate performance based on outcomes"], "c": 0, "e": "All four options are real steps in the evidence-based practice cycle, presented here out of order. You cannot search or evaluate literature until you know what you are asking, so framing an answerable question comes first, then searching, then appraising, then measuring outcomes."}, {"t": 4, "q": "Which two organizations publish the DSM-5-TR and the ICD-11, respectively?", "a": ["American Psychiatric Association and the World Health Organization", "World Health Organization and the American Psychological Association", "Centers for Disease Control and the American Psychiatric Association", "SAMHSA and the National Institute of Mental Health"], "c": 0, "e": "The DSM-5-TR is published by the American Psychiatric Association and covers mental disorders in a primarily U.S. context. The ICD-11 is published by the World Health Organization, is used globally, and covers all health conditions. Note the trap between the American Psychiatric Association and the American Psychological Association — different organizations, same initials."}, {"t": 4, "q": "A patient needs both psychotherapy and a medication adjustment. Which provider can independently deliver both in most states?", "a": ["Psychiatrist", "Clinical psychologist", "Licensed professional counselor", "Marriage and family therapist"], "c": 0, "e": "The psychiatrist holds an MD or DO and can prescribe. Psychologists hold a PhD or PsyD and provide therapy and assessment but have prescribing authority in only a handful of states. Counselors and MFTs are master's-level therapy providers without prescribing authority."}, {"t": 5, "q": "What did phrenologists examine on a person's skull to predict character and traits?", "a": ["Bumps", "Suture lines", "Hair patterns", "The fontanel"], "c": 0, "e": "Phrenologists mapped bumps on the skull to supposed personality faculties. It was pseudoscience and was discredited, but it mattered historically because it pushed forward the idea that different mental functions are localized in different parts of the brain."}, {"t": 5, "q": "What is the non-surgical alternative to deep brain stimulation?", "a": ["Repetitive transcranial magnetic stimulation", "Ionic pulse stimulation", "Cerebral current stimulation", "Neurolaser stimulation"], "c": 0, "e": "rTMS delivers magnetic pulses through the scalp with no implanted electrode and no surgery. The other three options are invented terms that sound clinical. Note the paired question that asks for the advantage of DBS over psychosurgery — that answer is reversibility."}, {"t": 5, "q": "Approximately what percent of people experiencing homelessness in the United States have a serious mental health condition?", "a": ["20.1%", "14.2%", "37.9%", "70.4%"], "c": 0, "e": "The figure is 20.1%. This is worth committing to memory precisely, because 37.9% is one of the distractors offered alongside it and is a commonly repeated error. The statistic is usually framed as a consequence of deinstitutionalization without matching community funding."}, {"t": 5, "q": "Which figure accidentally discovered that stimulant medication helped children being treated for learning and behavior problems?", "a": ["Charles Bradley", "Ivan Pavlov", "John Watson", "Ulric Neisser"], "c": 0, "e": "Bradley made the observation in 1937, the origin of stimulant treatment for what is now called ADHD. The exact phrase the key rewards is 'learning and behavior problems.' Pavlov, Watson, and Neisser appear repeatedly as distractors on history questions and are rarely the answer."}, {"t": 5, "q": "What is the major advantage of deep brain stimulation over traditional psychosurgery?", "a": ["Its effects are usually reversible", "Its effects are permanent", "It always results in improvement", "It is more cost effective"], "c": 0, "e": "DBS uses an implanted electrode that can be adjusted or switched off, unlike ablative psychosurgery which destroys tissue permanently. 'Effects are permanent' describes the older approach and is the tempting wrong answer. Nothing in psychiatry always produces improvement, which rules out that option on principle."},
+];
+
+
+/* ============================================================
+   Rendering + quiz engine
+   ============================================================ */
+const $ = id => document.getElementById(id);
+const esc = s => String(s);
+
+/* ---------- theme ---------- */
+(function(){
+  let saved = null;
+  try { saved = localStorage.getItem('mt-theme'); } catch(e){}
+  if (saved === 'dark' || saved === 'light') document.documentElement.setAttribute('data-theme', saved);
+  $('themeBtn').addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const isDark = cur ? cur === 'dark'
+      : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const next = isDark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('mt-theme', next); } catch(e){}
+  });
+})();
+
+/* ---------- best score ---------- */
+function readBest(){ try { return parseInt(localStorage.getItem('mt-best') || '', 10); } catch(e){ return NaN; } }
+function writeBest(p){ try { localStorage.setItem('mt-best', String(p)); } catch(e){} }
+(function(){ const b = readBest(); if (!isNaN(b)) $('stBest').textContent = b + '%'; })();
+
+/* ---------- navigation ---------- */
+function go(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0, behavior:'instant' in window ? 'auto' : 'auto'});
+}
+
+/* ---------- test plan table ---------- */
+(function(){
+  const rows = ['<div class="plan-r hd"><span>Topic</span><span>Weight</span></div>'];
+  TOPICS.forEach(t => rows.push(
+    '<div class="plan-r"><span>' + t.n + '</span><span class="plan-w">' +
+    (t.w > 0 ? t.w + '%' : 'Round 2') + '</span></div>'
+  ));
+  $('planTable').innerHTML = rows.join('');
+  $('stQ').textContent = Q.length;
+  const q2 = $('stQ2'); if (q2) q2.textContent = Q.length;
+})();
+
+/* ---------- study guide ---------- */
+(function(){
+  const out = [];
+  GUIDE.forEach((g, i) => {
+    const T = TOPICS[g.t];
+    const qr = g.qref.map(p =>
+      '<div><span class="qr-term">' + p[0] + '</span><span class="qr-def">' + p[1] + '</span></div>'
+    ).join('');
+    out.push(
+      '<div class="sec" id="sec' + g.t + '">' +
+        '<button class="sec-h" onclick="toggleSec(' + g.t + ')" aria-expanded="false">' +
+          '<span class="sec-w">' + T.w + '%</span>' +
+          '<span class="sec-t">' + T.n + '</span>' +
+          '<span class="sec-c">+</span>' +
+        '</button>' +
+        '<div class="sec-body">' +
+          '<div class="layer narr"><div class="layer-h">Narrative — read to understand</div>' + g.narr + '</div>' +
+          '<div class="layer deep"><div class="layer-h">Deep Dive — expert level</div>' + g.deep + '</div>' +
+          '<div class="layer qref"><div class="layer-h">Quick Reference — key terms</div><div class="qr">' + qr + '</div></div>' +
+          '<div class="layer note"><div class="layer-h">Top Competitor Study Notes</div><div class="notes-block">' + g.notes + '</div></div>' +
+          '<button class="sec-practice" onclick="startQuiz(' + g.t + ')">Practice this topic →</button>' +
+        '</div>' +
+      '</div>'
+    );
+  });
+  $('guideList').innerHTML = out.join('');
+})();
+
+function toggleSec(t){
+  const el = $('sec' + t);
+  const open = el.classList.toggle('open');
+  el.querySelector('.sec-h').setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+/* ---------- quiz engine ---------- */
+let session = [], idx = 0, score = 0, answered = false, lastMode = 'weighted';
+let curOrder = [0,1,2,3];
+const perTopic = {};
+
+function shuffle(a){
+  const r = a.slice();
+  for (let i = r.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [r[i], r[j]] = [r[j], r[i]];
+  }
+  return r;
+}
+
+/* Weighted draw: 45 / 5 x 11, largest-remainder over 50 items */
+function weightedSet(n){
+  const raw = TOPICS.map(t => t.w * n / 100);
+  const base = raw.map(Math.floor);
+  let left = n - base.reduce((a,b) => a+b, 0);
+  const order = raw.map((v,i) => [v - Math.floor(v), i])
+                   .sort((a,b) => b[0] - a[0] || a[1] - b[1]);
+  for (let k = 0; k < order.length && left > 0; k++, left--) base[order[k][1]]++;
+  let out = [];
+  base.forEach((cnt, t) => {
+    const pool = shuffle(Q.filter(q => q.t === t));
+    out = out.concat(pool.slice(0, Math.min(cnt, pool.length)));
+  });
+  return shuffle(out);
+}
+
+function startQuiz(mode){
+  lastMode = mode;
+  if (mode === 'weighted')      session = weightedSet(typeof TEST_N !== 'undefined' ? TEST_N : 50);
+  else if (mode === 'all')      session = shuffle(Q);
+  else                          session = shuffle(Q.filter(q => q.t === mode));
+  idx = 0; score = 0;
+  for (const k in perTopic) delete perTopic[k];
+  go('quiz');
+  renderQ();
+}
+
+function renderQ(){
+  answered = false;
+  const q = session[idx];
+  $('qCount').textContent = (idx + 1) + ' / ' + session.length;
+  $('qScore').textContent = score + ' ✓';
+  $('qFill').style.width = (idx / session.length * 100) + '%';
+  const T = TOPICS[q.t];
+  $('qTopic').textContent = T.n.replace('&amp;','&');
+  $('qTopic').style.color = T.c;
+  $('qStem').innerHTML = q.q;
+  curOrder = shuffle([0,1,2,3]);
+  const letters = ['A','B','C','D'];
+  $('qChoices').innerHTML = curOrder.map((orig, i) =>
+    '<button class="ch" onclick="answer(' + i + ')"><span class="k">' + letters[i] + '</span><span>' + q.a[orig] + '</span></button>'
+  ).join('');
+  const ex = $('qExpl');
+  ex.className = 'expl';
+  $('qNext').style.display = 'none';
+}
+
+function answer(i){
+  if (answered) return;
+  answered = true;
+  const q = session[idx];
+  const btns = $('qChoices').querySelectorAll('.ch');
+  btns.forEach((b, k) => {
+    b.disabled = true;
+    if (curOrder[k] === q.c) b.classList.add('right');
+    else if (k === i) b.classList.add('wrong');
+  });
+  const ok = curOrder[i] === q.c;
+  if (ok) score++;
+  if (!perTopic[q.t]) perTopic[q.t] = {c:0, n:0};
+  perTopic[q.t].n++;
+  if (ok) perTopic[q.t].c++;
+  const ex = $('qExpl');
+  ex.className = 'expl show ' + (ok ? 'ok' : 'no');
+  $('qVerdict').textContent = ok ? 'Correct' : 'Not quite';
+  $('qExplText').innerHTML = q.e;
+  $('qSrc').textContent = TOPICS[q.t].n.replace('&amp;','&') + (TOPICS[q.t].w > 0 ? ' · ' + TOPICS[q.t].w + '% of the test' : ' · Round Two material');
+  $('qScore').textContent = score + ' ✓';
+  $('qNext').style.display = 'block';
+  $('qNext').textContent = idx + 1 >= session.length ? 'See results' : 'Next question';
+  $('qNext').focus();
+}
+
+function nextQ(){
+  idx++;
+  if (idx >= session.length) return showResults();
+  renderQ();
+}
+
+function quitQuiz(){
+  if (idx > 0 || answered) return showResults();
+  go('home');
+}
+
+function showResults(){
+  const total = Math.max(1, Object.values(perTopic).reduce((a,b) => a + b.n, 0));
+  const pct = Math.round(score / total * 100);
+  go('results');
+  $('ringPct').textContent = pct + '%';
+  $('ringFrac').textContent = score + ' of ' + total;
+  const circ = 2 * Math.PI * 70;
+  requestAnimationFrame(() => {
+    $('ringArc').style.strokeDashoffset = circ * (1 - pct / 100);
+  });
+  $('ringArc').setAttribute('stroke', pct >= 80 ? 'var(--teal)' : pct >= 60 ? 'var(--orange)' : 'var(--red)');
+  const ranked = Object.keys(perTopic).filter(t => perTopic[t].n >= 2)
+    .sort((a,b) => (perTopic[a].c/perTopic[a].n) - (perTopic[b].c/perTopic[b].n));
+  const weakest = ranked.length ? TOPICS[ranked[0]].n.replace('&amp;','&') : null;
+  const second  = ranked.length > 1 ? TOPICS[ranked[1]].n.replace('&amp;','&') : null;
+  let msg;
+  if (pct >= 90)      msg = 'Medal range. Keep the full-length sessions coming and hold this line.' + (weakest ? ' Your softest spot is still ' + weakest + '.' : '');
+  else if (pct >= 80) msg = 'Strong.' + (weakest && second ? ' Read the Deep Dive for ' + weakest + ' and ' + second + ' tonight.' : ' Go find your two weakest topics below.');
+  else if (pct >= 65) msg = 'Solid base, real gaps.' + (weakest ? ' Work ' + weakest + ' before you take another full test.' : '');
+  else if (pct >= 45) msg = 'You know some of it.' + (weakest ? ' Open the study guide at ' + weakest + ' and read the narrative, then the deep dive.' : '');
+  else                msg = 'Start at the study guide, not the quiz.' + (weakest ? ' Begin with ' + weakest + '.' : ' Read the highest-weighted topic first.');
+  $('resMsg').textContent = msg;
+  const rows = Object.keys(perTopic).sort((a,b) => a - b).map(t => {
+    const d = perTopic[t], p = Math.round(d.c / d.n * 100);
+    const col = p >= 80 ? 'var(--teal)' : p >= 50 ? 'var(--orange)' : 'var(--red)';
+    return '<div class="brk-row"><span class="brk-t">' + TOPICS[t].n + '</span>' +
+           '<span class="brk-s" style="color:' + col + '">' + d.c + '/' + d.n + ' · ' + p + '%</span></div>';
+  });
+  $('resBrk').innerHTML = rows.join('') || '<div class="brk-row"><span class="brk-t">No questions answered</span><span class="brk-s">—</span></div>';
+  if (lastMode === 'weighted' && total >= (typeof TEST_N !== 'undefined' ? TEST_N : 50) * 0.8){
+    const b = readBest();
+    if (isNaN(b) || pct > b){ writeBest(pct); $('stBest').textContent = pct + '%'; }
+  }
+}
+
+function repeatQuiz(){ startQuiz(lastMode); }
+</script>
+
+</body>
+</html>

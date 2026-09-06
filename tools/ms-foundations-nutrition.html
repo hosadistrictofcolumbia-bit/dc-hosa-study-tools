@@ -1,0 +1,1396 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Foundations of Nutrition Study Tool</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  --navy:#0D1B2A; --navy-mid:#162438; --navy-hi:#1E3350;
+  --orange:#E8821A; --orange-dim:#A85C10;
+  --teal:#1A8A8A; --teal-dim:#125F5F;
+  --gold:#C9991A; --purple:#8C50C8; --purple-lt:#C07EF0;
+  --red:#D9544D;
+  --ink:#0D1B2A; --ink-2:#3E5068; --ink-3:#63758C;
+  --bg:#EEF1F5; --surface:#FFFFFF; --surface-2:#F5F7FA;
+  --line:#D3DBE5; --line-soft:#E4EAF1;
+  --focus:#E8821A;
+  --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --cond:'Barlow Condensed','Inter Tight',system-ui,sans-serif;
+  --mono:'IBM Plex Mono','SFMono-Regular',Menlo,Consolas,monospace;
+  --r:10px; --maxw:680px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ink:#F4F6F8; --ink-2:#B6C4D6; --ink-3:#8A9BB0;
+    --bg:#0D1B2A; --surface:#162438; --surface-2:#1B2C44;
+    --line:#2A3F5C; --line-soft:#22344E;
+    --orange:#F5941F; --teal:#25A5A5; --gold:#DCAB27; --purple-lt:#C994F5;
+  }
+}
+:root[data-theme="dark"]{
+  --ink:#F4F6F8; --ink-2:#B6C4D6; --ink-3:#8A9BB0;
+  --bg:#0D1B2A; --surface:#162438; --surface-2:#1B2C44;
+  --line:#2A3F5C; --line-soft:#22344E;
+  --orange:#F5941F; --teal:#25A5A5; --gold:#DCAB27; --purple-lt:#C994F5;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 18px 96px}
+h1,h2,h3,h4{font-family:var(--cond);text-wrap:balance;margin:0;letter-spacing:.01em}
+h1{font-size:2.35rem;line-height:1.05;font-weight:700}
+h2{font-size:1.65rem;line-height:1.12;font-weight:600}
+h3{font-size:1.2rem;font-weight:600}
+h4{font-size:1.02rem;font-weight:600;letter-spacing:.02em}
+p{margin:0 0 .9em}
+a{color:var(--orange)}
+button{font-family:inherit;font-size:inherit;cursor:pointer}
+:focus-visible{outline:2.5px solid var(--focus);outline-offset:2px;border-radius:4px}
+.eyebrow{font-family:var(--cond);text-transform:uppercase;letter-spacing:.14em;
+  font-size:.78rem;font-weight:600;color:var(--ink-3)}
+
+/* ---------- morpheme chips: the subject's atoms ---------- */
+.wp{font-family:var(--mono);font-size:.94em;font-weight:500;white-space:nowrap;
+  padding:.06em .34em;border-radius:4px;background:var(--surface-2);
+  border:1px solid var(--line-soft);color:var(--ink)}
+.wp.pre{border-left:3px solid var(--orange)}
+.wp.suf{border-right:3px solid var(--teal)}
+.wp.cf{border-bottom:3px solid var(--gold)}
+
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:40;background:var(--bg);
+  border-bottom:1px solid var(--line);}
+.topbar-in{max-width:var(--maxw);margin:0 auto;padding:10px 18px;
+  display:flex;align-items:center;gap:12px}
+.brandmark{font-family:var(--cond);font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;font-size:.9rem;color:var(--ink-2);
+  display:flex;align-items:center;gap:7px}
+.brandmark .dot{width:9px;height:9px;border-radius:2px;background:var(--orange);flex:none}
+.topbar .sp{flex:1}
+.iconbtn{background:none;border:1px solid var(--line);color:var(--ink-2);
+  border-radius:8px;width:34px;height:34px;display:grid;place-items:center;line-height:0}
+.iconbtn:hover{border-color:var(--orange);color:var(--orange)}
+.backbtn{background:none;border:none;color:var(--ink-2);padding:6px 0;
+  font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.82rem;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.backbtn:hover{color:var(--orange)}
+
+/* ---------- screens ---------- */
+.screen{display:none}
+.screen.active{display:block;animation:fade .22s ease}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){
+  .screen.active{animation:none}
+  *{transition:none!important}
+}
+
+/* ---------- hero ---------- */
+.hero{padding:30px 0 22px;border-bottom:1px solid var(--line)}
+.hero .kicker{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.tag{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.74rem;font-weight:600;padding:3px 9px;border-radius:999px;
+  border:1px solid var(--line);color:var(--ink-2);background:var(--surface)}
+.tag.hot{border-color:var(--orange);color:var(--orange)}
+.hero h1{margin-bottom:8px}
+.hero .sub{color:var(--ink-2);font-size:1.02rem;margin:0}
+
+/* the term-construction display: pre | root | suf */
+.termbuild{display:flex;align-items:stretch;margin:22px 0 4px;
+  border:1px solid var(--line);border-radius:var(--r);overflow:hidden;
+  background:var(--surface);font-family:var(--mono)}
+.termbuild div{flex:1;padding:11px 8px;text-align:center;min-width:0}
+.termbuild .lbl{display:block;font-family:var(--cond);font-size:.66rem;
+  text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3);margin-bottom:3px}
+.termbuild .val{font-size:.98rem;font-weight:600;overflow:hidden;text-overflow:ellipsis}
+.termbuild .p1{border-bottom:3px solid var(--orange)}
+.termbuild .p2{border-bottom:3px solid var(--gold);border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.termbuild .p3{border-bottom:3px solid var(--teal)}
+.termbuild-cap{font-size:.85rem;color:var(--ink-3);margin:8px 0 0;text-align:center}
+
+/* ---------- stat strip ---------- */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:20px 0}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px 10px}
+.stat .n{font-family:var(--cond);font-size:1.75rem;font-weight:700;line-height:1;
+  font-variant-numeric:tabular-nums;color:var(--orange)}
+.stat .l{font-size:.74rem;color:var(--ink-3);margin-top:4px;line-height:1.3}
+
+/* ---------- action cards ---------- */
+.actions{display:grid;gap:11px;margin:22px 0}
+.act{display:flex;align-items:center;gap:14px;text-align:left;width:100%;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:15px 16px;color:var(--ink);transition:border-color .15s,transform .15s}
+.act:hover{border-color:var(--orange);transform:translateX(2px)}
+.act .ic{width:38px;height:38px;flex:none;border-radius:8px;display:grid;place-items:center;
+  font-family:var(--cond);font-weight:700;font-size:1.1rem;color:#0D1B2A}
+.act>span:not(.ic):not(.ar){display:flex;flex-direction:column;gap:3px;min-width:0}
+.act .t{display:block;font-family:var(--cond);font-size:1.22rem;font-weight:600;line-height:1.15}
+.act .d{display:block;font-size:.84rem;color:var(--ink-3);line-height:1.35}
+.act .ar{margin-left:auto;color:var(--ink-3);font-size:1.2rem;flex:none}
+
+/* ---------- tabs ---------- */
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin:18px 0 0;
+  overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{background:none;border:none;border-bottom:2.5px solid transparent;
+  padding:9px 13px;color:var(--ink-3);font-family:var(--cond);font-weight:600;
+  font-size:1rem;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.tab[aria-selected="true"]{color:var(--orange);border-bottom-color:var(--orange)}
+.tabpanel{display:none;padding-top:20px}
+.tabpanel.active{display:block}
+
+/* ---------- study guide ---------- */
+.sec{border:1px solid var(--line);border-radius:var(--r);margin-bottom:11px;
+  background:var(--surface);overflow:hidden}
+.sec-h{width:100%;display:flex;align-items:center;gap:12px;padding:14px 15px;
+  background:none;border:none;text-align:left;color:var(--ink)}
+.sec-h:hover{background:var(--surface-2)}
+.sec-w{font-family:var(--cond);font-size:.9rem;font-weight:700;color:var(--orange);
+  font-variant-numeric:tabular-nums;flex:none;min-width:34px}
+.sec-t{font-family:var(--cond);font-size:1.16rem;font-weight:600;line-height:1.2;flex:1}
+.sec-c{color:var(--ink-3);font-size:1.1rem;flex:none;transition:transform .2s}
+.sec.open .sec-c{transform:rotate(45deg)}
+.sec-body{display:none;padding:0 15px 16px;border-top:1px solid var(--line-soft)}
+.sec.open .sec-body{display:block}
+
+.layer{margin-top:16px;border-left:3px solid var(--line);padding-left:14px}
+.layer-h{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.79rem;font-weight:700;margin-bottom:9px}
+.layer.narr{border-left-color:var(--teal)} .layer.narr .layer-h{color:var(--teal)}
+.layer.deep{border-left-color:var(--orange)} .layer.deep .layer-h{color:var(--orange)}
+.layer.qref{border-left-color:var(--gold)} .layer.qref .layer-h{color:var(--gold)}
+.layer.note{border-left-color:var(--purple-lt)} .layer.note .layer-h{color:var(--purple-lt)}
+.layer p{font-size:.95rem}
+.layer ul{margin:.4em 0 .9em;padding-left:1.15em}
+.layer li{font-size:.94rem;margin-bottom:.45em}
+.layer h4{margin:1.1em 0 .4em;color:var(--ink)}
+.qr{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line-soft);
+  border:1px solid var(--line-soft);border-radius:8px;overflow:hidden}
+@media(max-width:520px){.qr{grid-template-columns:1fr}}
+.qr>div{background:var(--surface);padding:8px 10px}
+.qr-term{font-family:var(--mono);font-size:.87rem;font-weight:600;color:var(--gold);
+  display:block;margin-bottom:2px}
+.qr-def{font-size:.85rem;color:var(--ink-2);line-height:1.4}
+.notes-block{background:color-mix(in srgb,var(--purple-lt) 9%,var(--surface));
+  border-radius:8px;padding:12px 13px}
+.notes-block p:last-child{margin-bottom:0}
+.trap{color:var(--red);font-weight:600}
+.sec-practice{margin-top:16px;width:100%;background:var(--surface-2);
+  border:1px dashed var(--line);border-radius:8px;padding:10px;color:var(--orange);
+  font-family:var(--cond);text-transform:uppercase;letter-spacing:.09em;
+  font-weight:600;font-size:.87rem}
+.sec-practice:hover{border-color:var(--orange);border-style:solid}
+
+/* ---------- quiz ---------- */
+.qbar{display:flex;align-items:center;gap:12px;margin:16px 0 4px}
+.qcount{font-family:var(--cond);font-weight:600;font-size:.9rem;color:var(--ink-3);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.qtrack{flex:1;height:5px;background:var(--line-soft);border-radius:3px;overflow:hidden}
+.qfill{height:100%;background:var(--orange);border-radius:3px;transition:width .3s}
+.qtopic{margin:14px 0 0}
+.qstem{font-size:1.14rem;line-height:1.5;margin:9px 0 18px;font-weight:500}
+.choices{display:grid;gap:9px}
+.ch{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;
+  background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r);
+  padding:13px 14px;color:var(--ink);line-height:1.45;transition:border-color .14s}
+.ch:hover:not(:disabled){border-color:var(--orange)}
+.ch:disabled{cursor:default}
+.ch .k{font-family:var(--cond);font-weight:700;color:var(--ink-3);flex:none;
+  width:20px;font-size:1.02rem}
+.ch.right{border-color:var(--teal);background:color-mix(in srgb,var(--teal) 12%,var(--surface))}
+.ch.right .k{color:var(--teal)}
+.ch.wrong{border-color:var(--red);background:color-mix(in srgb,var(--red) 10%,var(--surface))}
+.ch.wrong .k{color:var(--red)}
+.expl{margin-top:16px;border-radius:var(--r);padding:14px;
+  border:1px solid var(--line);background:var(--surface-2);display:none}
+.expl.show{display:block}
+.expl .v{font-family:var(--cond);text-transform:uppercase;letter-spacing:.1em;
+  font-size:.8rem;font-weight:700;margin-bottom:6px}
+.expl.ok .v{color:var(--teal)} .expl.no .v{color:var(--red)}
+.expl p{font-size:.93rem;margin:0}
+.expl .src{margin-top:9px;font-size:.79rem;color:var(--ink-3);font-family:var(--mono)}
+.btn{display:block;width:100%;background:var(--orange);color:#0D1B2A;border:none;
+  border-radius:var(--r);padding:14px;font-family:var(--cond);font-weight:700;
+  font-size:1.1rem;letter-spacing:.06em;text-transform:uppercase;margin-top:16px}
+.btn:hover{background:var(--orange-dim);color:#fff}
+.btn.ghost{background:none;border:1.5px solid var(--line);color:var(--ink-2)}
+.btn.ghost:hover{border-color:var(--orange);color:var(--orange);background:none}
+
+/* ---------- results ---------- */
+.ring{display:block;margin:22px auto 6px}
+.ring-n{font-family:var(--cond);font-size:2.6rem;font-weight:700;
+  fill:var(--ink);font-variant-numeric:tabular-nums}
+.ring-l{font-family:var(--sans);font-size:.72rem;fill:var(--ink-3)}
+.res-msg{text-align:center;color:var(--ink-2);margin-bottom:22px}
+.brk{display:grid;gap:7px;margin:18px 0}
+.brk-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;
+  padding:9px 12px;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+.brk-t{font-size:.88rem;line-height:1.3}
+.brk-s{font-family:var(--cond);font-weight:700;font-variant-numeric:tabular-nums;
+  font-size:.95rem;white-space:nowrap}
+
+/* ---------- resources ---------- */
+.rcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:15px 16px;margin-bottom:11px}
+.rcard h3{margin-bottom:3px}
+.rcard .meta{font-size:.83rem;color:var(--ink-3);margin-bottom:10px}
+.rlinks{display:grid;gap:7px}
+.rlink{display:flex;gap:9px;align-items:baseline;font-size:.89rem;
+  padding:7px 9px;background:var(--surface-2);border-radius:7px;text-decoration:none;color:var(--ink)}
+.rlink:hover{background:color-mix(in srgb,var(--orange) 12%,var(--surface-2))}
+.rlink .b{font-family:var(--cond);font-size:.66rem;text-transform:uppercase;
+  letter-spacing:.1em;font-weight:700;padding:2px 6px;border-radius:4px;flex:none;
+  background:var(--line-soft);color:var(--ink-3)}
+.rlink .b.core{background:var(--orange);color:#0D1B2A}
+.rlink .b.book{background:var(--teal);color:#0D1B2A}
+.rlink .b.topic{background:var(--gold);color:#0D1B2A}
+.rlink span:last-child{flex:1}
+
+/* ---------- misc ---------- */
+.callout{border-left:3px solid var(--orange);background:var(--surface);
+  padding:12px 14px;border-radius:0 8px 8px 0;margin:16px 0;font-size:.92rem}
+.callout strong{color:var(--orange)}
+.plan{display:grid;gap:1px;background:var(--line-soft);border:1px solid var(--line-soft);
+  border-radius:8px;overflow:hidden;margin:14px 0}
+.plan-r{display:grid;grid-template-columns:1fr auto;background:var(--surface);
+  padding:8px 12px;font-size:.89rem;align-items:center}
+.plan-r.hd{background:var(--surface-2);font-family:var(--cond);text-transform:uppercase;
+  letter-spacing:.09em;font-size:.75rem;font-weight:700;color:var(--ink-3)}
+.plan-w{font-family:var(--cond);font-weight:700;font-variant-numeric:tabular-nums;color:var(--orange)}
+.foot{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);
+  font-size:.8rem;color:var(--ink-3)}
+.foot p{margin-bottom:.5em}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <span class="brandmark"><span class="dot"></span>DC HOSA</span>
+    <span class="sp"></span>
+    <button class="iconbtn" id="themeBtn" aria-label="Switch theme" title="Switch theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<section id="home" class="screen active">
+  <div class="hero">
+    <div class="kicker">
+      <span class="tag hot">2026&ndash;2027</span>
+      <span class="tag">Health Science &middot; Middle School</span>
+      <span class="tag">Individual</span>
+      <span class="tag">Middle School</span>
+    </div>
+    <h1>Foundations of Nutrition</h1>
+    <p class="sub">A 35-question test in 60 minutes with a tiebreaker essay. What food does in the body, and how food becomes part of treatment.</p>
+
+    <div class="termbuild" aria-hidden="true">
+      <div class="p1"><span class="lbl">Nutrient</span><span class="val">what is in food</span></div>
+      <div class="p2"><span class="lbl">Function</span><span class="val">what it does</span></div>
+      <div class="p3"><span class="lbl">Therapy</span><span class="val">food as treatment</span></div>
+    </div>
+    <p class="termbuild-cap">The biggest topic on this test is medical nutrition therapy — the idea that for some conditions, what a person eats is part of the treatment plan.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="n" id="stQ">0</div><div class="l">practice questions</div></div>
+    <div class="stat"><div class="n">8</div><div class="l">test-plan topics</div></div>
+    <div class="stat"><div class="n" id="stBest">&mdash;</div><div class="l">your best score</div></div>
+  </div>
+
+  <div class="actions">
+    <button class="act" onclick="startQuiz('weighted')">
+      <span class="ic" style="background:var(--orange)">35</span>
+      <span><span class="t">Simulate the Test</span><span class="d">35 questions weighted exactly to the official 26-27 test plan</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="go('study')">
+      <span class="ic" style="background:var(--teal)">SG</span>
+      <span><span class="t">Study Guide</span><span class="d">All 8 topics, four layers deep &mdash; read to actually know it</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="startQuiz('all')">
+      <span class="ic" style="background:var(--gold)">&infin;</span>
+      <span><span class="t">Full Question Bank</span><span class="d">All <span id="stQ2">0</span> questions, shuffled &mdash; the long grind</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+    <button class="act" onclick="go('resources')">
+      <span class="ic" style="background:var(--purple-lt)">R</span>
+      <span><span class="t">Official References</span><span class="d">The exact books HOSA writes the test from</span></span>
+      <span class="ar">&rarr;</span>
+    </button>
+  </div>
+
+  <div class="callout"><strong>Start here.</strong> The topic worth the most is the one people do not expect: <strong>medical nutrition therapy at 20 percent</strong>. That means the diets people follow when they have diabetes, heart disease, kidney disease or celiac disease &mdash; food as part of the treatment. Add carbohydrates, fats and proteins at 15 and vitamins and minerals at 15, and three topics carry half the test.</div>
+
+  <h2 style="margin-top:26px">The official 26-27 test plan</h2>
+  <div class="plan" id="planTable"></div>
+  <p style="font-size:.85rem;color:var(--ink-3)">Simulate the Test draws questions in exactly these proportions. Cultural and religious influences is 5 percent &mdash; one or two questions &mdash; but it is easy to learn and easy to get right.</p>
+
+  <h2 style="margin-top:26px">How the test works</h2>
+  <p>Round One is <strong>35 questions in 60 minutes</strong> with a tiebreaker given in the same booklet, so budget time for it before you start. This is a Middle School Division event &mdash; you are competing against other middle schoolers, not against high school members.</p>
+
+  <div class="foot">
+    <p><strong>Foundations of Nutrition Study Tool</strong> &middot; DC HOSA &middot; 2026&ndash;2027 season &middot; "Redefine the Standard"</p>
+    <p>Built from the official 2026-2027 HOSA competitive event guideline. Practice questions are original and written for this tool. No actual exam question is reproduced here.</p>
+  </div>
+</section>
+
+<section id="study" class="screen">
+  <button class="backbtn" onclick="go('home')">&larr; Back</button>
+  <h1 style="margin-top:8px">Study Guide</h1>
+  <p class="sub" style="color:var(--ink-2)">8 topics, four layers each. Read the narrative to understand it, the deep dive to outcompete, the quick reference to drill, and the study notes to stop losing points to traps.</p>
+  <div class="callout" style="border-left-color:var(--teal)">
+    <strong style="color:var(--teal)">How to use this.</strong> Don't read straight through. Open a topic, read the narrative once, then hit <em>Practice this topic</em> at the bottom of the section. Miss something? Come back to the deep dive. That loop beats re-reading every time.
+  </div>
+  <div id="guideList" style="margin-top:18px"></div>
+</section>
+
+<section id="resources" class="screen">
+  <button class="backbtn" onclick="go('home')">&larr; Back</button>
+  <h1 style="margin-top:8px">Official References</h1>
+  <p class="sub" style="color:var(--ink-2)">These are the sources listed in the 2026-2027 guideline. Test items are written from them and nowhere else.</p>
+
+  <div class="rcard" style="border-color:var(--orange)">
+    <h3>West &mdash; Nutrition and Wellness for Life</h3>
+    <p class="meta">Goodheart-Willcox &middot; latest edition &middot; <strong style="color:var(--orange)">start here</strong></p>
+    <p style="font-size:.91rem">Written for middle and high school students, and the more readable of the two sources. Covers the nutrient and lifespan topics well.</p>
+    <div class="rlinks">
+      <a class="rlink" href="https://www.g-w.com/" target="_blank" rel="noopener"><span class="b book">Book</span><span>Goodheart-Willcox &mdash; publisher page</span></a>
+    </div>
+  </div>
+  <div class="rcard">
+    <h3>Roth &mdash; Nutrition and Diet Therapy</h3>
+    <p class="meta">Cengage &middot; latest edition</p>
+    <p style="font-size:.91rem">Where the 20 percent medical nutrition therapy block comes from. It is a clinical text, so use it for the therapeutic diets specifically rather than reading it cover to cover.</p>
+    <div class="rlinks">
+      <a class="rlink" href="https://www.cengage.com/" target="_blank" rel="noopener"><span class="b book">Book</span><span>Cengage &mdash; publisher page</span></a>
+      <a class="rlink" href="https://www.myplate.gov/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>MyPlate &mdash; free, and exactly the right level</span></a>
+    </div>
+  </div>
+
+  <div class="rcard" style="border-color:var(--purple-lt)">
+    <h3>HOSA official guidelines</h3>
+    <p class="meta">hosa.org &middot; read the actual rules before your first conference</p>
+    <div class="rlinks">
+      <a class="rlink" href="https://hosa.org/guidelines/" target="_blank" rel="noopener"><span class="b core">Core</span><span>Competitive event guidelines &mdash; download the Foundations of Nutrition PDF</span></a>
+      <a class="rlink" href="https://hosa.org/competitive-events/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>Competitive events overview and appendices</span></a>
+      <a class="rlink" href="https://hosa.org/scholarships/" target="_blank" rel="noopener"><span class="b topic">Topic</span><span>HOSA scholarships &mdash; applications open January 1, 2027</span></a>
+    </div>
+    <p style="font-size:.88rem;margin-top:12px;color:var(--ink-2)"><strong>Bring to the testing room:</strong> photo ID, two #2 wooden pencils with erasers (not mechanical), and optional neon foam earplugs &mdash; not earbuds. Business attire or official HOSA uniform earns bonus points. There are no verbal time announcements at ILC; you watch your own clock.</p>
+  </div>
+</section>
+
+<section id="quiz" class="screen">
+  <button class="backbtn" onclick="quitQuiz()">&larr; End session</button>
+  <div class="qbar">
+    <span class="qcount" id="qCount">1 / 35</span>
+    <span class="qtrack"><span class="qfill" id="qFill" style="width:0%"></span></span>
+    <span class="qcount" id="qScore">0 &#10003;</span>
+  </div>
+  <div class="qtopic"><span class="eyebrow" id="qTopic">Topic</span></div>
+  <p class="qstem" id="qStem">Question</p>
+  <div class="choices" id="qChoices"></div>
+  <div class="expl" id="qExpl"><div class="v" id="qVerdict"></div><p id="qExplText"></p><div class="src" id="qSrc"></div></div>
+  <button class="btn" id="qNext" style="display:none" onclick="nextQ()">Next question</button>
+</section>
+
+<section id="results" class="screen">
+  <h1 style="margin-top:22px;text-align:center">Session complete</h1>
+  <svg class="ring" width="168" height="168" viewBox="0 0 168 168" role="img" aria-labelledby="ringLbl">
+    <title id="ringLbl">Score ring</title>
+    <circle cx="84" cy="84" r="70" fill="none" stroke="var(--line)" stroke-width="12"/>
+    <circle id="ringArc" cx="84" cy="84" r="70" fill="none" stroke="var(--orange)" stroke-width="12"
+            stroke-linecap="round" stroke-dasharray="439.8" stroke-dashoffset="439.8"
+            transform="rotate(-90 84 84)" style="transition:stroke-dashoffset .8s ease"/>
+    <text class="ring-n" id="ringPct" x="84" y="86" text-anchor="middle">0%</text>
+    <text class="ring-l" id="ringFrac" x="84" y="106" text-anchor="middle">0 of 0</text>
+  </svg>
+  <p class="res-msg" id="resMsg"></p>
+  <h3 style="margin-bottom:8px">Where you stand by topic</h3>
+  <div class="brk" id="resBrk"></div>
+  <button class="btn" onclick="repeatQuiz()">Run it again</button>
+  <button class="btn ghost" onclick="go('study')">Back to the study guide</button>
+  <button class="btn ghost" onclick="go('home')">Home</button>
+</section>
+
+</div>
+
+<script>
+/* ============================================================
+   DC HOSA — Foundations of Nutrition Study Tool
+   Test plan and references: official 2026-2027 HOSA guideline.
+   All practice questions are original.
+   ============================================================ */
+
+const TOPICS = [
+  {
+    "n": "Carbohydrates, fats and proteins",
+    "w": 15,
+    "c": "var(--orange)"
+  },
+  {
+    "n": "Vitamins &amp; minerals",
+    "w": 15,
+    "c": "var(--teal)"
+  },
+  {
+    "n": "Water, fluid and electrolyte balance",
+    "w": 10,
+    "c": "var(--purple-lt)"
+  },
+  {
+    "n": "Nutrition through the life span",
+    "w": 15,
+    "c": "var(--gold)"
+  },
+  {
+    "n": "Digestion, absorption and metabolism",
+    "w": 10,
+    "c": "var(--teal)"
+  },
+  {
+    "n": "Cultural and religious influences",
+    "w": 5,
+    "c": "var(--orange)"
+  },
+  {
+    "n": "Food-related illnesses and allergies",
+    "w": 10,
+    "c": "var(--purple-lt)"
+  },
+  {
+    "n": "Medical nutrition therapy",
+    "w": 20,
+    "c": "var(--gold)"
+  }
+];
+const TEST_N = 35;
+
+const GUIDE = [];
+
+// Foundations of Nutrition (Middle School Division) — study guide content
+// Test plan order, t=0..7
+
+GUIDE.push({t:0,
+narr:`<p>Almost every food you eat is mostly three things: <strong>carbohydrates</strong>, <strong>fats</strong>, and <strong>proteins</strong>. They are called <strong>macronutrients</strong>, because the body needs them in large amounts. They are also the only three nutrients that supply energy. Vitamins, minerals, and water are essential too, but they carry no calories at all.</p>
+<p>Carbohydrates are the body's main fuel, and they are the main fuel for people all over the world. Rice, wheat, corn, potatoes, beans, and fruit are all built mostly of carbohydrate. The reason the body reaches for them first is speed. Carbohydrates are <strong>oxidized</strong> quickly, which just means the body burns them fast to release energy. The simplest carbohydrates are single sugar units called <strong>monosaccharides</strong>: glucose, fructose, and galactose. Two of them joined together make a <strong>disaccharide</strong>, like the sucrose in granulated sugar. Hundreds joined together make a <strong>polysaccharide</strong>, like starch.</p>
+<p>Plants store extra carbohydrate as <strong>starch</strong>. Humans store it as <strong>glycogen</strong>, kept in the liver and in the muscles. Plants also build a carbohydrate called <strong>cellulose</strong> that human enzymes cannot break apart. We call that <strong>fiber</strong>. Fiber is not a waste product. It adds bulk that helps stool move through the large intestine, and soluble fiber can lower blood cholesterol by carrying fat and cholesterol out of the body.</p>
+<p>Fats are the most concentrated energy source, at about nine calories per gram, compared with four for carbohydrate and four for protein. About 95 percent of the fat in your body and in your food is in the form of <strong>triglycerides</strong>, which sit in fat tissue and also circulate in the blood. Fat slows digestion, which is why a meal with some fat in it gives a feeling of fullness called <strong>satiety</strong>. A related lipid, <strong>cholesterol</strong>, is needed by every single cell in the body to build cell membranes and hormones. The liver makes cholesterol whether or not you eat any.</p>
+<p>Proteins are different from the other two because they contain <strong>nitrogen</strong>. Carbohydrates and fats are made of carbon, hydrogen, and oxygen only. Proteins add nitrogen, and that one element is what lets them build tissue. The building blocks of protein are <strong>amino acids</strong>. The body links them in long chains and folds those chains into working shapes: muscle, skin, enzymes, antibodies. The word protein comes from a Greek word meaning "of first importance," which tells you how early scientists ranked it.</p>
+<p>Nine amino acids are <strong>essential</strong>, meaning the body cannot make them and food has to supply them. A food that carries all nine in useful amounts is a <strong>complete protein</strong>. Eggs, poultry, fish, meat, milk, and cheese are complete. Most plant proteins are incomplete on their own, but combining them across a day, such as beans with rice, covers all nine. That is why beans, peas, and lentils, together called <strong>legumes</strong>, are such useful foods: they carry both protein and fiber.</p>`,
+deep:`<h4>Carbohydrates: from single sugars to stored starch</h4>
+<ul>
+<li><strong>Monosaccharides:</strong> glucose (blood sugar), fructose (fruit sugar), galactose. All three are single units and need no digestion to be absorbed.</li>
+<li><strong>Disaccharides:</strong> sucrose = glucose + fructose; lactose = glucose + galactose; maltose = glucose + glucose.</li>
+<li><strong>Milk is the only substantial animal source of carbohydrate.</strong> Its sugar is lactose. Every other major carbohydrate source is a plant.</li>
+<li>In a grain kernel, the <strong>endosperm</strong> holds most of the starch. The bran holds most of the fiber; the germ holds most of the fat and many vitamins.</li>
+<li>Vegetables contribute carbohydrate mainly as <strong>starch</strong>, not as simple sugars.</li>
+<li>Fructose and galactose are carried to the <strong>liver</strong> and converted to glucose before the body uses them.</li>
+<li>A 12-ounce can of regular soda supplies roughly <strong>10 teaspoons of sugar</strong>.</li>
+</ul>
+<h4>Fats and cholesterol by the numbers</h4>
+<ul>
+<li>Fat supplies <strong>9 calories per gram</strong>; carbohydrate and protein each supply <strong>4</strong>. Alcohol supplies 7 and is not a nutrient.</li>
+<li>The Food and Nutrition Board's Committee on Diet and Health recommends limiting fat to about <strong>30 percent of total calories</strong>.</li>
+<li>The American Heart Association recommends no more than <strong>7 percent of calories from saturated fat</strong>, because of the link to heart disease.</li>
+<li><strong>HDL</strong> ("good") cholesterol is protective against heart disease when blood levels are <strong>above 60 mg/dL</strong>. LDL carries cholesterol toward artery walls.</li>
+<li>The <strong>liver</strong> both breaks apart (hydrolyzes) and reassembles triglycerides, so it controls how much fat circulates.</li>
+<li>Essential fatty acids, such as linoleic acid, must come from food. The body cannot build them.</li>
+</ul>
+<h4>Proteins: quality, structure, and damage</h4>
+<ul>
+<li>Proteins are built from <strong>carbon, hydrogen, oxygen, and nitrogen</strong>. Some also contain sulfur.</li>
+<li>The <strong>primary function of protein is building and repairing tissue</strong>. Supplying energy is a backup job the body does only when carbohydrate and fat run short.</li>
+<li>Chemical digestion of protein begins in the <strong>stomach</strong>, where the enzyme pepsin goes to work. Carbohydrate digestion begins in the mouth; fat digestion mostly waits for the small intestine.</li>
+<li><strong>Denaturation</strong> is what happens when heat or a pH change unfolds a protein so it loses its shape and its function. Cooking an egg white and curdling milk with lemon juice are both denaturation.</li>
+<li><strong>Nitrogen balance</strong> compares nitrogen eaten with nitrogen excreted. Growing children and healing patients are in positive balance.</li>
+</ul>
+<h4>When carbohydrate runs short</h4>
+<ul>
+<li>If carbohydrate intake drops below about <strong>50 grams</strong> a day, the body shifts into <strong>ketosis</strong> after roughly four days.</li>
+<li><strong>Ketones</strong> are the acids formed when fat oxidation is incomplete because there is not enough carbohydrate to finish the job.</li>
+<li>Carbohydrate is described as <strong>protein sparing</strong>: when enough is present, the body does not have to tear down muscle protein for glucose.</li>
+<li>It takes about <strong>3,500 calories</strong> above or below what a body uses to change weight by one pound.</li>
+</ul>`,
+qref:[
+["Macronutrient","Nutrient needed in large amounts; supplies energy"],
+["Monosaccharide","Single sugar unit: glucose, fructose, or galactose"],
+["Disaccharide","Two sugars joined: sucrose, lactose, maltose"],
+["Sucrose","Glucose plus fructose; ordinary granulated sugar"],
+["Lactose","Glucose plus galactose; the sugar in milk"],
+["Polysaccharide","Many sugars linked: starch, glycogen, cellulose"],
+["Starch","Plant storage carbohydrate; fills a grain's endosperm"],
+["Glycogen","Carbohydrate stored in human liver and muscle"],
+["Fiber","Plant carbohydrate humans cannot digest; adds bulk"],
+["Cellulose","The plant fiber in vegetable and grain cell walls"],
+["Oxidation","Burning a fuel nutrient to release its energy"],
+["Triglyceride","Fat form making up 95 percent of body lipids"],
+["Cholesterol","Lipid every cell needs; liver makes its own"],
+["Saturated fat","Fat usually solid at room temperature; limit 7 percent"],
+["Satiety","The full, satisfied feeling that fat provides"],
+["Amino acid","The building block of every protein"],
+["Complete protein","Contains all nine essential amino acids"],
+["Nitrogen","Element in protein but not carbohydrate or fat"],
+["Denaturation","Protein unfolds from heat or acid and stops working"],
+["Ketones","Acids made when fat burns without enough carbohydrate"]
+],
+notes:`<p><strong>Glycogen and starch are the same idea in different bodies, and mixing them up is the single most common error in this topic.</strong> Starch is how a plant stores extra carbohydrate. Glycogen is how you store it, in your liver and muscles. If a question asks what form carbohydrate is stored in inside the human body, <span class="trap">starch</span> looks right because it is the storage word students hear most, but starch is a plant word. Read the stem for whether it is talking about a potato or a person.</p>
+<p><strong>"Lipids" is an umbrella word, and umbrella words are rarely the keyed answer when a specific one is offered.</strong> Lipid means any fat-like substance: triglycerides, cholesterol, phospholipids, all of it. So when a question asks which form makes up 95 percent of body fat, or which fat is found in food, adipose tissue, and blood, the answer is <span class="trap">triglycerides</span>, not the broader word <span class="trap">lipids</span>. Same trick with <span class="trap">carbohydrates</span> when the question really wants glucose or glycogen. Pick the most specific choice the question supports.</p>
+<p><strong>Nitrogen is the one element that separates protein from everything else you eat.</strong> Carbohydrates and fats are carbon, hydrogen, and oxygen. Protein adds nitrogen. Students routinely lose this because all four macronutrient-sounding elements feel interchangeable, and because <span class="trap">carbon</span> is in all three so it seems like the important one. Carbon is the shared element. Nitrogen is the unique one.</p>
+<p><strong>Know which two sugars make each disaccharide, in order.</strong> Sucrose is glucose plus fructose. Lactose is glucose plus galactose. Maltose is two glucoses. Because <span class="trap">lactose</span> is the sugar students hear about most, it gets picked for questions that describe granulated table sugar, which is actually sucrose. Anchor it: lactose goes with lacto, which means milk.</p>
+<p><strong>Vitamins let the body use energy; they do not supply energy.</strong> This is the classic "all of the following provide energy EXCEPT" item, and the answer is <span class="trap">vitamins</span>. Minerals and water do not supply energy either. Only carbohydrate, fat, and protein carry calories. If a question offers vitamins alongside the three macronutrients, that pattern is what it is testing.</p>
+<p><strong>Complete protein means animal sources, or a deliberate plant combination.</strong> When a question asks for a source of complete protein, look for a list that is entirely animal foods, like eggs, poultry, and cheese. A list such as <span class="trap">beans, corn, and rice</span> is tempting because those foods are genuinely high in protein, but each is incomplete on its own. Legumes are excellent protein and fiber sources; they are just not the answer to a "complete protein" stem.</p>`});
+
+GUIDE.push({t:1,
+narr:`<p><strong>Vitamins</strong> and <strong>minerals</strong> are called <strong>micronutrients</strong> because the body needs only tiny amounts. Tiny does not mean optional. A person can eat plenty of calories and still get sick from missing a nutrient measured in milligrams. Vitamins are <strong>organic</strong>, meaning they contain carbon and were built by a living thing. Minerals are <strong>inorganic</strong> elements that came out of soil and water. That difference matters in practice: heat, light, and air can destroy a vitamin, but nothing you do in a kitchen destroys a mineral.</p>
+<p>Vitamins split into two groups by what dissolves them. The <strong>fat-soluble</strong> vitamins are <strong>A, D, E, and K</strong>. They travel with dietary fat, and the body can store them in the liver and fat tissue, so a person does not need them every single day. Because they are stored, very large doses can build up. The <strong>water-soluble</strong> vitamins are <strong>vitamin C and all the B vitamins</strong>, including thiamine, riboflavin, niacin, B6, folate, and B12. They dissolve in the watery part of blood, are not stored in large amounts, and extras leave in urine, so they need refilling regularly.</p>
+<p>Most B vitamins share a job description: they help release energy from carbohydrate, fat, and protein. They do not contain energy themselves. Think of them as the keys that unlock fuel rather than the fuel. <strong>Riboflavin</strong> is a good one to know by its weak spot, since light destroys it, which is why milk is sold in cardboard or opaque jugs instead of clear glass. <strong>Vitamin B12</strong> has an unusual requirement: it needs a helper protein made in the stomach called <strong>intrinsic factor</strong> before it can be absorbed, and it builds healthy red blood cells and the <strong>myelin sheath</strong> that insulates nerves.</p>
+<p><strong>Vitamin C</strong>, also called <strong>ascorbic acid</strong>, does two jobs worth memorizing together. It is required to form <strong>collagen</strong>, the protein that holds skin, gums, and blood vessels together, and it is an iron enhancer, meaning it greatly increases how much <strong>nonheme iron</strong> from plant foods the body can absorb. <strong>Vitamin D</strong> is the sunshine vitamin, since skin makes it from sunlight, and its real job is helping the intestine absorb <strong>calcium</strong>. Its active hormone form is called <strong>calcitriol</strong>.</p>
+<p>Minerals divide by how much you need. <strong>Major minerals</strong>, needed in larger amounts, include calcium, phosphorus, potassium, sodium, chloride, magnesium, and sulfur. <strong>Trace minerals</strong>, needed in very small amounts, include iron, zinc, iodine, fluoride, selenium, copper, and chromium. Minerals build tissue such as bone and teeth, regulate body fluids, and switch many chemical reactions on and off. Ordinary table salt is a compound of two of them, <strong>sodium and chloride</strong>.</p>
+<p>Two food-label words show up constantly. <strong>Enriched</strong> means nutrients that were lost during processing, usually iron and several B vitamins, were added back. <strong>Fortified</strong> means a nutrient was added that was not there to begin with, like vitamin D in milk or iodine in salt. Both are public health tools, and both have prevented enormous amounts of deficiency disease.</p>`,
+deep:`<h4>Fat-soluble vitamins</h4>
+<ul>
+<li><strong>Vitamin A:</strong> vision, skin, and immune tissue. The ready-to-use animal form is <strong>retinol</strong>. Plant <strong>carotenoids</strong>, such as beta-carotene in carrots and sweet potatoes, are precursors the body converts into vitamin A.</li>
+<li><strong>Vitamin D:</strong> required for calcium absorption. Made in skin from sunlight; found in fortified milk and fatty fish. Active hormone form is <strong>calcitriol</strong>. Deficiency causes <strong>rickets</strong> in children and <strong>osteomalacia</strong>, sometimes called adult rickets, in adults.</li>
+<li><strong>Vitamin E:</strong> an antioxidant that protects cell membranes from damage. Found in vegetable oils, nuts, and seeds.</li>
+<li><strong>Vitamin K:</strong> required for blood clotting. Found in leafy green vegetables; bacteria in the large intestine also make some.</li>
+</ul>
+<h4>Water-soluble vitamins</h4>
+<ul>
+<li><strong>Vitamin C (ascorbic acid):</strong> collagen formation, antioxidant, and the enhancer that boosts nonheme iron absorption. Severe deficiency is scurvy.</li>
+<li><strong>Thiamine (B1):</strong> carbohydrate metabolism and nerve function. Deficiency is beriberi.</li>
+<li><strong>Riboflavin (B2):</strong> present in both animal and plant foods, needed for carbohydrate, fat, and protein metabolism, and <strong>destroyed by light</strong>.</li>
+<li><strong>Niacin (B3):</strong> energy metabolism. Deficiency is pellagra.</li>
+<li><strong>Folate / folic acid:</strong> makes new cells and DNA. Low intake before and during early pregnancy is linked to <strong>neural tube defects</strong> such as spina bifida.</li>
+<li><strong>Vitamin B12:</strong> red blood cells and the myelin sheath; requires <strong>intrinsic factor</strong> from the stomach. Found naturally only in animal foods, so vegans need a fortified source.</li>
+<li><strong>Choline:</strong> a vitamin-like nutrient needed for nervous system development, cell membrane structure, and lipid metabolism. Eggs and liver are rich sources.</li>
+</ul>
+<h4>Minerals worth memorizing by job</h4>
+<ul>
+<li><strong>Calcium:</strong> builds bone and teeth, and also runs muscle contraction and blood clotting.</li>
+<li><strong>Phosphorus:</strong> partners with calcium in bone. Research suggests that excessive phosphorus intake may contribute to <strong>osteoporosis</strong>.</li>
+<li><strong>Sodium:</strong> the main mineral outside cells; controls fluid balance. Recommended daily intake is <strong>1,500 milligrams</strong>.</li>
+<li><strong>Potassium:</strong> the main mineral inside cells; needed for <strong>muscle contraction and nerve impulse transmission</strong>. Found in melons, mushrooms, peaches, oranges, and bananas.</li>
+<li><strong>Iron:</strong> carries oxygen inside hemoglobin. Deficiency causes anemia. <strong>Heme</strong> iron from animal foods absorbs better than <strong>nonheme</strong> iron from plants.</li>
+<li><strong>Zinc:</strong> enhances the immune response and speeds <strong>wound healing</strong>.</li>
+<li><strong>Iodine:</strong> the thyroid uses it to make hormones that set the <strong>basal metabolic rate</strong>. Deficiency causes goiter.</li>
+<li><strong>Fluoride:</strong> increases resistance to <strong>dental caries</strong>, which are cavities.</li>
+<li><strong>Chromium:</strong> a trace mineral tied to glucose and lipid metabolism; found in meat, mushrooms, nuts, organ meats, and wheat germ.</li>
+<li><strong>Selenium:</strong> a trace mineral that works as an antioxidant alongside vitamin E.</li>
+</ul>
+<h4>Labels, losses, and language</h4>
+<ul>
+<li><strong>Enriched</strong> = lost nutrients added back. <strong>Fortified</strong> = a nutrient added that was never there.</li>
+<li>Vitamins are organic and can be destroyed by heat, light, air, and long cooking in water. Minerals are inorganic elements and cannot be destroyed, though they can leach into cooking water.</li>
+<li>Steaming or microwaving vegetables keeps more water-soluble vitamins than boiling them and pouring the water off.</li>
+<li>An <strong>antioxidant</strong> protects cells from unstable molecules. Vitamins C and E, beta-carotene, and selenium all act as antioxidants.</li>
+</ul>`,
+qref:[
+["Vitamin A (retinol)","Vision and skin; liver, eggs, sweet potato"],
+["Beta-carotene","Plant precursor converted to vitamin A; carrots"],
+["Vitamin D (calcitriol)","Absorbs calcium; fortified milk, sunlight on skin"],
+["Vitamin E","Antioxidant guarding cell membranes; vegetable oils, nuts"],
+["Vitamin K","Blood clotting; leafy green vegetables"],
+["Vitamin C (ascorbic acid)","Collagen and iron absorption; citrus fruits, peppers"],
+["Thiamine (B1)","Carbohydrate metabolism and nerves; pork, whole grains"],
+["Riboflavin (B2)","Energy metabolism, destroyed by light; milk"],
+["Niacin (B3)","Energy metabolism; poultry, tuna, peanuts"],
+["Folate (folic acid)","Prevents neural tube defects; leafy greens, beans"],
+["Vitamin B12","Red blood cells and myelin; animal foods only"],
+["Choline","Nerve development and cell membranes; eggs, liver"],
+["Calcium","Builds bones and teeth; milk, yogurt, greens"],
+["Phosphorus","Bone mineral and energy transfer; dairy, meat"],
+["Potassium","Muscle contraction and nerve impulses; bananas, melon"],
+["Sodium","Fluid balance outside cells; table salt"],
+["Iron","Carries oxygen in hemoglobin; red meat, fortified cereal"],
+["Zinc","Immune response and wound healing; beef, shellfish"],
+["Iodine","Thyroid sets metabolic rate; iodized salt, seafood"],
+["Fluoride","Raises resistance to dental caries; fluoridated water"]
+],
+notes:`<p><strong>The fat-soluble four are A, D, E, K, and nothing else.</strong> Any list that slips a B vitamin or vitamin C into that group is wrong, no matter how plausible it looks. Students get burned by a choice like <span class="trap">A, B12, C, E</span> because it contains two real fat-soluble vitamins and reads smoothly. Check every letter in the list, not just the first one. If C or any B appears, the list is water-soluble contamination.</p>
+<p><strong>Vitamin D and vitamin A are the two most over-chosen answers in this topic, so slow down when either is an option.</strong> Vitamin D's job is calcium absorption. Vitamin A's job is vision and skin. Neither one forms collagen and neither one enhances iron absorption, no matter how "important" they feel. When the stem says collagen, wound repair of connective tissue, or nonheme iron, the answer is <span class="trap">vitamin C</span> and only vitamin C.</p>
+<p><strong>Iodine sets the metabolic rate; iron carries oxygen; zinc heals wounds. These three get swapped constantly.</strong> A stem about basal metabolic rate is asking for iodine, because iodine feeds the thyroid. A stem about immune response and wound healing is asking for zinc. <span class="trap">Magnesium</span> and <span class="trap">selenium</span> are real minerals with real jobs, and they show up as options far more often than they are correct. Learn the specific job attached to each mineral rather than a general sense that it is healthy.</p>
+<p><strong>Riboflavin is the vitamin identified by its weakness.</strong> When a stem mentions a vitamin destroyed by light, or one found in both animal and plant foods that helps metabolize all three macronutrients, that is riboflavin. Students often choose <span class="trap">niacin</span> or <span class="trap">vitamin B6</span> because all the B vitamins sound alike, but light sensitivity is riboflavin's signature detail.</p>
+<p><strong>Retinol is preformed vitamin A; carotenoids are precursors.</strong> Preformed means the animal already made it and the body can use it as is. A precursor is raw material the body still has to convert. A stem asking for the most readily used form of preformed vitamin A wants retinol. A stem calling something a precursor to vitamin A wants <span class="trap">beta-carotene</span> or the carotenoids, which is the reverse relationship. Read for the word preformed.</p>
+<p><strong>Enriched and fortified are not synonyms.</strong> Enriched means putting back what processing took out, which is why refined flour is enriched with iron and B vitamins. Fortified means adding something that was never in the food, like vitamin D in milk. If a stem says iron and other nutrients were <em>added back</em>, the answer is enriched, and <span class="trap">fortified</span> is the tempting near-miss.</p>`});
+
+GUIDE.push({t:2,
+narr:`<p>Water is the nutrient people forget to count, and it is the one a body runs out of first. An adult is roughly 60 percent water by weight, and an infant is an even higher percentage. A person can survive weeks without food but only a few days without water. Water supplies no calories at all, which is exactly why it is easy to overlook.</p>
+<p>Water is called the body's <strong>solvent</strong>. A solvent is the liquid part of a solution, the part that dissolves other things. Because so much dissolves in water, blood can carry glucose, amino acids, vitamins, and minerals to cells and carry wastes away to the kidneys. Water also cushions joints and organs, keeps mucous membranes moist, and controls temperature. Sweat works because evaporating water pulls heat off the skin.</p>
+<p>Body water sits in two main places. <strong>Intracellular fluid</strong> is the water inside cells, and it is most of the body's water. <strong>Extracellular fluid</strong> is everything outside cells, which includes blood plasma and the <strong>interstitial fluid</strong> that fills the spaces between cells. Water moves between these spaces by <strong>osmosis</strong>, which is water crossing a selectively permeable membrane toward the side with more dissolved particles.</p>
+<p>What pulls water around is <strong>electrolytes</strong>, minerals that carry an electrical charge when dissolved. <strong>Sodium</strong> is the main electrolyte outside cells and <strong>potassium</strong> is the main one inside, with chloride and bicarbonate also in the mix. Electrolytes let nerves fire and muscles contract, and where they go, water follows. That is the whole reason a salty meal makes a person thirsty.</p>
+<p>Two control systems keep the balance. The <strong>hypothalamus</strong>, an area at the base of the brain, regulates thirst and appetite. When blood gets too concentrated, it triggers thirst and signals the release of <strong>antidiuretic hormone (ADH)</strong>. ADH tells the kidneys to reabsorb water back into the blood instead of excreting it as urine. Concentrated dark urine usually means ADH is doing its job because water is short.</p>
+<p>Balance can tip both ways. Losing too much water causes <strong>dehydration</strong>, with thirst, weakness, headache, and dark urine. Drinking far more water than the kidneys can handle can dilute the blood's sodium, a condition called <strong>hyponatremia</strong>, which is why endurance athletes are taught to replace electrolytes and not only water. The body also holds a narrow <strong>acid-base balance</strong>, meaning it regulates hydrogen ions to keep blood pH near 7.4. A pH of exactly 7.0 is neutral, below that is acidic, and above that is alkaline.</p>`,
+deep:`<h4>Where body water lives and how it moves</h4>
+<ul>
+<li><strong>Intracellular fluid:</strong> inside the cells; about two thirds of total body water.</li>
+<li><strong>Extracellular fluid:</strong> outside the cells. It includes <strong>intravascular</strong> fluid (blood plasma) and <strong>interstitial</strong> fluid, which is the fluid between the cells.</li>
+<li><strong>Osmosis:</strong> water moving across a selectively permeable cell membrane toward the more concentrated side. Water moves; the dissolved particles usually do not.</li>
+<li><strong>Edema</strong> is a visible swelling caused by too much fluid collecting in the interstitial space.</li>
+<li>Water is lost through urine, feces, sweat, and breathing. Losses through breathing and skin are called <strong>insensible</strong> because you cannot see them.</li>
+</ul>
+<h4>Requirements and measurement</h4>
+<ul>
+<li>The average daily adult requirement is about <strong>1 milliliter of water for every calorie of food eaten</strong>.</li>
+<li>Infants need more per calorie, about <strong>1.5 milliliters per calorie</strong>, because their kidneys are immature and their body surface is large relative to their size.</li>
+<li>Athletes who weigh themselves before and after training can calculate their <strong>sweat rate</strong>, which tells them how much fluid to replace.</li>
+<li>Bottled water quality and sanitation are certified by the <strong>IBWA</strong>, the International Bottled Water Association.</li>
+<li><strong>Heat fatigue</strong> is an early heat-related problem marked by thirst and feelings of weakness. It signals that fluid replacement is needed before heat exhaustion develops.</li>
+</ul>
+<h4>Electrolytes and acid-base balance</h4>
+<ul>
+<li><strong>Acid-base balance</strong> is the regulation of hydrogen ions in the body. More hydrogen ions means more acidic.</li>
+<li><strong>pH 7.0 is neutral.</strong> Blood is kept slightly alkaline, near 7.35 to 7.45. Intracellular fluid at pH 6.8 is <strong>acidic</strong>, because it is below 7.0.</li>
+<li><strong>Acidosis</strong> is too much acid in body fluids; <strong>alkalosis</strong> is too little. Severe vomiting causes alkalosis because the body loses <strong>hydrochloric acid</strong> from the stomach.</li>
+<li><strong>Hyponatremia</strong> is a low blood sodium level. It can result from water intoxication, when someone is overhydrated and the extra water dilutes the sodium in the blood.</li>
+<li>The lungs and kidneys are the two main organs that correct pH: lungs by changing how fast carbon dioxide is exhaled, kidneys by excreting or holding hydrogen ions.</li>
+</ul>`,
+qref:[
+["Solvent","The liquid part of a solution that dissolves things"],
+["Osmosis","Water crossing a selectively permeable membrane toward higher concentration"],
+["Intracellular fluid","Water inside cells; most of body water"],
+["Extracellular fluid","All water outside cells, including plasma"],
+["Interstitial fluid","Fluid in the spaces between the cells"],
+["Electrolyte","Mineral carrying an electrical charge when dissolved"],
+["Sodium","Main electrolyte outside cells; pulls water with it"],
+["Potassium","Main electrolyte inside cells; runs nerves and muscle"],
+["Acid-base balance","Regulation of hydrogen ions in body fluids"],
+["Neutral pH","Exactly 7.0; below is acidic, above alkaline"],
+["Acidosis","Too much acid in the body fluids"],
+["Alkalosis","Too little acid; caused by severe vomiting"],
+["Hyponatremia","Low blood sodium from overhydration or heavy sweat loss"],
+["ADH","Hormone telling kidneys to reabsorb water, not excrete"],
+["Hypothalamus","Brain base area regulating thirst and appetite"],
+["Dehydration","Losing more fluid than is taken in"],
+["Edema","Swelling from excess fluid between the cells"],
+["Sweat rate","Fluid lost per hour, found by weighing before and after"],
+["Adult water need","About 1 milliliter per calorie eaten daily"],
+["Heat fatigue","Early heat illness marked by thirst and weakness"]
+],
+notes:`<p><strong>Osmosis is about water moving, not about the dissolved stuff moving.</strong> If a stem asks how water crosses a selectively permeable cell membrane, the answer is osmosis. <span class="trap">Diffusion</span> is the tempting choice because it is the more familiar word and the more general process, but diffusion describes solutes spreading out. Osmosis is the specific name for water doing it. Active transport is wrong here too, because osmosis needs no energy.</p>
+<p><strong>Interstitial means between the cells, not inside them.</strong> Students see "inter" and think "internal," so they choose <span class="trap">intracellular</span>. Split the prefixes: intra means within, inter means between. Interstitial fluid is part of extracellular fluid, which surprises people, because it is outside the cells even though it is deep inside the body.</p>
+<p><strong>Anything below pH 7.0 is acidic, including numbers that sound close to neutral.</strong> A fluid at pH 6.8 is acidic. It feels like it should count as <span class="trap">neutral</span> because 6.8 is nearly 7, but pH has no "close enough." Neutral is 7.0 exactly. Remember also that the scale runs backward: a lower number means more acid, because it means more hydrogen ions.</p>
+<p><strong>Severe vomiting causes alkalosis, which sounds backward until you name what is lost.</strong> Vomit is stomach contents, and stomach juice is <strong>hydrochloric acid</strong>. Losing acid leaves the body relatively more alkaline. Students choose <span class="trap">acidosis</span> because vomiting seems like an emergency and acidosis sounds like the worse word. Track the molecule, not the mood: lose acid, get alkalosis.</p>
+<p><strong>ADH makes urine, and the person, hold water. Its name says so.</strong> Antidiuretic means "against urination." A diuretic makes you urinate more, so an antidiuretic does the opposite: it influences the kidneys to reabsorb water rather than excrete it. When a stem mentions a hormone acting on the kidneys, <span class="trap">aldosterone</span> is a real and tempting option, but aldosterone's headline job is holding sodium. Water reabsorption is ADH.</p>
+<p><strong>Drinking too much plain water is a real problem with a specific name.</strong> Water intoxication dilutes blood sodium and produces <strong>hyponatremia</strong>. Students often pick <span class="trap">dehydration</span> out of habit because it is the water word they know. Notice the direction the stem is describing. Also note that the fix during long endurance events involves replacing electrolytes, not just fluid volume.</p>`});
+
+GUIDE.push({t:3,
+narr:`<p>Nutrition needs are not fixed. They change from the moment before birth through old age, and the changes follow a pattern: nutrient needs rise fastest whenever the body is building something new. Pregnancy, infancy, and the teenage growth spurt are the three big building periods, and all three raise the demand for protein, calcium, and iron well above what the same person needed a year earlier.</p>
+<p>During <strong>pregnancy</strong>, a healthy weight gain is generally about <strong>25 to 35 pounds</strong>, most of it in the second and third trimesters. Calorie needs do not rise much in the first trimester, then increase by roughly <strong>340 extra calories per day in the second trimester</strong> and a bit more in the third. Protein intake goes up to about <strong>60 grams</strong> per day. The nutrient with the clearest evidence behind it is <strong>folic acid</strong>. Taken before and during early pregnancy, it reduces the number of babies born with brain and spinal cord defects, called <strong>neural tube defects</strong>, of which spina bifida is one. It works in the first few weeks, often before a pregnancy is known, which is why women of childbearing age are advised to get enough.</p>
+<p>One unusual pregnancy finding is <strong>pica</strong>, a craving for non-food substances such as starch, clay, or ice. It is common among pregnant women and is often linked to iron deficiency. It matters because those items fill the stomach without supplying nutrients and can block iron absorption.</p>
+<p>A newborn arrives with a built-in supply of one nutrient: a full-term infant is born with roughly a <strong>three-to-six-month store of iron</strong>, gathered from the mother before birth. Once that store runs down, iron has to come from food, which is why the food usually recommended first is <strong>iron-fortified single grain cereal</strong>. Single grain matters because introducing one food at a time makes it easy to spot a reaction. Infants also need more water per calorie than adults, about <strong>1.5 milliliters per calorie</strong>. <strong>Weaning</strong> is the process of training an infant to drink from a cup instead of a nipple.</p>
+<p>Childhood is slower and steadier. Appetite goes up and down with growth, and preferences swing. The nutrients most often short in American children's diets are calcium, fiber, potassium, and vitamin D. Surveys of eating patterns show that most children fall short on whole grains in particular, while doing better on whole fruit. Fruits and vegetables that pack the most nutrients per bite, including <strong>citrus and berries</strong>, are often described as high-nutrition or powerhouse foods.</p>
+<p>Adolescence brings the largest growth spurt since infancy, and with it the highest calcium and iron needs of a lifetime. Bones store calcium fastest during the teen years and reach <strong>peak bone mass</strong> in the twenties, which is the total amount of bone a person will ever have to draw on. National surveys find that more than half of American teens do not reach the recommended calcium intake, and the shortfall is largest among teenage girls. After about <strong>age 25</strong>, calorie requirements begin to fall, because <strong>basal metabolic rate</strong> decreases as the fastest growth ends. Older adults keep needing nutrients while needing fewer calories, so nutrient-dense food matters more with age. <strong>Osteoporosis</strong>, sometimes called the silent disease because bone is lost without symptoms, is a major risk factor for hip fractures in older men and women.</p>`,
+deep:`<h4>Pregnancy and lactation</h4>
+<ul>
+<li>Recommended weight gain for a woman at a healthy weight: <strong>25 to 35 pounds</strong>.</li>
+<li>Added energy: about <strong>340 calories per day in the second trimester</strong>, roughly 450 in the third. First trimester adds very little.</li>
+<li>Protein recommendation rises to about <strong>60 grams per day</strong>.</li>
+<li><strong>Folic acid</strong> taken before and during pregnancy reduces neural tube defects such as spina bifida and anencephaly.</li>
+<li>Iron needs roughly double, because blood volume expands and the fetus builds its own iron stores.</li>
+<li><strong>Pica</strong> is the craving for nonfood substances such as starch, clay, or ice; it is frequent in pregnancy and often attributed to iron deficiency.</li>
+<li>Lactation raises calorie and fluid needs further. <strong>Colostrum</strong>, the first fluid the breast produces, is rich in protein and antibodies.</li>
+</ul>
+<h4>Infancy and early childhood</h4>
+<ul>
+<li>An infant is born with a <strong>three-to-six-month supply of iron</strong>. After that, dietary iron is required.</li>
+<li>Infant water need: about <strong>1.5 mL per calorie</strong> consumed, higher per calorie than an adult's.</li>
+<li>First solid food is commonly <strong>iron-fortified single grain cereal</strong>, usually introduced around six months, when the infant can sit with support and control the head.</li>
+<li>New foods are introduced one at a time, several days apart, so any reaction can be traced.</li>
+<li><strong>Weaning</strong> is training an infant to drink from a cup instead of a nipple.</li>
+<li>Honey is not given before age one because of the risk of infant botulism. Cow's milk is generally not given as a main drink before age one.</li>
+<li><strong>Preschoolers</strong> show the highest prevalence of food allergies of any age group; many outgrow them.</li>
+</ul>
+<h4>School age through adolescence</h4>
+<ul>
+<li>Survey data show most children fall well short on whole grains, with only about <strong>22 percent</strong> meeting the recommendation, while roughly <strong>70 percent</strong> meet the whole fruit recommendation.</li>
+<li>More than <strong>50 percent</strong> of American teens do not meet the calcium recommendation; among teenage girls the figure meeting it is roughly <strong>10 percent</strong>.</li>
+<li>Adolescence is when bone mineral is deposited fastest; <strong>peak bone mass</strong> is reached in the twenties.</li>
+<li>The <strong>female athlete triad</strong> is a clinical pattern of three linked findings: disordered eating, amenorrhea (absent menstrual periods), and osteoporosis. It is treated by a medical team, and adequate energy intake is the first step.</li>
+<li>Growing teens need more iron: boys for expanding muscle mass and blood volume, girls to replace menstrual losses.</li>
+</ul>
+<h4>Adulthood and later life</h4>
+<ul>
+<li>Calorie requirements begin to diminish after about <strong>age 25</strong> because the <strong>basal metabolic rate decreases</strong>.</li>
+<li><strong>Muscle tissue is more metabolically active than fat tissue</strong>, so it requires more calories to maintain. Losing muscle with age lowers calorie needs further.</li>
+<li>It takes roughly <strong>3,500 calories</strong> of surplus or deficit to change body weight by one pound.</li>
+<li><strong>Osteoporosis</strong> is called the silent disease because bone loss produces no symptoms until a fracture occurs; it is a major risk factor for hip fracture in older men and women.</li>
+<li>Older adults commonly need attention to calcium, vitamin D, and vitamin B12, since stomach changes reduce B12 absorption. Thirst sensation also declines, raising dehydration risk.</li>
+</ul>`,
+qref:[
+["Folic acid","Prevents neural tube defects; needed before and during pregnancy"],
+["Neural tube defect","Brain or spinal cord malformation such as spina bifida"],
+["Pregnancy weight gain","About 25 to 35 pounds at a healthy starting weight"],
+["Second trimester calories","About 340 extra calories per day"],
+["Pregnancy protein","About 60 grams per day"],
+["Pica","Craving nonfood items like clay, starch, or ice"],
+["Colostrum","First breast fluid; rich in protein and antibodies"],
+["Infant iron stores","Three to six month supply present at birth"],
+["Infant water need","About 1.5 milliliters per calorie consumed"],
+["First solid food","Iron-fortified single grain cereal, one food at a time"],
+["Weaning","Training an infant to drink from a cup"],
+["Peak bone mass","Most bone a person ever has; reached in twenties"],
+["Teen calcium gap","Over half of teens fall short of recommendations"],
+["Basal metabolic rate","Calories burned at complete rest"],
+["Age 25 shift","Calorie needs fall as basal metabolic rate decreases"],
+["Muscle tissue","More metabolically active; requires more calories than fat"],
+["3,500 calories","Surplus or deficit that changes weight one pound"],
+["Osteoporosis","Silent bone loss; major hip fracture risk factor"],
+["Female athlete triad","Disordered eating, amenorrhea, and osteoporosis together"],
+["Powerhouse fruits","Nutrient-dense choices such as citrus and berries"]
+],
+notes:`<p><strong>Iron is the nutrient a newborn brings with it, and the amount is three to six months.</strong> Students often answer <span class="trap">calcium</span> because bones are the thing babies obviously build, or <span class="trap">vitamin D</span> because it partners with calcium. But the fetus stockpiles iron from the mother in the last weeks of pregnancy, and that store is what runs out. This is exactly why the first cereal offered is iron-fortified.</p>
+<p><strong>Folic acid works before most people know a pregnancy exists.</strong> The neural tube closes in the first few weeks. That timing is why the recommendation is aimed at all women of childbearing age, not just those who are already pregnant. A stem mentioning birth defects of the brain and spinal cord wants folic acid; <span class="trap">iron</span> is the tempting answer because iron dominates every other pregnancy question, but iron prevents anemia, not neural tube defects.</p>
+<p><strong>Calorie needs fall after 25 because basal metabolic rate falls, not because of anything a person does differently.</strong> Basal metabolic rate is the energy a body spends just staying alive. Once rapid growth stops, that baseline drops, and it keeps drifting down partly because muscle mass declines. Students choose <span class="trap">decreased activity</span>, which is a real factor but not the keyed mechanism. The stem is asking about metabolism.</p>
+<p><strong>Pica is defined by what is craved, not by who craves it.</strong> The word means an appetite for nonfood substances: clay, laundry starch, ice, chalk. Because it appears often in pregnancy and is tied to iron deficiency, students sometimes answer <span class="trap">anemia</span> when the stem asks for the name of the craving itself. Anemia may be the cause; pica is the behavior. Match the answer to what the stem actually asks for.</p>
+<p><strong>Peak bone mass is built in the teen years, and that is the one-way door in this topic.</strong> Bone can be maintained later, but the maximum amount is set young, which is what makes the calcium shortfall among teens a long-term concern rather than a short-term one. The same logic runs the other direction in old age: <span class="trap">osteomalacia</span> is softening of already-built bone from vitamin D deficiency, while osteoporosis is loss of bone mass. Two different words, two different problems.</p>
+<p><strong>Muscle tissue burns more calories at rest than fat tissue, and that is what "metabolically active" means.</strong> A question asking which tissue requires more calories because of increased metabolic activity wants muscle. <span class="trap">Adipose tissue</span> is tempting because fat is where energy is stored, but storage is passive. Storing energy and spending energy are opposite jobs.</p>`});
+
+GUIDE.push({t:4,
+narr:`<p><strong>Digestion</strong> is taking food apart. <strong>Absorption</strong> is moving the pieces into the blood and lymph. <strong>Metabolism</strong> is everything the body then does with those pieces: making energy and building new substances. Those three words describe one continuous trip, and keeping them in order is most of this topic.</p>
+<p>Two kinds of digestion happen at once. <strong>Mechanical digestion</strong> is physical: chewing, the churning of the stomach, and the squeezing waves called <strong>peristalsis</strong> that move food along the tract. <strong>Chemical digestion</strong> breaks bonds using <strong>enzymes</strong>, which are chemicals that act as catalysts, meaning they speed up a reaction without being used up. The chemical step happens by <strong>hydrolysis</strong>, which is splitting a molecule by adding water.</p>
+<p>The trip starts in the mouth, where teeth grind food and salivary amylase begins working on starch. A swallowed lump is a <strong>bolus</strong>. In the stomach, muscular contractions mix food with gastric juices, including hydrochloric acid and the enzyme <strong>pepsin</strong>, which digests <strong>proteins</strong>. The semi-liquid mixture that results is <strong>chyme</strong>. Very little absorption happens in the stomach; its job is mixing, acid, and protein starter work.</p>
+<p>The <strong>small intestine</strong> is where the real work finishes. The pancreas sends in enzymes, including <strong>pancreatic amylase</strong>, which digests starch down to simple sugars. The liver produces <strong>bile</strong>, which is stored and concentrated in the <strong>gallbladder</strong> and released to <strong>emulsify</strong> fat, breaking large fat globules into droplets so enzymes can reach them. Bile is not an enzyme; it is a detergent. The primary function of the small intestine is <strong>absorption of nutrients</strong>, and its inner wall is carpeted with finger-like <strong>villi</strong> that give it an enormous surface area.</p>
+<p>What is left travels to the <strong>large intestine</strong>, which absorbs water and some minerals and houses trillions of bacteria. Helpful live bacteria and yeasts, called <strong>probiotics</strong>, help protect the digestive system from harmful bacteria. Fiber gives stool the bulk it needs to keep moving here.</p>
+<p>Once nutrients are absorbed, blood carries them to the <strong>liver</strong>, the body's chemical processing plant. The liver stores some nutrients, makes new substances, and breaks others apart. It converts fructose and galactose into glucose. From there, <strong>metabolism</strong> takes over. Metabolism has two halves: <strong>catabolism</strong> tears molecules down to release energy, and <strong>anabolism</strong> builds new molecules. Metabolism is primarily controlled by hormones from the <strong>thyroid</strong> gland. And whichever fuel is burned, the final waste products are the same: <strong>carbon dioxide and water</strong>.</p>`,
+deep:`<h4>The path, organ by organ</h4>
+<ul>
+<li><strong>Mouth:</strong> mechanical grinding plus salivary amylase starting on starch. Chewed food becomes a <strong>bolus</strong>.</li>
+<li><strong>Esophagus:</strong> no digestion; <strong>peristalsis</strong> moves the bolus down.</li>
+<li><strong>Stomach:</strong> hydrochloric acid and <strong>pepsin</strong>. Chemical digestion of <strong>protein begins here</strong>. Product is <strong>chyme</strong>.</li>
+<li><strong>Small intestine:</strong> the primary site of <strong>nutrient absorption</strong>, with pancreatic and intestinal enzymes plus bile. Its three parts are duodenum, jejunum, and ileum.</li>
+<li><strong>Large intestine:</strong> absorbs water and some minerals; forms and stores stool; hosts gut bacteria.</li>
+<li><strong>Accessory organs</strong> that never touch food: liver, gallbladder, pancreas. They contribute secretions through ducts.</li>
+</ul>
+<h4>Enzymes and secretions worth naming</h4>
+<ul>
+<li><strong>Salivary amylase:</strong> mouth; starch to smaller units.</li>
+<li><strong>Pepsin:</strong> stomach; protein. It requires the acid environment the stomach provides.</li>
+<li><strong>Pancreatic amylase:</strong> small intestine; digests <strong>starch to simple sugars</strong>.</li>
+<li><strong>Lipase:</strong> small intestine; fat to fatty acids and glycerol.</li>
+<li><strong>Bile:</strong> produced by the <strong>liver</strong>, stored and concentrated in the <strong>gallbladder</strong>. It emulsifies fat. It contains no enzymes.</li>
+<li><strong>Enzymes are catalysts:</strong> they speed reactions and are not consumed. Most are proteins, so heat and pH extremes denature them.</li>
+<li><strong>Hydrolysis</strong> is the chemical reaction of digestion: a bond is broken by inserting water.</li>
+</ul>
+<h4>Absorption and transport</h4>
+<ul>
+<li><strong>Absorption</strong> is the movement of nutrients into the blood and lymphatic system.</li>
+<li><strong>Villi</strong> and microvilli multiply the small intestine's surface area. Each villus contains a capillary network and a lymph vessel called a lacteal.</li>
+<li>Sugars and amino acids enter the <strong>blood</strong> and go to the liver first. Most fats enter the <strong>lymphatic system</strong> through the lacteals and bypass the liver at first.</li>
+<li>The <strong>liver</strong> processes all absorbed nutrients: storing some, making new substances, and breaking others apart. Fructose and galactose are converted to glucose there.</li>
+</ul>
+<h4>Metabolism and its rate</h4>
+<ul>
+<li><strong>Metabolism</strong> is the process of digesting food and creating energy and new substances. <strong>Catabolism</strong> breaks down; <strong>anabolism</strong> builds up.</li>
+<li>The end products of carbohydrate, fat, and protein metabolism are <strong>carbon dioxide and water</strong>, plus energy. Protein also yields nitrogen waste excreted as urea.</li>
+<li>Metabolism is primarily controlled by hormones secreted by the <strong>thyroid</strong> gland, which uses iodine to make them.</li>
+<li><strong>Basal metabolic rate</strong> rises with fever: about <strong>7 percent for every degree Fahrenheit</strong>. It also rises with muscle mass, growth, and cold exposure.</li>
+<li><strong>Ghrelin</strong> is released from the stomach and signals the hypothalamus that it is time to eat.</li>
+<li><strong>Probiotics</strong> are live bacteria and yeasts that help protect the digestive system from harmful bacteria. Prebiotics are the fibers that feed them.</li>
+</ul>`,
+qref:[
+["Digestion","Breaking food into pieces small enough to absorb"],
+["Mechanical digestion","Physical breakdown: chewing, churning, peristalsis"],
+["Chemical digestion","Enzymes breaking bonds by adding water"],
+["Hydrolysis","Splitting a molecule by inserting water"],
+["Enzyme","Catalyst that speeds reactions without being used up"],
+["Bolus","Chewed, swallowed lump of food leaving the mouth"],
+["Chyme","Semi-liquid mix of food and gastric juices"],
+["Pepsin","Stomach enzyme that digests proteins"],
+["Pancreatic amylase","Small intestine enzyme digesting starch to simple sugars"],
+["Lipase","Enzyme splitting fat into fatty acids and glycerol"],
+["Bile","Liver product that emulsifies fat; no enzymes"],
+["Gallbladder","Stores and concentrates bile until fat arrives"],
+["Peristalsis","Rhythmic muscle waves moving chyme along the tract"],
+["Villi","Finger-like small intestine projections that absorb nutrients"],
+["Absorption","Nutrients moving into the blood and lymphatic system"],
+["Metabolism","Making energy and new substances from absorbed nutrients"],
+["Catabolism","Breaking molecules down to release energy"],
+["Anabolism","Building new molecules from smaller pieces"],
+["Thyroid","Gland whose hormones primarily control metabolism"],
+["Probiotics","Live bacteria and yeasts protecting the digestive system"]
+],
+notes:`<p><strong>Bile is made by the liver and stored by the gallbladder, and the question always turns on which verb it used.</strong> Produced, secreted, and manufactured all point to the liver. Stored and concentrated point to the gallbladder. <span class="trap">Gallbladder</span> is picked for production questions constantly, because that is where bile is when fat shows up. Also remember bile emulsifies fat but contains no enzymes, so it is not the answer to "which enzyme digests fat" — that is lipase.</p>
+<p><strong>Pancreatic amylase digests starch; pepsin digests protein; lipase digests fat.</strong> The most missed of the three is amylase, because students see the word pancreas and answer with the organ instead of the enzyme. <span class="trap">Pancreas</span> is one of the most over-chosen wrong answers in this whole topic. When a stem says "which enzyme," an organ name cannot be right, no matter how correct the organ is.</p>
+<p><strong>Chemical digestion of protein begins in the stomach, not the mouth.</strong> Carbohydrate digestion starts in the mouth with salivary amylase, so students carry that habit over. Saliva has no protein enzyme. Fat digestion barely starts before the small intestine. Line up the three starting points once and the sequence questions stop being guesswork.</p>
+<p><strong>Absorption and digestion are different steps with different definitions.</strong> Digestion breaks food apart. Absorption is the movement of nutrients into the blood and lymphatic system. A stem describing nutrients entering the bloodstream is asking about absorption, and <span class="trap">digestion</span> is the reflex answer. Notice also that the small intestine's primary function is absorption, while the stomach's is mixing and starting protein digestion.</p>
+<p><strong>Metabolism is controlled by the thyroid, and this is the most swapped gland in the topic.</strong> The thyroid uses iodine to make the hormones that set metabolic rate. Students answer <span class="trap">pancreas</span> because the pancreas is deeply involved in digestion and blood sugar, or <span class="trap">pituitary</span> because it is called the master gland. The pituitary signals the thyroid, but the thyroid does the controlling. For metabolic rate itself, the answer is thyroid.</p>
+<p><strong>Every fuel ends at the same two waste products.</strong> Carbohydrate, fat, and protein metabolism all finish with carbon dioxide and water. Protein adds nitrogen waste on top, excreted as urea, which is why a stem sometimes lists nitrogen as a decoy for a general metabolism question. If the stem asks about all three macronutrients, the answer is carbon dioxide and water; <span class="trap">glucose and oxygen</span> are the inputs to the process, not the outputs.</p>`});
+
+GUIDE.push({t:5,
+narr:`<p>What people eat is shaped by more than nutrients. Family, region, history, and religion all decide what shows up on a plate, and a health professional who ignores that will not be much help to anyone. This topic is small on the test plan and large in practice.</p>
+<p>Several major religions include specific food practices. <strong>Kosher</strong> foods are prepared according to Orthodox Jewish dietary law. Pork and shellfish are not eaten, animals must be slaughtered a particular way, and meat and dairy are not served or cooked together. <strong>Halal</strong> is the parallel term in Islam, meaning permitted; pork and alcohol are avoided, and meat must be slaughtered according to Islamic law. Foods that are not permitted are called <strong>haram</strong>. During the month of <strong>Ramadan</strong>, many Muslims fast from food and drink between sunrise and sunset.</p>
+<p>Many Hindus are vegetarian, and beef is generally avoided because the cow is respected as sacred. Many Buddhists are also vegetarian, following <strong>ahimsa</strong>, a principle of not harming living things. In Christianity, <strong>Lent</strong> is a season of about forty weekdays before Easter when many people fast or give up particular foods, and some Christian traditions avoid meat on Fridays during that season. Fasting practices appear across many faiths, and their timing and rules differ.</p>
+<p>Cultural food traditions are just as specific. The <strong>Mediterranean</strong> pattern features olive oil, more fish and vegetables, and smaller portions, and it is well known for being associated with low rates of heart disease. In the United States, roughly half of the edible plants we eat are believed to have originated with <strong>Native American</strong> agriculture, including corn, beans, squash, tomatoes, and potatoes. <strong>Soul food</strong> is a term created in the 1960s to name and honor African American foodways. Mexican cooking is built on <strong>field corn</strong>, which is ground to make the traditional flour used for tortillas and tamales. Middle Eastern cooking is recognizable in hummus, pita and other flat breads, and lamb. Indian cuisine contributed curry, garlic, eggplant, and lentils to food traditions all over the world.</p>
+<p>The practical point for a health professional is simple. When a patient needs a therapeutic diet, the dietitian's job is to build that diet <em>inside</em> the patient's existing practices, not to ask the patient to abandon them. A person keeping kosher who needs to lower sodium, or a person fasting for Ramadan who takes daily medication, needs a plan that respects both. That skill is called <strong>cultural competence</strong>, and it starts with asking rather than assuming, because two families from the same background may follow very different practices.</p>`,
+deep:`<h4>Religious dietary practices</h4>
+<ul>
+<li><strong>Kosher (Judaism):</strong> foods prepared under Orthodox Jewish dietary laws. No pork, no shellfish; meat and dairy are kept separate in cooking and serving; ritual slaughter is required. Foods that are neither meat nor dairy are called <strong>pareve</strong>.</li>
+<li><strong>Halal (Islam):</strong> permitted foods. Pork and alcohol are avoided; meat is slaughtered according to Islamic law. Forbidden foods are <strong>haram</strong>. <strong>Ramadan</strong> involves fasting from dawn to sunset for a month.</li>
+<li><strong>Hinduism:</strong> many followers are vegetarian; beef is generally avoided because the cow is sacred. Practices vary widely by region and family.</li>
+<li><strong>Buddhism:</strong> many followers are vegetarian, guided by <strong>ahimsa</strong>, nonharm to living beings.</li>
+<li><strong>Christianity:</strong> <strong>Lent</strong> is a season of fasting or giving up specific foods before Easter; some traditions avoid meat on Fridays. Practices differ across denominations.</li>
+<li><strong>Vegetarian categories:</strong> <em>lacto</em> includes dairy, <em>ovo</em> includes eggs, <em>lacto-ovo</em> includes both, and <strong>vegan</strong> excludes all animal products. Vegans need a reliable source of vitamin B12.</li>
+</ul>
+<h4>Cultural food patterns</h4>
+<ul>
+<li><strong>Mediterranean:</strong> olive oil, increased fish and vegetable consumption, and small portion sizes; renowned for low heart disease rates.</li>
+<li><strong>Native American:</strong> about half of the edible plants used in the United States are believed to have originated with Native American cultures.</li>
+<li><strong>Soul food:</strong> term created in the 1960s to place emphasis on African American foodways.</li>
+<li><strong>Mexican:</strong> <strong>field corn</strong> is ground to make the traditional flour; beans, chiles, and squash are staples.</li>
+<li><strong>Middle Eastern:</strong> hummus, pita and flat breads, lamb, chickpeas, yogurt.</li>
+<li><strong>Indian:</strong> major global influence through curry, garlic, eggplant, and lentils.</li>
+<li>A <strong>staple food</strong> is the food a culture eats most and gets most of its calories from: rice, wheat, corn, or root crops depending on region.</li>
+</ul>
+<h4>Working with a patient's practices</h4>
+<ul>
+<li><strong>Cultural competence</strong> means planning care that fits a patient's beliefs and habits rather than asking them to be set aside.</li>
+<li>Ask what a person actually eats and what rules they actually keep. Belonging to a group does not tell you which practices an individual follows.</li>
+<li>Therapeutic diets can almost always be adapted: portion, preparation method, and seasoning can change while the food itself stays familiar.</li>
+<li>Religious fasting and medical needs can conflict. Many traditions exempt people who are ill, pregnant, or very young, and a clinician should raise the question rather than assume either way.</li>
+<li>Food access matters too. A common reason people do not eat well is a <strong>lack of places to purchase healthy food</strong> near where they live, not a lack of interest.</li>
+</ul>`,
+qref:[
+["Kosher","Foods prepared under Orthodox Jewish dietary law"],
+["Pareve","Kosher food that is neither meat nor dairy"],
+["Halal","Foods permitted under Islamic law"],
+["Haram","Foods forbidden under Islamic law, including pork and alcohol"],
+["Ramadan","Islamic month of fasting from dawn to sunset"],
+["Lent","Christian season of fasting before Easter"],
+["Ahimsa","Buddhist and Hindu principle of not harming living things"],
+["Lacto-ovo vegetarian","Eats no meat but includes dairy and eggs"],
+["Vegan","Eats no animal products at all; needs B12 source"],
+["Mediterranean pattern","Olive oil, fish, vegetables, small portions; low heart disease"],
+["Native American origin","Source of about half US edible plants"],
+["Soul food","1960s term naming African American food traditions"],
+["Field corn","Ground for the traditional flour of Mexican cooking"],
+["Middle Eastern foods","Hummus, pita and flat breads, lamb"],
+["Indian influence","Curry, garlic, eggplants, and lentils"],
+["Staple food","The food supplying most calories in a culture"],
+["Cultural competence","Planning care that fits a patient's beliefs and habits"],
+["Food access","Availability of places nearby to buy healthy food"]
+],
+notes:`<p><strong>Kosher is Jewish; halal is Islamic. Learn them as a pair so neither one drifts.</strong> Both restrict pork, which is why students blur them. The separator is dairy: kosher law keeps <strong>meat and dairy apart</strong>, and halal has no such rule. Halal's distinctive restriction is <strong>alcohol</strong>. When a stem mentions strict laws prohibiting pork and shellfish and separating meat from dairy, the answer is kosher and <span class="trap">halal</span> is the near-miss.</p>
+<p><strong>The Mediterranean pattern is identified by its combination, not by any single food.</strong> The keyed description is olive oil, more fish and vegetables, and small portion sizes, tied to low heart disease rates. Students sometimes pick <span class="trap">Italian</span> because pasta and olive oil feel Italian, but Mediterranean is a regional pattern spanning Greece, southern Italy, Spain, and North Africa. Match the full description, not one ingredient.</p>
+<p><strong>Soul food is a term with a date, and the date is the point.</strong> It was created in the 1960s to name and dignify African American foodways during a period of cultural pride. A stem that asks which term was created in the 1960s is testing that history. <span class="trap">Comfort food</span> is a tempting alternative because the two overlap in ordinary speech, but comfort food is a general category with no cultural origin story attached.</p>
+<p><strong>Native American agriculture is the origin of about half the edible plants used in the United States, and this surprises people.</strong> Corn, beans, squash, tomatoes, potatoes, peppers, and sunflowers all trace back to the Americas. When a stem asks about the origin of edible plants in the United States, students reach for <span class="trap">European settlers</span> because that is the arrival story they know best. Settlers brought wheat and livestock; the plant list is Native American.</p>
+<p><strong>A dietitian adapts the diet to the practice, not the practice to the diet.</strong> Any answer choice that says to tell a patient to stop observing a religious or cultural practice for the sake of a therapeutic diet is wrong, even when it is phrased helpfully. <span class="trap">Explain that the diet is more important than the tradition</span> is the classic wrong option. The correct approach is to ask what the person eats and build the plan around it.</p>
+<p><strong>Group membership does not predict individual practice.</strong> Two families of the same faith or region may keep entirely different rules, and questions written around assumptions are wrong for that reason. Any option that generalizes with words like "all" or "always" about a religious or ethnic group deserves suspicion. The reliable answer is the one that involves asking the patient.</p>`});
+
+GUIDE.push({t:6,
+narr:`<p>A <strong>foodborne illness</strong> is an illness you get from eating food carrying harmful bacteria, viruses, parasites, or the toxins they make. People often call it food poisoning. Symptoms are usually digestive, such as nausea, vomiting, diarrhea, cramps, and fever, and they can appear anywhere from hours to weeks after the meal. The primary treatment for most foodborne illness is <strong>replacing fluids and electrolytes to prevent dehydration</strong>, since the danger usually comes from fluid loss rather than from the germ itself.</p>
+<p>Food safety runs on four steps, always taught in this order: <strong>Clean, Separate, Cook, Chill</strong>. Clean comes first, meaning wash hands, surfaces, and produce. Separate means keep raw meat, poultry, seafood, and eggs away from foods that will not be cooked, which prevents <strong>cross-contamination</strong>. Cook means reach a safe internal temperature, measured with a thermometer rather than guessed by color. Chill means refrigerate promptly, with the refrigerator set at <strong>40 degrees Fahrenheit or below</strong> to slow bacterial growth. The range between about 40 and 140 degrees is called the <strong>danger zone</strong>, because bacteria multiply fastest there.</p>
+<p>A few organisms are worth knowing by their signature. <strong>Staphylococcus</strong> comes from human skin and nasal passages and grows in meats, poultry, eggs, and tuna, causing relatively mild diarrhea and vomiting. <strong>Clostridium perfringens</strong> is nicknamed the buffet germ, because it grows in meat and gravy left standing at room temperature. <strong>Listeria monocytogenes</strong> is unusual because it grows in the refrigerator; it is found in milk, leafy vegetables, and soil, and causes fatigue, fever, chills, and diarrhea. <strong>Cryptosporidium</strong> is a parasite found in soil, food, water, and swimming pools, and causes severe dehydration with cramps, fever, nausea, and vomiting. <strong>Salmonella</strong> is associated with poultry and eggs.</p>
+<p>A <strong>food allergy</strong> is a different problem entirely. It is not caused by a germ; it is the immune system reacting to a food it has mistakenly identified as a threat. The substance the immune system reacts to is almost always a <strong>protein</strong>. Anything that causes this kind of hypersensitivity reaction, whether it is food, pollen, dust, or animal dander, is called an <strong>allergen</strong>.</p>
+<p>Allergy symptoms most commonly show up in the digestive system: <strong>vomiting, stomach pain, and intestinal distress</strong>, often along with hives, itching, or swelling. The severe form is <strong>anaphylaxis</strong>, a life-threatening reaction that involves more than one body system at once, such as breathing plus circulation. Nuts and seafood are frequent causes. Anaphylaxis is treated with an injection of epinephrine from an <strong>EpiPen</strong>, followed immediately by a call for emergency help. Among age groups, <strong>preschoolers</strong> show the highest prevalence of food allergies, and many children outgrow theirs.</p>
+<p>Do not confuse an allergy with a <strong>food intolerance</strong>. An intolerance does not involve the immune system. <strong>Lactose intolerance</strong>, for example, happens when the body makes too little of the enzyme lactase to digest milk sugar, producing gas and cramping. It is uncomfortable but not dangerous. A milk <em>allergy</em> is an immune reaction to milk protein and can be severe. Same food, two completely different mechanisms.</p>`,
+deep:`<h4>The four steps, with the numbers</h4>
+<ul>
+<li><strong>Clean</strong> is listed first among techniques to reduce foodborne illness: hands for 20 seconds, surfaces, utensils, and produce.</li>
+<li><strong>Separate:</strong> raw meat, poultry, seafood, and eggs kept apart from ready-to-eat food. Separate cutting boards prevent <strong>cross-contamination</strong>.</li>
+<li><strong>Cook</strong> to safe internal temperatures, verified with a food thermometer: poultry to 165 degrees F, ground meat to 160, whole cuts of beef and pork to 145 with rest time.</li>
+<li><strong>Chill:</strong> refrigerator at <strong>40 degrees F or below</strong>; freezer at 0 degrees F. Refrigerate leftovers within two hours, or one hour if it is above 90 degrees outside.</li>
+<li><strong>Danger zone:</strong> roughly 40 to 140 degrees F, where bacteria multiply most rapidly.</li>
+<li>Thaw food in the refrigerator, in cold water, or in the microwave. Never on the counter.</li>
+</ul>
+<h4>Organisms by signature detail</h4>
+<ul>
+<li><strong>Staphylococcus:</strong> originates from human skin; grows in meats, poultry, eggs, and tuna; mild diarrhea and vomiting. Spread by handling food with unwashed hands or an infected cut.</li>
+<li><strong>Clostridium perfringens:</strong> the <strong>buffet germ</strong>; meat and gravy held at room temperature for long periods.</li>
+<li><strong>Listeria monocytogenes:</strong> found in intestines, milk, leafy vegetables, and soil; <strong>can grow at refrigerator temperatures</strong>; fatigue, fever, chills, diarrhea. Especially serious in pregnancy.</li>
+<li><strong>Cryptosporidium:</strong> a parasite in soil, food, water, and swimming pools; severe dehydration, stomach cramps, fever, nausea, vomiting.</li>
+<li><strong>Salmonella:</strong> poultry, eggs, and raw produce; fever, cramps, diarrhea.</li>
+<li><strong>E. coli O157:H7:</strong> undercooked ground beef and contaminated produce; bloody diarrhea; can damage kidneys.</li>
+<li><strong>Norovirus:</strong> a virus, very contagious, common in group settings; sudden vomiting and diarrhea.</li>
+<li><strong>Botulism</strong> comes from a toxin in improperly canned foods and affects nerves rather than the gut. Honey is avoided before age one for this reason.</li>
+</ul>
+<h4>Allergy, anaphylaxis, and intolerance</h4>
+<ul>
+<li>An <strong>allergen</strong> is any substance causing a hypersensitivity reaction: food, pollen, dust, animal dander.</li>
+<li>Food allergens are almost always <strong>proteins</strong>. That is why cooking rarely removes the risk.</li>
+<li>The most common food allergy symptoms are <strong>vomiting, stomach pain, and intestinal distress</strong>; hives, itching, and swelling are also frequent.</li>
+<li><strong>Anaphylaxis</strong> involves <strong>more than one body system</strong> and is life-threatening. Nuts and seafood are common causes. Treatment is epinephrine by <strong>EpiPen</strong>, then emergency medical care, because symptoms can return.</li>
+<li>The major allergens tracked on food labels include milk, eggs, fish, shellfish, tree nuts, peanuts, wheat, soybeans, and sesame.</li>
+<li><strong>Preschoolers</strong> have the highest prevalence of food allergies among age groups.</li>
+<li><strong>Food intolerance</strong> does not involve the immune system. Lactose intolerance is an enzyme shortage, not an allergy.</li>
+</ul>
+<h4>Related mouth and gut conditions</h4>
+<ul>
+<li><strong>Thrush</strong> is a yeast overgrowth in the mouth caused by high doses of antibiotics, which wipe out the bacteria that normally keep yeast in check.</li>
+<li><strong>Plaque</strong> is the sticky, bacteria-filled film on teeth that leads to cavities and gum disease. Bacteria in plaque feed on sugars left on teeth.</li>
+<li><strong>Probiotics</strong> replace helpful bacteria and can help protect the digestive tract against harmful organisms.</li>
+</ul>`,
+qref:[
+["Foodborne illness","Sickness from eating food carrying germs or toxins"],
+["Clean, Separate, Cook, Chill","The four food safety steps, in that order"],
+["Cross-contamination","Germs moving from raw food to ready-to-eat food"],
+["Refrigerator temperature","40 degrees Fahrenheit or below"],
+["Danger zone","About 40 to 140 degrees F; bacteria multiply fastest"],
+["Staphylococcus","From human skin; meats, poultry, eggs, tuna"],
+["Clostridium perfringens","The buffet germ; meat and gravy left standing"],
+["Listeria monocytogenes","Grows even in the refrigerator; milk, greens, soil"],
+["Cryptosporidium","Parasite from water and pools; severe dehydration"],
+["Salmonella","Poultry and eggs; fever, cramps, diarrhea"],
+["E. coli O157:H7","Undercooked ground beef; bloody diarrhea, kidney damage"],
+["Norovirus","Highly contagious virus; sudden vomiting and diarrhea"],
+["Foodborne illness treatment","Replace fluids and electrolytes to prevent dehydration"],
+["Allergen","Substance causing a hypersensitivity reaction"],
+["Food allergy","Immune system reacting to a food protein"],
+["Common allergy symptoms","Vomiting, stomach pain, intestinal distress"],
+["Anaphylaxis","Life-threatening reaction involving more than one body system"],
+["EpiPen","Epinephrine injector used for anaphylaxis"],
+["Food intolerance","Digestive reaction with no immune system involvement"],
+["Thrush","Mouth yeast overgrowth after high antibiotic doses"]
+],
+notes:`<p><strong>Clean is the first of the four food safety steps, and the order is the answer.</strong> Clean, Separate, Cook, Chill. Students pick <span class="trap">Cook</span> because cooking feels like the step that actually kills germs, but the sequence starts before food is touched at all. If a stem asks for the first listed technique to reduce foodborne illness, it wants Clean.</p>
+<p><strong>Listeria is the one that grows in the cold, and that single fact identifies it.</strong> Refrigeration slows almost every other organism, which is exactly why 40 degrees is the standard. Listeria is the exception, found in milk, leafy vegetables, and soil. When a stem mentions a bacterium that grows in the refrigerator, <span class="trap">Salmonella</span> is the tempting answer only because it is the most famous name in food safety. Fame is not evidence.</p>
+<p><strong>Clostridium perfringens owns the buffet.</strong> The nickname exists because it thrives in meat and gravy that sit at room temperature for hours, which is the definition of a buffet line. <span class="trap">Staphylococcus</span> is the close competitor, since it also grows in held foods, but staph's identifying detail is its origin on human skin, not the serving setup. Match the organism to the phrase the stem gives you.</p>
+<p><strong>Food allergens are proteins, not carbohydrates or fats.</strong> This is why a person allergic to milk reacts to milk protein while a person with lactose intolerance reacts to milk sugar. <span class="trap">Carbohydrates</span> is the tempting answer, since lactose intolerance is the milk problem most students have heard of. Allergy means immune system, and the immune system recognizes proteins.</p>
+<p><strong>Anaphylaxis is defined by involving more than one body system, not by being severe.</strong> Hives alone are one system. Hives plus wheezing plus a drop in blood pressure is anaphylaxis. Students choose <span class="trap">a severe rash</span> or another single dramatic symptom. The defining feature is multiple systems at once, and the response is epinephrine plus emergency care, because a second wave of symptoms can follow.</p>
+<p><strong>The main treatment for most foodborne illness is fluids and electrolytes, not antibiotics.</strong> Most cases are self-limiting and the real danger is dehydration from vomiting and diarrhea. <span class="trap">Antibiotics</span> is the reflexive answer, but many foodborne illnesses are viral or toxin-caused, and antibiotics do nothing against those. Rehydration is the answer that fits nearly every case.</p>`});
+
+GUIDE.push({t:7,
+narr:`<p><strong>Medical nutrition therapy</strong> is the use of a specific eating plan as part of the treatment for a disease. Not as a replacement for medicine, and not as advice about how anyone should eat in general. For some conditions the food plan does as much work as the prescription does, and for a few, such as celiac disease, it is the entire treatment. A <strong>registered dietitian</strong> writes these plans, works with the medical team, and adjusts them as the patient's labs change. This is the largest section of the test plan, which tells you how central it is to the field.</p>
+<p><strong>Diabetes</strong> is a group of conditions in which blood glucose stays too high. In <strong>type 1 diabetes</strong>, the beta cells of the pancreas are destroyed and insulin can no longer be made, so insulin must be supplied from outside. In <strong>type 2 diabetes</strong>, the pancreas still makes insulin but the body's cells respond to it poorly, a state called insulin resistance. Classic signs share a prefix meaning "much": <strong>polyuria</strong> is excessive urination, <strong>polydipsia</strong> is excessive thirst, and <strong>polyphagia</strong> is excessive hunger. Nutrition therapy centers on <strong>carbohydrate counting</strong>, because carbohydrate raises blood glucose most, and on keeping carbohydrate amounts consistent and matched to insulin. The <strong>A1C</strong> blood test shows how well blood glucose has been controlled over the previous three months, which is far more useful than a single reading. When excess body fat around the waist, high blood pressure, high blood sugar, and abnormal cholesterol appear together, the cluster is called <strong>metabolic syndrome</strong> and it sharply increases risk for diabetes and heart disease.</p>
+<p>For <strong>cardiovascular disease</strong>, the target is the blood vessels. <strong>Atherosclerosis</strong> is the buildup of plaques that thicken and stiffen arteries, and it is associated with high serum cholesterol. When blood flow through a vessel drops so far that tissue cannot get enough oxygen and nutrients, that is <strong>ischemia</strong>. A complete blockage of a coronary artery causes a heart attack, whose scientific name is <strong>myocardial infarction</strong>. Nutrition therapy limits saturated fat, trans fat, and sodium, and adds fiber, which lowers cholesterol by carrying fat and cholesterol out of the body. For <strong>hypertension</strong>, which is high blood pressure, sodium is limited to <strong>1,500 milligrams a day</strong>, and the <strong>DASH</strong> eating plan, rich in fruits, vegetables, and low-fat dairy, is the standard pattern.</p>
+<p><strong>Renal disease</strong> means the kidneys are failing at filtration. The filtering units are the <strong>nephrons</strong>, each containing a <strong>glomerulus</strong>, and together they form urine. When they fail, wastes build up. Since protein breakdown produces the most nitrogen waste, <strong>protein is limited</strong> to reduce the kidneys' workload, along with sodium, potassium, and phosphorus. If the kidneys stop working, <strong>hemodialysis</strong> filters the blood by machine, using a surgically made <strong>fistula</strong> that connects an <strong>artery to a vein</strong> for permanent access. Kidney stones are a separate problem; about 80 percent are made of <strong>calcium oxalate</strong>, and oxalate is found in strawberries, peanuts, chocolate, tea, wheat bran, and beets.</p>
+<p><strong>Gastrointestinal disease</strong> covers a wide range. <strong>Celiac disease</strong> is an intolerance to <strong>gluten</strong>, the protein in wheat, barley, and rye; the only treatment is removing gluten completely. <strong>Diverticulosis</strong> is the presence of little pockets that develop on the sides of the large intestine, and <strong>diverticulitis</strong> is what it is called when those pockets become inflamed. During flare-ups of severe diarrhea, diverticulitis, ulcerative colitis, or after intestinal surgery, a <strong>low-residue diet</strong> reduces fiber so less material passes through. A <strong>clear liquid diet</strong> may come first, then bland, easy-to-digest foods such as <strong>bananas, applesauce, rice, and toast</strong>. <strong>Cancer</strong>, the second leading cause of death in the United States, brings its own nutrition problems. A <strong>carcinoma</strong> is a cancer of the epithelial tissue that lines surfaces, including the lining of the digestive tract. Treatments frequently cause nausea, mouth sores, taste changes, and appetite loss, so nutrition therapy focuses on maintaining weight and muscle with small, frequent, high-protein, high-calorie meals. <strong>Phytochemicals</strong>, compounds found in plants, are thought to be anticarcinogenic, meaning helpful in preventing cancer.</p>
+<p>Finally, <strong>clients with special needs</strong>. A patient with severe burns needs large amounts of <strong>protein, fluid, and electrolytes</strong> to rebuild tissue and replace what is lost through damaged skin. Fever raises energy needs, with basal metabolic rate rising about <strong>7 percent for every degree Fahrenheit</strong>. <strong>Cystic fibrosis</strong> is a genetic mutation producing thick, sticky mucus that obstructs the pancreas and prevents enzymes from reaching the intestines, so these patients need enzyme replacement plus a high-calorie, high-protein diet. Patients who have trouble swallowing, called <strong>dysphagia</strong>, need thickened liquids and modified textures. When someone cannot eat by mouth, <strong>enteral nutrition</strong> delivers formula through a tube into the digestive tract, and <strong>parenteral nutrition</strong> delivers nutrients directly into a vein.</p>`,
+deep:`<h4>Diabetes and metabolic syndrome</h4>
+<ul>
+<li><strong>Type 1:</strong> beta cells in the pancreas are destroyed, insulin cannot be made, insulin must be injected or pumped. Usually diagnosed in childhood or adolescence.</li>
+<li><strong>Type 2:</strong> insulin is produced but cells resist it. Managed with eating plan, activity, and often medication.</li>
+<li><strong>Gestational diabetes</strong> appears during pregnancy and usually resolves after delivery, but raises later risk of type 2.</li>
+<li>Symptom pairs to keep straight: <strong>polyuria</strong> = excessive urination; <strong>polydipsia</strong> = excessive thirst; <strong>polyphagia</strong> = excessive hunger. Fatigue and slow wound healing are also common.</li>
+<li><strong>A1C</strong> reflects average blood glucose over about <strong>three months</strong>, because it measures glucose stuck to hemoglobin in red blood cells.</li>
+<li>Nutrition therapy: <strong>carbohydrate counting</strong>, consistent carbohydrate at each meal, spacing meals, and pairing carbohydrate with protein and fiber to slow glucose rise.</li>
+<li><strong>Metabolic syndrome</strong> is the co-occurrence of excess body fat around the waist, high blood pressure, high blood sugar, and abnormal cholesterol.</li>
+</ul>
+<h4>Cardiovascular and renal disease</h4>
+<ul>
+<li><strong>Atherosclerosis:</strong> plaque formation and thickening of arteries, linked to high serum cholesterol.</li>
+<li><strong>Ischemia:</strong> reduced blood flow leaving tissue short of oxygen and nutrients. <strong>Myocardial infarction</strong> is the scientific name for a heart attack caused by coronary artery blockage.</li>
+<li><strong>HDL</strong> is protective when above <strong>60 mg/dL</strong>. Elevated LDL and triglycerides raise risk.</li>
+<li><strong>Hypertension:</strong> sodium limited to <strong>1,500 mg per day</strong>. Normal blood pressure is below 120/80; many nutrition texts label sustained readings in the 140s over 90s as stage 1 hypertension. The <strong>DASH</strong> plan emphasizes fruits, vegetables, whole grains, and low-fat dairy.</li>
+<li><strong>Fiber</strong> lowers blood cholesterol by binding fat and cholesterol so they leave the body.</li>
+<li><strong>Nephrons</strong> are the working units of the kidney; each contains a <strong>glomerulus</strong> and forms urine.</li>
+<li>Renal diets limit <strong>protein</strong> to reduce kidney workload, and usually sodium, potassium, and phosphorus as well. Fluid may be restricted in later stages.</li>
+<li><strong>Hemodialysis</strong> uses a <strong>fistula</strong> that surgically connects an <strong>artery to a vein</strong> for permanent bloodstream access.</li>
+<li><strong>Calcium oxalate</strong> forms about <strong>80 percent</strong> of renal stones. Oxalate sources include strawberries, peanuts, chocolate, tea, wheat bran, and beets.</li>
+</ul>
+<h4>Gastrointestinal disease and cancer</h4>
+<ul>
+<li><strong>Celiac disease:</strong> intolerance to gluten found in wheat, barley, and rye. Treatment is complete lifelong gluten avoidance; there is no medication substitute.</li>
+<li><strong>Diverticulosis:</strong> little pockets developing on the sides of the large intestine. <strong>Diverticulitis</strong> is when they become inflamed or infected.</li>
+<li><strong>Low-residue (low-fiber) diet</strong> reduces daily fiber to treat severe diarrhea, diverticulitis, ulcerative colitis, intestinal blockages, and recovery after intestinal surgery.</li>
+<li>Bland, easy-to-digest foods that follow a clear liquid diet: <strong>bananas, applesauce, rice, and toast</strong>. Eggs are <em>not</em> classified among these bland, easy-to-digest foods.</li>
+<li><strong>GERD</strong> is reflux of stomach acid; therapy uses smaller meals, staying upright after eating, and avoiding personal trigger foods.</li>
+<li><strong>Cancer is the second leading cause of death in the United States.</strong> A <strong>carcinoma</strong> arises in epithelial tissue, including the membrane lining the digestive tract.</li>
+<li><strong>Phytochemicals</strong> found in plants are thought to be anticarcinogenic. <strong>Cachexia</strong> is the severe wasting of muscle and fat seen in advanced illness.</li>
+<li><strong>Sugar</strong> is described as a pro-inflammatory food; long-term inflammation is linked to several chronic diseases.</li>
+</ul>
+<h4>Clients with special needs</h4>
+<ul>
+<li><strong>Severe burns:</strong> the three needs are <strong>proteins, fluid, and electrolytes</strong>. Calorie needs also rise sharply during healing.</li>
+<li><strong>Fever:</strong> basal metabolic rate rises about <strong>7 percent for every degree Fahrenheit</strong>.</li>
+<li><strong>Cystic fibrosis:</strong> a genetic mutation causing thick, sticky mucus that obstructs the pancreas so enzymes cannot reach the intestines. Therapy is enzyme replacement plus a high-calorie, high-protein, fat-soluble-vitamin-supplemented diet.</li>
+<li><strong>Dysphagia:</strong> difficulty swallowing; therapy uses thickened liquids and texture-modified foods to prevent choking and aspiration.</li>
+<li><strong>Enteral nutrition</strong> feeds through a tube into a working digestive tract. <strong>Parenteral nutrition</strong> delivers nutrients into a vein, bypassing digestion entirely, and is used when the gut cannot be used.</li>
+<li><strong>Bariatric surgery</strong> is the term for weight-loss surgery; afterward patients require very small meals and lifelong vitamin and mineral supplementation.</li>
+<li><strong>Ghrelin</strong>, released from the stomach, signals the hypothalamus to start eating; understanding appetite signaling is part of therapy planning.</li>
+</ul>`,
+qref:[
+["Medical nutrition therapy","Using a specific diet as part of disease treatment"],
+["Type 1 diabetes","Beta cells destroyed; no insulin can be made"],
+["Type 2 diabetes","Insulin is made but cells resist it"],
+["A1C","Blood test showing three months of glucose control"],
+["Polydipsia","Excessive thirst"],
+["Polyuria","Excessive urination"],
+["Carbohydrate counting","Tracking carbohydrate grams to match insulin needs"],
+["Metabolic syndrome","Waist fat, high pressure, high sugar, abnormal cholesterol together"],
+["Atherosclerosis","Plaques thicken arteries; linked to high serum cholesterol"],
+["Ischemia","Reduced blood flow starving tissue of oxygen"],
+["Myocardial infarction","Heart attack from blocked coronary arteries"],
+["DASH diet","Hypertension plan; fruits, vegetables, low-fat dairy, less sodium"],
+["Hypertension sodium limit","1,500 milligrams per day"],
+["Nephron","Kidney unit containing a glomerulus; forms urine"],
+["Renal diet","Limits protein to reduce the kidneys' workload"],
+["Fistula","Surgical artery-to-vein connection for hemodialysis access"],
+["Calcium oxalate","Forms about 80 percent of kidney stones"],
+["Celiac disease","Gluten intolerance treated only by removing gluten"],
+["Diverticulosis","Little pockets on the sides of the large intestine"],
+["Carcinoma","Cancer of epithelial tissue lining body surfaces"]
+],
+notes:`<p><strong>Type 1 is a supply problem; type 2 is a response problem.</strong> In type 1 the beta cells are destroyed and no insulin is made, which is why insulin must come from outside. In type 2 insulin is present but the cells resist it. A stem mentioning destroyed beta cells is describing type 1, and <span class="trap">type 2 diabetes</span> is the tempting answer only because type 2 is far more common. Commonness is not the question.</p>
+<p><strong>The poly- symptoms are three different excesses and they get mismatched constantly.</strong> Polyuria is excessive urination, polydipsia is excessive thirst, and polyphagia is excessive hunger. A pairing like <span class="trap">polydipsia - excessive tiredness</span> looks fine at a glance because fatigue really is a diabetes symptom, but dipsia means thirst. When a question pairs terms with definitions, check each root separately rather than judging the list as a whole.</p>
+<p><strong>Renal diets limit protein, and the reason is nitrogen waste.</strong> Protein is the only macronutrient containing nitrogen, and the kidneys have to clear the waste from breaking it down. Students choose <span class="trap">carbohydrates</span> or <span class="trap">fats</span> because limiting those feels like general health advice, but neither one burdens the kidney. Sodium, potassium, and phosphorus are also restricted, so if protein is not an option, look for one of those three.</p>
+<p><strong>Diverticulosis is having the pockets; diverticulitis is when they are inflamed.</strong> One letter apart, entirely different clinical situations. The osis version is often silent and is managed with adequate fiber over the long run; the itis version is an active flare-up managed with a low-residue diet. Students see the word pocket in a stem and grab <span class="trap">diverticulitis</span> because it sounds more medical. Osis means condition; itis means inflammation.</p>
+<p><strong>Celiac disease has no medication, and the whole treatment is dietary.</strong> Removing gluten from wheat, barley, and rye is the therapy. Students sometimes answer <span class="trap">lactose intolerance</span> when a stem mentions an intolerance, since lactose intolerance is more familiar, but gluten is a protein in grain and lactose is a sugar in milk. Different molecule, different food, different disease.</p>
+<p><strong>Nutrition therapy answers describe what a specific condition takes away, not what sounds generally healthy.</strong> A patient with severe burns needs protein, fluid, and electrolytes, because damaged skin leaks fluid and electrolytes and rebuilding tissue takes enormous amounts of protein. An option offering <span class="trap">carbohydrates, vitamins, and minerals</span> is written to sound balanced and wholesome, which is exactly why it is offered. Whenever one choice reads like general wellness advice and another names the exact deficit the disease creates, take the specific one.</p>`});
+
+
+// Foundations of Nutrition (Middle School Division) — practice items
+// Round One is 35 items in 60 minutes. Per-topic target = round(plan % x 1.2), minimum 6 per topic.
+// t0 Carbohydrates, fats and proteins        15%  -> 18
+// t1 Vitamins & minerals                     15%  -> 18
+// t2 Water (fluid & electrolyte balance)     10%  -> 12
+// t3 Nutrition through the life span         15%  -> 18
+// t4 Digestion, absorption and metabolism    10%  -> 12
+// t5 Cultural and religious influences        5%  ->  6
+// t6 Food related illnesses and allergies    10%  -> 12
+// t7 Medical nutrition therapy               20%  -> 24
+// TOTAL = 120
+
+const Q = [
+{"t":0,"q":"Rice in Asia, wheat in Europe, corn in the Americas, and cassava in West Africa are all staple foods. Which nutrient class do they mainly supply?","a":["Carbohydrates","Minerals","Vitamins","Proteins"],"c":0,"e":"Carbohydrates provide the major source of energy for people all over the world, and staple crops are almost entirely carbohydrate. Proteins is tempting because grains and cassava do contain some protein, but protein is a minor part of these foods and its main job is building tissue, not fueling a population."},
+{"t":0,"q":"Glucose, fructose, and galactose are all classified as which of the following?","a":["Monosaccharides","Disaccharides","Polysaccharides","Amino acids"],"c":0,"e":"All three are single sugar units, and mono means one. Disaccharides is the common wrong pick because sucrose and lactose get studied alongside these three, but those are pairs built from these single units, not the units themselves."},
+{"t":0,"q":"A student reads that granulated table sugar is a disaccharide. Which two sugars make it up?","a":["Glucose and galactose","Two glucose units","Fructose and galactose","Glucose and fructose"],"c":3,"e":"Sucrose is glucose plus fructose, and sucrose is what granulated sugar is. Glucose and galactose is the trap because that combination is lactose, the sugar in milk, which students hear about far more often than sucrose."},
+{"t":0,"q":"After a large pasta meal, the body stores extra carbohydrate for later use. In what form and where?","a":["Glycogen, in the liver and muscles","Cellulose, in the large intestine","Maltose, in the bloodstream","Starch, in the pancreas"],"c":0,"e":"Humans store carbohydrate as glycogen in the liver and in muscle tissue. Starch is the tempting answer because it is the storage word students meet first, but starch is how plants store carbohydrate, not how people do."},
+{"t":0,"q":"Vegetables contribute a substantial amount of carbohydrate, primarily in which form?","a":["Starch","Glycogen","Maltose","Fructose"],"c":0,"e":"Vegetables store their carbohydrate as starch, a polysaccharide. Fructose is tempting because it is the sugar people connect with produce, but fructose is mainly a fruit sugar, and glycogen is an animal storage form that plants do not make."},
+{"t":0,"q":"Which of the following is the only substantial source of carbohydrate produced by animals?","a":["Beef","Eggs","Fish","Milk"],"c":3,"e":"Milk contains lactose, and it is the one meaningful animal-source carbohydrate. Eggs is the tempting choice because eggs are the animal food students associate with complete nutrition, but eggs contain essentially no carbohydrate."},
+{"t":0,"q":"Which statement best describes what fiber does in the large intestine?","a":["It adds bulk that helps stool move through","It is converted to glycogen for storage","It supplies essential amino acids","It is absorbed and used for quick energy"],"c":0,"e":"Fiber is a plant carbohydrate human enzymes cannot break down, so it stays in the tract and adds bulk that keeps material moving. Quick energy is wrong for the same reason it is tempting: fiber is a carbohydrate, but an indigestible one, so it supplies almost no calories."},
+{"t":0,"q":"Which type of lipid makes up about 95 percent of the body's fat, sitting in fat tissue and also circulating in the blood?","a":["Fatty acids","Cholesterol","Phospholipids","Triglycerides"],"c":3,"e":"Triglycerides are the storage and transport form of fat and account for roughly 95 percent of body lipids. Cholesterol is the tempting answer because it is the lipid most talked about in health class, but cholesterol is a small fraction of total body fat."},
+{"t":0,"q":"Which lipid is needed by every cell in the body to build cell membranes and hormones?","a":["Cholesterol","Triglyceride","Linoleic acid","Glycogen"],"c":0,"e":"Every cell requires cholesterol, and the liver makes it whether or not any is eaten. Triglyceride is tempting because it is the most abundant lipid, but abundance is not the same as being structurally required in each cell."},
+{"t":0,"q":"How many calories does one gram of fat supply?","a":["4 calories","9 calories","7 calories","5 calories"],"c":1,"e":"Fat supplies 9 calories per gram, more than twice the 4 calories in a gram of carbohydrate or protein. Four is the tempting answer because it is the number attached to the other two energy nutrients, and students blur the three values together."},
+{"t":0,"q":"Because of its link to heart disease, the American Heart Association recommends limiting saturated fat to no more than what share of total calories?","a":["30 percent","20 percent","15 percent","7 percent"],"c":3,"e":"The saturated fat recommendation is no more than 7 percent of calories. Thirty percent is the classic distractor because that number is real, but it applies to total fat of all kinds, not to saturated fat alone."},
+{"t":0,"q":"Which element is found in proteins but not in carbohydrates or fats?","a":["Hydrogen","Oxygen","Carbon","Nitrogen"],"c":3,"e":"Protein contains carbon, hydrogen, oxygen, and nitrogen, and nitrogen is the element the other two macronutrients lack. Carbon is the reflexive answer because it feels like the important element, but carbon appears in all three, which makes it shared rather than distinctive."},
+{"t":0,"q":"A dietitian wants to list a meal that supplies complete protein. Which combination fits?","a":["Corn, rice, and peanuts","Broccoli, spinach, and kale","Bananas, oats, and honey","Eggs, poultry, and cheese"],"c":3,"e":"Complete proteins contain all nine essential amino acids, and animal foods such as eggs, poultry, and cheese do. Corn, rice, and peanuts is tempting because those are genuinely protein-rich plant foods, but each is incomplete on its own and must be combined to cover all nine."},
+{"t":0,"q":"An egg white turns firm and white when it is cooked. What has happened to its protein?","a":["Denaturation","Hydrolysis","Oxidation","Emulsification"],"c":0,"e":"Denaturation is a protein losing its folded shape, and its function, because of heat or a pH change. Hydrolysis is tempting because it is the other major protein reaction, but hydrolysis splits the chain apart by adding water, which is digestion rather than cooking."},
+{"t":0,"q":"When carbohydrate intake stays below about 50 grams a day, the body begins burning fat incompletely. What is produced?","a":["Cellulose","Glycogen","Amino acids","Ketones"],"c":3,"e":"Ketones are the acids formed when fat oxidation cannot be completed because too little carbohydrate is available, and the state is called ketosis. Glycogen is tempting because it is the other word tied to carbohydrate supply, but glycogen is stored carbohydrate, which is exactly what has run out."},
+{"t":1,"q":"Which group lists the fat-soluble vitamins?","a":["A, D, E, K","B12, C, D, E","A, B6, C, K","C, D, E, K"],"c":0,"e":"The fat-soluble vitamins are A, D, E, and K, and they are stored in the liver and fatty tissue. Lists containing C or any B vitamin are wrong no matter how familiar they look, because those are water-soluble and are not stored in large amounts."},
+{"t":1,"q":"A patient has bleeding gums and wounds that will not close. Which vitamin, needed to form collagen, is most likely low?","a":["Vitamin E","Vitamin A","Vitamin D","Vitamin C"],"c":3,"e":"Vitamin C is required to build collagen, the protein that holds skin, gums, and blood vessels together. Vitamin D is one of the most over-chosen answers in this topic because it feels important, but its job is calcium absorption, not connective tissue."},
+{"t":1,"q":"A dietitian suggests drinking orange juice with an iron-fortified cereal. Which vitamin is she using as an iron enhancer?","a":["Vitamin K","Vitamin A","Vitamin B12","Vitamin C"],"c":3,"e":"Vitamin C sharply increases absorption of nonheme iron, the form found in plant foods and fortified cereals. Vitamin B12 is tempting because it is the vitamin most connected with blood in students' minds, but B12 builds red blood cells rather than helping iron get absorbed."},
+{"t":1,"q":"Which vitamin is present in both animal and plant foods, helps metabolize carbohydrate, fat, and protein, and is destroyed by light?","a":["Thiamine","Niacin","Vitamin B6","Riboflavin"],"c":3,"e":"Riboflavin is the light-sensitive B vitamin, which is why milk is sold in opaque containers rather than clear glass. Niacin is a frequent wrong choice because all the B vitamins share energy-metabolism duties, but light sensitivity is riboflavin's signature detail."},
+{"t":1,"q":"Which of the following is the most readily used form of preformed vitamin A?","a":["Calcitriol","Ascorbic acid","Beta-carotene","Retinol"],"c":3,"e":"Retinol is the animal form of vitamin A the body can use as is, which is what preformed means. Beta-carotene is the trap because it is a genuine vitamin A source, but it is a plant precursor the body still has to convert."},
+{"t":1,"q":"Which vitamin is called the sunshine vitamin because skin makes it, and is needed for calcium absorption?","a":["Vitamin E","Vitamin A","Vitamin K","Vitamin D"],"c":3,"e":"Vitamin D is produced in skin exposed to sunlight and allows the intestine to absorb calcium. Vitamin K is a plausible-looking choice because it is also fat-soluble and also linked to bone, but its main role is blood clotting."},
+{"t":1,"q":"Which vitamin is required for healthy red blood cells and the myelin sheath, and needs intrinsic factor from the stomach to be absorbed?","a":["Thiamine","Vitamin B6","Folate","Vitamin B12"],"c":3,"e":"Vitamin B12 is the one vitamin that requires a stomach protein called intrinsic factor before it can be absorbed. Folate is the frequent wrong answer because folate and B12 both make blood cells and their deficiencies look similar, but only B12 needs intrinsic factor and only B12 protects the myelin sheath."},
+{"t":1,"q":"Which of the following is a water-soluble vitamin?","a":["Vitamin K","Vitamin E","Thiamine","Vitamin A"],"c":2,"e":"Thiamine is vitamin B1, and every B vitamin is water-soluble, as is vitamin C. Vitamin E is chosen often because it is an antioxidant like vitamin C and the two get grouped together, but vitamin E is stored in fat tissue."},
+{"t":1,"q":"Which vitamin-like nutrient found in eggs and liver is essential for nervous system development, cell membrane structure, and lipid metabolism?","a":["Choline","Niacin","Selenium","Biotin"],"c":0,"e":"Choline is classified as a vitamin-like nutrient with roles in nerve development, membranes, and fat transport. Niacin is tempting because it is a real B vitamin involved in metabolism, but niacin does not build cell membranes or nervous tissue."},
+{"t":1,"q":"Which term describes inorganic elements needed for building tissue, regulating body fluids, and supporting many body functions?","a":["Vitamins","Enzymes","Minerals","Phytochemicals"],"c":2,"e":"Minerals are inorganic elements that come from soil and water and cannot be destroyed by heat or light. Vitamins is the standard wrong pick because vitamins share the micronutrient label, but vitamins are organic compounds made by living things."},
+{"t":1,"q":"A surgical patient is healing slowly and getting frequent infections. Which mineral supports immune response and wound healing?","a":["Magnesium","Selenium","Zinc","Iodine"],"c":2,"e":"Zinc enhances the immune response and is required for wound healing, so shortfalls slow recovery. Magnesium and selenium appear as options constantly and are real minerals with real jobs, but neither carries the wound healing role."},
+{"t":1,"q":"Which mineral does the thyroid use to make the hormones that regulate basal metabolic rate?","a":["Calcium","Zinc","Iron","Iodine"],"c":3,"e":"Iodine is built into thyroid hormones, which set the pace of metabolism throughout the body. Iron is a common wrong answer because iron and iodine look and sound alike on a page, but iron's job is carrying oxygen inside hemoglobin."},
+{"t":1,"q":"Which mineral increases resistance to dental caries?","a":["Calcium","Phosphorus","Fluoride","Potassium"],"c":2,"e":"Fluoride strengthens tooth enamel against decay, which is why it is added to water supplies and toothpaste. Calcium is the intuitive wrong choice because calcium builds the tooth in the first place, but it does not increase resistance to cavities once the tooth is formed."},
+{"t":1,"q":"Which major mineral, found in melons, mushrooms, peaches, oranges, and bananas, is needed for muscle contraction and nerve impulse transmission?","a":["Calcium","Chloride","Sodium","Potassium"],"c":3,"e":"Potassium is the main mineral inside cells and drives muscle contraction and nerve signaling. Sodium is the tempting near-miss because it is potassium's partner in fluid balance, but sodium is the mineral outside the cells and is not associated with that food list."},
+{"t":1,"q":"Ordinary table salt is a compound of which two minerals?","a":["Calcium and phosphorus","Potassium and fluoride","Sodium and chloride","Potassium and iodide"],"c":2,"e":"Table salt is sodium chloride, so it supplies both sodium and chloride. Potassium and iodide is a well-built distractor because iodized salt really does contain added iodide, but the added trace does not change what salt itself is made of."},
+{"t":1,"q":"Which trace mineral found in meat, mushrooms, nuts, organ meats, and wheat germ is associated with glucose and lipid metabolism?","a":["Chromium","Selenium","Copper","Manganese"],"c":0,"e":"Chromium works with insulin in glucose metabolism and also affects lipid handling. Selenium is one of the most frequently offered wrong answers among trace minerals, but selenium's role is antioxidant protection alongside vitamin E."},
+{"t":1,"q":"A cereal label states that iron and several B vitamins lost during milling have been put back. How is that food described?","a":["Organic","Refined","Fortified","Enriched"],"c":3,"e":"Enriched means nutrients removed by processing were added back to the food. Fortified is the tempting near-synonym, but fortified means adding a nutrient that was never present, the way vitamin D is added to milk."},
+{"t":1,"q":"Known as adult rickets, which condition is a calcium-related softening of the bones?","a":["Osteoarthritis","Anemia","Osteoporosis","Osteomalacia"],"c":3,"e":"Osteomalacia is softening of bone in adults, usually from vitamin D deficiency limiting calcium absorption. Osteoporosis is the near-miss because both involve weak bone, but osteoporosis is loss of bone mass rather than softening of the bone that is there."},
+{"t":2,"q":"Water is described as the body's solvent. What does the term solvent mean?","a":["The liquid part of a solution","The dissolved particles in a solution","A mineral that carries a charge","A membrane that filters particles"],"c":0,"e":"A solvent is the liquid that dissolves other substances, and blood works because water dissolves so much. The dissolved particles are the solute, which is the tempting reversal students pick when the two words blur together."},
+{"t":2,"q":"How does water move across a selectively permeable cell membrane?","a":["Filtration","Phagocytosis","Active transport","Osmosis"],"c":3,"e":"Osmosis is the specific name for water moving across a membrane toward the side with more dissolved particles, and it requires no energy. Active transport is tempting because it sounds more powerful, but it is used to push solutes against a gradient, not to move water."},
+{"t":2,"q":"Which term describes the fluid located between the cells?","a":["Intravascular","Intramuscular","Intracellular","Interstitial"],"c":3,"e":"Interstitial fluid fills the spaces between cells and is part of the extracellular fluid. Intracellular is the classic mix-up because intra and inter look alike, but intra means within and inter means between."},
+{"t":2,"q":"Which area at the base of the brain regulates thirst and appetite?","a":["Cerebellum","Pituitary","Hypothalamus","Medulla"],"c":2,"e":"The hypothalamus monitors blood concentration and triggers thirst as well as appetite signals. The pituitary is the tempting answer because it is called the master gland and it releases ADH, but the hypothalamus is what senses the need and gives the order."},
+{"t":2,"q":"Which hormone influences the kidneys to reabsorb water rather than excrete it?","a":["Insulin","Aldosterone","ADH","Ghrelin"],"c":2,"e":"Antidiuretic hormone means against urination, so it makes the kidneys hold water back into the blood. Aldosterone is a strong distractor because it also acts on the kidney, but its main job is holding sodium rather than water directly."},
+{"t":2,"q":"Intracellular fluid has a pH of 6.8. How is that best described?","a":["Alkaline","Saturated","Neutral","Acidic"],"c":3,"e":"Any value below 7.0 is acidic, and 6.8 is below 7.0. Neutral is the trap answer because 6.8 is so close to 7 that it feels like it should round there, but the pH scale has no close enough."},
+{"t":2,"q":"What is the regulation of hydrogen ions in the body called?","a":["Hydrolysis","Homeostasis","Osmosis","Acid-base balance"],"c":3,"e":"Acid-base balance is the specific term for controlling hydrogen ion concentration and therefore pH. Homeostasis is the tempting answer because it is true in a general way, but it names all internal balance rather than this one process."},
+{"t":2,"q":"Severe vomiting can cause alkalosis. Which substance is being lost?","a":["Bicarbonate","Potassium","Hydrochloric acid","Bile"],"c":2,"e":"Vomiting empties stomach contents, and stomach juice contains hydrochloric acid, so losing it leaves the body relatively alkaline. Bicarbonate is the reversed answer, since losing bicarbonate would cause acidosis instead."},
+{"t":2,"q":"A person drinks far more water than the kidneys can excrete. Which condition can result?","a":["Dehydration","Edema","Hypernatremia","Hyponatremia"],"c":3,"e":"Water intoxication dilutes the sodium in the blood, producing hyponatremia, which can be life threatening. Dehydration is the reflex pick because it is the water word students use most, but it describes the opposite direction of imbalance."},
+{"t":2,"q":"What is the average daily adult water requirement?","a":["1 milliliter of water for every calorie of food eaten","1.5 milliliters for every calorie of food eaten","500 milliliters per day regardless of intake","3 liters per day for every adult"],"c":0,"e":"The adult guideline is about 1 milliliter of water per calorie consumed, which scales the need to body size and activity. The 1.5 milliliter figure is a true number but belongs to infants, whose kidneys are immature and who lose more water per pound."},
+{"t":2,"q":"A soccer player weighs herself before and after practice. What is she calculating?","a":["Basal metabolic rate","Body composition","Sweat rate","Fluid volume of blood"],"c":2,"e":"Weight lost during exercise is mostly water, so the difference gives sweat rate and tells the athlete how much fluid to replace. Basal metabolic rate is tempting because it is the other measurement athletes talk about, but it is calculated from body size and age, not from a scale before and after."},
+{"t":3,"q":"Which nutrient should women of childbearing age get in adequate amounts to help prevent brain and spinal cord birth defects?","a":["Iron","Calcium","Folic acid","Vitamin D"],"c":2,"e":"Folic acid reduces neural tube defects such as spina bifida, and it works in the first weeks of pregnancy, often before a pregnancy is known. Iron is the tempting answer because iron dominates most pregnancy nutrition questions, but iron prevents anemia rather than neural tube defects."},
+{"t":3,"q":"What is the recommended protein intake during pregnancy?","a":["30 g","45 g","60 g","90 g"],"c":2,"e":"Protein needs rise to about 60 grams per day to build fetal tissue and expand the mother's blood volume. Ninety grams is tempting because pregnancy needs feel like they should be dramatically higher, but the increase is real and moderate."},
+{"t":3,"q":"What is the recommended weight gain during a pregnancy that starts at a healthy weight?","a":["10 to 15 pounds","25 to 35 pounds","40 to 50 pounds","No gain is recommended"],"c":1,"e":"The standard range is 25 to 35 pounds, most of it in the second and third trimesters. Ten to fifteen pounds is tempting because it sounds cautious, but too little gain is associated with low birth weight."},
+{"t":3,"q":"How many extra calories per day are recommended during the second trimester of pregnancy?","a":["100 calories","340 calories","600 calories","1,000 calories"],"c":1,"e":"About 340 extra calories per day are recommended in the second trimester, rising somewhat in the third. One thousand is the classic overestimate that comes from the old idea of eating for two, but the actual increase is roughly one substantial snack."},
+{"t":3,"q":"A pregnant patient reports craving and eating laundry starch, clay, and ice. What is this called?","a":["Ketosis","Cachexia","Anemia","Pica"],"c":3,"e":"Pica is the craving for nonfood substances, it is frequent in pregnancy, and it is often attributed to iron deficiency. Anemia is the tempting answer because it may well be the underlying cause, but the question asks for the name of the craving itself, not its cause."},
+{"t":3,"q":"An infant is born with a three-to-six-month supply of which nutrient?","a":["Calcium","Vitamin D","Iron","Zinc"],"c":2,"e":"A full-term infant stores iron from the mother in the last weeks of pregnancy, enough for three to six months. Calcium is the intuitive answer because babies obviously build bone, but calcium is supplied continuously by milk while iron stores must be replaced by food once they run out."},
+{"t":3,"q":"How much water do infants need relative to the calories they consume?","a":["0.5 mL per calorie","1.0 mL per calorie","1.5 mL per calorie","3.0 mL per calorie"],"c":2,"e":"Infants need about 1.5 milliliters of water per calorie, more than an adult, because their kidneys are immature and they lose more water relative to body size. One milliliter per calorie is the trap, since that figure is the adult requirement."},
+{"t":3,"q":"When solid foods are first introduced to an infant, which food is commonly recommended first?","a":["Single grain cereal","Mashed strawberries","Whole cow's milk","Scrambled eggs"],"c":0,"e":"Iron-fortified single grain cereal is the usual first food, because it replaces dwindling iron stores and one grain at a time makes any reaction easy to trace. Whole cow's milk is tempting because milk is the infant's main food, but cow's milk is generally not given as a main drink before age one."},
+{"t":3,"q":"What is the process of training an infant to drink from a cup instead of a nipple called?","a":["Weaning","Latching","Fortifying","Supplementing"],"c":0,"e":"Weaning is the gradual shift from breast or bottle to a cup and to family foods. Supplementing is the tempting alternative because it sounds like adding something new, but supplementing means adding a food or nutrient alongside milk feeding rather than changing how the infant drinks."},
+{"t":3,"q":"Which group has been shown to have the highest prevalence of food allergies?","a":["Preschoolers","Teenagers","Middle-aged adults","Older adults"],"c":0,"e":"Preschoolers have the highest prevalence, and many children outgrow their allergies as they get older. Teenagers is tempting because teen allergy reactions are more likely to be severe and get more attention, but severity and prevalence are different measures."},
+{"t":3,"q":"Why do calorie requirements begin to diminish after about age 25?","a":["The intestines absorb fewer nutrients","Appetite hormones stop working","The stomach shrinks with age","The basal metabolic rate decreases"],"c":3,"e":"Basal metabolic rate, the energy spent just staying alive, declines once rapid growth ends and muscle mass begins to drift down. Reduced absorption is a tempting answer because it sounds like an aging change, but absorption stays largely intact and is not the mechanism here."},
+{"t":3,"q":"Due to its increased metabolic activity, which tissue requires more calories to maintain?","a":["Connective tissue","Cartilage","Adipose tissue","Muscle tissue"],"c":3,"e":"Muscle is metabolically active and burns calories even at rest, which is why losing muscle lowers calorie needs. Adipose tissue is tempting because fat is where energy is kept, but storing energy is a passive job compared with spending it."},
+{"t":3,"q":"Roughly how many teens in America fail to meet the recommended calcium intake?","a":["Fewer than 10 percent","About 25 percent","Greater than 50 percent","Nearly all teens meet it"],"c":2,"e":"More than half of American teens fall short on calcium, and the gap is widest among teenage girls, with only about 10 percent meeting the recommendation. Fewer than 10 percent is the trap because that figure is real but describes the small share of female teens who do meet it."},
+{"t":3,"q":"According to national survey data, about what percentage of children meet the recommendation for whole grains?","a":["22 percent","45 percent","70 percent","95 percent"],"c":0,"e":"Only about 22 percent of children meet the whole grain recommendation, one of the largest gaps in children's diets. Seventy percent is the tempting number because it is also a real survey figure, but it describes whole fruit intake, where children do much better."},
+{"t":3,"q":"Which foods are described as high-nutrition or powerhouse fruits that may help prevent some diseases?","a":["Grapes and melons","Peaches and pears","Bananas and apples","Citrus and berries"],"c":3,"e":"Citrus and berries pack the most nutrients and protective plant compounds per bite, earning the powerhouse label. Bananas and apples are tempting because they are the most eaten fruits, but popularity is not what the term measures."},
+{"t":3,"q":"Osteoporosis has been called the silent disease in older men and women. Why?","a":["It cannot be detected by any test","It causes hearing loss before bone loss","It only affects people who feel healthy","Bone is lost without symptoms until a fracture occurs"],"c":3,"e":"Bone mass declines with no pain or warning signs, so many people learn they have it only after a hip or wrist fracture. The idea that it cannot be detected is tempting because silent suggests invisible, but bone density scans detect it well before a break."},
+{"t":3,"q":"Which three findings make up the female athlete triad?","a":["Dehydration, cramping, and fatigue","Anemia, low blood pressure, and dizziness","Disordered eating, amenorrhea, and osteoporosis","Weight gain, joint pain, and swelling"],"c":2,"e":"The triad links disordered eating, absent menstrual periods, and bone loss, and it is treated by a medical team beginning with adequate energy intake. Dehydration and cramping are tempting because they are common athlete problems, but they are not part of this defined clinical pattern."},
+{"t":3,"q":"Approximately how many extra calories are needed to gain one pound of body weight?","a":["500 calories","1,500 calories","3,500 calories","10,000 calories"],"c":2,"e":"About 3,500 calories of surplus corresponds to one pound, and the same figure applies in the other direction. Five hundred is a tempting answer because it is the daily amount often discussed, but that is a per-day figure that would take a week to reach 3,500."},
+{"t":4,"q":"What is the semi-liquid mixture created in the stomach when muscular contractions mix food with gastric juices?","a":["Bile","Villi","Bolus","Chyme"],"c":3,"e":"Chyme is the thick liquid that leaves the stomach and enters the small intestine. Bolus is the near-miss because it is also a food mass, but a bolus is the chewed lump that is swallowed before the stomach goes to work."},
+{"t":4,"q":"In the stomach, what does the enzyme pepsin digest?","a":["Fats","Fiber","Starch","Proteins"],"c":3,"e":"Pepsin begins the chemical digestion of protein, which is why protein digestion is said to start in the stomach. Starch is tempting because starch digestion starts even earlier, in the mouth with salivary amylase, so students carry that habit into the stomach."},
+{"t":4,"q":"In the small intestine, which enzyme digests starch to simple sugars?","a":["Pepsin","Lipase","Pancreatic amylase","Trypsin"],"c":2,"e":"Pancreatic amylase, delivered from the pancreas into the small intestine, finishes breaking starch down to simple sugars. Lipase is the tempting alternative because it is also a pancreatic enzyme, but lipase handles fat rather than starch."},
+{"t":4,"q":"Which substance, produced by the liver and stored by the gallbladder, emulsifies fat in the small intestine?","a":["Bile","Pepsin","Insulin","Chyme"],"c":0,"e":"Bile breaks large fat globules into small droplets so enzymes can reach them, and it contains no enzymes of its own. Students often name the gallbladder as the producer when a question asks where bile is made, but the gallbladder only stores and concentrates it."},
+{"t":4,"q":"What are the rhythmic muscular movements that move chyme along the intestinal tract?","a":["Peristalsis","Hydrolysis","Emulsification","Absorption"],"c":0,"e":"Peristalsis is the wave of muscle contraction that pushes contents forward through the digestive tract. Absorption is tempting because it also happens along the intestine, but absorption moves nutrients out through the wall rather than moving contents along."},
+{"t":4,"q":"Chemical digestion breaks food molecules apart by adding water. What is that process called?","a":["Oxidation","Denaturation","Hydrolysis","Osmosis"],"c":2,"e":"Hydrolysis means splitting with water, and every macronutrient is digested this way. Denaturation is tempting because it also changes a molecule, but denaturation unfolds a protein without cutting the chain into pieces."},
+{"t":4,"q":"What is the movement of nutrients into the blood and lymphatic system called?","a":["Digestion","Metabolism","Absorption","Peristalsis"],"c":2,"e":"Absorption is the step where broken-down nutrients cross the intestinal wall into circulation. Digestion is the reflex answer because it is the more familiar word, but digestion is the breaking apart that happens before absorption can occur."},
+{"t":4,"q":"Where are fructose and galactose converted to glucose?","a":["Stomach","Liver","Pancreas","Large intestine"],"c":1,"e":"The liver receives absorbed sugars first and converts fructose and galactose into glucose the body can use. Pancreas is one of the most over-chosen wrong answers here, because the pancreas is closely tied to blood sugar through insulin, but it does not convert sugars itself."},
+{"t":4,"q":"Metabolism is primarily controlled by hormones secreted from which gland?","a":["Pancreas","Adrenal","Thyroid","Pituitary"],"c":2,"e":"Thyroid hormones, built using iodine, set the body's overall metabolic rate. The pituitary is the strongest distractor because it signals the thyroid and is nicknamed the master gland, but the thyroid is what actually controls metabolic rate."},
+{"t":4,"q":"What are the end products of carbohydrate, fat, and protein metabolism?","a":["Glucose and oxygen","Carbon dioxide and water","Amino acids and glycerol","Ketones and urea"],"c":1,"e":"All three fuels end at carbon dioxide and water, with energy released along the way, and protein adds nitrogen waste excreted as urea. Glucose and oxygen is the tempting reversal, because those are the inputs to the process rather than the outputs."},
+{"t":5,"q":"Which term describes foods prepared according to Orthodox Jewish laws that prohibit pork and shellfish and require that meat and dairy not be combined?","a":["Halal","Kosher","Pareve","Vegan"],"c":1,"e":"Kosher describes foods prepared under Jewish dietary law, and the separation of meat and dairy is its distinctive rule. Halal is the near-miss because it also prohibits pork, but halal has no meat and dairy separation rule and instead prohibits alcohol."},
+{"t":5,"q":"Which cultural food pattern features olive oil, increased fish and vegetable consumption, and small portion sizes, and is known for low heart disease rates?","a":["Mediterranean","Northern European","Caribbean","Scandinavian"],"c":0,"e":"The Mediterranean pattern spans Greece, southern Italy, Spain, and North Africa and is defined by that whole combination. Students sometimes look for a single country because olive oil and pasta feel Italian, but the pattern is regional rather than national."},
+{"t":5,"q":"In the United States, about half of the edible plants we eat are believed to have originated with which culture?","a":["European settlers","Native Americans","Chinese traders","Middle Eastern farmers"],"c":1,"e":"Corn, beans, squash, tomatoes, potatoes, and peppers all trace to Native American agriculture. European settlers is the reflexive answer because that is the arrival story most students know, but settlers brought wheat and livestock rather than these plants."},
+{"t":5,"q":"Which term was created in the 1960s to place emphasis on African American foodways?","a":["Comfort food","Soul food","Home cooking","Fusion cuisine"],"c":1,"e":"Soul food was coined in the 1960s to name and honor African American cooking traditions during a period of cultural pride. Comfort food is tempting because the two overlap in everyday speech, but comfort food is a general category with no cultural origin attached."},
+{"t":5,"q":"Which foods are described as having a Middle Eastern influence?","a":["Hummus, pita, flat bread, lamb","Field corn, beans, chiles","Curry, lentils, eggplant","Olive oil, sardines, tomatoes"],"c":0,"e":"Hummus, pita and other flat breads, and lamb are hallmark Middle Eastern foods. Curry, lentils, and eggplant is the closest wrong answer because those foods also come from a warm region with shared spices, but that list describes Indian cuisine."},
+{"t":5,"q":"A patient who keeps a kosher kitchen is placed on a low-sodium diet. What is the best approach for the dietitian?","a":["Explain that the medical diet is more important than the dietary laws","Build the low-sodium plan using foods and preparations the patient already keeps","Ask the family to suspend their practices during treatment","Provide a standard plan and let the patient sort out the conflicts"],"c":1,"e":"Therapeutic diets are adapted to fit a patient's practices, because a plan a patient will not follow does not treat anything. Telling a patient the medical diet outranks their practice is the classic wrong option, since it sounds decisive but ignores that the two are almost always compatible."},
+{"t":6,"q":"What is listed as the first technique to reduce foodborne illness?","a":["Cook","Chill","Clean","Separate"],"c":2,"e":"The four steps are Clean, Separate, Cook, Chill, and Clean comes first because it happens before food is even handled. Cook is the tempting answer because cooking is the step that actually kills most organisms, but the sequence starts earlier."},
+{"t":6,"q":"At what temperature should a refrigerator be kept to slow the growth of bacteria that spoil food?","a":["40 degrees F or below","50 degrees F or below","32 degrees F exactly","0 degrees F"],"c":0,"e":"Forty degrees Fahrenheit or below keeps most bacteria from multiplying quickly, and the range above it up to about 140 is the danger zone. Zero degrees is tempting because it is a real food safety number, but that is the target for a freezer."},
+{"t":6,"q":"Which foodborne infection originates from human skin, grows in meats, poultry, eggs, and tuna, and causes mild diarrhea and vomiting?","a":["Listeria","Staphylococcus","Cryptosporidium","Norovirus"],"c":1,"e":"Staphylococcus lives on skin and in nasal passages and reaches food through unwashed hands or an infected cut. Listeria is the frequent wrong pick because both grow in protein foods, but Listeria comes from soil, milk, and produce and is known for growing in the cold."},
+{"t":6,"q":"Which organism is known as the buffet germ because it grows in meat and gravy left standing at room temperature?","a":["Salmonella","E. coli","Clostridium perfringens","Staphylococcus"],"c":2,"e":"Clostridium perfringens thrives in large batches of meat and gravy held at warm room temperature for hours. Staphylococcus is the closest competitor because it also grows in held foods, but its identifying detail is its origin on human skin rather than the serving setup."},
+{"t":6,"q":"Which bacterium is found in intestines, milk, leafy vegetables, and soil, and can grow even inside a refrigerator?","a":["Salmonella","Listeria monocytogenes","Clostridium perfringens","Staphylococcus"],"c":1,"e":"Listeria is the notable organism that keeps multiplying at refrigerator temperatures, which is why it is especially serious in pregnancy. Salmonella is the reflexive answer because it is the most famous name in food safety, but refrigeration does slow Salmonella."},
+{"t":6,"q":"Which organism, found in soil, food, water, and swimming pools, causes severe dehydration with cramps, fever, nausea, and vomiting?","a":["Cryptosporidium","Botulinum toxin","Norovirus","E. coli"],"c":0,"e":"Cryptosporidium is a parasite spread through contaminated water, including pool water, and it causes heavy fluid loss. Norovirus is tempting because it also spreads in group settings and causes vomiting, but it is a virus and is not associated with swimming pools and soil."},
+{"t":6,"q":"What is the primary treatment for most foodborne illness?","a":["A course of antibiotics","Replacing fluids and electrolytes to prevent dehydration","Complete fasting for one week","Increasing dietary fiber immediately"],"c":1,"e":"Most cases resolve on their own, and the real danger is fluid and electrolyte loss from vomiting and diarrhea. Antibiotics is the reflexive answer, but many foodborne illnesses are viral or caused by a toxin, and antibiotics do nothing against those."},
+{"t":6,"q":"How are pollen, dust, animal dander, and certain foods classified when they cause hypersensitivity reactions?","a":["Pathogens","Allergens","Toxins","Antigens of infection"],"c":1,"e":"Any substance that triggers a hypersensitivity reaction from the immune system is called an allergen. Pathogens is tempting because both make people sick, but a pathogen is an organism that infects, while an allergen is harmless to most people."},
+{"t":6,"q":"A food allergy is usually caused when the immune system reacts to which type of food substance?","a":["Carbohydrate","Fat","Protein","Fiber"],"c":2,"e":"Food allergens are almost always proteins, which is why cooking rarely removes the risk. Carbohydrate is the tempting answer because lactose intolerance is the milk problem students know best, but intolerance is an enzyme shortage rather than an immune reaction."},
+{"t":6,"q":"Which of the following are the most common symptoms of a food allergy?","a":["Fever, chills, and body aches","Vomiting, stomach pain, and intestinal distress","Joint swelling and stiffness","Blurred vision and headache"],"c":1,"e":"Digestive symptoms are the most common presentation, often alongside hives, itching, or swelling. Fever and chills is a tempting choice because those symptoms sound like an obvious food problem, but fever points toward infection rather than allergy."},
+{"t":6,"q":"A student eats a cookie containing peanuts and within minutes has hives, wheezing, and a falling blood pressure. What is this called?","a":["Food intolerance","Anaphylaxis","Foodborne illness","Celiac reaction"],"c":1,"e":"Anaphylaxis is a life-threatening reaction involving more than one body system, and it is treated with epinephrine from an EpiPen followed by emergency care. Food intolerance is wrong because intolerance does not involve the immune system and never produces breathing or circulation collapse."},
+{"t":7,"q":"Which form of diabetes develops when the beta cells in the pancreas are destroyed and insulin can no longer be made?","a":["Type 1 diabetes","Type 2 diabetes","Gestational diabetes","Metabolic syndrome"],"c":0,"e":"Destruction of the beta cells removes the body's ability to produce insulin, so insulin must be supplied from outside. Type 2 is the tempting answer because it is far more common, but in type 2 insulin is still made and the problem is that cells resist it."},
+{"t":7,"q":"Which blood test shows how well blood glucose has been controlled over the past three months?","a":["Fasting glucose","A1C","Cholesterol panel","Urinalysis"],"c":1,"e":"A1C measures glucose attached to hemoglobin in red blood cells, which turn over about every three months. Fasting glucose is tempting because it is the test people take most often, but it captures a single moment rather than a long-term average."},
+{"t":7,"q":"Which of the following symptom pairings for diabetes is INCORRECT?","a":["Polyuria - excessive urination","Polydipsia - excessive tiredness","Polyphagia - excessive hunger","Fatigue - low cellular energy use"],"c":1,"e":"Dipsia refers to thirst, so polydipsia means excessive thirst, not tiredness. The pairing is tempting because fatigue really is a diabetes symptom, so the definition sounds like something that belongs on the list even though the root word does not match."},
+{"t":7,"q":"Excess body fat around the waist, high blood pressure, high blood sugar, and abnormal cholesterol appear together in one patient. What is this cluster called?","a":["Metabolic syndrome","Cachexia","Atherosclerosis","Ischemia"],"c":0,"e":"Metabolic syndrome is the name for that specific combination, and it sharply raises risk for diabetes and heart disease. Atherosclerosis is tempting because it is a related cardiovascular problem, but it names artery plaque rather than a group of coexisting findings."},
+{"t":7,"q":"Which nutrition therapy approach is central to managing diabetes?","a":["Eliminating all carbohydrate permanently","Counting carbohydrate and keeping amounts consistent","Restricting all protein foods","Eating only after blood sugar drops"],"c":1,"e":"Carbohydrate raises blood glucose most, so counting it and keeping meals consistent lets insulin be matched to intake. Eliminating carbohydrate entirely is tempting because carbohydrate is the nutrient in question, but the brain requires glucose and the plan is about matching, not removal."},
+{"t":7,"q":"What is the condition in which plaques form and arteries thicken, often linked to high serum cholesterol?","a":["Ischemia","Atherosclerosis","Hypertension","Myocardial infarction"],"c":1,"e":"Atherosclerosis is the buildup itself, and it is the underlying process behind most heart attacks and strokes. Myocardial infarction is tempting because it is the outcome everyone knows, but that names the heart attack that occurs after a vessel is blocked."},
+{"t":7,"q":"What is the scientific name for a heart attack caused by a blockage of the coronary arteries?","a":["Angina","Ischemia","Myocardial infarction","Arrhythmia"],"c":2,"e":"Myocardial infarction means death of heart muscle tissue from a blocked blood supply. Ischemia is the close call because ischemia is the reduced blood flow that leads to it, but ischemia can be temporary while an infarction means tissue has already been damaged."},
+{"t":7,"q":"What disorder occurs when reduced blood flow leaves tissue with an insufficient supply of nutrients and oxygen?","a":["Ischemia","Edema","Anemia","Hyponatremia"],"c":0,"e":"Ischemia is restricted blood flow starving a tissue, and it can happen in the heart, brain, or limbs. Anemia is the tempting answer because it also involves oxygen shortage, but in anemia the blood itself carries too little oxygen while flow is normal."},
+{"t":7,"q":"A patient diagnosed with hypertension is told to limit daily sodium. To what level?","a":["500 milligrams","1,500 milligrams","2,800 milligrams","4,000 milligrams"],"c":1,"e":"The limit is 1,500 milligrams per day, the same number used as the general recommended intake. Twenty-eight hundred is a tempting answer because it is close to average consumption in the United States, but average intake is not a therapeutic target."},
+{"t":7,"q":"What are the working units of the kidney that contain the glomerulus and form urine?","a":["Alveoli","Villi","Nephrons","Lacteals"],"c":2,"e":"Each kidney holds about a million nephrons, and each nephron filters blood and produces urine. Villi is a tempting answer because it is another tiny structural unit with a similar sound, but villi absorb nutrients in the small intestine."},
+{"t":7,"q":"Treatment for renal disease includes limiting which nutrient to reduce the workload on the kidneys?","a":["Carbohydrates","Fats","Proteins","Fiber"],"c":2,"e":"Protein is the only macronutrient containing nitrogen, and the kidneys must clear the nitrogen waste that protein breakdown produces. Carbohydrates is tempting because limiting them sounds like standard health advice, but carbohydrate breakdown produces no nitrogen waste."},
+{"t":7,"q":"In hemodialysis, a fistula provides permanent access to the bloodstream by connecting which structures?","a":["Artery to vein","Vein to vein","Artery to artery","Capillary to lymph vessel"],"c":0,"e":"A surgeon joins an artery to a vein so the vein carries arterial pressure and enlarges enough for repeated needle access. Vein to vein is the common wrong pick because veins are the vessels people associate with needles, but a vein alone cannot supply the flow dialysis requires."},
+{"t":7,"q":"Which chemical, found in strawberries, peanuts, chocolate, tea, wheat bran, and beets, forms about 80 percent of kidney stones?","a":["Uric acid","Calcium oxalate","Sodium chloride","Phosphoric acid"],"c":1,"e":"Calcium oxalate accounts for roughly 80 percent of renal stones, and those foods are the main oxalate sources. Uric acid is a genuine stone type and therefore tempting, but it accounts for a much smaller share and is tied to different foods."},
+{"t":7,"q":"Which disorder involves an intolerance to gluten?","a":["Diverticulosis","Lactose intolerance","Celiac disease","Ulcerative colitis"],"c":2,"e":"Celiac disease is an immune reaction to gluten, the protein in wheat, barley, and rye, and the only treatment is complete removal of gluten. Lactose intolerance is the tempting answer because the word intolerance appears in both, but lactose is a milk sugar and the mechanism is a missing enzyme."},
+{"t":7,"q":"What are the little pockets that develop on the sides of the large intestine called?","a":["Diverticulosis","Diverticulitis","Polyps","Villi"],"c":0,"e":"Diverticulosis is simply having the pockets, and the osis ending means condition. Diverticulitis is the near-miss that gets chosen because it sounds more clinical, but the itis ending means inflammation, which describes a flare-up rather than the pockets themselves."},
+{"t":7,"q":"After a clear liquid diet, which foods are commonly used as bland, easy-to-digest choices?","a":["Fried eggs, sausage, and biscuits","Bananas, applesauce, rice, and toast","Raw salad, nuts, and beans","Whole milk, cheese, and cream soups"],"c":1,"e":"Bananas, applesauce, rice, and toast are low in fiber and fat and are easy on an irritated digestive tract. Raw salad, nuts, and beans is the trap because those are nutritious foods, but their high fiber content is exactly what a recovering gut cannot handle."},
+{"t":7,"q":"Which eating plan reduces daily fiber to treat severe diarrhea, diverticulitis, ulcerative colitis, intestinal blockages, and recovery after intestinal surgery?","a":["High-fiber diet","Low-residue diet","Renal diet","Gluten-free diet"],"c":1,"e":"A low-residue, or low-fiber, diet limits material passing through the intestine so an inflamed or healing gut has less work to do. High-fiber is the tempting reversal because fiber is emphasized for long-term bowel health, but during a flare-up the goal is the opposite."},
+{"t":7,"q":"Which disorder is the second leading cause of death in the United States?","a":["Diabetes","Cancer","Kidney disease","Stroke"],"c":1,"e":"Cancer ranks second, behind heart disease. Diabetes is tempting because it is extremely common and often discussed alongside cancer, but it ranks lower as a direct cause of death."},
+{"t":7,"q":"What type of cancer arises in the membrane lining the digestive tract?","a":["Sarcoma","Carcinoma","Leukemia","Lymphoma"],"c":1,"e":"Carcinomas arise in epithelial tissue, which is the lining of body surfaces including the digestive tract. Sarcoma is the tempting alternative because it is the other solid tumor category, but sarcomas arise in bone, muscle, and connective tissue."},
+{"t":7,"q":"Which substances found in plants are thought to be anticarcinogenic, or helpful in preventing cancer?","a":["Phytochemicals","Electrolytes","Amino acids","Triglycerides"],"c":0,"e":"Phytochemicals are plant compounds, including those that give fruits and vegetables their deep colors, and they are studied for cancer protection. Amino acids is tempting because they are also organic compounds from food, but they are protein building blocks with no such role."},
+{"t":7,"q":"A patient with severe burns needs increased amounts of which three things?","a":["Carbohydrates, vitamins, and minerals","Fiber, fluid, and calcium","Proteins, fluid, and electrolytes","Fat, iron, and vitamin C"],"c":2,"e":"Damaged skin leaks fluid and electrolytes, and rebuilding tissue takes very large amounts of protein. Carbohydrates, vitamins, and minerals is the trap because the list sounds balanced and healthy, but nutrition therapy targets what the specific injury takes away."},
+{"t":7,"q":"For every degree of fever on the Fahrenheit scale, by what percentage does basal metabolic rate increase?","a":["1 percent","7 percent","20 percent","50 percent"],"c":1,"e":"Basal metabolic rate rises about 7 percent per degree Fahrenheit, which is why a patient with a prolonged fever needs extra calories. Twenty percent is tempting because fever feels like it should raise needs dramatically, but the per-degree change is modest and adds up across several degrees."},
+{"t":7,"q":"Which genetic condition produces thick, sticky mucus that obstructs the pancreas and prevents enzymes from reaching the intestines?","a":["Celiac disease","Cystic fibrosis","Diverticulitis","Type 1 diabetes"],"c":1,"e":"Cystic fibrosis blocks the pancreatic ducts, so patients need enzyme replacement plus a high-calorie, high-protein diet. Type 1 diabetes is tempting because it also involves the pancreas, but type 1 affects the insulin-producing beta cells rather than the ducts that carry digestive enzymes."},
+{"t":0,"q":"Which organic compound provides a feeling of satiety after a meal?","a":["Fats","Carbohydrates","Vitamins","Water"],"c":0,"e":"Fat slows the emptying of the stomach, which produces the lasting full feeling called satiety. Carbohydrates is tempting because carbohydrate-rich meals feel filling at first, but they leave the stomach faster and the feeling fades sooner."},
+{"t":0,"q":"All of the following provide energy for the body EXCEPT:","a":["Carbohydrates","Fats","Proteins","Vitamins"],"c":3,"e":"Vitamins let the body release and use energy, but they carry no calories themselves. Proteins is sometimes chosen because protein is not the body's preferred fuel, but protein does supply 4 calories per gram when it is used for energy."},
+{"t":2,"q":"Which heat-related problem is characterized by thirst and feelings of weakness?","a":["Heat fatigue","Heat stroke","Hypothermia","Hyponatremia"],"c":0,"e":"Heat fatigue is the early warning stage, signaling that fluid replacement is needed before more serious heat illness develops. Heat stroke is tempting because it is the heat term students know best, but heat stroke is a medical emergency with confusion and very high body temperature."},
+{"t":4,"q":"Which live bacteria and yeasts help protect the digestive system from harmful bacteria?","a":["Enzymes","Probiotics","Electrolytes","Phytochemicals"],"c":1,"e":"Probiotics are living organisms found in yogurt and other fermented foods that support the gut's natural bacterial community. Enzymes is tempting because both help digestion, but enzymes are chemical catalysts rather than living organisms."},
+{"t":6,"q":"Which of the following is a food intolerance rather than a food allergy?","a":["Peanut reaction with swelling","Lactose intolerance","Shellfish reaction with hives","Wheat allergy with wheezing"],"c":1,"e":"Lactose intolerance is a shortage of the enzyme lactase, so it produces gas and cramping without involving the immune system. The other options describe immune reactions, and a milk allergy in particular gets confused with lactose intolerance even though it targets milk protein rather than milk sugar."},
+{"t":4,"q":"What is the process of digesting food and creating energy and new substances called?","a":["Absorption","Peristalsis","Metabolism","Emulsification"],"c":2,"e":"Metabolism covers both breaking molecules down for energy and building new substances the body needs. Absorption is the tempting near-miss because it happens right before metabolism in the sequence, but absorption is only the step of moving nutrients into circulation."},
+{"t":7,"q":"Which eating plan is the standard nutrition therapy for high blood pressure, emphasizing fruits, vegetables, whole grains, and low-fat dairy?","a":["Renal diet","Low-residue diet","DASH plan","Gluten-free diet"],"c":2,"e":"DASH stands for Dietary Approaches to Stop Hypertension and combines lower sodium with foods rich in potassium, calcium, and magnesium. A renal diet is tempting because it also restricts sodium, but it restricts protein, potassium, and phosphorus, which would work against the DASH pattern."},
+{"t":0,"q":"Which organ is responsible for both breaking apart and forming triglycerides?","a":["Pancreas","Liver","Gallbladder","Spleen"],"c":1,"e":"The liver hydrolyzes triglycerides and also assembles new ones, which is how it controls circulating fat. Pancreas is one of the most over-chosen wrong answers in nutrition, because the pancreas supplies the enzyme that digests fat in the intestine, but it does not build or store triglycerides."}
+];
+
+
+/* ============================================================
+   Rendering + quiz engine
+   ============================================================ */
+const $ = id => document.getElementById(id);
+const esc = s => String(s);
+
+/* ---------- theme ---------- */
+(function(){
+  let saved = null;
+  try { saved = localStorage.getItem('mt-theme'); } catch(e){}
+  if (saved === 'dark' || saved === 'light') document.documentElement.setAttribute('data-theme', saved);
+  $('themeBtn').addEventListener('click', () => {
+    const cur = document.documentElement.getAttribute('data-theme');
+    const isDark = cur ? cur === 'dark'
+      : window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const next = isDark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem('mt-theme', next); } catch(e){}
+  });
+})();
+
+/* ---------- best score ---------- */
+function readBest(){ try { return parseInt(localStorage.getItem('mt-best') || '', 10); } catch(e){ return NaN; } }
+function writeBest(p){ try { localStorage.setItem('mt-best', String(p)); } catch(e){} }
+(function(){ const b = readBest(); if (!isNaN(b)) $('stBest').textContent = b + '%'; })();
+
+/* ---------- navigation ---------- */
+function go(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo({top:0, behavior:'instant' in window ? 'auto' : 'auto'});
+}
+
+/* ---------- test plan table ---------- */
+(function(){
+  const rows = ['<div class="plan-r hd"><span>Topic</span><span>Weight</span></div>'];
+  TOPICS.forEach(t => rows.push(
+    '<div class="plan-r"><span>' + t.n + '</span><span class="plan-w">' +
+    (t.w > 0 ? t.w + '%' : 'Round 2') + '</span></div>'
+  ));
+  $('planTable').innerHTML = rows.join('');
+  $('stQ').textContent = Q.length;
+  const q2 = $('stQ2'); if (q2) q2.textContent = Q.length;
+})();
+
+/* ---------- study guide ---------- */
+(function(){
+  const out = [];
+  GUIDE.forEach((g, i) => {
+    const T = TOPICS[g.t];
+    const qr = g.qref.map(p =>
+      '<div><span class="qr-term">' + p[0] + '</span><span class="qr-def">' + p[1] + '</span></div>'
+    ).join('');
+    out.push(
+      '<div class="sec" id="sec' + g.t + '">' +
+        '<button class="sec-h" onclick="toggleSec(' + g.t + ')" aria-expanded="false">' +
+          '<span class="sec-w">' + T.w + '%</span>' +
+          '<span class="sec-t">' + T.n + '</span>' +
+          '<span class="sec-c">+</span>' +
+        '</button>' +
+        '<div class="sec-body">' +
+          '<div class="layer narr"><div class="layer-h">Narrative — read to understand</div>' + g.narr + '</div>' +
+          '<div class="layer deep"><div class="layer-h">Deep Dive — expert level</div>' + g.deep + '</div>' +
+          '<div class="layer qref"><div class="layer-h">Quick Reference — key terms</div><div class="qr">' + qr + '</div></div>' +
+          '<div class="layer note"><div class="layer-h">Top Competitor Study Notes</div><div class="notes-block">' + g.notes + '</div></div>' +
+          '<button class="sec-practice" onclick="startQuiz(' + g.t + ')">Practice this topic →</button>' +
+        '</div>' +
+      '</div>'
+    );
+  });
+  $('guideList').innerHTML = out.join('');
+})();
+
+function toggleSec(t){
+  const el = $('sec' + t);
+  const open = el.classList.toggle('open');
+  el.querySelector('.sec-h').setAttribute('aria-expanded', open ? 'true' : 'false');
+}
+
+/* ---------- quiz engine ---------- */
+let session = [], idx = 0, score = 0, answered = false, lastMode = 'weighted';
+let curOrder = [0,1,2,3];
+const perTopic = {};
+
+function shuffle(a){
+  const r = a.slice();
+  for (let i = r.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [r[i], r[j]] = [r[j], r[i]];
+  }
+  return r;
+}
+
+/* Weighted draw: 45 / 5 x 11, largest-remainder over 50 items */
+function weightedSet(n){
+  const raw = TOPICS.map(t => t.w * n / 100);
+  const base = raw.map(Math.floor);
+  let left = n - base.reduce((a,b) => a+b, 0);
+  const order = raw.map((v,i) => [v - Math.floor(v), i])
+                   .sort((a,b) => b[0] - a[0] || a[1] - b[1]);
+  for (let k = 0; k < order.length && left > 0; k++, left--) base[order[k][1]]++;
+  let out = [];
+  base.forEach((cnt, t) => {
+    const pool = shuffle(Q.filter(q => q.t === t));
+    out = out.concat(pool.slice(0, Math.min(cnt, pool.length)));
+  });
+  return shuffle(out);
+}
+
+function startQuiz(mode){
+  lastMode = mode;
+  if (mode === 'weighted')      session = weightedSet(typeof TEST_N !== 'undefined' ? TEST_N : 50);
+  else if (mode === 'all')      session = shuffle(Q);
+  else                          session = shuffle(Q.filter(q => q.t === mode));
+  idx = 0; score = 0;
+  for (const k in perTopic) delete perTopic[k];
+  go('quiz');
+  renderQ();
+}
+
+function renderQ(){
+  answered = false;
+  const q = session[idx];
+  $('qCount').textContent = (idx + 1) + ' / ' + session.length;
+  $('qScore').textContent = score + ' ✓';
+  $('qFill').style.width = (idx / session.length * 100) + '%';
+  const T = TOPICS[q.t];
+  $('qTopic').textContent = T.n.replace('&amp;','&');
+  $('qTopic').style.color = T.c;
+  $('qStem').innerHTML = q.q;
+  curOrder = shuffle([0,1,2,3]);
+  const letters = ['A','B','C','D'];
+  $('qChoices').innerHTML = curOrder.map((orig, i) =>
+    '<button class="ch" onclick="answer(' + i + ')"><span class="k">' + letters[i] + '</span><span>' + q.a[orig] + '</span></button>'
+  ).join('');
+  const ex = $('qExpl');
+  ex.className = 'expl';
+  $('qNext').style.display = 'none';
+}
+
+function answer(i){
+  if (answered) return;
+  answered = true;
+  const q = session[idx];
+  const btns = $('qChoices').querySelectorAll('.ch');
+  btns.forEach((b, k) => {
+    b.disabled = true;
+    if (curOrder[k] === q.c) b.classList.add('right');
+    else if (k === i) b.classList.add('wrong');
+  });
+  const ok = curOrder[i] === q.c;
+  if (ok) score++;
+  if (!perTopic[q.t]) perTopic[q.t] = {c:0, n:0};
+  perTopic[q.t].n++;
+  if (ok) perTopic[q.t].c++;
+  const ex = $('qExpl');
+  ex.className = 'expl show ' + (ok ? 'ok' : 'no');
+  $('qVerdict').textContent = ok ? 'Correct' : 'Not quite';
+  $('qExplText').innerHTML = q.e;
+  $('qSrc').textContent = TOPICS[q.t].n.replace('&amp;','&') + (TOPICS[q.t].w > 0 ? ' · ' + TOPICS[q.t].w + '% of the test' : ' · Round Two material');
+  $('qScore').textContent = score + ' ✓';
+  $('qNext').style.display = 'block';
+  $('qNext').textContent = idx + 1 >= session.length ? 'See results' : 'Next question';
+  $('qNext').focus();
+}
+
+function nextQ(){
+  idx++;
+  if (idx >= session.length) return showResults();
+  renderQ();
+}
+
+function quitQuiz(){
+  if (idx > 0 || answered) return showResults();
+  go('home');
+}
+
+function showResults(){
+  const total = Math.max(1, Object.values(perTopic).reduce((a,b) => a + b.n, 0));
+  const pct = Math.round(score / total * 100);
+  go('results');
+  $('ringPct').textContent = pct + '%';
+  $('ringFrac').textContent = score + ' of ' + total;
+  const circ = 2 * Math.PI * 70;
+  requestAnimationFrame(() => {
+    $('ringArc').style.strokeDashoffset = circ * (1 - pct / 100);
+  });
+  $('ringArc').setAttribute('stroke', pct >= 80 ? 'var(--teal)' : pct >= 60 ? 'var(--orange)' : 'var(--red)');
+  const ranked = Object.keys(perTopic).filter(t => perTopic[t].n >= 2)
+    .sort((a,b) => (perTopic[a].c/perTopic[a].n) - (perTopic[b].c/perTopic[b].n));
+  const weakest = ranked.length ? TOPICS[ranked[0]].n.replace('&amp;','&') : null;
+  const second  = ranked.length > 1 ? TOPICS[ranked[1]].n.replace('&amp;','&') : null;
+  let msg;
+  if (pct >= 90)      msg = 'Medal range. Keep the full-length sessions coming and hold this line.' + (weakest ? ' Your softest spot is still ' + weakest + '.' : '');
+  else if (pct >= 80) msg = 'Strong.' + (weakest && second ? ' Read the Deep Dive for ' + weakest + ' and ' + second + ' tonight.' : ' Go find your two weakest topics below.');
+  else if (pct >= 65) msg = 'Solid base, real gaps.' + (weakest ? ' Work ' + weakest + ' before you take another full test.' : '');
+  else if (pct >= 45) msg = 'You know some of it.' + (weakest ? ' Open the study guide at ' + weakest + ' and read the narrative, then the deep dive.' : '');
+  else                msg = 'Start at the study guide, not the quiz.' + (weakest ? ' Begin with ' + weakest + '.' : ' Read the highest-weighted topic first.');
+  $('resMsg').textContent = msg;
+  const rows = Object.keys(perTopic).sort((a,b) => a - b).map(t => {
+    const d = perTopic[t], p = Math.round(d.c / d.n * 100);
+    const col = p >= 80 ? 'var(--teal)' : p >= 50 ? 'var(--orange)' : 'var(--red)';
+    return '<div class="brk-row"><span class="brk-t">' + TOPICS[t].n + '</span>' +
+           '<span class="brk-s" style="color:' + col + '">' + d.c + '/' + d.n + ' · ' + p + '%</span></div>';
+  });
+  $('resBrk').innerHTML = rows.join('') || '<div class="brk-row"><span class="brk-t">No questions answered</span><span class="brk-s">—</span></div>';
+  if (lastMode === 'weighted' && total >= (typeof TEST_N !== 'undefined' ? TEST_N : 50) * 0.8){
+    const b = readBest();
+    if (isNaN(b) || pct > b){ writeBest(pct); $('stBest').textContent = pct + '%'; }
+  }
+}
+
+function repeatQuiz(){ startQuiz(lastMode); }
+</script>
+
+</body>
+</html>
